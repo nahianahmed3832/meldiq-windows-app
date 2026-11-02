@@ -43,6 +43,13 @@ jobs:
       - name: Install, launch and uninstall the development installer
         shell: pwsh
         run: ./scripts/windows-install-smoke.ps1
+      - name: Verify public production contracts from Windows Electron
+        shell: pwsh
+        run: |
+          $acceptanceFile = Join-Path $env:RUNNER_TEMP 'desktop-acceptance.env'
+          Copy-Item config/desktop-acceptance.env.example $acceptanceFile
+          try { node scripts/acceptance-desktop.mjs --env $acceptanceFile; if ($LASTEXITCODE -ne 0) { throw 'Windows public contract acceptance failed; inspect the redacted report' } }
+          finally { Remove-Item -LiteralPath $acceptanceFile -ErrorAction SilentlyContinue }
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()
         with:
