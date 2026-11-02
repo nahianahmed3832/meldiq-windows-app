@@ -9,9 +9,10 @@ const filename = process.argv[3] ?? 'release/win-unpacked/resources/app.asar';
 if (!auditFile) throw new Error('Pass the fresh npm audit JSON file');
 const audit = JSON.parse(fs.readFileSync(auditFile, 'utf8'));
 const entries = listPackage(filename).map(p => p.replaceAll('\\', '/'));
-const asarBuild = JSON.parse(extractFile(filename, 'dist/build-info.json').toString());
+const readArchive = relative => extractFile(filename, path.normalize(relative));
+const asarBuild = JSON.parse(readArchive('dist/build-info.json').toString());
 const packages = entries.filter(p => p.endsWith('/package.json') && p.includes('/node_modules/')).map(p => {
-  const pkg = JSON.parse(extractFile(filename, p.slice(1)).toString());
+  const pkg = JSON.parse(readArchive(p.slice(1)).toString());
   return { name: pkg.name, version: pkg.version };
 }).filter(p => p.name);
 const findings = Object.values(audit.vulnerabilities ?? {}).map(v => ({ name: v.name, severity: v.severity, installedNodes: v.nodes, packagedNodeVersions: packages.filter(p => p.name === v.name).map(p => p.version), assessment: packages.some(p => p.name === v.name) ? 'Packaged Node dependency: requires advisory range review' : 'Not present as a Node package in this ASAR; bundled renderer exposure must also be reviewed', advisories: v.via.filter(a => typeof a !== 'string').map(a => ({ title: a.title, url: a.url, range: a.range })) }));

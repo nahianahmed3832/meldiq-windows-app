@@ -1,0 +1,74 @@
+{
+  "checkedAt": "2026-11-02T23:18:45.455487+00:00",
+  "method": "Read-only existing operator AWS profile; no policy, lifecycle or permission mutations",
+  "bucket": "griipbuddy-orbit-media-sg",
+  "cors": {
+    "CORSRules": [
+      {
+        "ID": "meldiq-approved-browser-media",
+        "AllowedHeaders": [
+          "content-type",
+          "content-length",
+          "range",
+          "if-none-match",
+          "if-match",
+          "x-amz-*"
+        ],
+        "AllowedMethods": [
+          "GET",
+          "HEAD",
+          "PUT"
+        ],
+        "AllowedOrigins": [
+          "https://web.meldiq.app",
+          "https://admin.meldiq.app"
+        ],
+        "ExposeHeaders": [
+          "ETag",
+          "x-amz-checksum-sha256",
+          "x-amz-version-id",
+          "Content-Length",
+          "Content-Range",
+          "Accept-Ranges"
+        ],
+        "MaxAgeSeconds": 3600
+      }
+    ]
+  },
+  "lifecycle": {
+    "TransitionDefaultMinimumObjectSize": "all_storage_classes_128K",
+    "Rules": [
+      {
+        "ID": "abort-incomplete-multipart-uploads",
+        "Filter": {
+          "Prefix": ""
+        },
+        "Status": "Enabled",
+        "AbortIncompleteMultipartUpload": {
+          "DaysAfterInitiation": 1
+        }
+      },
+      {
+        "Expiration": {
+          "ExpiredObjectDeleteMarker": true
+        },
+        "ID": "recoverable-for-a-while-then-gone",
+        "Filter": {
+          "Prefix": ""
+        },
+        "Status": "Enabled",
+        "NoncurrentVersionExpiration": {
+          "NoncurrentDays": 30
+        }
+      }
+    ]
+  },
+  "publicApiRetention": {
+    "version": "0.76.1",
+    "attachmentTtlSeconds": 604800,
+    "attachmentKeepDays": 365,
+    "attachmentMaxBytes": 1025048576,
+    "fileMaxBytes": 1000000000
+  },
+  "actualMediaTransferPerformed": false
+}

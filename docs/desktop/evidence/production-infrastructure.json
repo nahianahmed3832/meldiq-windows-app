@@ -26,7 +26,8 @@
   "webOriginsEnvironmentConfigured": false,
   "fcmProjectId": "meldiq",
   "mailTransport": "smtp",
-  "s3CorsInspection": "AccessDenied for existing restricted profile; no permissions changed",
+  "s3CorsInspection": "Restricted API profile denied; existing authorized operator profile subsequently read configured CORS and lifecycle. No permissions or policies changed.",
   "accountProvisioningPerformed": false,
-  "productionMutationsPerformed": false
+  "productionMutationsPerformed": false,
+  "s3PolicyEvidence": "docs/desktop/evidence/production-s3-policy.json"
 }

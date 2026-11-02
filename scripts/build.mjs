@@ -35,7 +35,7 @@ const inventoryPlugin = kind => ({
   name: 'meldiq-renderer-dependency-inventory',
   generateBundle(_options, bundle) {
     for (const chunk of Object.values(bundle)) if (chunk.type === 'chunk') {
-      rendererModules.push({ kind, file: chunk.fileName, modules: Object.entries(chunk.modules).map(([id, module]) => ({ id: id.replaceAll(root, '<project>').replaceAll('\\', '/'), renderedBytes: module.renderedLength })) });
+      rendererModules.push({ kind, file: chunk.fileName, modules: Object.entries(chunk.modules).map(([id, module]) => ({ id: id.replaceAll('\\', '/').replaceAll(root.replaceAll('\\', '/'), '<project>'), renderedBytes: module.renderedLength })) });
     }
   },
 });

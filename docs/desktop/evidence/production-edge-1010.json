@@ -1,0 +1,15 @@
+{
+  "status": 403,
+  "server": "cloudflare",
+  "ray": "a546dd1d485219c3-NRT",
+  "contentType": "application/json; charset=utf-8",
+  "edgeError": {
+    "title": "Error 1010: Access denied",
+    "error_code": 1010,
+    "error_name": "browser_signature_banned",
+    "error_category": "access_denied",
+    "cloudflare_error": true,
+    "owner_action_required": true,
+    "retryable": false
+  }
+}
