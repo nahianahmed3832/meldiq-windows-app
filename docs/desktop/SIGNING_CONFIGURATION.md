@@ -1,6 +1,6 @@
 # Signing configuration template
 
-No signing certificate is configured and no signed release is claimed. Configure the protected GitHub environment `desktop-release` with variables MELDIQ_SIGNING_PUBLISHER (actual certificate common name), MELDIQ_RELEASE_APPROVED=1 only after required acceptance, and secrets WINDOWS_CSC_LINK / WINDOWS_CSC_KEY_PASSWORD. Do not commit certificate/key material. Use an appropriate managed signing service integration instead when required by the issued certificate; configure and verify its actual build path before release.
+The owner chose website distribution and confirmed there is no signing certificate yet. Follow [WEBSITE_DISTRIBUTION.md](WEBSITE_DISTRIBUTION.md) for acquisition options; website TLS does not sign an EXE. No signing certificate is configured and no signed release is claimed. Configure the protected GitHub environment `desktop-release` with variables MELDIQ_SIGNING_PUBLISHER (actual certificate common name), MELDIQ_RELEASE_APPROVED=1 only after required acceptance, and secrets WINDOWS_CSC_LINK / WINDOWS_CSC_KEY_PASSWORD. Do not commit certificate/key material. Use an appropriate managed signing service integration instead when required by the issued certificate; configure and verify its actual build path before release.
 
 Supply MELDIQ_RELEASE_ACCEPTANCE_JSON as independently reviewed evidence for the exact source commit. It is written to a git-ignored file at build time. Example schema (all flags are false until proven):
 

@@ -1,0 +1,23 @@
+{
+  "checkedAt": "2026-11-02T23:09:07.878Z",
+  "source": "https://web.meldiq.app/config.json",
+  "status": 200,
+  "deployedConnectSources": [
+    "https://*.paypal.com",
+    "https://www.paypalobjects.com",
+    "'self'",
+    "wss://web.meldiq.app",
+    "https://rtc.meldiq.app",
+    "wss://rtc.meldiq.app",
+    "https://rtc.griipbuddy.cloud",
+    "wss://rtc.griipbuddy.cloud",
+    "https://griipbuddy-orbit-media-sg.s3.ap-southeast-1.amazonaws.com"
+  ],
+  "desktopConnectOrigins": [
+    "https://griipbuddy-orbit-media-sg.s3.ap-southeast-1.amazonaws.com",
+    "https://rtc.meldiq.app",
+    "wss://rtc.meldiq.app"
+  ],
+  "allDesktopAdditionalOriginsAlreadyAllowedByProductionWebPolicy": true,
+  "transferOrRoomAcceptance": false
+}

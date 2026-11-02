@@ -5,9 +5,10 @@ Status: **security acceptance incomplete**. Preserved the existing security arch
 ## Concrete fixes and checks
 
 - Reproduced an updater race with a failing regression test: channel reconfiguration during an asynchronous signature check was accepted, allowing the old-channel installer callback to restore an offer after resetting the feed. Channel changes now fail before preferences are saved while checks, downloads, signature verification or installation are active. A completed safe switch still invalidates the old candidate. Four updater tests cover verification, checking, downloading/rejection and install-time recheck. The original preview bytes remain unchanged; updated source requires its own validation artifact.
+- Build actions are pinned to current official release commit SHAs, resolved through their repositories; native Windows CI validates their runtime compatibility.
 - Release workflow previously accepted a certificate subject beginning with the expected CN. It now uses the exact certificate SimpleName with ordinal equality, valid Authenticode only, and rejects no-executable/missing-publisher cases. Native PowerShell fixtures reproduce the old prefix flaw and test mismatches, unsigned/error/catalog results and missing values. This does not constitute actual production certificate or signed-update acceptance.
 - Acceptance configuration is external, owner-only and parsed as data from an explicit path. Unknown/build-prefixed fields, duplicate keys, insecure/credential-bearing origins and live payment mode are rejected. Credentials never become build environment variables or child Electron configuration. Three loader tests passed. Packaged-code checks reject acceptance configuration markers.
-- Existing Electron boundaries remain: sandbox, context isolation, no renderer Node, restricted typed IPC with exact main-frame sender, local packaged documents/scripts, navigation/deep-link validation, no privileged payment popup, OS-sealed sessions, and signed update verification. Existing desktop/security tests and native smoke provide bounded evidence. No CSP, origin check, authentication or signature assertion was weakened.
+- Existing Electron boundaries remain: sandbox, context isolation, no renderer Node, restricted typed IPC with exact main-frame sender, local packaged documents/scripts, navigation/deep-link validation, no privileged payment popup, OS-sealed sessions, and signed update verification. Existing desktop/security tests and native smoke provide bounded evidence. The desktop connection list now matches three exact S3/LiveKit origins already in the actual production website CSP; no wildcard, arbitrary origin, backend CORS change or validation bypass was introduced.
 - Cache clear preserves localStorage/IndexedDB identity and rejects communication-busy requests in existing native Windows/macOS smoke. Existing backend integration rerun verifies real email sign-in, encryption/device enrollment, sealed reload restoration and bidirectional messaging in isolated local storage. Real production E2EE/cross-device and media acceptance remain blocked.
 
 ## Fresh dependency audit and exposure
@@ -24,7 +25,7 @@ Primary references checked: [Electron security recommendations](https://github.c
 
 ## Remaining gates
 
-- Production QA secrets, authorization and exact approved S3/LiveKit origins; real access-control, token expiry and wrong-account tests.
+- Production QA secrets/authorization and actual S3 CORS/LiveKit transport acceptance; exact desktop S3/LiveKit origins now match the existing production website policy. Real access-control, token expiry and wrong-account tests remain pending.
 - Actual Windows provider callbacks, account switching/sign-out/refresh/key recovery and long-session token/storage behavior.
 - Device/capture cleanup during real calls, unsupported acceleration, hardware/device disconnection and notification privacy.
 - Isolated sandbox payment/webhook entitlement transitions, replay/authorization failures and provider callback cancellation.
