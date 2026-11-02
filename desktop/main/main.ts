@@ -206,7 +206,10 @@ function permissions(ses: Electron.Session) {
       chooseCapture = finish;
       picker.on('closed', () => finish(null));
       await picker.loadURL(`${ORIGIN}/capture-picker`);
-    } catch { capturePending = false; callback({}); emitState(); }
+    } catch {
+      if (chooseCapture) chooseCapture(null);
+      else { picker?.destroy(); picker = null; sources = []; capturePending = false; callback({}); emitState(); }
+    }
   }, { useSystemPicker: false });
 }
 function makeWindow(ses: Electron.Session) {

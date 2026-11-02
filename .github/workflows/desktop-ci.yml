@@ -2,7 +2,9 @@ name: Desktop checks and Windows development installer
 on:
   push:
     branches: [main]
+    paths-ignore: ['docs/**', 'README.md', '.env.example']
   pull_request:
+    paths-ignore: ['docs/**', 'README.md', '.env.example']
   workflow_dispatch:
 permissions:
   contents: read

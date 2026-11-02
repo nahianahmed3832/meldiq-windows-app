@@ -1,0 +1,323 @@
+{
+  "capturedAt": "2026-11-03 Asia/Shanghai",
+  "scope": "Installed source/development dependency tree, including the reusable web workspace. The packaged desktop ASAR is separately inspected and omits Next, Firebase and gRPC.",
+  "counts": {
+    "info": 0,
+    "low": 0,
+    "moderate": 25,
+    "high": 4,
+    "critical": 0,
+    "total": 29
+  },
+  "findings": [
+    {
+      "package": "@electron/asar",
+      "severity": "moderate",
+      "direct": false,
+      "range": ">=3.2.1",
+      "advisories": [],
+      "paths": [
+        "node_modules/@electron/asar"
+      ]
+    },
+    {
+      "package": "@electron/universal",
+      "severity": "moderate",
+      "direct": false,
+      "range": ">=1.0.1",
+      "advisories": [],
+      "paths": [
+        "node_modules/@electron/universal"
+      ]
+    },
+    {
+      "package": "@eslint-community/eslint-utils",
+      "severity": "moderate",
+      "direct": false,
+      "range": "*",
+      "advisories": [],
+      "paths": [
+        "node_modules/@eslint-community/eslint-utils"
+      ]
+    },
+    {
+      "package": "@eslint/config-array",
+      "severity": "moderate",
+      "direct": false,
+      "range": "*",
+      "advisories": [],
+      "paths": [
+        "node_modules/@eslint/config-array"
+      ]
+    },
+    {
+      "package": "@eslint/js",
+      "severity": "moderate",
+      "direct": true,
+      "range": ">=10.0.1",
+      "advisories": [],
+      "paths": [
+        "node_modules/@eslint/js"
+      ]
+    },
+    {
+      "package": "@firebase/firestore",
+      "severity": "high",
+      "direct": false,
+      "range": "1.3.1-0 - 1.3.1-canary.df1b588 || 1.3.2-0 - 1.3.3-canary.bc4a844 || 1.13.1-0 - 1.13.1-canary.ce3addba || 1.14.0-0 - 1.15.1 || 3.7.3-20221108184443 - 3.7.3-canary.fde5adf63 || >=3.8.0-20221206221533",
+      "advisories": [],
+      "paths": [
+        "node_modules/@firebase/firestore"
+      ]
+    },
+    {
+      "package": "@firebase/firestore-compat",
+      "severity": "high",
+      "direct": false,
+      "range": "<=0.0.900-exp.520ca39d0 || 0.2.3-20221108184443 - 0.2.3-canary.fde5adf63 || >=0.3.0-20221206221533",
+      "advisories": [],
+      "paths": [
+        "node_modules/@firebase/firestore-compat"
+      ]
+    },
+    {
+      "package": "@grpc/grpc-js",
+      "severity": "high",
+      "direct": false,
+      "range": "<=1.13.5",
+      "advisories": [
+        {
+          "title": "@grpc/grpc-js: In certain configurations, getAuthContext can return unauthorized certificates as though they were authorized",
+          "url": "https://github.com/advisories/GHSA-m9gg-hp2v-232j"
+        },
+        {
+          "title": "@grpc/grpc-js: The server transmits some error messages thrown by method handlers to the client in status messages",
+          "url": "https://github.com/advisories/GHSA-f596-whhp-79r4"
+        }
+      ],
+      "paths": [
+        "node_modules/@firebase/firestore/node_modules/@grpc/grpc-js"
+      ]
+    },
+    {
+      "package": "@typescript-eslint/eslint-plugin",
+      "severity": "moderate",
+      "direct": false,
+      "range": "*",
+      "advisories": [],
+      "paths": [
+        "node_modules/@typescript-eslint/eslint-plugin"
+      ]
+    },
+    {
+      "package": "@typescript-eslint/parser",
+      "severity": "moderate",
+      "direct": false,
+      "range": "*",
+      "advisories": [],
+      "paths": [
+        "node_modules/@typescript-eslint/parser"
+      ]
+    },
+    {
+      "package": "@typescript-eslint/type-utils",
+      "severity": "moderate",
+      "direct": false,
+      "range": ">=5.62.1-alpha.0",
+      "advisories": [],
+      "paths": [
+        "node_modules/@typescript-eslint/type-utils"
+      ]
+    },
+    {
+      "package": "@typescript-eslint/typescript-estree",
+      "severity": "moderate",
+      "direct": false,
+      "range": ">=6.16.0",
+      "advisories": [],
+      "paths": [
+        "node_modules/@typescript-eslint/typescript-estree"
+      ]
+    },
+    {
+      "package": "@typescript-eslint/utils",
+      "severity": "moderate",
+      "direct": false,
+      "range": "*",
+      "advisories": [],
+      "paths": [
+        "node_modules/@typescript-eslint/utils"
+      ]
+    },
+    {
+      "package": "app-builder-lib",
+      "severity": "moderate",
+      "direct": false,
+      "range": "*",
+      "advisories": [],
+      "paths": [
+        "node_modules/app-builder-lib"
+      ]
+    },
+    {
+      "package": "dir-compare",
+      "severity": "moderate",
+      "direct": false,
+      "range": "*",
+      "advisories": [],
+      "paths": [
+        "node_modules/dir-compare"
+      ]
+    },
+    {
+      "package": "dmg-builder",
+      "severity": "moderate",
+      "direct": false,
+      "range": ">=5.0.0",
+      "advisories": [],
+      "paths": [
+        "node_modules/dmg-builder"
+      ]
+    },
+    {
+      "package": "ejs",
+      "severity": "moderate",
+      "direct": false,
+      "range": "3.1.2 - 4.0.1",
+      "advisories": [],
+      "paths": [
+        "node_modules/ejs"
+      ]
+    },
+    {
+      "package": "electron-builder",
+      "severity": "moderate",
+      "direct": true,
+      "range": "19.25.0 || >=20.24.0",
+      "advisories": [],
+      "paths": [
+        "node_modules/electron-builder"
+      ]
+    },
+    {
+      "package": "electron-builder-squirrel-windows",
+      "severity": "moderate",
+      "direct": false,
+      "range": ">=20.24.0",
+      "advisories": [],
+      "paths": [
+        "node_modules/electron-builder-squirrel-windows"
+      ]
+    },
+    {
+      "package": "electron-winstaller",
+      "severity": "moderate",
+      "direct": false,
+      "range": ">=3.0.0",
+      "advisories": [],
+      "paths": [
+        "node_modules/electron-winstaller"
+      ]
+    },
+    {
+      "package": "eslint",
+      "severity": "moderate",
+      "direct": true,
+      "range": "0.7.1 - 2.0.0-rc.1 || >=4.1.0",
+      "advisories": [],
+      "paths": [
+        "node_modules/eslint"
+      ]
+    },
+    {
+      "package": "filelist",
+      "severity": "moderate",
+      "direct": false,
+      "range": ">=0.0.2",
+      "advisories": [],
+      "paths": [
+        "node_modules/filelist"
+      ]
+    },
+    {
+      "package": "firebase",
+      "severity": "high",
+      "direct": true,
+      "range": "0.900.22 || 6.0.2-0 - 6.0.2-canary.42eae23 || 6.0.3-0 - 6.0.4-canary.bc4a844 || 7.9.1-0 - 7.9.1-canary.0396117e || 7.13.2-0 - 7.13.2-canary.ce3addba || 7.14.0-0 - 7.15.1 || 8.10.0-20217172214 - 8.10.0-canary.f40c0db53 || 9.0.0-20217250818 - 9.0.0-canary.d0d3acb10 || 9.0.1-2021727231341 - 9.0.1-canary.e039e1472 || 9.0.2-2021891633 - 9.0.2-canary.ff9baf70c || 9.0.3-202181503543 - 9.1.0-canary.f7d8324a1 || 9.1.1-2021830195733 - 9.1.1-canary.e70de6201 || 9.1.2-20219523556 - 9.1.2-canary.fc1d36497 || 9.13.1-20221108184443 - 9.14.0-canary.fde5adf63 || >=9.15.0-20221206221533",
+      "advisories": [],
+      "paths": [
+        "node_modules/firebase"
+      ]
+    },
+    {
+      "package": "glob",
+      "severity": "moderate",
+      "direct": false,
+      "range": "3.0.0 - 13.0.6",
+      "advisories": [],
+      "paths": [
+        "node_modules/glob"
+      ]
+    },
+    {
+      "package": "jake",
+      "severity": "moderate",
+      "direct": false,
+      "range": ">=10.6.1",
+      "advisories": [],
+      "paths": [
+        "node_modules/jake"
+      ]
+    },
+    {
+      "package": "minimatch",
+      "severity": "moderate",
+      "direct": false,
+      "range": "<11.0.1",
+      "advisories": [
+        {
+          "title": "minimatch has potential denial of service via globparts amplification",
+          "url": "https://github.com/advisories/GHSA-g3hv-75wg-m249"
+        }
+      ],
+      "paths": [
+        "node_modules/@electron/asar/node_modules/minimatch",
+        "node_modules/@electron/universal/node_modules/minimatch",
+        "node_modules/dir-compare/node_modules/minimatch",
+        "node_modules/filelist/node_modules/minimatch",
+        "node_modules/glob/node_modules/minimatch",
+        "node_modules/minimatch"
+      ]
+    },
+    {
+      "package": "rimraf",
+      "severity": "moderate",
+      "direct": false,
+      "range": "2.3.0 - 3.0.2 || >=4.2.0",
+      "advisories": [],
+      "paths": [
+        "node_modules/rimraf"
+      ]
+    },
+    {
+      "package": "temp",
+      "severity": "moderate",
+      "direct": false,
+      "range": ">=0.8.4",
+      "advisories": [],
+      "paths": [
+        "node_modules/temp"
+      ]
+    },
+    {
+      "package": "typescript-eslint",
+      "severity": "moderate",
+      "direct": true,
+      "range": "*",
+      "advisories": [],
+      "paths": [
+        "node_modules/typescript-eslint"
+      ]
+    }
+  ]
+}
