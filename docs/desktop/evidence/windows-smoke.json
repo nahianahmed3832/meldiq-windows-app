@@ -1,0 +1,23 @@
+{
+  "platform": "win32",
+  "arch": "x64",
+  "versions": {
+    "app": "0.1.0",
+    "electron": "45.2.1",
+    "chromium": "156.0.8078.75"
+  },
+  "offlineSmokeMs": 9616,
+  "checks": [
+    "local renderer with network blocked",
+    "sandbox and context isolation",
+    "untrusted IPC rejection",
+    "clear cache preserves localStorage and IndexedDB identity",
+    "cache clearing blocked during communication",
+    "economy effects",
+    "native settings",
+    "payment popup has no native bridge and blocks restart",
+    "native invitation captured by the existing join workflow"
+  ],
+  "status": "passed",
+  "windowsInstallation": "not tested by this smoke"
+}
