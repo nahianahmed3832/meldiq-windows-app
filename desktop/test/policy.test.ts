@@ -26,6 +26,10 @@ describe('Untrusted inputs', () => {
     expect(parseDeepLink('meldiq://dms/c/abc/details')).toEqual({ kind: 'navigate', href: '/dms/c/abc/details' });
     expect(parseDeepLink('meldiq://settings/account')).toEqual({ kind: 'navigate', href: '/settings/account' });
   });
+  it('adapts native community invitations to the existing web join workflow', () => {
+    expect(parseDeepLink('meldiq://invite/ABCD-EFGH')).toEqual({ kind: 'navigate', href: '/join/ABCD-EFGH' });
+    expect(parseDeepLink('meldiq://invite/x')).toBeNull();
+  });
   it('validates one-use native social receipts without allowing token injection', () => {
     const id = 'a'.repeat(43), receipt = 'b'.repeat(43);
     expect(parseDeepLink(`meldiq://auth/callback#id=${id}&receipt=${receipt}`)).toEqual({ kind: 'social', id, receipt, error: null });

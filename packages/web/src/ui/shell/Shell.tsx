@@ -192,6 +192,7 @@ export function Shell({ onSignedOut }: { onSignedOut: () => void }) {
   // An invitation link opened in this tab (/join/<code>, kept through signing in): Join with its preview, once.
   useEffect(() => {
     if (!synced) return;
+    const acceptPendingLink = () => {
     // Joined through someone's invite link to Meldiq: claimed once (the server decides whether it still counts).
     const referral = engine.device.account ? takeReferral() : null;
     if (referral) void engine.api.call("POST", "/v2/billing/referral/claim", { body: { code: referral } }).catch(() => undefined);
@@ -206,6 +207,10 @@ export function Shell({ onSignedOut }: { onSignedOut: () => void }) {
     // Back from Discord after adding Meldiq's bot (or cancelling): the import picks up where it left off.
     const discord = takeDiscordReturn();
     if (discord) setDialog({ kind: "createWorkspace", discord });
+    };
+    acceptPendingLink();
+    window.addEventListener("meldiq:desktop-pending-link", acceptPendingLink);
+    return () => window.removeEventListener("meldiq:desktop-pending-link", acceptPendingLink);
   }, [synced, engine]);
 
   // Invite people from a call (ConnectedCallPanel, CallStage): the community's Invite dialog.

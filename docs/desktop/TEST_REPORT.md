@@ -5,12 +5,12 @@ Host: macOS/Darwin arm64, Apple M1, 8 GB RAM, 8 logical CPUs. This report does n
 | Check | Result |
 |---|---|
 | Shared web unit suite | 134 files passed; 924 tests passed, 2 skipped |
-| Desktop policy/signature tests | 45 passed |
+| Desktop policy/signature tests | 46 passed |
 | Desktop + shared TypeScript | Passed |
 | Desktop lint | Passed |
 | Renderer/main/preload production build | Passed |
 | Package inspection | 62 local assets; no remote application scripts, service-worker shell or source maps |
-| Upstream snapshot verification | 1,722 original files checked; 8 existing files adapted; one bridge type file added |
+| Upstream snapshot verification | 1,722 original files checked; 9 existing files adapted; one bridge type file added |
 | Real Electron offline smoke on macOS | Passed: sign-in UI with network blocked, isolation, untrusted IPC rejection, cache preservation, economy effects, native settings |
 | Windows CI/package | Pending run; update after actual outcome |
 | Physical Windows install/upgrade/uninstall | Not tested |

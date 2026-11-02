@@ -7,5 +7,6 @@
   "src/ui/auth/SocialSignIn.tsx": "Avoid provider popup inside Electron when native browser sign-in is available.",
   "test/support/apiCalls.ts": "Normalize source-relative test identifiers to slash separators on Windows; preserves delegated API contract coverage instead of skipping the test.",
   "src/store/db.ts": "Include OS-sealed session tokens in the existing persistent-key allowlist so session restoration survives a renderer restart; no account data migration.",
-  "src/sync/legacyImport.ts": "Preserve the OS-sealed credential field during the existing one-time legacy data cleanup; cleanup must never erase the current account session."
+  "src/sync/legacyImport.ts": "Preserve the OS-sealed credential field during the existing one-time legacy data cleanup; cleanup must never erase the current account session.",
+  "src/ui/shell/Shell.tsx": "Consume captured native invitation/template/message links in an already running signed-in shell, using existing pending-link workflows without reloading or interrupting calls."
 }

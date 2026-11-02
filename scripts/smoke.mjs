@@ -75,10 +75,13 @@ try {
   assert.equal((await page.evaluate(() => window.meldiqDesktop.state())).busy, true, 'Payment approval window must block update restart');
   await paymentPage.close();
   await page.evaluate(() => { history.replaceState({ meldiq: 1 }, '', '/'); });
+  await client.evaluate(({ app }) => app.emit('second-instance', {}, ['meldiq://invite/ABCD-EFGH']));
+  await page.waitForFunction(() => sessionStorage.getItem('meldiq.pendingInvite') === 'ABCD-EFGH');
+  assert.equal(await page.evaluate(() => location.pathname), '/home');
   await page.waitForFunction(() => document.querySelector('#desktop-root')?.textContent?.includes('Meldiq'));
   await page.screenshot({ path: 'test-results/offline-launch.png' });
   assert.deepEqual(errors, [], `Renderer errors: ${errors.join('; ')}`);
-  const report = { platform: process.platform, arch: process.arch, versions: await client.evaluate(({ app }) => ({ app: app.getVersion(), electron: process.versions.electron, chromium: process.versions.chrome })), offlineSmokeMs: Math.round(launchMs), checks: ['local renderer with network blocked', 'sandbox and context isolation', 'untrusted IPC rejection', 'clear cache preserves localStorage and IndexedDB identity', 'cache clearing blocked during communication', 'economy effects', 'native settings', 'payment popup has no native bridge and blocks restart'], status: 'passed', windowsInstallation: 'not tested by this smoke' };
+  const report = { platform: process.platform, arch: process.arch, versions: await client.evaluate(({ app }) => ({ app: app.getVersion(), electron: process.versions.electron, chromium: process.versions.chrome })), offlineSmokeMs: Math.round(launchMs), checks: ['local renderer with network blocked', 'sandbox and context isolation', 'untrusted IPC rejection', 'clear cache preserves localStorage and IndexedDB identity', 'cache clearing blocked during communication', 'economy effects', 'native settings', 'payment popup has no native bridge and blocks restart', 'native invitation captured by the existing join workflow'], status: 'passed', windowsInstallation: 'not tested by this smoke' };
   await fs.writeFile('test-results/smoke.json', JSON.stringify(report, null, 2));
   console.log(JSON.stringify(report, null, 2));
 } finally {

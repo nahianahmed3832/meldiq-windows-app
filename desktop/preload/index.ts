@@ -5,6 +5,12 @@ function subscribe<T>(channel: string, callback: (value: T) => void) {
   ipcRenderer.on(channel, listener);
   return () => { ipcRenderer.removeListener(channel, listener); };
 }
+const navigationListeners = new Set<(href: string) => void>();
+const pendingNavigation: string[] = [];
+ipcRenderer.on('desktop:navigate', (_event, href: string) => {
+  if (navigationListeners.size) navigationListeners.forEach(callback => callback(href));
+  else { pendingNavigation.push(href); if (pendingNavigation.length > 10) pendingNavigation.shift(); }
+});
 const bridge: DesktopBridge = {
   state: () => ipcRenderer.invoke('desktop:state'),
   preferences: patch => ipcRenderer.invoke('desktop:preferences', patch),
@@ -20,7 +26,11 @@ const bridge: DesktopBridge = {
   captureSources: () => ipcRenderer.invoke('desktop:capture-sources'),
   chooseCapture: id => ipcRenderer.invoke('desktop:capture-choose', id),
   onState: callback => subscribe<DesktopState>('desktop:state-changed', callback),
-  onNavigate: callback => subscribe<string>('desktop:navigate', callback),
+  onNavigate: callback => {
+    navigationListeners.add(callback);
+    pendingNavigation.splice(0).forEach(callback);
+    return () => { navigationListeners.delete(callback); };
+  },
   onSettings: callback => subscribe<undefined>('desktop:settings', callback),
 };
 contextBridge.exposeInMainWorld('meldiqDesktop', Object.freeze(bridge));

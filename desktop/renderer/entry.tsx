@@ -34,7 +34,12 @@ function DesktopApp() {
     const stopSettings = bridge.onSettings(() => setSettings(true));
     const stopNavigation = bridge.onNavigate(href => {
       if (href === '__resume') window.dispatchEvent(new Event('online'));
-      else if (href.startsWith('/')) go(href);
+      else if (href.startsWith('/')) {
+        go(href);
+        capturePendingInvite(); capturePendingMessage(); capturePendingTemplate(); captureReferral();
+        window.dispatchEvent(new Event('meldiq:route'));
+        window.dispatchEvent(new Event('meldiq:desktop-pending-link'));
+      }
     });
     void Promise.all([startConfig(), installLegacyCurves(), bridge.state().then(updateState)]).then(() => { setReady(true); void bridge.setBusy(false); }, e => setError(e instanceof Error ? e.message : 'Meldiq could not start.'));
     const key = (e: KeyboardEvent) => { if ((e.ctrlKey || e.metaKey) && e.key === ',') { e.preventDefault(); setSettings(true); } };

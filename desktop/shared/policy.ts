@@ -29,7 +29,7 @@ export function isLocalPage(raw: string): boolean {
   } catch { return false; }
 }
 export function isAppPath(path: string): boolean {
-  return path === '/' || /^\/(home|dms|friends|activity|later|discover|settings|workspace|oauth|lobby|invite|m|template|ref)(\/[A-Za-z0-9_%@.-]+)*\/?$/.test(path) && path.length <= 600;
+  return path === '/' || /^\/(home|dms|friends|activity|later|discover|settings|workspace|oauth|lobby|invite|join|m|template|ref)(\/[A-Za-z0-9_%@.-]+)*\/?$/.test(path) && path.length <= 600;
 }
 export function externalUrl(raw: unknown): string | null {
   if (typeof raw !== 'string' || raw.length > 4096 || [...raw].some(c => c.charCodeAt(0) <= 32 || c.charCodeAt(0) === 127)) return null;
@@ -53,7 +53,11 @@ export function parseDeepLink(raw: unknown): DeepLink | null {
       if (!/^[\w-]{43}$/.test(id) || (receipt !== null && !/^[\w-]{43}$/.test(receipt)) || (error !== null && !['cancelled', 'verification_failed'].includes(error)) || Boolean(receipt) === Boolean(error)) return null;
       return { kind: 'social', id, receipt, error };
     }
-    const href = `/${u.hostname}${u.pathname}`.replace(/\/$/, '');
+    let href = `/${u.hostname}${u.pathname}`.replace(/\/$/, '');
+    if (u.hostname === 'invite') {
+      if (!/^\/[A-Za-z0-9-]{4,40}$/.test(u.pathname)) return null;
+      href = `/join${u.pathname}`;
+    }
     if (!isAppPath(href) || u.hash || u.search || /%2f|%5c|%2e/i.test(href)) return null;
     return { kind: 'navigate', href };
   } catch { return null; }
