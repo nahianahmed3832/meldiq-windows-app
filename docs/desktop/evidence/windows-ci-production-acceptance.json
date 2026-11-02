@@ -1,0 +1,145 @@
+{
+  "runId": 41545082290,
+  "url": "https://github.com/nahianahmed3832/meldiq-windows-app/actions/runs/41545082290",
+  "sourceCommit": "62166625c11a11a6e04d84237ef4cd8960a3a3b2",
+  "conclusion": "success",
+  "updatedAt": "2026-11-02T23:29:21Z",
+  "steps": [
+    {
+      "name": "Set up job",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run npm ci",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run npm run lint",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run npm run typecheck",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run npm test",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run npm run test:acceptance-config",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run npm run matrix:check",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Check fail-closed signature policy",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run npm run test:web",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run npm run verify:snapshot",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run npm run build",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run npm run test:security",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run npm run test:smoke",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Package standalone unsigned development installer",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Record development artifact checksums",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Inspect packaged application dependencies and secrets",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Record fresh audit and exact packaged dependency exposure",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Install, launch and uninstall the development installer",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Verify public production contracts from Windows Electron",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Run actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Post Run actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "Complete job",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "dependencySummary": {
+    "packagedNodePackages": 16,
+    "findings": 29,
+    "findingsPresentAsNodePackages": [],
+    "findingsInRendererBundle": [
+      "firebase"
+    ],
+    "productionSecurityAccepted": false
+  },
+  "matchingAsarRendererBuildAssertion": "Passed in the required native CI step; complete inventories and binary checksums are in the Actions artifact",
+  "evidenceSource": "GitHub Actions run metadata and native process logs; new installer was not downloaded locally. Original preview was locally verified separately."
+}

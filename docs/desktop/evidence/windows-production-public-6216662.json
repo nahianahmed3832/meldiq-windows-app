@@ -1,0 +1,52 @@
+{
+  "checkedAt": "2026-11-02T23:29:06.419Z",
+  "scope": "Signed-out desktop public API and unauthenticated WebSocket handshake only",
+  "platform": "win32",
+  "authVerified": false,
+  "productionAccepted": false,
+  "build": {
+    "version": "0.1.0",
+    "commit": "62166625c11a11a6e04d84237ef4cd8960a3a3b2",
+    "timestamp": "2026-11-02T23:27:09.221Z",
+    "channel": "stable",
+    "distribution": "development"
+  },
+  "probes": [
+    {
+      "route": "/v1/server-info",
+      "status": 200,
+      "info": {
+        "version": "0.76.1",
+        "api": 2,
+        "calling": true
+      }
+    },
+    {
+      "route": "/v2/auth/social/config",
+      "status": 200,
+      "info": {
+        "providers": [
+          "google",
+          "discord"
+        ],
+        "authorizeOrigin": "https://web.meldiq.app"
+      }
+    },
+    {
+      "route": "/v2/billing/plans",
+      "status": 200,
+      "info": {
+        "available": true,
+        "mode": "live"
+      }
+    },
+    {
+      "route": "/v2/billing/promotions/preference",
+      "status": 401
+    }
+  ],
+  "websocket": {
+    "opened": true,
+    "authenticated": false
+  }
+}

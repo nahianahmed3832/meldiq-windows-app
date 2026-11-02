@@ -2,7 +2,7 @@
 
 Locally packaged Meldiq client for Windows x64, built with Electron, React and TypeScript. Owned and authored by MD.NAHIAN AHMED. Repository: [nahianahmed3832/meldiq-windows-app](https://github.com/nahianahmed3832/meldiq-windows-app).
 
-**Development preview. Not approved for stable release.** The existing client source is reused, including messaging, communities, media, encrypted calls, Plus/Spark/gifts, profiles and customization. Source inclusion does not certify authenticated desktop parity. Signing, live backend/provider verification, versioned upgrade/signed-update acceptance and physical hardware benchmarks remain required. Native Windows CI install/launch/uninstall passed; see the test report.
+**Development preview. Not approved for stable release.** The existing client source is reused, including messaging, communities, media, encrypted calls, Plus/Spark/gifts, profiles and customization. Source inclusion does not certify authenticated desktop parity. Signing, authenticated backend/provider verification, versioned upgrade/signed-update acceptance and physical hardware benchmarks remain required. Native Windows CI install/launch/uninstall passed; see the test report.
 
 ```sh
 npm ci
@@ -34,3 +34,5 @@ See [architecture audit](docs/desktop/ARCHITECTURE_AUDIT.md), [feature inventory
 The [private unsigned development preview](https://github.com/nahianahmed3832/meldiq-windows-app/releases) contains the 117.58 MiB installer, checksums, build facts and native Windows install evidence. It is a draft; production signing, complete feature acceptance, versioned upgrades and physical hardware benchmarks remain pending. See [the implementation report](docs/desktop/IMPLEMENTATION_REPORT.md).
 
 Production acceptance configuration, dedicated QA provisioning and remaining gates are documented in [the acceptance setup](docs/desktop/PRODUCTION_ACCEPTANCE_SETUP.md). The owner selected website distribution; [the website handoff guide](docs/desktop/WEBSITE_DISTRIBUTION.md) explains the preserved unsigned internal preview and how to obtain trusted publisher signing. Nothing has been published to the website.
+
+Latest [production validation report](docs/desktop/PRODUCTION_VALIDATION_REPORT.md): native Windows CI passed all current regression, inventory, installer and public API/WSS checks. Authenticated workflows, real media/calls, sandbox payments, signing/upgrades and physical hardware acceptance remain blocked.

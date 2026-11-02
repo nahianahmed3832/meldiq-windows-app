@@ -1,6 +1,6 @@
 # Backend compatibility report — 2026-11-03
 
-Production API 0.76.1 is reachable from the existing macOS Electron build. This is public contract/handshake evidence, not authenticated production acceptance.
+Production API 0.76.1 is reachable from actual macOS and native Windows Electron builds. This is public contract/handshake evidence, not authenticated production acceptance.
 
 | Investigation | Actual evidence | Result / remediation |
 |---|---|---|
@@ -17,4 +17,4 @@ Production API 0.76.1 is reachable from the existing macOS Electron build. This 
 
 Read-only infrastructure inspection did not deploy or change backend configuration, databases, credentials, allowlists, DNS, AWS or providers. Existing deployment docs can be historical: the inspected 0.76.1 runtime supersedes older 0.69/0.72/0.74 reports. Do not use an old runtime/CLI to mutate current production data.
 
-Evidence: [Electron](evidence/production-desktop-public.json), [Node contracts](evidence/production-public-contracts.json), [urllib failures](evidence/production-urllib-public.json), [infrastructure](evidence/production-infrastructure.json), [isolated integration rerun](evidence/integration-revalidation-20261103.json).
+Evidence: [Windows Electron](evidence/windows-production-public-6216662.json), [Electron](evidence/production-desktop-public.json), [Node contracts](evidence/production-public-contracts.json), [urllib failures](evidence/production-urllib-public.json), [infrastructure](evidence/production-infrastructure.json), [isolated integration rerun](evidence/integration-revalidation-20261103.json).

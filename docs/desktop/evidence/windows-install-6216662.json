@@ -1,0 +1,19 @@
+{
+  "osVersion": "Microsoft Windows NT 10.0.26100.0",
+  "platform": "Windows CI virtual machine",
+  "installerBytes": 124222631,
+  "installer": "Meldiq-Setup-0.1.0-x64-UNSIGNED-DEV.exe",
+  "pending": [
+    "versioned upgrade",
+    "signed update",
+    "physical hardware benchmarks",
+    "complete authenticated Windows feature acceptance"
+  ],
+  "signature": "Unsigned development build; production signing is not configured",
+  "passed": [
+    "actual silent NSIS installation",
+    "installed native application window launch",
+    "actual silent uninstall"
+  ],
+  "sourceCommit": "62166625c11a11a6e04d84237ef4cd8960a3a3b2"
+}

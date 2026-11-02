@@ -1,0 +1,12 @@
+{
+  "id": 13188098584,
+  "name": "Meldiq-Windows-x64-UNSIGNED-DEV",
+  "size_in_bytes": 124539137,
+  "digest": "sha256:14679e6fd7510eb3a477d7170a260b51d1de4b3d8c66c96d26aa39cb6716a849",
+  "created_at": "2026-11-02T23:29:15Z",
+  "expires_at": "2026-11-16T23:29:10Z",
+  "expired": false,
+  "sourceCommit": "62166625c11a11a6e04d84237ef4cd8960a3a3b2",
+  "runUrl": "https://github.com/nahianahmed3832/meldiq-windows-app/actions/runs/41545082290",
+  "scope": "Separate latest unsigned validation candidate, not the preserved preview or website publication. Digest identifies the complete GitHub artifact ZIP; installer checksums are inside its build-manifest/checksums files."
+}
