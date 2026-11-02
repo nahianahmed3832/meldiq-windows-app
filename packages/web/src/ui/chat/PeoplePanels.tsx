@@ -1,0 +1,319 @@
+import { CircleUserRound, Copy, IdCard, MessageSquare, UserRound, UsersRound, X } from "lucide-react";
+import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
+import type { Conversation, Member } from "../../api/schemas";
+import { useEngine, useOrbit } from "../../application/orbit";
+import { setPrefs, usePrefs } from "../../application/prefs";
+import { navigate, type Route } from "../../application/router";
+import { startDirect, userProfile } from "../../sync/account";
+import { presenceWords } from "../../sync/social";
+import { shownName } from "../../sync/communityParity";
+import { useCommunityMembers } from "../community/useCommunityMembers";
+import { nameTone, toneOf } from "../components/Avatar";
+import { contextMenuProps, Menu, type MenuEntry, useMenu } from "../components/Overlay";
+import { BotProfileDialog } from "../people/BotProfileDialog";
+import { LookAvatar, LookName, StyledName } from "../people/NameStyle";
+import { StyledAvatar } from "../people/ProfileStyle";
+import { themeBackground, themeColorsOf } from "../people/profileTheme";
+import { dmPeer, relative } from "../format";
+import { openProfile } from "../people/ProfileDialog";
+import { useMembers } from "./ConversationDetails";
+import { isHere, memberListGroups, roleNameColors, withCommunityBots } from "./memberListRules";
+import { useT } from "../../i18n";
+import { CommunityOwnerBadge } from "../components/CommunityOwnerBadge";
+import { IdentityGlyph } from "../components/IdentityGlyph";
+import { ProfilePins } from "../people/ProfilePins";
+
+/** Wide enough to keep a member list or profile beside the messages; narrower screens open them over the messages. */
+const WIDE = "(min-width: 1241px)";
+export function useWideLayout(): boolean {
+  return useSyncExternalStore(
+    (l) => {
+      const q = matchMedia(WIDE);
+      q.addEventListener("change", l);
+      return () => q.removeEventListener("change", l);
+    },
+    () => matchMedia(WIDE).matches,
+    () => false,
+  );
+}
+
+/** Whether a conversation can show people beside it: not a voice room, whose page already shows who's in it. */
+export const hasPeoplePanel = (c: Pick<Conversation, "voice">): boolean => !c.voice;
+
+/** Whether the member list (channels, groups) or profile (DMs) is beside this conversation now. */
+export function usePeopleShown(c: Pick<Conversation, "type" | "voice">, route: Route): boolean {
+  const prefs = usePrefs();
+  const wide = useWideLayout();
+  if (!hasPeoplePanel(c)) return false;
+  if (route.panel === "members") return true;
+  return !route.panel && wide && (c.type === "DM" ? prefs.dmProfile : prefs.memberList);
+}
+
+/** A channel's or group's members beside the messages, as Discord lists them: by role while here, then offline. */
+export function MemberListPanel({ c, onClose }: { c: Conversation; onClose: () => void }) {
+  const t = useT();
+  const users = useOrbit((s) => s.users);
+  const { members, error } = useMembers(c.id, c.memberCount);
+  // Guests and roles without the member directory see the list without role groups and nicknames.
+  const { roles, nicknames, bots } = useCommunityMembers(c.type === "CHANNEL" ? c.orgId : null);
+  // The store has the latest presence, names and photos (live updates); the member list has everyone.
+  const people = useMemo(
+    () =>
+      (members ? withCommunityBots<Member>(members, bots) : []).map((m) => {
+        const u = users[m.id];
+        return {
+          ...m,
+          displayName: shownName(u?.displayName ?? m.displayName, nicknames.get(m.id)),
+          presence: u?.presence ?? m.presence,
+          online: u?.online ?? m.online,
+          photoRev: u?.photoRev ?? m.photoRev,
+          bot: m.bot ?? (u?.bot === true ? (true as const) : undefined),
+        };
+      }),
+    [members, users, nicknames, bots],
+  );
+  const groups = useMemo(() => memberListGroups(people, (id) => roles.get(id)), [people, roles]);
+
+  return (
+    <aside className="panel member-list" aria-label="Members">
+      <div className="member-list-head">
+        <span className="grow">{t("people_members")}</span>
+        <button className="icon-btn" onClick={onClose} aria-label={t("people_hide_members")}>
+          <X size={16} />
+        </button>
+      </div>
+      <div className="member-list-body scroll">
+        {error && <p className="faint member-list-note">{error}</p>}
+        {!members && !error && <div className="skeleton" style={{ height: 40, margin: "8px 12px" }} aria-busy="true" />}
+        {groups.map((g) => (
+          <section key={g.key} aria-label={`${g.label}, ${g.members.length}`}>
+            <h3 className="member-group" style={g.color ? { color: g.color } : undefined}>
+              {(g.key === "admin" || g.key === "bots" || g.key.startsWith("role:")) && (
+                <IdentityGlyph kind={g.key === "bots" ? "bot" : g.members.some((m) => m.orgRole === "OWNER") ? "owner" : "role"} size={13} />
+              )}
+              {g.key === "online" ? t("people_online") : g.key === "offline" ? t("people_offline") : g.key === "admin" ? t("people_admin") : g.key === "bots" ? t("people_bots") : g.label} —{" "}
+              {g.members.length}
+            </h3>
+            {g.members.map((m) => (
+              <MemberRow key={m.id} m={m} away={!m.bot && !isHere(m)} colors={roleNameColors(roles.get(m.id))} orgId={c.type === "CHANNEL" ? c.orgId : null} />
+            ))}
+          </section>
+        ))}
+      </div>
+    </aside>
+  );
+}
+
+/** One person in the member list: their profile on click; a right-click (or the Menu key) opens their menu. */
+function MemberRow({ m, away, colors, orgId }: { m: Member; away: boolean; colors: string[] | null; orgId: string | null }) {
+  const engine = useEngine();
+  const me = useOrbit((s) => s.me?.userId);
+  const builder = usePrefs().builderMode;
+  const menu = useMenu();
+  const [botOpen, setBotOpen] = useState(false);
+  const status = [m.statusEmoji, m.statusText].filter(Boolean).join(" ");
+  const owner = !!orgId && m.orgRole === "OWNER";
+  const entries: MenuEntry[] = [
+    {
+      label: m.bot ? "View bot details" : "View profile",
+      icon: <UserRound size={16} />,
+      onSelect: () => (m.bot ? setBotOpen(true) : openProfile(m.id, m.displayName, { orgId, anchor: menu.anchor })),
+    },
+    ...(m.id !== me && !m.bot
+      ? [
+          {
+            label: `Message ${m.displayName}`,
+            icon: <MessageSquare size={16} />,
+            onSelect: () =>
+              void startDirect(engine, m.id)
+                .then((id) => navigate({ section: "dms", conversationId: id }))
+                .catch(() => engine.notice("error", "Couldn't open the conversation.")),
+          },
+        ]
+      : []),
+    {
+      label: "Copy username",
+      icon: <Copy size={16} />,
+      onSelect: () => {
+        void navigator.clipboard?.writeText(`@${m.username}`).catch(() => undefined);
+        engine.notice("info", "Username copied.");
+      },
+    },
+    ...(builder
+      ? [
+          {
+            label: "Copy user ID",
+            icon: <IdCard size={16} />,
+            onSelect: () => {
+              void navigator.clipboard?.writeText(m.id).catch(() => undefined);
+              engine.notice("info", "User ID copied.");
+            },
+          },
+        ]
+      : []),
+  ];
+  return (
+    <>
+      <button
+        className={`member-row${away ? " away" : ""}`}
+        onClick={(e) => (m.bot ? setBotOpen(true) : openProfile(m.id, m.displayName, { orgId, anchor: e.currentTarget }))}
+        aria-label={`${m.displayName}${owner ? ", community owner" : ""}${m.bot ? ", bot" : ""}${!isHere(m) ? ", offline" : ""}: ${m.bot ? "bot details" : "profile"}`}
+        aria-haspopup="menu"
+        {...contextMenuProps(menu.openAt)}
+      >
+        <StyledAvatar
+          userId={m.id}
+          name={m.displayName}
+          colorIndex={m.avatarColor}
+          photoRev={m.photoRev}
+          media={m.avatarMedia}
+          decoration={m.profileStyle?.decoration ?? null}
+          collectibles={m.profileStyle?.collectibles}
+          size={40}
+          online={m.bot ? isHere(m) : away ? null : true}
+          presence={m.presence}
+        />
+        <span className="lines">
+          <span className="member-name">
+            <StyledName
+              name={m.displayName}
+              style={m.profileStyle}
+              tag={m.tag}
+              mojo={m.mojo}
+              bot={m.bot}
+              roleColor={colors?.[0] ?? null}
+              roleColor2={colors?.[1] ?? null}
+              toneClass={nameTone(m.avatarColor)}
+              className="ellipsis"
+            />
+            {owner && <CommunityOwnerBadge />}
+          </span>
+          {status && <small className="ellipsis">{status}</small>}
+        </span>
+      </button>
+      {menu.anchor && <Menu anchor={menu.anchor} point={menu.point} label={m.displayName} onClose={menu.close} entries={entries} />}
+      {botOpen && <BotProfileDialog bot={m} onClose={() => setBotOpen(false)} />}
+    </>
+  );
+}
+
+type Profile = Awaited<ReturnType<typeof userProfile>>;
+
+/** The other person in a direct message beside the messages (Discord's user profile): photo, names, status, presence. */
+export function ProfilePanel({ c, onClose }: { c: Conversation; onClose: () => void }) {
+  const engine = useEngine();
+  const t = useT();
+  const me = useOrbit((s) => s.me?.userId ?? "");
+  const peer = dmPeer(c, me);
+  const known = useOrbit((s) => (peer ? s.users[peer.id] : undefined));
+  const peerId = peer?.id ?? null;
+  const profilesRev = useOrbit((s) => s.profilesRev);
+  const [profile, setProfile] = useState<Profile | null>(null);
+  useEffect(() => {
+    if (!peerId) return;
+    let alive = true;
+    userProfile(engine, peerId)
+      .then((p) => alive && setProfile(p))
+      // Shown from what this browser already knows about them instead.
+      .catch(() => undefined);
+    return () => {
+      alive = false;
+    };
+  }, [engine, peerId, profilesRev]);
+  if (!peer) return null;
+  const name = known?.displayName ?? profile?.displayName ?? peer.displayName;
+  const presence = known?.presence ?? profile?.presence ?? null;
+  const online = known?.online ?? profile?.online ?? null;
+  const words = presenceWords(presence, online);
+  const status = [known?.statusEmoji ?? profile?.statusEmoji, known?.statusText ?? profile?.statusText].filter(Boolean).join(" ");
+  const pronouns = known?.pronouns ?? profile?.pronouns;
+  const color = known?.avatarColor ?? peer.avatarColor;
+  const theme = themeColorsOf(known?.profileStyle ?? profile?.profileStyle ?? null);
+
+  return (
+    <aside className="panel profile-panel" aria-label={`${name}'s profile`}>
+      <div className="profile-panel-scroll scroll">
+        <div className="profile-banner" style={{ background: theme ? themeBackground(theme) : toneOf(color) }}>
+          <button className="icon-btn" onClick={onClose} aria-label={t("people_hide_profile")}>
+            <X size={16} />
+          </button>
+        </div>
+        <div className="profile-panel-body">
+          <div className="profile-panel-avatar">
+            <LookAvatar userId={peer.id} name={name} colorIndex={color} photoRev={known?.photoRev ?? profile?.photoRev} size={84} online={online} presence={presence} />
+          </div>
+          <h2 className="profile-panel-name">
+            <LookName userId={peer.id} name={name} withMarks />
+          </h2>
+          <p className="profile-handle">
+            @{known?.username ?? peer.username}
+            {pronouns ? ` · ${pronouns}` : ""}
+          </p>
+          {status && <p className="profile-status">{status}</p>}
+          {/* API 0.64.0: their pins (server docs/PROFILE_PINS.md). */}
+          {profile && <ProfilePins pins={profile.pins} />}
+          <div className="panel-card">
+            <div>
+              <dt>{words ? t("people_now") : t("people_last_seen")}</dt>
+              <dd>
+                {words ? (
+                  <span className="presence-line">
+                    <span className={`dot${presence === "idle" ? " idle" : presence === "dnd" ? " dnd" : ""}`} aria-hidden />
+                    {words}
+                  </span>
+                ) : profile?.lastSeenAt ? (
+                  relative(profile.lastSeenAt)
+                ) : (
+                  t("people_not_shared")
+                )}
+              </dd>
+            </div>
+          </div>
+          <button className="btn btn-secondary profile-panel-full" onClick={() => openProfile(peer.id, name)}>
+            {t("people_full_profile")}
+          </button>
+        </div>
+      </div>
+    </aside>
+  );
+}
+
+/** The member list for channels and groups, the profile for direct messages. */
+export function PeoplePanel({ c, onClose }: { c: Conversation; onClose: () => void }) {
+  return c.type === "DM" ? <ProfilePanel c={c} onClose={onClose} /> : <MemberListPanel c={c} onClose={onClose} />;
+}
+
+const prefKey = (c: Pick<Conversation, "type">): "dmProfile" | "memberList" => (c.type === "DM" ? "dmProfile" : "memberList");
+
+/** The member list or profile kept beside the messages on wide screens, when no other side panel is open. */
+export function DockedPeoplePanel({ conversationId, route }: { conversationId: string; route: Route }) {
+  const c = useOrbit((s) => s.conversations[conversationId]);
+  const shown = usePeopleShown(c ?? { type: "DM", voice: true }, route);
+  if (!c || !shown || route.panel) return null;
+  return <PeoplePanel key={c.id} c={c} onClose={() => setPrefs({ [prefKey(c)]: false })} />;
+}
+
+/**
+ * The header button that shows or hides the member list (channels, groups) or the profile (DMs). On wide screens the
+ * choice is remembered for every conversation of that kind; on narrower ones it opens the panel over the messages.
+ */
+export function PeopleToggle({ c, route }: { c: Conversation; route: Route }) {
+  const wide = useWideLayout();
+  const shown = usePeopleShown(c, route);
+  const t = useT();
+  if (!hasPeoplePanel(c)) return null;
+  const dm = c.type === "DM";
+  const label = t(dm ? (shown ? "people_hide_profile" : "people_show_profile") : shown ? "people_hide_members" : "people_show_members");
+  const toggle = () => {
+    const at = { section: route.section, conversationId: c.id };
+    if (wide) {
+      setPrefs({ [prefKey(c)]: !shown });
+      if (route.panel) navigate({ ...at, panel: null });
+    } else navigate({ ...at, panel: shown ? null : "members" });
+  };
+  return (
+    <button className="icon-btn hide-sm" aria-pressed={shown} onClick={toggle} aria-label={label} title={label}>
+      {dm ? <CircleUserRound size={19} /> : <UsersRound size={19} />}
+    </button>
+  );
+}

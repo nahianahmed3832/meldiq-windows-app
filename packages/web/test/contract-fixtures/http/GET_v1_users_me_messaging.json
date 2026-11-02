@@ -1,0 +1,6 @@
+{
+  "dmPolicy": "everyone",
+  "requestPolicy": "everyone",
+  "groupAddPolicy": "friends",
+  "suggestable": true
+}

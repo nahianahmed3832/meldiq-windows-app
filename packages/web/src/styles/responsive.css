@@ -1,0 +1,344 @@
+/* ───────────────────────── bottom tabs (phones) ───────────────────────── */
+.tabbar {
+  display: none;
+}
+
+/* ───────────────────────── responsive ───────────────────────── */
+@media (max-width: 1240px) {
+  .panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 30;
+    box-shadow:
+      0 0 0 1px var(--panel-ring),
+      var(--shadow-lg);
+  }
+}
+@media (max-width: 960px) {
+  .sidebar {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 300px;
+    z-index: 40;
+    box-shadow: var(--shadow-lg);
+    transform: translateX(-104%);
+    transition: transform var(--t-std) var(--ease);
+  }
+  .topbar-title {
+    font-size: 20px;
+    max-width: none;
+  }
+  /* Tablets: search is a round button beside the others, so the page title keeps its room. */
+  .searchbox {
+    flex: 0 0 auto;
+    min-width: 0;
+    width: 44px;
+    padding: 0;
+    justify-content: center;
+  }
+  .searchbox span,
+  .searchbox .kbd {
+    display: none;
+  }
+  .sidebar.open {
+    transform: none;
+  }
+  .sidebar-scrim {
+    position: absolute;
+    inset: 0;
+    z-index: 35;
+    background: var(--scrim);
+  }
+  .topbar .menu-toggle {
+    display: inline-grid;
+  }
+  /* Phones and narrow tablets: a compact branded header (Meldling, name, the headline) above the form. */
+  .link-screen {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+  }
+  .link-hero {
+    padding: 20px 20px 22px;
+    gap: 14px;
+    grid-template-rows: none;
+  }
+  .link-hero h1 {
+    font-size: clamp(24px, 7vw, 32px);
+  }
+  .link-hero p {
+    font-size: 14px;
+  }
+  .hero-points,
+  .hero-foot {
+    display: none !important;
+  }
+  .link-main {
+    place-items: start center;
+    padding: 56px 16px 24px;
+  }
+  .link-card {
+    padding: 22px 18px;
+    box-shadow: none;
+  }
+  .settings {
+    grid-template-columns: 1fr;
+  }
+  .settings-nav {
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+    grid-auto-flow: column;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 10px;
+  }
+  .settings-nav h2 {
+    display: none;
+  }
+}
+@media (max-width: 640px), (max-width: 960px) and (max-height: 500px) and (pointer: coarse) {
+  /* Phones: one screen at a time, edge to edge; the panels lose their float but keep the frame's colours. */
+  .app {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) auto;
+    padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) 0 env(safe-area-inset-left, 0px);
+    column-gap: 0;
+  }
+  .rail {
+    display: none;
+    border-radius: 0;
+    box-shadow: none;
+    background: transparent;
+  }
+  .topbar {
+    height: 56px;
+  }
+  .body {
+    gap: 0;
+    border-radius: 0;
+  }
+  .body > .main,
+  .sidebar,
+  .panel {
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .body.phone-list .sidebar {
+    flex: 1 1 auto;
+    width: auto;
+  }
+  .topbar {
+    padding: 0 8px 0 12px;
+    gap: 6px;
+  }
+  .topbar-title {
+    font-size: 18px;
+    max-width: none;
+  }
+  .topbar-right .icon-btn {
+    width: 38px;
+    height: 38px;
+  }
+  .topbar::before {
+    content: "";
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+    border-radius: 7px;
+    background: url("/meldling-96.webp") center / cover;
+  }
+  .searchbox span,
+  .searchbox .kbd {
+    display: none;
+  }
+  .searchbox {
+    flex: 0 0 auto;
+    min-width: 0;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    justify-content: center;
+    margin: 0 0 0 auto;
+  }
+  .topbar-right .hide-sm,
+  .composer-row .hide-sm,
+  .conv-head .hide-sm,
+  .conv-title .hide-sm {
+    display: none;
+  }
+  .sidebar {
+    position: static;
+    width: auto;
+    transform: none;
+    box-shadow: none;
+    border-right: 0;
+  }
+  .sidebar-scrim,
+  .topbar .menu-toggle {
+    display: none;
+  }
+  .body.phone-main .sidebar {
+    display: none;
+  }
+  .body.phone-list > :not(.sidebar) {
+    display: none;
+  }
+  .conv-head .back {
+    display: inline-grid;
+  }
+  .conv-head {
+    padding: 8px 8px 8px 6px;
+  }
+  .msg {
+    grid-template-columns: 34px minmax(0, 1fr);
+    padding: 3px 12px;
+    column-gap: 10px;
+  }
+  .msg-actions {
+    right: 8px;
+  }
+  .composer-wrap {
+    padding: 0 10px 10px;
+  }
+  .composer-tools .hint {
+    display: none;
+  }
+  .composer-tools > :last-child {
+    margin-left: auto;
+  }
+  .panel {
+    width: 100%;
+  }
+  .view {
+    padding: 20px 16px 32px;
+  }
+  .settings-page {
+    padding: 20px 16px 40px;
+  }
+  .att-image,
+  .att-image img {
+    max-width: 100%;
+  }
+  .tabbar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-top: 1px solid var(--hairline);
+    background: var(--rail-panel, var(--surface));
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .tabbar button {
+    display: grid;
+    justify-items: center;
+    gap: 2px;
+    padding: 8px 0 6px;
+    color: var(--text-3);
+    font-size: 11px;
+    font-weight: 600;
+    position: relative;
+  }
+  .tabbar button[aria-current="page"] {
+    color: var(--text);
+  }
+  .tabbar button[aria-current="page"] svg {
+    color: var(--accent-text);
+  }
+  /* The tab you're on sits on a soft pill, as the rail's selection does on desktop. */
+  .tabbar button::before {
+    content: "";
+    position: absolute;
+    top: 4px;
+    left: 50%;
+    width: 52px;
+    height: 30px;
+    border-radius: var(--r-pill);
+    transform: translateX(-50%) scaleX(0.6);
+    opacity: 0;
+    background: var(--accent-soft);
+    transition:
+      transform var(--t-std) var(--ease),
+      opacity var(--t-std);
+    z-index: -1;
+  }
+  .tabbar button[aria-current="page"]::before {
+    transform: translateX(-50%);
+    opacity: 1;
+  }
+  .tabbar button {
+    isolation: isolate;
+  }
+  .tabbar .count {
+    position: absolute;
+    top: 3px;
+    left: calc(50% + 6px);
+    min-width: 18px;
+    height: 18px;
+    font-size: 10.5px;
+  }
+  .tabbar.hidden {
+    display: none;
+  }
+  .notices {
+    left: 16px;
+    bottom: 80px;
+  }
+  .link-card {
+    padding: 22px;
+  }
+  .code-box .code {
+    font-size: 22px;
+  }
+}
+
+/* Phones, after the Android app (brief v4 §18): Home is the community rail beside the channel panel; the lists and a
+   conversation carry their own headers, so the top bar steps aside there. */
+@media (max-width: 640px), (max-width: 960px) and (max-height: 500px) and (pointer: coarse) {
+  .app.phone-bare .topbar,
+  .topbar .me-btn {
+    display: none;
+  }
+  .app.phone-home {
+    grid-template-columns: 72px minmax(0, 1fr);
+  }
+  .app.phone-home .rail {
+    display: flex;
+    padding-top: 10px;
+  }
+  .app.phone-home .tabbar {
+    grid-column: 1 / -1;
+  }
+  .app.phone-home .rail-home,
+  .app.phone-home .rail-dms,
+  .app.phone-home .rail > .rail-sep {
+    display: none;
+  }
+  .app.phone-home .body {
+    border-radius: 20px 0 0 0;
+  }
+  .app.phone-home .body .sidebar {
+    border-radius: 20px 0 0 0;
+  }
+  /* Unread markers sit inside the row on phones, not on the screen's edge. */
+  .side-item.unread:not([aria-current="page"])::before {
+    left: 2px;
+  }
+}
+.tab-mascot {
+  width: 24px;
+  height: 24px;
+  border-radius: 7px;
+}
+
+/* The list header's own search and new-message buttons: phones only (Sidebar.tsx). */
+.side-head-phone {
+  display: none;
+}
+@media (max-width: 640px), (max-width: 960px) and (max-height: 500px) and (pointer: coarse) {
+  .side-head-phone {
+    display: inline-flex;
+    flex-shrink: 0;
+    gap: 2px;
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "invites": [
+    {
+      "id": "inv_d2oRkU_kNu_OH1rPbUtnoQ",
+      "hint": "9VNA",
+      "role": "MEMBER",
+      "branchId": null,
+      "teamId": null,
+      "roleId": null,
+      "maxUses": 1,
+      "uses": 0,
+      "createdAt": 1793308647209,
+      "expiresAt": 1793567847209,
+      "neverExpires": false,
+      "noUseLimit": false,
+      "revokedAt": null,
+      "active": true,
+      "status": "active",
+      "createdBy": "u_cvp6q8CD0bdsD-WAfg-FqA",
+      "createdByName": "csowner"
+    },
+    {
+      "id": "inv_OACF6GXKRFnID2NFztoo9Q",
+      "hint": "F2XH",
+      "role": "MEMBER",
+      "branchId": null,
+      "teamId": null,
+      "roleId": null,
+      "maxUses": 1000000000,
+      "uses": 0,
+      "createdAt": 1793308647207,
+      "expiresAt": 253402214400000,
+      "neverExpires": true,
+      "noUseLimit": true,
+      "revokedAt": null,
+      "active": true,
+      "status": "active",
+      "createdBy": "u_cvp6q8CD0bdsD-WAfg-FqA",
+      "createdByName": "csowner"
+    },
+    {
+      "id": "inv_Imwy7i9Bu13JPRb_NXKeyg",
+      "hint": "GNS5",
+      "role": "MEMBER",
+      "branchId": null,
+      "teamId": null,
+      "roleId": null,
+      "maxUses": 50,
+      "uses": 2,
+      "createdAt": 1793308647186,
+      "expiresAt": 1793567847186,
+      "neverExpires": false,
+      "noUseLimit": false,
+      "revokedAt": null,
+      "active": true,
+      "status": "active",
+      "createdBy": "u_cvp6q8CD0bdsD-WAfg-FqA",
+      "createdByName": "csowner"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "origin": "https://web.meldiq.app",
+  "apiOrigin": "https://web.meldiq.app",
+  "websocketUrl": "wss://web.meldiq.app/v1/ws",
+  "connectOrigins": [],
+  "updateOrigin": "https://updates.meldiq.app",
+  "publisherName": null,
+  "releaseApproved": false
+}

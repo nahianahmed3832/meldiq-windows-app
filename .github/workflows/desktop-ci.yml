@@ -1,0 +1,42 @@
+name: Desktop checks and Windows development installer
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  checks:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run test:web
+      - run: npm run verify:snapshot
+      - run: npm run build
+      - run: npm run test:security
+      - run: npm run test:smoke
+      - name: Package standalone unsigned development installer
+        run: npx electron-builder --config desktop/builder.dev.cjs --win nsis --x64 --publish never
+      - name: Record development artifact checksums
+        run: node scripts/release-manifest.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Meldiq-Windows-x64-UNSIGNED-DEV
+          path: |
+            release/*.exe
+            release/*.blockmap
+            release/checksums.sha256
+            release/build-manifest.json
+            test-results/
+          if-no-files-found: warn
+          retention-days: 14

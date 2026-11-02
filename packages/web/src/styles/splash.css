@@ -1,0 +1,93 @@
+/*
+ * The launch screen (docs/MELDIQ_WEB_LAUNCH.md): the Meldling logo on its own deep teal (brand/meldling.png;
+ * scripts/render-brand-assets.mjs TEAL) from the first paint, before any script runs. A slow breath only where motion is
+ * welcome.
+ */
+#splash {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  background: #045349;
+  transition: opacity 220ms ease;
+}
+#splash.done {
+  opacity: 0;
+  pointer-events: none;
+}
+#splash > img {
+  width: min(62vmin, 320px);
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: contain;
+}
+@media (prefers-reduced-motion: no-preference) {
+  #splash > img {
+    animation: splash-breathe 2.4s ease-in-out infinite;
+  }
+}
+@keyframes splash-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.04);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  #splash {
+    transition: none;
+  }
+}
+
+/*
+ * A browser signed in here last time (public/boot.js sets data-boot="app" before the first paint): the app's own frame
+ * with skeletons instead of Meldling, from the first paint until the real frame is drawn on what this browser holds.
+ */
+#splash > .boot-frame {
+  display: none;
+}
+:root[data-boot="app"] #splash {
+  display: block;
+  background: var(--rail);
+}
+:root[data-boot="app"] #splash > img {
+  display: none;
+}
+:root[data-boot="app"] #splash > .boot-frame {
+  display: grid;
+}
+.boot-frame .side-scroll {
+  display: grid;
+  align-content: start;
+  gap: 14px;
+  padding-top: 18px;
+}
+.boot-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 6px;
+}
+.boot-messages {
+  display: grid;
+  align-content: end;
+  gap: 18px;
+  height: 100%;
+  padding: 18px;
+}
+.boot-line {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.boot-line > div {
+  display: grid;
+  flex: 1;
+  gap: 6px;
+}
+.boot-frame .skeleton {
+  display: block;
+}

@@ -1,0 +1,57 @@
+name: Signed Windows release candidate
+on:
+  workflow_dispatch:
+    inputs:
+      channel:
+        type: choice
+        options: [beta, canary, stable]
+        default: beta
+        required: true
+permissions:
+  contents: read
+jobs:
+  package:
+    environment: desktop-release
+    runs-on: windows-latest
+    env:
+      BUILD_DISTRIBUTION: direct
+      BUILD_CHANNEL: ${{ inputs.channel }}
+      MELDIQ_RELEASE_APPROVED: ${{ vars.MELDIQ_RELEASE_APPROVED }}
+      MELDIQ_SIGNING_PUBLISHER: ${{ vars.MELDIQ_SIGNING_PUBLISHER }}
+      CSC_LINK: ${{ secrets.WINDOWS_CSC_LINK }}
+      CSC_KEY_PASSWORD: ${{ secrets.WINDOWS_CSC_KEY_PASSWORD }}
+      MELDIQ_RELEASE_ACCEPTANCE_JSON: ${{ secrets.MELDIQ_RELEASE_ACCEPTANCE_JSON }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Load external acceptance evidence for this exact commit
+        run: node -e "const fs=require('fs'); if(!process.env.MELDIQ_RELEASE_ACCEPTANCE_JSON) throw Error('Missing acceptance evidence'); fs.writeFileSync('docs/desktop/RELEASE_ACCEPTANCE.json', process.env.MELDIQ_RELEASE_ACCEPTANCE_JSON);"
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run test:web
+      - run: npm run verify:snapshot
+      - run: npm run package:win
+      - name: Verify Authenticode on every executable
+        shell: pwsh
+        run: |
+          Get-ChildItem release -Recurse -Filter *.exe | ForEach-Object {
+            $signature = Get-AuthenticodeSignature $_.FullName
+            if ($signature.Status -ne 'Valid') { throw "Invalid Authenticode signature: $($_.Name)" }
+            if ($signature.SignerCertificate.Subject -notlike "*CN=$env:MELDIQ_SIGNING_PUBLISHER*") { throw 'Unexpected signing subject' }
+          }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Meldiq-signed-${{ inputs.channel }}
+          path: |
+            release/*.exe
+            release/*.blockmap
+            release/*.yml
+            release/checksums.sha256
+            release/build-manifest.json
+          retention-days: 30
+      # Promotion to S3/CDN is a separate authorized action after install/upgrade/update acceptance.

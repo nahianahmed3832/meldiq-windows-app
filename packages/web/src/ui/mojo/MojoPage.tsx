@@ -1,0 +1,297 @@
+import { Crown, Gem, Gift, HeartHandshake, Loader2, Sparkles } from "lucide-react";
+import { MojoBanner } from "./MojoBanner";
+import { useEffect, useState } from "react";
+import type { PlanPerks } from "../../api/mojoSchemas";
+import { useEngine, useOrbit } from "../../application/orbit";
+import { relative } from "../format";
+import { GiftDialog, GiftsReceived } from "./MojoGifts";
+import { money, planPrice, screenLabel, size } from "./mojoFormat";
+import { CompareTable, type PlanAction, PlanCards, PlusPerks } from "./MojoPlans";
+import { selectCheckout } from "../billing/checkoutDraft";
+import { navigate } from "../../application/router";
+import { MojoBadgeMark } from "./MojoBadge";
+
+/** Where a payment page sends the person back (?checkout= or ?gift=), read once. */
+function returnedFrom(): "checkout" | "gift" | "canceled" | null {
+  const q = new URLSearchParams(window.location.search);
+  if (q.get("checkout") === "success") return "checkout";
+  if (q.get("gift") === "success") return "gift";
+  if (q.get("checkout") === "canceled" || q.get("gift") === "canceled") return "canceled";
+  return null;
+}
+
+/**
+ * Settings › Meldiq Plus (server docs/MOJO.md): the plans, what each gives, Sparks, gifts and the badge. Every number
+ * comes from the server's catalog, and every button asks the server, which asks the payment provider: nothing here
+ * grants anything.
+ */
+export function MojoPage() {
+  const engine = useEngine();
+  const mojo = useOrbit((s) => s.mojo);
+  const online = useOrbit((s) => s.connection === "online");
+  const [busy, setBusy] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [gifting, setGifting] = useState(false);
+  const [confirming, setConfirming] = useState<"checkout" | "gift" | null>(null);
+
+  useEffect(() => {
+    const back = returnedFrom();
+    if (back) {
+      // The query is the payment page's; the plan itself arrives with the provider's signed event.
+      window.history.replaceState(window.history.state, "", window.location.pathname);
+      if (back === "canceled") engine.notice("info", "Checkout was closed. Check billing for the latest payment status.");
+      else {
+        setConfirming(back);
+        void engine.mojo.afterReturn().finally(() => setConfirming(null));
+      }
+    } else void engine.mojo.refresh();
+  }, [engine]);
+
+  const open = async (what: string, start: () => Promise<string | null>) => {
+    setBusy(what);
+    setError(null);
+    try {
+      const url = await start();
+      if (url) window.location.assign(url);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Couldn't open the payment page. Nothing was charged.");
+    } finally {
+      setBusy(null);
+    }
+  };
+
+  const { catalog, me, billing } = mojo;
+  if (!catalog || !me) {
+    return (
+      <>
+        <h1>Meldiq Plus</h1>
+        {mojo.error ? (
+          <div className="banner danger" role="alert">
+            <span className="grow">{mojo.error}</span>
+            <button className="btn btn-secondary btn-sm" onClick={() => void engine.mojo.refresh()}>
+              Try again
+            </button>
+          </div>
+        ) : (
+          <div className="mojo-loading" role="status">
+            <Loader2 size={18} className="spin" aria-hidden="true" /> Loading Meldiq Plus…
+          </div>
+        )}
+      </>
+    );
+  }
+
+  const paid = billing?.subscription ?? null;
+  const offline = !online;
+  const plus = catalog.plans.find((p) => p.key === "plus");
+  const free = catalog.plans.find((p) => p.key === "free");
+  const plusPrice = planPrice(catalog, "plus");
+
+  /** The one button under a plan: buy it, manage it, or say why not. */
+  const actionFor = (p: PlanPerks): PlanAction => {
+    const price = planPrice(catalog, p.key);
+    const current = me.plan === p.key;
+    if (p.key === "free") return { label: current ? "Your plan" : "Always free", kind: "secondary", disabled: true };
+    if (current && paid && billing?.provider === "paypal")
+      return { label: "Manage subscription", kind: "secondary", disabled: false, onClick: () => navigate({ section: "settings", settingsPage: "billing" }) };
+    if (current && paid)
+      return { label: busy === "portal" ? "Opening…" : "Manage subscription", kind: "secondary", disabled: busy !== null || offline, onClick: () => void open("portal", () => engine.mojo.portal()) };
+    if (current && billing?.provider === "paypal" && price.onSale)
+      return {
+        label: `Subscribe for ${price.label}/month`,
+        kind: "mojo",
+        disabled: offline || busy !== null,
+        onClick: () => {
+          selectCheckout(engine.device.userId, { product: "plus" });
+          navigate({ section: "settings", settingsPage: "checkout" });
+        },
+      };
+    if (current) return { label: "Your plan (a free period)", kind: "secondary", disabled: true };
+    return {
+      label: busy === p.key ? "Opening…" : !price.onSale ? "Not on sale yet" : paid ? "Switch from the billing page" : `Get ${p.name} for ${price.label}/month`,
+      kind: p.key === "plus" ? "mojo" : "primary",
+      disabled: !price.onSale || busy !== null || offline || (!!paid && me.plan !== "free"),
+      onClick: () => {
+        if (billing?.provider === "paypal") {
+          selectCheckout(engine.device.userId, { product: "plus" });
+          navigate({ section: "settings", settingsPage: "checkout" });
+        } else void open(p.key, () => engine.mojo.checkout("plus"));
+      },
+    };
+  };
+  const heroAction = plus && me.plan !== "plus" && plusPrice.onSale ? actionFor(plus) : null;
+
+  return (
+    <div className="mojo">
+      <h1>Meldiq Plus</h1>
+      {billing?.provider === "paypal" && (
+        <button className="btn btn-secondary btn-sm" onClick={() => navigate({ section: "settings", settingsPage: "billing" })}>
+          Billing & purchases
+        </button>
+      )}
+      {confirming && (
+        <div className="banner info" role="status">
+          <Loader2 size={16} className="spin" aria-hidden="true" /> {confirming === "gift" ? "Confirming your gift with the payment provider…" : "Confirming your payment…"} Meldiq Plus applies the
+          moment the payment provider confirms it.
+        </div>
+      )}
+      {error && (
+        <div className="banner danger" role="alert">
+          {error}
+        </div>
+      )}
+      {!catalog.onSale.plus && (
+        <div className="banner info" role="note">
+          Meldiq Plus isn't on sale yet. Everything below is what each plan will include; nothing can be bought or charged until it is.
+        </div>
+      )}
+      {catalog.onSale.mode === "test" && (
+        <div className="banner info" role="note">
+          Payments are in test mode: no real money is taken.
+        </div>
+      )}
+
+      {me.plan === "plus" && paid && (
+        <div className="banner info" role="note">
+          Your existing billing agreement keeps its current price. The price shown below applies to new purchases. Manage your subscription in Billing.
+        </div>
+      )}
+      <section className="mojo-hero" aria-labelledby="mojo-hero-title">
+        <div className="mojo-hero-text">
+          <span className="mojo-eyebrow">
+            <Sparkles size={15} aria-hidden="true" /> Meldiq Plus
+          </span>
+          <h2 id="mojo-hero-title">
+            Free to connect. <span className="mojo-glow">Plus to go further.</span>
+          </h2>
+          <p>
+            Talking, calling, sharing and communities are free and stay free. Avatars, profile decorations, effects and appearance are free for everyone. Meldiq Plus adds bigger files, sharper screen
+            shares, Sparks for the servers you love, and a badge.
+          </p>
+        </div>
+        <div className="mojo-hero-plan" aria-label="Your plan">
+          <span className="faint">You're on</span>
+          <strong>
+            {me.perks.name} {me.badge.kind && <MojoBadgeMark badge={me.badge.kind} check={me.badge.check} />}
+          </strong>
+          <small>
+            {paid
+              ? paid.cancelAtPeriodEnd
+                ? `Ends ${relative(paid.currentPeriodEnd ?? Date.now())}`
+                : `Renews ${relative(paid.currentPeriodEnd ?? Date.now())}`
+              : me.plan === "free"
+                ? "Free for as long as you like"
+                : "A free period: nothing renews"}
+          </small>
+        </div>
+      </section>
+
+      {heroAction && (
+        <button className="btn btn-lg btn-mojo mojo-cta" disabled={heroAction.disabled} onClick={heroAction.onClick}>
+          {heroAction.label}
+        </button>
+      )}
+      <button className="mojo-gift-entry" disabled={!catalog.onSale.gifts || offline} onClick={() => setGifting(true)}>
+        <span className="mojo-gift-icon" aria-hidden="true">
+          <Gift size={18} />
+        </span>
+        <span className="lines grow">
+          <strong>Gift Meldiq Plus to a friend</strong>
+          <small>{catalog.onSale.gifts ? "One payment for 1, 3 or 12 months, straight to their account, with a note from you." : "Gifts open when Meldiq Plus goes on sale."}</small>
+        </span>
+      </button>
+      <GiftsReceived me={me} />
+
+      <h2 className="mojo-h2">Choose your plan</h2>
+      <p className="muted">Two plans: Meldiq Free and Meldiq Plus. Choose your Plus billing interval at checkout.</p>
+      <PlanCards catalog={catalog} me={me} actionFor={actionFor} />
+      <p className="mojo-terms muted">
+        Meldiq Plus renews at the price and billing interval you choose at checkout until you cancel. Cancel any time from Manage subscription: you keep Meldiq Plus until the end of the month you paid
+        for, and nothing you made is deleted. Prices are in US dollars; your bank may add conversion fees.
+      </p>
+
+      <MojoBanner icon={<Crown size={26} />} title="Meldiq Plus" line="The biggest files, the sharpest streams, two Sparks and the Plus badge." />
+      <h2 className="mojo-h2">What Meldiq Plus adds</h2>
+      <PlusPerks catalog={catalog} />
+
+      <section className="card setting-card">
+        <h2>Billing, cancellation and gifts</h2>
+        <p>
+          Meldiq Plus offers monthly, 3-month and 12-month billing at the prices shown at checkout. Each renews automatically at its selected interval. Cancel future renewals from Billing; your
+          verified paid period stays available. Existing agreements retain their agreed price.
+        </p>
+        <p>PayPal handles payment details. Eligible payment methods depend on your region and PayPal account. Meldiq never collects card numbers or CVV.</p>
+        <p>Gifts are separate one-time purchases for a friend. They do not renew and give Plus time to the recipient after verified payment and redemption.</p>
+      </section>
+      <h2 className="mojo-h2">Compare plans</h2>
+      <CompareTable catalog={catalog} me={me} />
+
+      <section className="spark-hero spark-link" aria-labelledby="mojo-spark-link">
+        <h2 className="mojo-h2" id="mojo-spark-link">
+          <Gem size={20} aria-hidden="true" /> Meldiq Spark
+        </h2>
+        <p>
+          Boost the servers you love: every Spark helps a community unlock more emoji slots, bigger uploads, and better voice and screen sharing for everyone there. Meldiq Plus includes two Sparks.
+          You can buy additional Sparks separately.
+        </p>
+        <div>
+          <button className="btn btn-mojo" onClick={() => navigate({ section: "settings", settingsPage: "spark" })}>
+            <Gem size={15} aria-hidden="true" /> Open Meldiq Spark
+          </button>
+        </div>
+      </section>
+
+      {me.badge.kind && (
+        <section className="card setting-card" aria-label="Your badge">
+          <div className="setting-card-head">
+            <span className="lines grow">
+              <strong>
+                Your badge <MojoBadgeMark badge={me.badge.kind} check={me.badge.check} />
+              </strong>
+              <small>{me.badge.hidden ? "Hidden: people don't see it. Your plan doesn't change." : "Shown next to your name in member lists and on your profile."}</small>
+            </span>
+            <button className="btn btn-secondary btn-sm" disabled={busy !== null || offline} onClick={() => void open("badge", async () => (await engine.mojo.setBadgeHidden(!me.badge.hidden), null))}>
+              {me.badge.hidden ? "Show it" : "Hide it"}
+            </button>
+          </div>
+        </section>
+      )}
+
+      <section className="mojo-why" aria-labelledby="mojo-why">
+        <span className="mojo-perk-icon" aria-hidden="true">
+          <HeartHandshake size={20} />
+        </span>
+        <div className="lines">
+          <h2 id="mojo-why">Why subscriptions?</h2>
+          <p>
+            We believe in a free and open internet without censorship. Communication and sharing should remain accessible. Supporting Meldiq through Plus helps us keep building an open and accessible
+            communication platform, including its infrastructure, servers, storage, bandwidth, security, reliability and continued development. Free remains a meaningful way to use Meldiq.
+          </p>
+        </div>
+      </section>
+      {free && (
+        <p className="mojo-free-note muted">
+          Still free for everyone: messages up to {free.messageChars.toLocaleString()} characters, files up to {size(free.uploadBytes)}, voice and video calls, screen sharing at{" "}
+          {screenLabel(catalog, free.screen)}, {free.customItems} custom emoji and stickers, and communities of your own.
+        </p>
+      )}
+      {gifting && (
+        <GiftDialog
+          catalog={catalog}
+          onClose={() => setGifting(false)}
+          onPay={async (input) => {
+            if (billing?.provider === "paypal") {
+              selectCheckout(engine.device.userId, { product: "gift", recipientUserId: input.recipientUserId, months: input.months as 1 | 3 | 12, note: input.note });
+              setGifting(false);
+              navigate({ section: "settings", settingsPage: "checkout" });
+            } else await open("gift", () => engine.mojo.gift(input));
+          }}
+          busy={busy === "gift"}
+        />
+      )}
+      <p className="muted mojo-footnote">
+        Meldiq Plus: {money(plus?.listPriceMinor ?? 0, "USD")} per month. Sparks: {money(catalog.spark.listPriceMinor, "USD")} each, paid once.
+      </p>
+    </div>
+  );
+}

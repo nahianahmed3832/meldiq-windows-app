@@ -1,0 +1,28 @@
+{
+  "org": {
+    "id": "o_RER8Etq25iF70Nc4JOVN_Q",
+    "name": "Night Sky Club",
+    "slug": "night-sky-club",
+    "description": "Amateur astronomy",
+    "myRole": "OWNER",
+    "memberCount": 7,
+    "createdAt": 1793109336751,
+    "photoRev": null,
+    "accent": null,
+    "bannerRev": null,
+    "tag": null,
+    "guestsAllowed": true,
+    "guestMaxDays": null,
+    "kind": "community",
+    "visibility": "public",
+    "joinPolicy": "open",
+    "rules": "Be kind. No spam.",
+    "invitesPausedUntil": null,
+    "dmsPausedUntil": null,
+    "joinQuestions": null,
+    "guide": null,
+    "onboarding": false,
+    "activityAlerts": true,
+    "activityAlert": null
+  }
+}

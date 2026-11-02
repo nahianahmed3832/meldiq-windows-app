@@ -1,0 +1,27 @@
+# Test report — 2026-11-03
+
+Host: macOS/Darwin arm64, Apple M1, 8 GB RAM, 8 logical CPUs. This report does not certify Windows hardware or installation behavior.
+
+| Check | Result |
+|---|---|
+| Shared web unit suite | 134 files passed; 924 tests passed, 2 skipped |
+| Desktop policy/signature tests | 43 passed |
+| Desktop + shared TypeScript | Passed |
+| Desktop lint | Passed |
+| Renderer/main/preload production build | Passed |
+| Package inspection | 62 local assets; no remote application scripts, service-worker shell or source maps |
+| Upstream snapshot verification | 1,722 original files checked; 5 existing files adapted; one bridge type file added |
+| Real Electron offline smoke on macOS | Passed: sign-in UI with network blocked, isolation, untrusted IPC rejection, cache preservation, economy effects, native settings |
+| Windows CI/package | Pending run; update after actual outcome |
+| Physical Windows install/upgrade/uninstall | Not tested |
+| Authenticated desktop messaging/media/calls/payments | Not tested; production API probes return HTTP 403 |
+| Signed automatic update integration | Not tested; no signing certificate/CDN provisioned |
+| Low/mid/high physical Windows benchmarks | Not tested |
+
+One narrow development measurement: signed-out shell startup 729 ms (single warm filesystem run including Playwright overhead), 30-second signed-out aggregate process working set 158.30 MiB (Browser 62.23, GPU 21.38, Utility 13.94, Tab 60.75 MiB). Sampled CPU was zero in that one idle snapshot. These are host observations, not a memory ceiling, Windows result, cold-launch result or sustained CPU guarantee. Files/messaging/video/screen-share and long sessions were unmeasured. Raw JSON is preserved under docs/desktop/evidence. Do not publish final requirements from this sample.
+
+The first deep-link test found URL normalization accepting an encoded dot segment; validation now rejects it before parsing. The first smoke run exposed an ambiguous accessible select label; the performance selector now has an explicit label. Both were corrected and the relevant checks rerun.
+
+Dependency audit initially: 29 findings, including 4 high from a Firebase Firestore gRPC path unused by this renderer. Root-only runtime is electron-updater; inspect actual packaged node_modules and bundle before evaluating exposure. Full audit remediation is still a release gate. Do not force incompatible dependency downgrades suggested by npm audit. Current audit output is retained in evidence when finalized.
+
+No failing test was hidden. The two shared skips belong to the inherited suite; inspect their source before release. Feature parity is unverified, so no percentage is asserted.

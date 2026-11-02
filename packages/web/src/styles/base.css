@@ -1,0 +1,552 @@
+/* ───────────────────────── base ───────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+/* Next.js's route announcer speaks on its own router's page changes; the app moves with its own router (routes are
+   paths in one page), so it would only ever announce nothing. Hidden, so assistive technology meets the app as before. */
+next-route-announcer {
+  display: none;
+}
+html,
+body,
+#__next,
+#root {
+  height: 100%;
+  margin: 0;
+}
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 14px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+button {
+  cursor: pointer;
+  background: none;
+  border: 0;
+  padding: 0;
+}
+button:disabled {
+  cursor: not-allowed;
+}
+a {
+  color: var(--accent-text);
+}
+a.side-item,
+a.rail-home,
+a.msg-call,
+a.icon-btn {
+  text-decoration: none;
+}
+:focus-visible {
+  outline: none;
+  box-shadow: var(--focus);
+  border-radius: var(--r-sm);
+}
+::selection {
+  background: var(--accent-soft);
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.scroll {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}
+.muted {
+  color: var(--text-2);
+}
+.faint {
+  color: var(--text-3);
+}
+.mono {
+  font-family: var(--mono);
+  letter-spacing: 0.02em;
+}
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+.row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.grow {
+  flex: 1;
+  min-width: 0;
+}
+/* Text columns (`.lines`, grid where a screen makes it one): a column that may shrink, so a long name or preview ends
+   in an ellipsis inside its row instead of widening the row past its box (reported in the conversation list). */
+.lines {
+  grid-template-columns: minmax(0, 1fr);
+}
+.lines > * {
+  min-width: 0;
+}
+
+/* ───────────────────────── buttons, inputs ───────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 38px;
+  padding: 0 16px;
+  border-radius: var(--r-pill);
+  font-weight: 650;
+  font-size: 13.5px;
+  white-space: nowrap;
+  transition:
+    background var(--t-fast) var(--ease),
+    border-color var(--t-fast) var(--ease),
+    transform var(--t-fast) var(--ease);
+}
+.btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+/* The primary action: the palette's call to action (solid lime on Meldiq), one per view where it matters most. */
+.btn-primary {
+  background: var(--cta, var(--action));
+  color: var(--on-cta, var(--on-action));
+  box-shadow: var(--shadow-sm);
+}
+.btn-primary:hover:not(:disabled) {
+  background: var(--cta-hover, var(--action-hover));
+}
+.btn-secondary {
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+.btn-secondary:hover:not(:disabled) {
+  border-color: var(--border-strong);
+  background: var(--surface-hover);
+}
+.btn-ghost {
+  color: var(--text-2);
+}
+.btn-ghost:hover:not(:disabled) {
+  background: var(--surface-hover);
+  color: var(--text);
+}
+.btn-danger {
+  background: var(--danger);
+  color: var(--on-danger);
+}
+.btn-danger-quiet {
+  color: var(--danger);
+  border: 1px solid var(--border);
+  background: var(--surface-raised);
+}
+.btn-danger-quiet:hover:not(:disabled) {
+  background: var(--danger-soft);
+  border-color: var(--danger);
+}
+.btn:disabled {
+  opacity: 0.45;
+}
+.btn-lg {
+  height: 46px;
+  padding: 0 22px;
+  font-size: 14.5px;
+}
+.btn-sm {
+  height: 32px;
+  padding: 0 12px;
+  font-size: 12.5px;
+}
+.icon-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--r-md);
+  color: var(--text-2);
+  transition: background var(--t-fast) var(--ease);
+  position: relative;
+  flex-shrink: 0;
+}
+.icon-btn:hover:not(:disabled) {
+  background: var(--surface-hover);
+  color: var(--text);
+}
+.icon-btn[aria-pressed="true"] {
+  background: var(--surface-selected);
+  color: var(--text);
+}
+.icon-btn .dot {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--badge);
+  box-shadow: 0 0 0 2px var(--surface);
+}
+.input,
+.textarea {
+  width: 100%;
+  border: 1px solid var(--border-strong);
+  background: var(--surface-raised);
+  border-radius: var(--r-md);
+  padding: 10px 12px;
+  outline: none;
+  transition:
+    border-color var(--t-fast),
+    box-shadow var(--t-fast);
+}
+.input:hover,
+.textarea:hover {
+  border-color: var(--outline);
+}
+.input:focus,
+.textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+/* A field made of an icon and a bare input inside an `.input` wrapper (search boxes): the wrapper shows the focus, never
+   the bare input, whose own ring was drawn at the wrong size and cut off (reported 2026-10-28). */
+.input:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+.input input:focus-visible,
+.input textarea:focus-visible {
+  box-shadow: none;
+}
+.input[aria-invalid="true"] {
+  border-color: var(--danger);
+}
+.field {
+  display: grid;
+  gap: 6px;
+}
+.field label {
+  font-weight: 600;
+  font-size: 13px;
+}
+.field .hint {
+  font-size: 12px;
+  color: var(--text-3);
+}
+.switch {
+  position: relative;
+  width: 40px;
+  height: 24px;
+  border-radius: var(--r-pill);
+  background: var(--border-strong);
+  transition: background var(--t-std) var(--ease);
+  flex-shrink: 0;
+}
+.switch::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--switch-thumb);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--t-std) var(--ease);
+}
+.switch[aria-checked="true"] {
+  background: var(--accent);
+}
+.switch[aria-checked="true"]::after {
+  transform: translateX(16px);
+}
+
+/* ───────────────────────── small parts ───────────────────────── */
+.count {
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: var(--r-pill);
+  font-size: 11.5px;
+  font-weight: 700;
+  display: inline-grid;
+  place-items: center;
+  background: var(--surface-sunken);
+  color: var(--text-2);
+  flex-shrink: 0;
+}
+.count.accent {
+  background: var(--badge);
+  color: var(--on-badge);
+}
+/* Two or more unread: a light badge on the dark palette (dark on light), never the error red. */
+.count.unread-count {
+  background: var(--unread-badge);
+  color: var(--on-unread-badge);
+}
+/* A mention of you: the palette's mention colour with its "@", apart from plain unread. */
+.count.mention-count {
+  background: var(--mention-badge);
+  color: var(--on-mention-badge);
+}
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 20px;
+  padding: 0 8px;
+  border-radius: var(--r-pill);
+  font-size: 11px;
+  font-weight: 600;
+  background: var(--surface-sunken);
+  color: var(--text-2);
+  white-space: nowrap;
+}
+.tag.ok {
+  background: var(--success-soft);
+  color: var(--success);
+}
+.tag.warn {
+  background: var(--warning-soft);
+  color: var(--warning);
+}
+.tag.danger {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+.kbd {
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 1px 6px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  color: var(--text-3);
+  background: var(--surface);
+}
+.banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: var(--r-md);
+  font-size: 13px;
+  border: 1px solid transparent;
+}
+.banner.info {
+  background: var(--info-soft);
+  color: var(--text-2);
+}
+.banner.warn {
+  background: var(--warning-soft);
+  color: var(--warning);
+}
+.banner.danger {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+.banner.ok {
+  background: var(--success-soft);
+  color: var(--success);
+}
+.banner .grow {
+  color: inherit;
+}
+.card {
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-sm);
+}
+.skeleton {
+  border-radius: var(--r-sm);
+  background: linear-gradient(90deg, var(--surface-sunken) 0%, var(--surface-hover) 50%, var(--surface-sunken) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+}
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+.empty {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--text-2);
+}
+.empty h2 {
+  margin: 6px 0 0;
+  font-size: 17px;
+  color: var(--text);
+}
+.empty p {
+  margin: 0;
+  max-width: 380px;
+}
+.empty-orb {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--accent-text);
+  background: linear-gradient(135deg, var(--accent-soft), var(--surface-sunken));
+  box-shadow: inset 0 0 0 1px var(--border);
+}
+
+/* Meldling's poses in empty and status screens (components/MeldlingArt): the art is drawn on its own deep navy, so a
+   soft round frame keeps it from reading as a pasted rectangle on the charcoal panels. */
+.meldling-art {
+  display: block;
+  max-width: min(100%, 70vw);
+  height: auto;
+  border-radius: 28px;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.35);
+  user-select: none;
+}
+.empty .meldling-art {
+  max-width: min(160px, 50vw);
+}
+
+/* Avatars: initials on a glossy gradient chosen from the person's colour index, like the phone. */
+.avatar {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--on-avatar);
+  font-weight: 700;
+  flex-shrink: 0;
+  user-select: none;
+  background-image: radial-gradient(circle at 30% 25%, var(--avatar-gloss), transparent 46%), linear-gradient(145deg, var(--a1), var(--a2));
+  box-shadow: inset 0 0 0 1px var(--avatar-ring);
+}
+.avatar.square {
+  border-radius: 28%;
+}
+.avatar .presence {
+  position: absolute;
+  right: -1px;
+  bottom: -1px;
+  width: 30%;
+  height: 30%;
+  min-width: 8px;
+  min-height: 8px;
+  border-radius: 50%;
+  background: var(--presence-off);
+  box-shadow: 0 0 0 2px var(--surface);
+}
+.avatar .presence.on {
+  background: var(--presence-on);
+}
+
+/*
+ * Touch screens (2026-10-22, "the page zooms"): iOS Safari zooms the whole page into any field whose text is smaller
+ * than 16px when it's focused, so fields are 16px there. Taps on controls don't wait for, or trigger, double-tap zoom.
+ * Pinch zoom stays as it is everywhere.
+ */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+@media (pointer: coarse) {
+  input:not([type="checkbox"], [type="radio"], [type="range"], [type="color"], [type="file"]),
+  textarea,
+  select {
+    font-size: max(16px, 1em) !important;
+  }
+}
+button,
+a,
+label,
+summary,
+select,
+[role="button"],
+[role="tab"],
+[role="menuitem"],
+[role="option"],
+.list-row {
+  touch-action: manipulation;
+}
+
+/* A newer release is ready (src/ui/UpdateNotice.tsx): under the top bar, clear of the message box. */
+.update-notice {
+  position: fixed;
+  z-index: 200;
+  left: 50%;
+  top: calc(var(--app-top, 0px) + var(--topbar-h) + 8px);
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: calc(100vw - 32px);
+  padding: 8px 8px 8px 16px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--border);
+  background: var(--surface-raised);
+  box-shadow: var(--shadow-lg);
+  color: var(--text);
+  font-size: var(--fs-md);
+}
+
+/* Each person's name colour (tokens.css --name-*), by their avatar tone. */
+.name-tone-0 {
+  --name: var(--name-0);
+  color: var(--name);
+}
+.name-tone-1 {
+  --name: var(--name-1);
+  color: var(--name);
+}
+.name-tone-2 {
+  --name: var(--name-2);
+  color: var(--name);
+}
+.name-tone-3 {
+  --name: var(--name-3);
+  color: var(--name);
+}
+.name-tone-4 {
+  --name: var(--name-4);
+  color: var(--name);
+}
+.name-tone-5 {
+  --name: var(--name-5);
+  color: var(--name);
+}
+.name-tone-6 {
+  --name: var(--name-6);
+  color: var(--name);
+}
+.name-tone-7 {
+  --name: var(--name-7);
+  color: var(--name);
+}

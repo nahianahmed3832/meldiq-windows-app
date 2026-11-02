@@ -1,0 +1,116 @@
+import type { Conversation, QueueItem } from "../api/schemas";
+import { countsEveryone, levelOf, type NavPrefs, shouldNotify, workspaceOf } from "../sync/navPrefs";
+import { paused } from "../sync/status";
+import { conversationTitle } from "../ui/format";
+
+/** A call rings for about this long; an older RINGING call is a leftover, not someone calling now. */
+export const RING_WINDOW_MS = 60_000;
+/** The caller's invite may be stored a moment before the call itself. */
+const INVITE_SLACK_MS = 5_000;
+
+/** This browser's notification choices, mirrored for the service worker (it can't read the page's storage). */
+export interface WakePrefs {
+  notifications: boolean;
+  groupNotifications: boolean;
+  notificationText: boolean;
+}
+
+export interface WakeInput {
+  me: string;
+  now: number;
+  /** What the server is holding for this browser (read, not acknowledged: the app still fetches it when it opens). */
+  items: readonly QueueItem[];
+  conversations: Readonly<Record<string, Conversation>>;
+  /** The synced notification settings, by workspace document (personal, or a community's id). */
+  nav: Readonly<Record<string, NavPrefs | undefined>>;
+  prefs: WakePrefs;
+  /** Notifications paused from the profile menu until then. */
+  pausedUntil: number | null;
+}
+
+export interface WakeNotice {
+  /** One per conversation (a call has its own), so later wake-ups replace rather than pile up. */
+  tag: string;
+  title: string;
+  body: string;
+  /** Where a click opens the app, on this site only. */
+  url: string;
+  call: boolean;
+}
+
+const urlOf = (c: Conversation): string => `/${c.type === "CHANNEL" ? "home" : "dms"}/c/${encodeURIComponent(c.id)}`;
+const titleOf = (c: Conversation, me: string): string => {
+  const t = conversationTitle(c, me, {});
+  return c.type === "CHANNEL" ? `#${t}` : t;
+};
+
+/**
+ * What a background wake-up shows when no Meldiq tab is open (the service worker; docs/MELDIQ_WEB_PUSH.md). The server's
+ * wake-up carries no content. Server-stored messages supply readable text and direct mentions; older encrypted
+ * envelopes supply only notification metadata. Foreground and background share levels, mutes and account pause.
+ */
+/** A notification shows at most this much of a message. */
+const MAX_BODY = 140;
+
+/** An item's class: an older app's envelope says it directly, a stored message inside its event. */
+const clsOf = (it: WakeInput["items"][number]) => it.payload.event?.cls ?? it.payload.cls ?? "message";
+
+export function wakeBatch(i: WakeInput): { notices: WakeNotice[]; identities: Record<string, string> } {
+  if (!i.prefs.notifications) return { notices: [], identities: {} };
+  const seen = new Set<string>();
+  const messageIds = new Map<string, string[]>();
+  const calls = incomingCalls(i);
+  const ringing = new Set(calls.map((n) => n.tag.slice("call-".length)));
+  const counts = new Map<string, number>();
+  /** The newest readable text per conversation (server-stored messages, API 0.57.0), for the notification's body. */
+  const latest = new Map<string, string>();
+  if (!paused(i.pausedUntil, i.now))
+    for (const it of i.items) {
+      if (it.kind === "receipt" || it.senderUserId === i.me || clsOf(it) !== "message") continue;
+      const c = i.conversations[it.conversationId];
+      if (!c || c.request?.incoming || ringing.has(c.id)) continue;
+      const prefs = i.nav[workspaceOf(c.orgId)];
+      const mentions = it.payload.event?.payload.mentions;
+      const direct = Array.isArray(mentions) && mentions.includes(i.me);
+      const mention = direct ? "me" : (it.payload.mentionAll || it.payload.event?.mentionAll) && (!c.orgId || countsEveryone(prefs)) ? "all" : null;
+      if (!shouldNotify(levelOf(prefs, c.id, c.categoryId, i.now), mention)) continue;
+      if (c.type !== "DM" && !mention && !i.prefs.groupNotifications) continue;
+      const identity = `${c.id}:${it.messageId}`;
+      if (seen.has(identity)) continue;
+      seen.add(identity);
+      messageIds.set(c.id, [...(messageIds.get(c.id) ?? []), it.messageId]);
+      counts.set(c.id, (counts.get(c.id) ?? 0) + 1);
+      const text = it.payload.event?.payload.text;
+      if (typeof text === "string" && text.trim()) latest.set(c.id, text.trim().replace(/\s+/g, " ").slice(0, MAX_BODY));
+    }
+  const messages = [...counts].map(([id, n]): WakeNotice => {
+    const c = i.conversations[id];
+    return i.prefs.notificationText
+      ? { tag: id, title: titleOf(c, i.me), body: n === 1 ? (latest.get(id) ?? "New message") : `${n} new messages${latest.has(id) ? `: ${latest.get(id)}` : ""}`, url: urlOf(c), call: false }
+      : { tag: id, title: "Meldiq", body: "New message", url: urlOf(c), call: false };
+  });
+  const notices = [...calls, ...messages];
+  const identities = Object.fromEntries(
+    notices.map((n) => [n.tag, n.call ? `call:${i.conversations[n.tag.slice(5)]?.activeCall?.id ?? n.tag}` : JSON.stringify((messageIds.get(n.tag) ?? []).sort())]),
+  );
+  return { notices, identities };
+}
+
+export function wakeNotices(i: WakeInput): WakeNotice[] {
+  return wakeBatch(i).notices;
+}
+
+/** Calls ringing for this person: a call still RINGING, started recently, whose invite came from someone else. */
+function incomingCalls(i: WakeInput): WakeNotice[] {
+  const out: WakeNotice[] = [];
+  for (const c of Object.values(i.conversations)) {
+    const call = c.activeCall;
+    if (!call || c.voice || call.state !== "RINGING" || call.startedAt < i.now - RING_WINDOW_MS) continue;
+    const invited = i.items.some(
+      (it) => it.kind !== "receipt" && it.conversationId === c.id && it.senderUserId !== i.me && clsOf(it) === "control" && it.createdAt >= call.startedAt - INVITE_SLACK_MS,
+    );
+    if (!invited) continue;
+    out.push({ tag: `call-${c.id}`, title: i.prefs.notificationText ? titleOf(c, i.me) : "Meldiq", body: call.video ? "Incoming video call" : "Incoming voice call", url: urlOf(c), call: true });
+  }
+  return out;
+}

@@ -1,0 +1,76 @@
+{
+  "community": {
+    "id": "o_8BslOyZRThPOi7x-21XZAA",
+    "name": "Apply Lab",
+    "slug": "apply-lab",
+    "description": null,
+    "myRole": null,
+    "memberCount": 3,
+    "createdAt": 1793109286106,
+    "photoRev": null,
+    "accent": null,
+    "bannerRev": null,
+    "tag": null,
+    "guestsAllowed": true,
+    "guestMaxDays": null,
+    "kind": "community",
+    "visibility": "public",
+    "joinPolicy": "invite",
+    "rules": null,
+    "invitesPausedUntil": null,
+    "dmsPausedUntil": null,
+    "joinQuestions": [
+      "Why do you want to join?",
+      "How did you find us?"
+    ],
+    "guide": null,
+    "onboarding": false,
+    "activityAlerts": true,
+    "activityAlert": null
+  },
+  "channels": [
+    {
+      "id": "c_M6mQtZ6tyWslOhM_fr--Fw",
+      "name": "general",
+      "topic": "Everyday conversation",
+      "kind": "PUBLIC",
+      "voice": false,
+      "format": "text"
+    },
+    {
+      "id": "c_lw3M6CBo4SQObwedH1A6Cw",
+      "name": "welcome",
+      "topic": "What this community is about and how it works",
+      "kind": "ANNOUNCEMENT",
+      "voice": false,
+      "format": "text"
+    },
+    {
+      "id": "c_-q66_9fp2_g5KKaW-yr0Lw",
+      "name": "announcements",
+      "topic": "News from the people who run the community",
+      "kind": "ANNOUNCEMENT",
+      "voice": false,
+      "format": "text"
+    },
+    {
+      "id": "c_MkeCbDS648vpNTX_pxrqOA",
+      "name": "introductions",
+      "topic": "Say hello and tell people what brings you here",
+      "kind": "PUBLIC",
+      "voice": false,
+      "format": "text"
+    },
+    {
+      "id": "c_Vk5rzgemWbtISaizVaR0Rg",
+      "name": "lounge",
+      "topic": "Drop in to talk",
+      "kind": "PUBLIC",
+      "voice": true,
+      "format": "text"
+    }
+  ],
+  "joined": false,
+  "banned": false,
+  "application": null
+}

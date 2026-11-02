@@ -1,0 +1,3051 @@
+{
+  "version": "0.76.0",
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/v2/profile-collectibles/categories"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/profile-collectibles"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/profile-collectibles/{id}"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/users/me/profile-collectibles"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/users/me/profile-collectibles/{id}/claim"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/users/me/profile-collectibles/{id}/favorite"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/users/me/profile-collectibles/{id}/favorite"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/users/me/profile-customization"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v2/users/me/profile-customization"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/profile-collectibles/assets/{id}/{variant}"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/v1/profile-collectibles"
+    },
+    {
+      "method": "PUT",
+      "path": "/admin/v1/profile-collectibles/{id}"
+    },
+    {
+      "method": "DELETE",
+      "path": "/admin/v1/profile-collectibles/{id}"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/v1/profile-collectibles/{id}/grant"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/v1/profile-collectibles/assets"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/v1/profile-collectibles/assets/{id}/{variant}"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/v1/profile-collectibles/uploads"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/v1/profile-collectibles/uploads/{id}/complete"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/billing/payment-methods"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/billing/payment-methods/setups"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/billing/payment-methods/setups/{id}/complete"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/billing/payment-methods/{id}"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/billing/orders"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/billing/orders/{id}/receipt"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/v1/billing/orders"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/billing/card-subscriptions"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/billing/card-subscriptions"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/billing/card-subscriptions/quote"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/billing/card-subscriptions/{id}/cancel"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/billing/card-subscriptions/{id}/payment-method"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/v1/billing/gift-deliveries"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/v1/billing/gifts/{id}/resend"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/v1/billing/gifts/{id}/revoke"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/billing/gifts"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/billing/gifts/preview"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/billing/gifts/redeem"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/billing/gifts/{id}/redeem"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/billing/gifts/{id}/link"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/billing/gifts/{id}/resend"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/v1/operations/notices"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/v1/operations/notices"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/v1/operations/notices/{id}/state"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/v1/operations/notices/{id}/receipts"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/v1/operations/appeals"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/v1/operations/appeals/{id}/decision"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/v1/operations/promotions"
+    },
+    {
+      "method": "PUT",
+      "path": "/admin/v1/operations/promotions"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/v1/operations/policy"
+    },
+    {
+      "method": "PUT",
+      "path": "/admin/v1/operations/policy"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/v1/operations/policy/history"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/v1/operations/operators"
+    },
+    {
+      "method": "PUT",
+      "path": "/admin/v1/operations/operators/{id}"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/v1/operations/ownership"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/v1/operations/ownership"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/v1/operations/orders"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/v1/operations/orders/{id}/refund"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/v1/operations/orders/reconcile"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/v1/operations/warnings"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/v1/operations/warnings"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/v1/operations/warnings/{id}/revoke"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/platform/notices"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/platform/notices/{id}/read"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/platform/appeals"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/platform/appeals"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/platform/features"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/platform/promotions/redeem"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/platform/ownership"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/platform/ownership/{id}/approve"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/collectible-purchases"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/collectible-purchases"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/collectible-purchases/{id}/confirm"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/platform/appeals/email/start"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/platform/appeals/email/complete"
+    },
+    {
+      "method": "DELETE",
+      "path": "/admin/v1/orgs/{orgId}"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/v1/reports"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/v1/reports/assignees"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/v1/reports/{reportId}"
+    },
+    {
+      "method": "PATCH",
+      "path": "/admin/v1/reports/{reportId}"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/v1/admins/{accountId}/permissions"
+    },
+    {
+      "method": "PUT",
+      "path": "/admin/v1/admins/{accountId}/permissions"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/v1/orgs/{orgId}/restriction"
+    },
+    {
+      "method": "GET",
+      "path": "/healthz"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/server-info"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/site/details"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/messages"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/queue"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/queue/ack"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/messages"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/conversations/{id}/messages"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/messages/import"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/messages/summary"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/messages/search"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/conversations/{id}/message-collections"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/leaderboards"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/gifs/status"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/gifs/search"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/gifs/trending"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/gifs/media"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/bug-reports"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/bug-reports"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/history/summary"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/history/items"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/history/items"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/history"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/attachments"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/attachments/{id}"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/attachments/{id}/keep"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/attachments/uploads"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/attachments/uploads/{id}/url"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/attachments/uploads/{id}/parts"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/attachments/uploads/{id}/parts"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/attachments/uploads/{id}/complete"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/attachments/uploads/{id}"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/calls"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/calls/active"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/conversations/{id}/calls"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/calls/{id}"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/calls/{id}/join"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/calls/{id}/hand"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/calls/{id}/moderate"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/calls/{id}/connected"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/calls/{id}/alerted"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/calls/{id}/decline"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/calls/{id}/end"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/calls/{id}/leave"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/auth/register"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/auth/email/verify"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/auth/email/resend"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/auth/login"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/auth/refresh"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/auth/logout"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/auth/password/forgot"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/auth/password/reset"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/auth/recover/start"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/auth/recover/complete"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/auth/passkey/options"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/auth/passkey/login"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/account/passkeys"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/account/passkeys"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/account/passkeys/options"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/account/passkeys/{id}"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/account/totp"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/account/totp/setup"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/account/totp/enable"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/account/totp/disable"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/account/email"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/account/email/confirm"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/account/standing"
+    },
+    {
+      "method": "GET",
+      "path": "/.well-known/assetlinks.json"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/account/recovery-codes"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/account/recovery-codes"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/account/recovery-codes/revoke"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/account"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v2/account"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/account"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/account/password"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/account/key-backup"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/account/key-backup"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/account/key-backup"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/account/key-backup/unlock/start"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/account/key-backup/unlock"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/account/sessions"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/account/sessions/{id}"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/account/preferences"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/account/devices"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/account/identity/reset"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/workspaces"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/migration/legacy/verify"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/migration/legacy/complete"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/auth/social/config"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/auth/social/start"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/auth/social/authorize/{id}"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/auth/social/callback"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/auth/social/native"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/auth/social/complete"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/account/identities"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/account/identities/{provider}"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/auth/challenge"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/auth/username-available"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/auth/register"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/auth/login"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/auth/add-device"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/auth/logout"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/pairing"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/pairing/{pairingId}"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/pairing/code/{code}"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/pairing/code/{code}/approve"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/devices"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/devices/{id}"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/fingerprint/{userId}"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/users/me"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/users/me"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/users/me/presence"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/users/me/privacy"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/users/me/photo"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/users/me/photo"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/users/{id}/photo"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/users/me/avatar-media"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/users/me/avatar-media"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/users/{id}/avatar-media"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/users/{id}/avatar-poster"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/users/me/profile-banner"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/users/me/profile-banner"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/users/{id}/profile-banner"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/users/me/profile-style"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/users/by-phone"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/users/search"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/users/{id}"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/users/devices"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/blocks"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/blocks"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/blocks/{userId}"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/presence"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/me/activity"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/me/activity"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/decorations/favorites"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/decorations/favorites/{decorationId}"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/decorations/favorites/{decorationId}"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/decorations"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/decorations"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/decorations/{id}/image"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/decorations/template"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/decorations/mine"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/decorations/mine/{id}/image"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/decorations/mine/{id}"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/users/{id}/decorations"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/pins"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/pins/{id}/image"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/orgs/{orgId}/pins"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/orgs/{orgId}/pins"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/orgs/{orgId}/pins/{pinId}"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/orgs/{orgId}/pins/{pinId}/holders"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/orgs/{orgId}/pins/{pinId}/holders/{userId}"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/orgs/{orgId}/pins/{pinId}/holders/{userId}"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/devices/current/push"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/devices/current/push"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/devices/current/fcm"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/devices/current/fcm"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/connections"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/connections"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/connections/{userId}/accept"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/connections/{userId}"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/users/me/messaging"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/users/me/messaging"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/people/suggested"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/conversations/{id}/request"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/me/preferences/{workspaceId}"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/me/preferences/{workspaceId}"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/reminders"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/reminders"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/reminders/{id}"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/reminders/{id}"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/reminders/{id}"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/reminders/{id}/ack"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/points"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/points/checkin"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/points/level-up"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/orgs"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/orgs"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/community-templates"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/orgs/{orgId}"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/orgs/{orgId}"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/orgs/{orgId}"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/orgs/{orgId}/photo"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/orgs/{orgId}/photo"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/orgs/{orgId}/photo"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/orgs/{orgId}/banner"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/orgs/{orgId}/banner"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/orgs/{orgId}/banner"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/orgs/{orgId}/archived"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/orgs/{orgId}/members"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/orgs/{orgId}/members"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/orgs/{orgId}/members/{userId}"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/orgs/{orgId}/members/{userId}"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/orgs/leave"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/orgs/{orgId}/invites"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/orgs/{orgId}/invites"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/invites/{id}"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/invites/preview"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/invites/{code}/public"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/invites/{code}/banner"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/invites/{code}/photo"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/invites/accept"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/orgs/{orgId}/channels"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/orgs/{orgId}/channels"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/orgs/{orgId}/activity"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/orgs/{orgId}/roles"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/orgs/{orgId}/roles"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/roles/{roleId}"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/roles/{roleId}"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/roles/{roleId}/members"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/roles/{roleId}/members/{userId}"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/roles/{roleId}/members/{userId}"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/orgs/{orgId}/members/{userId}/permissions"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/orgs/{orgId}/ownership"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/orgs/{orgId}/usage"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/orgs/{orgId}/plan"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/orgs/{orgId}/audit"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/orgs/{orgId}/members/{userId}/profile"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/orgs/{orgId}/members/{userId}/profile"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/orgs/{orgId}/roles/everyone"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/orgs/{orgId}/members/{userId}/nickname"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/roles/{roleId}/extras"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/orgs/{orgId}/roles/order"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/conversations/{id}/stage/speakers/{userId}"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/conversations/{id}/stage/speakers/{userId}"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/discord/status"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/discord/connect"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/discord/callback"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/discord/connections/{id}"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/discord/connections/{id}/preview"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/discord/imports"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/discord/imports/{id}"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/discord/imports/{id}/retry"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/categories/{id}/permission-preview"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/conversations/{id}/permission-preview"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/orgs/{orgId}/categories"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/orgs/{orgId}/categories"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/categories/{id}"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/categories/{id}"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/orgs/{orgId}/layout"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/categories/{id}/overwrites"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/categories/{id}/overwrites"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/conversations/{id}/overwrites"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/conversations/{id}/overwrites"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/communities/discover"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/communities/{id}/preview"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/communities/{id}/join"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/orgs/{orgId}/bans"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/orgs/{orgId}/bans"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/orgs/{orgId}/bans/{userId}"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/orgs/{orgId}/guest-policy"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/orgs/{orgId}/members/{userId}/expiry"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/orgs/{orgId}/security"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/orgs/{orgId}/members/{userId}/timeout"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/orgs/{orgId}/application"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/communities/{id}/apply"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/orgs/{orgId}/applications"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/applications/{id}"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/applications/{id}"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/me/applications"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/orgs/{orgId}/expressions"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/orgs/{orgId}/expressions"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/expressions/{id}"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/expressions/{id}"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/expressions/{id}/image"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/orgs/{orgId}/onboarding"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/orgs/{orgId}/onboarding"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/orgs/{orgId}/onboarding/answers"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/orgs/{orgId}/guide"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/orgs/{orgId}/rules"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/orgs/{orgId}/rules"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/orgs/{orgId}/rules/agree"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/orgs/{orgId}/settings"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/orgs/{orgId}/settings"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/orgs/{orgId}/invites/standard"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/orgs/{orgId}/onboarding/finish"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/orgs/{orgId}/safety"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/orgs/{orgId}/safety"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/orgs/{orgId}/lock"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/orgs/{orgId}/voice-bans"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/orgs/{orgId}/voice-bans"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/orgs/{orgId}/voice-bans/{userId}"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/orgs/{orgId}/voice/members/{userId}/mute"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/orgs/{orgId}/voice/members/{userId}/disconnect"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/orgs/{orgId}/lobby"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/orgs/{orgId}/lobby/settings"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/orgs/{orgId}/lobby/settings"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/orgs/{orgId}/lobby/template"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/orgs/{orgId}/lobby/seen"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/orgs/{orgId}/lobby/feed"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/orgs/{orgId}/lobby/feed"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/lobby-feed/{token}"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/reports"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/orgs/{orgId}/reports"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/reports/{id}"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/orgs/{orgId}/channels/{channelId}/webhooks"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/orgs/{orgId}/channels/{channelId}/webhooks"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/orgs/{orgId}/channels/{channelId}/webhooks/{webhookId}"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/orgs/{orgId}/channels/{channelId}/webhooks/{webhookId}"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/orgs/{orgId}/channels/{channelId}/webhooks/{webhookId}/avatar"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/orgs/{orgId}/channels/{channelId}/webhooks/{webhookId}/avatar"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/orgs/{orgId}/channels/{channelId}/webhooks/{webhookId}/token"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/orgs/{orgId}/channels/{channelId}/webhooks/{webhookId}/post"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/webhooks/{webhookId}/avatar"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/webhooks/{webhookId}/{token}"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/orgs/{orgId}/channels/{channelId}/messages/{messageId}/reaction-roles"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/orgs/{orgId}/channels/{channelId}/messages/{messageId}/reaction-roles"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/orgs/{orgId}/channels/{channelId}/messages/{messageId}/reaction-roles"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/orgs/{orgId}/tickets/config"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/orgs/{orgId}/tickets/config"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/orgs/{orgId}/tickets/panels/{panelId}/post"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/orgs/{orgId}/tickets"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/orgs/{orgId}/tickets"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/orgs/{orgId}/tickets/{channelId}/join"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/orgs/{orgId}/tickets/{channelId}/close"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/orgs/{orgId}/official-bots/{key}/diagnostics"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/official-bots"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/orgs/{orgId}/official-bots"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/orgs/{orgId}/official-bots/{key}"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/orgs/{orgId}/official-bots/{key}"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/orgs/{orgId}/official-bots/{key}/avatar"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/orgs/{orgId}/official-bots/{key}/avatar"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/orgs/{orgId}/official-bots/welcomer/test"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/orgs/{orgId}/official-bots/alerts/watches"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/orgs/{orgId}/official-bots/alerts/watches"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/orgs/{orgId}/official-bots/alerts/watches/{watchId}"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/orgs/{orgId}/official-bots/alerts/watches/{watchId}"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/orgs/{orgId}/official-bots/wordy/game"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/orgs/{orgId}/official-bots/wordy/game"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/discover"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/discover/{orgId}/click"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/orgs/{orgId}/discovery"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/orgs/{orgId}/discovery"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/orgs/{orgId}/promote"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/orgs/{orgId}/promote/boost"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/orgs/{orgId}/promote/promoted"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/orgs/{orgId}/templates"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/orgs/{orgId}/templates"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/orgs/{orgId}/templates"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/orgs/{orgId}/templates/sync"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/templates/{code}"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/conversations"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/conversations/{id}/presence"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/conversations/{id}"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/conversations/{id}"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/conversations/{id}"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/conversations/{id}/members"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/conversations/{id}/devices"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/conversations/dm"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/conversations/{id}/photo"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/conversations/{id}/photo"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/conversations/{id}/photo"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/conversations/group"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/conversations/{id}/join"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/conversations/{id}/members/{userId}"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/conversations/{id}/members/{userId}"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/search"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/orgs/{orgId}/meetings"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/orgs/{orgId}/meetings"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/meetings/{id}"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/meetings/{id}"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/meetings/{id}/cancel"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/meetings/{id}/respond"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/platform/me"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/admin/health"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/admin/connectors"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/admin/connectors/{id}/check"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/admin/usage"
+    },
+    {
+      "method": "PUT",
+      "path": "/v1/admin/orgs/{orgId}/limits"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/experiments"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/analytics/events"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/admin/experiments"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/federation/info"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/federation/resolve"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/billing/reminders/renewal"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/billing/promotions/activity"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/billing/promotions/claim"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/billing/promotions/{id}"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/billing/promotions/events"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/billing/promotions/preference"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/billing/promotions/preference"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/v1/billing/promotions"
+    },
+    {
+      "method": "PUT",
+      "path": "/admin/v1/billing/promotions"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/billing/paypal/config"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/billing/paypal/checkouts"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/billing/paypal/checkouts/{id}"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/billing/paypal/checkouts/{id}/confirm"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/billing/paypal/history"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/billing/paypal/cancel"
+    },
+    {
+      "method": "GET",
+      "path": "/admin/v1/billing/paypal/transactions"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/v1/billing/paypal/transactions/{id}/refund"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/billing/plans"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/billing/entitlements"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/billing/account"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/billing/orgs/{orgId}"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/billing/checkout"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/billing/portal"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/billing/sync"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/billing/referral"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/billing/referral/claim"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/mojo/catalog"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/mojo/me"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/mojo/sparks"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/mojo/sparks/{id}/move"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/mojo/sparks/{id}"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/mojo/sparks/checkout"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/mojo/gifts"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/mojo/gifts/{id}/redeem"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/mojo/badge"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/orgs/{orgId}/sparks"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/mojo/play/intent"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/mojo/play/verify"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/creators/verification"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/creators/verification"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/creators/program"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/creators/program/apply"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/creators/posts"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/creators/posts"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/connections"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/connections/{provider}/start"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/connections/{provider}/callback"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/connections/{provider}"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/connections/{provider}"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/developer/apps"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/developer/apps"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v2/developer/apps/{id}"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/developer/apps/{id}"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/developer/apps/{id}/secret"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/oauth/authorize/info"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/oauth/authorize"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/oauth/token"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/oauth/userinfo"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/oauth/userinfo/avatar"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/oauth/grants"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/oauth/grants/{clientId}"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/developer/bots"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/developer/bots"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v2/developer/bots/{id}"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/developer/bots/{id}"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/developer/bots/{id}/token"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/bots/{botId}"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/orgs/{orgId}/bots"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/orgs/{orgId}/bots/{botId}"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/orgs/{orgId}/commands"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/interactions"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/bot/me"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/bot/communities"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/bot/channels/{channelId}/messages"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v2/bot/messages/{messageId}"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v2/bot/messages/{messageId}"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/bot/commands"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/bot/commands"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/bot/interactions"
+    },
+    {
+      "method": "POST",
+      "path": "/v2/bot/interactions/{id}/reply"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/bot-directory"
+    },
+    {
+      "method": "GET",
+      "path": "/v2/developer/bots/{id}/listing"
+    },
+    {
+      "method": "PUT",
+      "path": "/v2/developer/bots/{id}/listing"
+    }
+  ],
+  "errors": {
+    "account_link_required": [
+      409
+    ],
+    "social_state_invalid": [
+      400
+    ],
+    "social_flow_expired": [
+      400
+    ],
+    "provider_not_configured": [
+      503
+    ],
+    "fresh_auth_required": [
+      403
+    ],
+    "identity_conflict": [
+      409
+    ],
+    "provider_email_required": [
+      400
+    ],
+    "last_login_method": [
+      409
+    ],
+    "external_identity_invalid": [
+      401
+    ],
+    "provider_unavailable": [
+      503
+    ],
+    "collectible_unavailable": [
+      409
+    ],
+    "acquisition_required": [
+      403
+    ],
+    "not_owned": [
+      403
+    ],
+    "wrong_category": [
+      400
+    ],
+    "unknown_asset": [
+      400
+    ],
+    "direct_unavailable": [
+      409
+    ],
+    "bad_upload": [
+      400
+    ],
+    "account_deleted": [
+      401
+    ],
+    "account_disabled": [
+      401,
+      403
+    ],
+    "invite_slug_invalid": [
+      400
+    ],
+    "invite_slug_needs_members": [
+      403
+    ],
+    "invite_slug_taken": [
+      409
+    ],
+    "media_engine_unavailable": [
+      503
+    ],
+    "allow_and_deny": [
+      400
+    ],
+    "already_migrated": [
+      409
+    ],
+    "answer_required": [
+      400
+    ],
+    "application_required": [
+      403
+    ],
+    "application_open": [
+      409
+    ],
+    "archived": [
+      409
+    ],
+    "bad_clock": [
+      400
+    ],
+    "account_limited": [
+      403
+    ],
+    "bad_request": [
+      400
+    ],
+    "billing_unavailable": [
+      409,
+      503
+    ],
+    "billed_elsewhere": [
+      409
+    ],
+    "no_sparks": [
+      409
+    ],
+    "no_free_sparks": [
+      409
+    ],
+    "message_too_long": [
+      413
+    ],
+    "not_yours": [
+      403
+    ],
+    "onboarding_not_finished": [
+      403
+    ],
+    "start_channel_invalid": [
+      400
+    ],
+    "update_required": [
+      426
+    ],
+    "upload_limit": [
+      413
+    ],
+    "custom_items_limit": [
+      409
+    ],
+    "bot_locked": [
+      403
+    ],
+    "bot_not_here": [
+      404
+    ],
+    "bot_private": [
+      403,
+      409
+    ],
+    "bad_signature": [
+      400,
+      401
+    ],
+    "bad_username": [
+      400
+    ],
+    "banned": [
+      403,
+      409
+    ],
+    "beyond_your_powers": [
+      403
+    ],
+    "call_ended": [
+      410
+    ],
+    "call_failed": [
+      502
+    ],
+    "call_full": [
+      409
+    ],
+    "category_has_permissions": [
+      409
+    ],
+    "challenge_expired": [
+      401
+    ],
+    "channel_not_found": [
+      400
+    ],
+    "channel_not_public": [
+      400
+    ],
+    "confirm_mismatch": [
+      400
+    ],
+    "conflict": [
+      409
+    ],
+    "connection_unavailable": [
+      409
+    ],
+    "creator_name_mismatch": [
+      400
+    ],
+    "delegation_required": [
+      403
+    ],
+    "device_key_retired": [
+      409
+    ],
+    "device_mismatch": [
+      409
+    ],
+    "device_required": [
+      403
+    ],
+    "device_revoked": [
+      401
+    ],
+    "direct_upload_unavailable": [
+      409
+    ],
+    "discord_bot_missing": [
+      409
+    ],
+    "discord_not_allowed": [
+      403
+    ],
+    "discord_not_configured": [
+      409
+    ],
+    "group_add_not_allowed": [
+      403
+    ],
+    "gifs_not_configured": [
+      503
+    ],
+    "gif_provider_unavailable": [
+      502
+    ],
+    "discord_unreachable": [
+      502
+    ],
+    "dm_not_allowed": [
+      403
+    ],
+    "dms_paused": [
+      403
+    ],
+    "email_domain_blocked": [
+      403
+    ],
+    "email_failed": [
+      503
+    ],
+    "email_in_use": [
+      409
+    ],
+    "email_taken": [
+      409
+    ],
+    "email_unavailable": [
+      503
+    ],
+    "email_unverified": [
+      403
+    ],
+    "enrolment_required": [
+      403
+    ],
+    "federated_calls_unavailable": [
+      409
+    ],
+    "feature_disabled": [
+      503
+    ],
+    "federation_backlog": [
+      503
+    ],
+    "federation_disabled": [
+      503
+    ],
+    "forbidden": [
+      403
+    ],
+    "grant_and_deny": [
+      400
+    ],
+    "history_full": [
+      507
+    ],
+    "history_off": [
+      403
+    ],
+    "holder_out_of_reach": [
+      403
+    ],
+    "identity_exists": [
+      409
+    ],
+    "identity_mismatch": [
+      409
+    ],
+    "identity_required": [
+      400
+    ],
+    "internal": [
+      500
+    ],
+    "invalid_certificate": [
+      401
+    ],
+    "invalid_code": [
+      400
+    ],
+    "invalid_credentials": [
+      401
+    ],
+    "invalid_device_proof": [
+      401
+    ],
+    "invalid_invite": [
+      403
+    ],
+    "invalid_policy": [
+      400
+    ],
+    "invalid_proof": [
+      401
+    ],
+    "invalid_recovery": [
+      400
+    ],
+    "interaction_answered": [
+      409
+    ],
+    "interaction_expired": [
+      410
+    ],
+    "invalid_token": [
+      401
+    ],
+    "invalid_ticket": [
+      401
+    ],
+    "invite_expired": [
+      404
+    ],
+    "invite_not_found": [
+      404
+    ],
+    "invite_required": [
+      403
+    ],
+    "invite_revoked": [
+      404
+    ],
+    "invite_unavailable": [
+      404
+    ],
+    "invite_used_up": [
+      404
+    ],
+    "invites_paused": [
+      403
+    ],
+    "account_too_new": [
+      403
+    ],
+    "community_locked": [
+      403
+    ],
+    "community_locked_posting": [
+      403
+    ],
+    "verification_required": [
+      403
+    ],
+    "voice_banned": [
+      403
+    ],
+    "loadtest_disabled": [
+      403
+    ],
+    "loadtest_network": [
+      403
+    ],
+    "loadtest_quota": [
+      429
+    ],
+    "leave_community": [
+      403
+    ],
+    "lobby_channel_invalid": [
+      400
+    ],
+    "lobby_feed_invalid": [
+      400
+    ],
+    "lobby_stale": [
+      409
+    ],
+    "legacy_login_closed": [
+      410
+    ],
+    "legacy_registration_closed": [
+      410
+    ],
+    "legacy_verification_failed": [
+      401
+    ],
+    "limit_reached": [
+      409
+    ],
+    "login_throttled": [
+      429
+    ],
+    "maintenance": [
+      503
+    ],
+    "media_unavailable": [
+      503
+    ],
+    "mention_all_not_allowed": [
+      403
+    ],
+    "mention_all_not_in_dm": [
+      403
+    ],
+    "mention_all_rate_limited": [
+      429
+    ],
+    "migration_closed": [
+      410
+    ],
+    "mode_not_supported": [
+      400
+    ],
+    "not_enough_points": [
+      409
+    ],
+    "not_verified_creator": [
+      403
+    ],
+    "not_in_creator_program": [
+      403
+    ],
+    "no_key_backup": [
+      404
+    ],
+    "not_archived": [
+      409
+    ],
+    "not_available": [
+      404
+    ],
+    "not_for_guests": [
+      409
+    ],
+    "not_found": [
+      404
+    ],
+    "not_restrictable": [
+      400
+    ],
+    "not_uploaded": [
+      409
+    ],
+    "onboarding_off": [
+      409
+    ],
+    "one_answer": [
+      400
+    ],
+    "org_name_taken": [
+      409
+    ],
+    "org_quota_exceeded": [
+      429
+    ],
+    "own_report": [
+      403
+    ],
+    "oauth_invalid_client": [
+      400
+    ],
+    "oauth_invalid_redirect": [
+      400
+    ],
+    "oauth_invalid_request": [
+      400
+    ],
+    "oauth_invalid_scope": [
+      400
+    ],
+    "owner_only": [
+      400
+    ],
+    "subscription_active": [
+      409
+    ],
+    "owns_workspaces": [
+      409
+    ],
+    "passkey_failed": [
+      401
+    ],
+    "passkey_limit": [
+      409
+    ],
+    "passkey_unavailable": [
+      503
+    ],
+    "passkey_unknown": [
+      401
+    ],
+    "promoted_full": [
+      409
+    ],
+    "push_endpoint_invalid": [
+      400
+    ],
+    "push_host_not_allowed": [
+      400
+    ],
+    "push_unavailable": [
+      404
+    ],
+    "quota_exceeded": [
+      429
+    ],
+    "reaction_role_not_givable": [
+      403
+    ],
+    "range_not_satisfiable": [
+      416
+    ],
+    "rate_limited": [
+      429
+    ],
+    "reauth_required": [
+      403
+    ],
+    "recovery_throttled": [
+      429
+    ],
+    "secrets_unavailable": [
+      503
+    ],
+    "synthetic_scope": [
+      403
+    ],
+    "registration_limited": [
+      429
+    ],
+    "registration_closed": [
+      403
+    ],
+    "registration_paused": [
+      429
+    ],
+    "reminder_id_taken": [
+      409
+    ],
+    "reminder_not_found": [
+      404
+    ],
+    "report_limit": [
+      429
+    ],
+    "request_limit": [
+      429
+    ],
+    "request_pending": [
+      403
+    ],
+    "request_rate_limited": [
+      429
+    ],
+    "requests_not_allowed": [
+      403
+    ],
+    "role_name_taken": [
+      409
+    ],
+    "role_not_givable": [
+      400
+    ],
+    "rules_channel": [
+      403
+    ],
+    "rules_channel_invalid": [
+      400
+    ],
+    "rules_not_agreed": [
+      403
+    ],
+    "same_email": [
+      400
+    ],
+    "session_expired": [
+      401
+    ],
+    "session_revoked": [
+      401
+    ],
+    "slowmode": [
+      429
+    ],
+    "stale": [
+      409
+    ],
+    "stale_preferences": [
+      409
+    ],
+    "stale_reminder": [
+      409
+    ],
+    "stale_revision": [
+      409
+    ],
+    "storage_full": [
+      507
+    ],
+    "storage_unavailable": [
+      503
+    ],
+    "template_exists": [
+      409
+    ],
+    "template_not_found": [
+      404
+    ],
+    "text_channel_no_calls": [
+      409
+    ],
+    "ticket_channel_invalid": [
+      400
+    ],
+    "ticket_closed": [
+      409
+    ],
+    "ticket_confirm_required": [
+      400
+    ],
+    "ticket_limit": [
+      409
+    ],
+    "tickets_off": [
+      409
+    ],
+    "timed_out": [
+      403
+    ],
+    "too_large": [
+      413
+    ],
+    "totp_already_on": [
+      409
+    ],
+    "totp_invalid": [
+      400,
+      401
+    ],
+    "totp_locked": [
+      429
+    ],
+    "totp_not_pending": [
+      409
+    ],
+    "totp_required": [
+      401
+    ],
+    "too_many_attempts": [
+      429
+    ],
+    "too_many_devices": [
+      409
+    ],
+    "too_many_reminders": [
+      409
+    ],
+    "too_many_uploads": [
+      429
+    ],
+    "unauthorized": [
+      401
+    ],
+    "unavailable": [
+      503
+    ],
+    "unknown_template": [
+      400
+    ],
+    "upload_corrupt": [
+      400
+    ],
+    "upload_expired": [
+      410
+    ],
+    "upload_incomplete": [
+      409
+    ],
+    "username_recently_changed": [
+      429
+    ],
+    "username_taken": [
+      409
+    ],
+    "voice_channel": [
+      403
+    ],
+    "webhook_channel": [
+      400
+    ],
+    "webhook_limit": [
+      409
+    ],
+    "weak_password": [
+      400
+    ],
+    "workspace_not_found": [
+      404
+    ],
+    "auto_role_has_powers": [
+      400
+    ],
+    "external_emoji_not_allowed": [
+      403
+    ],
+    "gifs_not_allowed": [
+      403
+    ],
+    "headings_not_allowed": [
+      403
+    ],
+    "links_not_allowed": [
+      403
+    ],
+    "manage_messages_required": [
+      403
+    ],
+    "nickname_not_allowed": [
+      403
+    ],
+    "nicknames_not_allowed": [
+      403
+    ],
+    "not_member_safe": [
+      400
+    ],
+    "polls_not_allowed": [
+      403
+    ],
+    "reactions_not_allowed": [
+      403
+    ],
+    "read_only_channel": [
+      403
+    ],
+    "role_mention_not_allowed": [
+      403
+    ],
+    "text_only_channel": [
+      403
+    ],
+    "thread_replies_not_allowed": [
+      403
+    ],
+    "threads_not_allowed": [
+      403
+    ],
+    "voice_messages_not_allowed": [
+      403
+    ],
+    "bots_plus_required": [
+      403
+    ],
+    "bot_role_not_givable": [
+      403
+    ],
+    "official_bot_channel_invalid": [
+      400
+    ],
+    "official_bot_off": [
+      409
+    ],
+    "official_bot_unavailable": [
+      409
+    ],
+    "alerts_unconfigured": [
+      503
+    ],
+    "alerts_source_unknown": [
+      400
+    ],
+    "wordy_not_a_word": [
+      400
+    ],
+    "wordy_finished": [
+      409
+    ],
+    "bad_address": [
+      400
+    ],
+    "bad_body_hash": [
+      401
+    ],
+    "bad_call": [
+      400
+    ],
+    "bad_certificate": [
+      400
+    ],
+    "bad_descriptor": [
+      502
+    ],
+    "bad_domain": [
+      400
+    ],
+    "bad_entry": [
+      400
+    ],
+    "bad_event": [
+      400
+    ],
+    "bad_nonce": [
+      401
+    ],
+    "bad_response_signature": [
+      502
+    ],
+    "bad_server_id": [
+      400
+    ],
+    "bad_time": [
+      401
+    ],
+    "call_conflict": [
+      409
+    ],
+    "conversation_conflict": [
+      409
+    ],
+    "directory_conflict": [
+      409
+    ],
+    "directory_unavailable": [
+      503
+    ],
+    "id_conflict": [
+      409
+    ],
+    "insecure_peer": [
+      502
+    ],
+    "lookup_failed": [
+      502
+    ],
+    "lookup_mismatch": [
+      502
+    ],
+    "not_allowed": [
+      403
+    ],
+    "not_host": [
+      403
+    ],
+    "not_shared": [
+      403
+    ],
+    "not_your_user": [
+      403
+    ],
+    "peer_refused": [
+      403
+    ],
+    "replayed": [
+      401
+    ],
+    "self": [
+      400
+    ],
+    "server_blocked": [
+      403
+    ],
+    "server_not_active": [
+      403,
+      503
+    ],
+    "server_retired": [
+      410
+    ],
+    "server_unresolvable": [
+      502
+    ],
+    "unknown_domain": [
+      404
+    ],
+    "unknown_server": [
+      403
+    ],
+    "unsigned": [
+      401
+    ],
+    "wrong_destination": [
+      421
+    ]
+  }
+}

@@ -1,0 +1,107 @@
+[
+  {
+    "path": "/Volumes/code_files/meldiq_android",
+    "origin": "git@github.com:nahianahmed3832/meldiq.git",
+    "commit": "c111376cab3d732f59b0ed17ecd16b03b309beee",
+    "branch": "internal-beta",
+    "modifiedFiles": 444
+  },
+  {
+    "path": "/Volumes/code_files/meldiq_android-web-passkeys",
+    "origin": "git@github.com:nahianahmed3832/meldiq.git",
+    "commit": "b48436f9531547fe27573aa19755ec11ba7db8cd",
+    "branch": "call-newest-device-wins",
+    "modifiedFiles": 0
+  },
+  {
+    "path": "/Volumes/code_files/meldiq_android_media_release",
+    "origin": "git@github.com:nahianahmed3832/meldiq.git",
+    "commit": "23284bbf8992e721dcf2472883d0031338696212",
+    "branch": "codex/android-media-optimized-default-20261102",
+    "modifiedFiles": 0
+  },
+  {
+    "path": "/Volumes/code_files/meldiq_android_migration_release",
+    "origin": "git@github.com:nahianahmed3832/meldiq.git",
+    "commit": "ee7fa9265f9a9d70fe132e047a632c11417ad055",
+    "branch": "codex/android-supabase-preparation-20261103",
+    "modifiedFiles": 0
+  },
+  {
+    "path": "/Volumes/code_files/meldiq_central_admin",
+    "origin": "git@github.com:nahianahmed3832/meldiq-central-admin.git",
+    "commit": "361ea0f8246f42d15c9134e39241d9dd0bc12268",
+    "branch": "main",
+    "modifiedFiles": 2
+  },
+  {
+    "path": "/Volumes/code_files/meldiq_database_migration",
+    "origin": "git@github.com:nahianahmed3832/meldiq.git",
+    "commit": "d7fd6b312c269c935ef38323f000d41dc108a20e",
+    "branch": "codex/unified-atlas-redis",
+    "modifiedFiles": 47
+  },
+  {
+    "path": "/Volumes/code_files/meldiq_media_defaults",
+    "origin": "git@github.com:nahianahmed3832/meldiq-web.git",
+    "commit": "e0a7f4aadfc11fc7f3188a24ca9ae264b88e1fbe",
+    "branch": "codex/unified-file-picker-20261102",
+    "modifiedFiles": 0
+  },
+  {
+    "path": "/Volumes/code_files/meldiq_media_module",
+    "origin": "git@github.com:nahianahmed3832/meldiq.git",
+    "commit": "82ff757a64c67e7b293462c8f6bf8d619b76c7f1",
+    "branch": "codex/media-sharing-20261102",
+    "modifiedFiles": 0
+  },
+  {
+    "path": "/Volumes/code_files/meldiq_media_release",
+    "origin": "git@github.com:nahianahmed3832/meldiq.git",
+    "commit": "b34d3ee82eeb82cdcce8d2e5af0ad06ead17398d",
+    "branch": "codex/media-production-20261102",
+    "modifiedFiles": 0
+  },
+  {
+    "path": "/Volumes/code_files/meldiq_supabase_migration",
+    "origin": "git@github.com:nahianahmed3832/meldiq.git",
+    "commit": "9eec6c7fed1564f9343c4962626bbff786bc9c01",
+    "branch": "codex/supabase-consolidation-20261102",
+    "modifiedFiles": 0
+  },
+  {
+    "path": "/Volumes/code_files/meldiq_web",
+    "origin": "git@github.com:nahianahmed3832/meldiq-web.git",
+    "commit": "9ded695a192b893fe375e09004b286deed950646",
+    "branch": "floating-redesign",
+    "modifiedFiles": 529
+  },
+  {
+    "path": "/Volumes/code_files/meldiq_web_admin_controls",
+    "origin": "git@github.com:nahianahmed3832/meldiq-web.git",
+    "commit": "96a3f4e4387fa8426ef1c546f62a753821ca5605",
+    "branch": "codex/admin-controls-web-20261102",
+    "modifiedFiles": 0
+  },
+  {
+    "path": "/Volumes/code_files/meldiq_web_media_release",
+    "origin": "git@github.com:nahianahmed3832/meldiq-web.git",
+    "commit": "e8825c727d2b68760bb098a17374a36216051b3f",
+    "branch": "codex/media-production-20261102",
+    "modifiedFiles": 0
+  },
+  {
+    "path": "/Volumes/code_files/meldiq_web_migration_release",
+    "origin": "git@github.com:nahianahmed3832/meldiq-web.git",
+    "commit": "8bda7374ed94a7830077addb98f62c3c5ddfbb90",
+    "branch": "codex/web-supabase-preparation-20261103",
+    "modifiedFiles": 0
+  },
+  {
+    "path": "/Volumes/code_files/meldiq_windows",
+    "origin": "git@github.com:nahianahmed3832/meldiq-windows-app.git",
+    "commit": "HEAD",
+    "branch": "main",
+    "modifiedFiles": 0
+  }
+]

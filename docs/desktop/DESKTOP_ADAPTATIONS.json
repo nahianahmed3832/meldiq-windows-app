@@ -1,0 +1,8 @@
+{
+  "src/desktop.d.ts": "Typed optional native bridge; desktop-only addition.",
+  "src/auth/tokenVault.ts": "OS safeStorage wrapping of session tokens; sealed bytes remain in existing per-account IndexedDB for complete sign-out erasure.",
+  "src/application/updates.ts": "Disable hosted shell updates; mirror existing call/upload/download holds to native updater.",
+  "src/application/webPush.ts": "Use native notifications and disable web service-worker/FCM registration in desktop.",
+  "src/auth/socialAuth.ts": "Reuse existing proof-bound native platform callback in the system browser; no new account or auth backend.",
+  "src/ui/auth/SocialSignIn.tsx": "Avoid provider popup inside Electron when native browser sign-in is available."
+}

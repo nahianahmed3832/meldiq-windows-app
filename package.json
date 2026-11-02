@@ -1,0 +1,61 @@
+{
+  "name": "meldiq-desktop",
+  "productName": "Meldiq",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Meldiq Desktop — the existing Meldiq client packaged locally with native desktop integrations",
+  "author": "MD.NAHIAN AHMED <254077813+nahianahmed3832@users.noreply.github.com>",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:nahianahmed3832/meldiq-windows-app.git"
+  },
+  "type": "module",
+  "main": "dist/main/main.cjs",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "workspaces": [
+    "packages/web"
+  ],
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "start": "electron .",
+    "dev": "npm run build && electron .",
+    "typecheck": "tsc --noEmit && npm run typecheck --workspace packages/web",
+    "lint": "eslint desktop scripts",
+    "test": "vitest run --config desktop/vitest.config.ts",
+    "test:web": "npm test --workspace packages/web",
+    "test:smoke": "node scripts/smoke.mjs",
+    "test:security": "node scripts/verify-package.mjs",
+    "package:win:dev": "npm run build && electron-builder --config desktop/builder.dev.cjs --win nsis --x64 --publish never",
+    "package:win": "node scripts/package-release.mjs",
+    "package:mac:dev": "npm run build && electron-builder --config desktop/builder.dev.cjs --mac dir --publish never",
+    "benchmark": "node scripts/benchmark.mjs",
+    "verify:snapshot": "node scripts/verify-snapshot.mjs"
+  },
+  "dependencies": {
+    "electron-updater": "6.8.11"
+  },
+  "overrides": {
+    "@grpc/grpc-js": "1.14.7"
+  },
+  "devDependencies": {
+    "@electron/fuses": "2.1.3",
+    "@eslint/js": "10.0.1",
+    "@grpc/grpc-js": "1.14.7",
+    "@playwright/test": "1.64.1",
+    "@types/node": "22.20.5",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "electron": "45.2.1",
+    "electron-builder": "26.18.0",
+    "esbuild": "0.25.12",
+    "eslint": "10.13.0",
+    "eslint-plugin-react-hooks": "7.1.1",
+    "globals": "17.13.0",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.71.2",
+    "vite": "7.3.7",
+    "vitest": "4.1.12"
+  }
+}

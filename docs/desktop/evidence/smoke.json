@@ -1,0 +1,16 @@
+{
+  "platform": "darwin",
+  "arch": "arm64",
+  "electron": "0.1.0",
+  "offlineSmokeMs": 896,
+  "checks": [
+    "local renderer with network blocked",
+    "sandbox and context isolation",
+    "untrusted IPC rejection",
+    "clear cache preserves account storage",
+    "economy effects",
+    "native settings"
+  ],
+  "status": "passed",
+  "windowsInstallation": "not tested by this smoke"
+}

@@ -1,0 +1,17 @@
+import { execFileSync } from 'node:child_process';
+import fs from 'node:fs';
+const required = ['MELDIQ_SIGNING_PUBLISHER', 'MELDIQ_RELEASE_APPROVED'];
+for (const key of required) if (!process.env[key]) throw new Error(`Missing required release setting: ${key}`);
+if (process.env.MELDIQ_RELEASE_APPROVED !== '1') throw new Error('Release acceptance has not been approved');
+if (!process.env.CSC_LINK && !process.env.WIN_CSC_LINK) throw new Error('Provide an actual signing certificate through protected CI');
+if (!process.env.CSC_KEY_PASSWORD && !process.env.WIN_CSC_KEY_PASSWORD) throw new Error('Missing signing certificate password');
+if (process.platform !== 'win32') throw new Error('Signed Windows release packaging must run on Windows');
+if (execFileSync('git', ['status', '--porcelain'], { encoding: 'utf8' }).trim()) throw new Error('Release builds require a clean source checkout');
+const version = JSON.parse(fs.readFileSync('package.json', 'utf8')).version;
+const channel = process.env.BUILD_CHANNEL ?? 'stable';
+if (channel === 'stable' && version.includes('-')) throw new Error('Stable builds require a stable version number');
+if (!fs.existsSync('docs/desktop/RELEASE_ACCEPTANCE.json')) throw new Error('Missing signed-off release acceptance evidence');
+const acceptance = JSON.parse(fs.readFileSync('docs/desktop/RELEASE_ACCEPTANCE.json', 'utf8'));
+for (const key of ['featureParity', 'windowsInstall', 'windowsUpgrade', 'signedUpdate', 'hardwareBenchmarks', 'backendCompatibility', 'securityReview']) if (acceptance[key] !== true) throw new Error(`Release acceptance pending: ${key}`);
+if (acceptance.commit !== execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim()) throw new Error('Release acceptance must reference this source commit');
+console.log('Release prerequisites validated. Packaging still verifies actual signatures.');

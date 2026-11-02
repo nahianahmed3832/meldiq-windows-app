@@ -1,0 +1,13 @@
+import fs from 'node:fs/promises';
+import assert from 'node:assert/strict';
+const files = JSON.parse(await fs.readFile('dist/renderer/asset-manifest.json', 'utf8'));
+assert(files.includes('index.html'));
+assert(!files.some(n => /(?:\.map$|^sw\.js$|\.env|^social-auth-callback)/.test(n)));
+const html = await fs.readFile('dist/renderer/index.html', 'utf8');
+assert(!/<script[^>]+src=["']https?:/.test(html), 'Application scripts must be packaged locally');
+const main = await fs.readFile('dist/main/main.cjs', 'utf8');
+assert(main.includes('contextIsolation: true') && main.includes('nodeIntegration: false') && main.includes('sandbox: true'));
+assert(!main.includes('webSecurity: false'));
+const config = JSON.parse(await fs.readFile('dist/runtime-config.json', 'utf8'));
+assert.equal(config.apiOrigin, 'https://web.meldiq.app');
+console.log(`Package checks passed: ${files.length} local renderer assets, no service worker shell or source maps.`);

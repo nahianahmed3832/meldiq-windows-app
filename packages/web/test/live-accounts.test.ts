@@ -1,0 +1,298 @@
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { z } from "zod";
+import type { AccountSessionGrant } from "../src/api/accountSchemas";
+import { ApiClient } from "../src/api/client";
+import { AccountApi } from "../src/auth/accountApi";
+import { createIdentity, enrollWithSeed, SetupError } from "../src/auth/deviceSetup";
+import { SetupCredentials } from "../src/auth/setupCredentials";
+import { TokenVault } from "../src/auth/tokenVault";
+import { accountSelection, rememberSelection } from "../src/sync/workspaceSelection";
+import { createWorkspace, requestId } from "../src/sync/workspaces";
+import { encodeRecoveryCode, decodeRecoveryCode } from "../src/crypto/recoveryCode";
+import type { DeviceRecord } from "../src/model/types";
+import type { LocalStore } from "../src/store/db";
+import { pollLinkApproval, startLink } from "../src/sync/session";
+import { tokensOf } from "../src/auth/accountSession";
+import { type AccountPhone, accountPhone, approveLink, freshStore, type Mailbox, mailbox, type Phone, recoveryEmailCode, type Server, startBrowser, startServer, until } from "./support/live";
+
+/**
+ * Orbit 2.0 accounts in the browser (docs/ORBIT_2_ARCHITECTURE §2–§5) against the real server: sign-up with an emailed
+ * code, the first device making the identity, more browsers set up with the recovery key or approved by the phone,
+ * session renewal, a session ended elsewhere, and moving a pre-2.0 account. Reference clients play the phones.
+ */
+let server: Server;
+let mail: Mailbox;
+const PASSWORD = "a long enough password";
+let counter = 0;
+const email = (n: string) => `${n}.${Date.now().toString(36)}${++counter}@example.test`;
+
+beforeAll(async () => {
+  mail = await mailbox();
+  server = await startServer({}, { mailer: mail });
+});
+afterAll(async () => server?.close());
+
+const anon = () => AccountApi.anonymous(server.baseUrl);
+
+async function signUp(name: string): Promise<{ address: string; grant: AccountSessionGrant }> {
+  const address = email(name);
+  await anon().register(name, address, PASSWORD);
+  await anon().verifyEmail(address, mail.verifyCode(address), PASSWORD);
+  return { address, grant: await anon().login(address, PASSWORD, "Meldiq Web · Test") };
+}
+
+/** What App does when setup finishes: keep the device and its session, then start syncing. */
+async function keepAndStart(device: DeviceRecord, grant: AccountSessionGrant, store?: LocalStore) {
+  const s = store ?? (await freshStore());
+  await s.saveDevice(device);
+  await new TokenVault(s).save(tokensOf(grant));
+  return startBrowser(server, device, s, grant);
+}
+
+describe("signing up in the browser", () => {
+  it("rejects sign-in before the email is verified, then the first device makes the identity and messages work", async () => {
+    const address = email("ada");
+    await anon().register("Ada", address, PASSWORD);
+    await expect(anon().login(address, PASSWORD, "web")).rejects.toMatchObject({ code: "email_unverified" });
+    await expect(anon().verifyEmail(address, "000000", PASSWORD)).rejects.toMatchObject({ code: "invalid_code" });
+    await anon().verifyEmail(address, mail.verifyCode(address), PASSWORD);
+
+    const grant = await anon().login(address, PASSWORD, "Meldiq Web · Test");
+    expect(grant.account.identity).toBeNull();
+    const creds = new SetupCredentials(server.baseUrl, grant);
+    const { device, recoveryCode } = await createIdentity(creds.accounts, grant.account, "Meldiq Web · Test");
+    expect(device.account).toEqual({ id: grant.account.id, email: address });
+    expect(recoveryCode).toMatch(/^[A-Z2-9]{4}(-[A-Z2-9]{1,4})+$/);
+    // The recovery key is the identity: it derives the public key the server now holds.
+    const me = await new AccountApi(new ApiClient(server.baseUrl, { token: () => creds.grant.accessToken, reauthenticate: async () => false })).me();
+    expect(me.account.identity?.identityKey).toBe(device.identityKey);
+
+    const { engine } = await keepAndStart(device, creds.grant);
+    const bob = await server.client("bob", "Bob");
+    await bob.connect();
+    const dm = (await bob.req("POST", "/v1/conversations/dm", { userId: device.userId })).conversation.id;
+    await bob.send(dm, { type: "text", text: "hello Ada" });
+    await until(async () => (await engine.conversationMessages(dm)).some((m) => m.text === "hello Ada"), 8000, "message from Bob");
+    const id = await engine.sendText(dm, "hi Bob, from the web");
+    await bob.waitFor(() => bob.received.find((m) => m.messageId === id));
+    engine.stop();
+  });
+});
+
+describe("more browsers on the same account", () => {
+  let address: string;
+  let recovery: string;
+  let first: Awaited<ReturnType<typeof keepAndStart>>;
+
+  beforeAll(async () => {
+    const s = await signUp("grace");
+    address = s.address;
+    const creds = new SetupCredentials(server.baseUrl, s.grant);
+    const made = await createIdentity(creds.accounts, s.grant.account, "Browser one");
+    recovery = made.recoveryCode;
+    first = await keepAndStart(made.device, creds.grant);
+  });
+  afterAll(() => first?.engine.stop());
+
+  it("a second browser set up with the recovery key gets its own device, and both see the same conversation", async () => {
+    const grant = await anon().login(address, PASSWORD, "Browser two");
+    const creds = new SetupCredentials(server.baseUrl, grant);
+    const seed = (await decodeRecoveryCode(recovery))!;
+    const { device } = await enrollWithSeed(creds.accounts, grant.account, seed, "Browser two");
+    expect(device.userId).toBe(first.engine.device.userId);
+    expect(device.deviceId).not.toBe(first.engine.device.deviceId);
+    const second = await keepAndStart(device, creds.grant);
+
+    const carol = await server.client("carol", "Carol");
+    await carol.connect();
+    const dm = (await carol.req("POST", "/v1/conversations/dm", { userId: device.userId })).conversation.id;
+    await carol.send(dm, { type: "text", text: "to both browsers" });
+    for (const e of [first.engine, second.engine]) await until(async () => (await e.conversationMessages(dm)).some((m) => m.text === "to both browsers"), 8000, "message in each browser");
+    // A message sent from one browser shows in the other as the account's own.
+    const id = await second.engine.sendText(dm, "sent from browser two");
+    await until(async () => (await first.engine.store.message(id))?.outgoing === true, 8000, "own message in browser one");
+    second.engine.stop();
+  });
+
+  it("refuses a recovery key from another account before sending anything", async () => {
+    const grant = await anon().login(address, PASSWORD, "Browser three");
+    const other = new Uint8Array(32).fill(7);
+    await expect(enrollWithSeed(new SetupCredentials(server.baseUrl, grant).accounts, grant.account, other, "Browser three")).rejects.toBeInstanceOf(SetupError);
+    expect(await decodeRecoveryCode((await encodeRecoveryCode(other)).slice(0, -3))).toBeNull();
+  });
+
+  it("a setup session removed on another device ends setup with one clear outcome, and signing in again finishes it", async () => {
+    // Production, 2026-10-19: the browser signed in, then the session was removed in the phone's session list before
+    // setup finished; every recovery-key or approval attempt after that reused the dead session and failed with 401.
+    const grant = await anon().login(address, PASSWORD, "Browser four");
+    const ends: string[] = [];
+    const creds = new SetupCredentials(server.baseUrl, grant, (why) => ends.push(why));
+    const phone = await anon().login(address, PASSWORD, "Phone");
+    await new AccountApi(new ApiClient(server.baseUrl, { token: () => phone.accessToken, reauthenticate: async () => false })).endSession(grant.session.id);
+
+    const seed = (await decodeRecoveryCode(recovery))!;
+    await expect(enrollWithSeed(creds.accounts, grant.account, seed, "Browser four")).rejects.toMatchObject({ status: 401 });
+    expect(ends).toEqual(["session_ended"]);
+    expect(creds.endedBecause).toBe("session_ended");
+    // Nothing more is tried with the dead session: a second attempt is refused here without another refresh.
+    await expect(enrollWithSeed(creds.accounts, grant.account, seed, "Browser four")).rejects.toMatchObject({ status: 401 });
+    expect(ends).toEqual(["session_ended"]);
+    // No device was added for it.
+    const devices = (await first.engine.api.json("GET", "/v1/devices", z.object({ devices: z.array(z.object({ name: z.string() })) }))).devices;
+    expect(devices.map((d) => d.name)).not.toContain("Browser four");
+
+    // Signing in again (what the screen asks for) sets the browser up with the same recovery key.
+    const again = await anon().login(address, PASSWORD, "Browser four");
+    const { device } = await enrollWithSeed(new SetupCredentials(server.baseUrl, again).accounts, again.account, seed, "Browser four");
+    expect(device.userId).toBe(first.engine.device.userId);
+  });
+
+  it("the selected workspace follows the account: saved from this browser, seen by its other devices", async () => {
+    const org = await createWorkspace(first.engine, "Grace & Co", null, requestId());
+    await first.engine.refreshAll();
+    await rememberSelection(first.engine, org.id);
+    expect(await accountSelection(first.engine)).toBe(org.id);
+    // Another device of the account (here a fresh sign-in) reads the same selection.
+    const phone = await anon().login(address, PASSWORD, "Phone");
+    const other = new AccountApi(new ApiClient(server.baseUrl, { token: () => phone.accessToken, reauthenticate: async () => false }));
+    expect((await other.workspaces()).selectedWorkspaceId).toBe(org.id);
+    // Choosing no organisation is the account's personal workspace; the browser shows none.
+    await rememberSelection(first.engine, null);
+    expect((await other.workspaces()).selectedWorkspaceId).toBe("personal");
+    expect(await accountSelection(first.engine)).toBeNull();
+  });
+
+  it("keeps working across access-token renewals: the stored session is refreshed, never replaced", async () => {
+    const before = (await new TokenVault(first.engine.store).load())!;
+    // The access token runs out (15 minutes in production): expire it on the server.
+    server.ctx.db.prepare("UPDATE account_sessions SET access_expires_at = ? WHERE id = ?").run(Date.now() - 1, before.sessionId);
+    const me = await first.engine.api.json("GET", "/v1/users/me", z.object({ user: z.object({ id: z.string() }) }));
+    expect(me.user.id).toBe(first.engine.device.userId);
+    const after = (await new TokenVault(first.engine.store).load())!;
+    expect(after.sessionId).toBe(before.sessionId);
+    expect(after.refreshToken).not.toBe(before.refreshToken);
+    expect(after.accessToken).not.toBe(before.accessToken);
+    expect(first.engine.state.get().phase).toBe("ready");
+  });
+
+  it("a session signed out from another device asks for the password again, keeps local data, and continues", async () => {
+    const sessionId = (await new TokenVault(first.engine.store).load())!.sessionId;
+    const other = await anon().login(address, PASSWORD, "elsewhere");
+    await new AccountApi(new ApiClient(server.baseUrl, { token: () => other.accessToken, reauthenticate: async () => false })).endSession(sessionId);
+    // The next request (or reconnect) finds the session gone.
+    first.engine.reconnect();
+    await first.engine.api.call("GET", "/v1/users/me").catch(() => undefined);
+    await until(() => first.engine.state.get().phase === "reauth", 8000, "password prompt");
+    await expect(first.engine.signInAgain("wrong password!")).rejects.toMatchObject({ code: "invalid_credentials" });
+    await first.engine.signInAgain(PASSWORD);
+    expect(first.engine.state.get().phase).toBe("ready");
+    await until(() => first.engine.state.get().connection === "online", 8000, "back online");
+    expect((await new TokenVault(first.engine.store).load())?.sessionId).not.toBe(sessionId);
+  });
+});
+
+describe("approving a browser from the phone (Orbit 2.0)", () => {
+  let phone: AccountPhone;
+  beforeAll(async () => {
+    phone = await accountPhone(server, mail, "linus");
+  });
+
+  it("the phone's approval sets up the browser on the same account; another account's approval is refused", async () => {
+    const grant = await anon().login(phone.email, phone.password, "Meldiq Web · Approved");
+    const link = await startLink(server.baseUrl, "Meldiq Web · Approved");
+    await approveLink(phone as Phone, link.code);
+    const approval = await until(async () => {
+      const r = await pollLinkApproval(server.baseUrl, link);
+      return r.status === "approved" ? r : null;
+    });
+    const { device } = await enrollWithSeed(new SetupCredentials(server.baseUrl, grant).accounts, grant.account, approval.seed, "Meldiq Web · Approved", link.keys);
+    approval.seed.fill(0);
+    expect(device.userId).toBe(phone.userId);
+    const { engine } = await keepAndStart(device, grant);
+    await phone.connect();
+    const dave = await server.client("dave", "Dave");
+    const dm = (await phone.req("POST", "/v1/conversations/dm", { userId: dave.userId })).conversation.id;
+    await phone.send(dm, { type: "text", text: "sent on the phone" });
+    await until(async () => (await engine.conversationMessages(dm)).some((m) => m.text === "sent on the phone" && m.outgoing), 8000, "phone's own message");
+    engine.stop();
+
+    // An approval from a different account's phone can't set up this account's browser.
+    const stranger = await accountPhone(server, mail, "stranger");
+    const link2 = await startLink(server.baseUrl, "Meldiq Web · Wrong");
+    await approveLink(stranger as Phone, link2.code);
+    const wrong = await until(async () => {
+      const r = await pollLinkApproval(server.baseUrl, link2);
+      return r.status === "approved" ? r : null;
+    });
+    const grant2 = await anon().login(phone.email, phone.password, "Meldiq Web · Wrong");
+    await expect(enrollWithSeed(new SetupCredentials(server.baseUrl, grant2).accounts, grant2.account, wrong.seed, "Meldiq Web · Wrong", link2.keys)).rejects.toBeInstanceOf(SetupError);
+  });
+});
+
+describe("account recovery codes (lost access to the email address)", () => {
+  const NEW_PASSWORD = "another long enough password";
+  const authed = (grant: AccountSessionGrant) => new AccountApi(new ApiClient(server.baseUrl, { token: () => grant.accessToken, reauthenticate: async () => false }));
+
+  it("recovers the account to a new address with one code; the set-up browser keeps its keys and signs in with the new address", async () => {
+    const s = await signUp("rosa");
+    const made = await createIdentity(new SetupCredentials(server.baseUrl, s.grant).accounts, s.grant.account, "Browser R");
+    const browser = await keepAndStart(made.device, s.grant);
+    try {
+      // Codes: counts only are readable; making them needs the password; ten, shown once.
+      const api = authed(s.grant);
+      expect(await api.recoveryCodesStatus()).toMatchObject({ remaining: 0, total: 0 });
+      await expect(api.makeRecoveryCodes("not my password!")).rejects.toMatchObject({ status: 401 });
+      const { codes } = await api.makeRecoveryCodes(PASSWORD);
+      expect(codes).toHaveLength(10);
+      expect(codes[0]).toMatch(/^[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/);
+      expect(await api.recoveryCodesStatus()).toMatchObject({ remaining: 10, total: 10 });
+
+      // Wrong code, unknown address: the same answer.
+      const newAddress = email("rosa.new");
+      await expect(anon().recoverStart(s.address, "AAAA-AAAA-AAAA", newAddress)).rejects.toMatchObject({ code: "invalid_recovery" });
+      await expect(anon().recoverStart(email("nobody"), codes[0], newAddress)).rejects.toMatchObject({ code: "invalid_recovery" });
+
+      // Typed in lower case without dashes: still the code. It's used up by this step.
+      const started = await anon().recoverStart(s.address, codes[0].replace(/-/g, "").toLowerCase(), newAddress);
+      expect(started.email).toBe(newAddress);
+      await expect(anon().recoverStart(s.address, codes[0], email("rosa.other"))).rejects.toMatchObject({ code: "invalid_recovery" });
+
+      await expect(anon().recoverComplete(started.ticket, "000000", NEW_PASSWORD)).rejects.toMatchObject({ code: "invalid_code" });
+      const done = await anon().recoverComplete(started.ticket, recoveryEmailCode(mail, newAddress), NEW_PASSWORD);
+      expect(done).toEqual({ email: newAddress, remainingCodes: 9 });
+
+      // Every session of the account was signed out; the old address and password no longer sign in.
+      await expect(anon().refresh(s.grant.refreshToken)).rejects.toMatchObject({ status: 401 });
+      await expect(anon().login(s.address, PASSWORD, "web")).rejects.toMatchObject({ status: 401 });
+
+      // The set-up browser: its stored address is the old one, so it signs in again with the new one (and its device key).
+      const engine = browser.engine;
+      await engine.api.call("GET", "/v1/users/me").catch(() => undefined);
+      await until(() => engine.state.get().phase === "reauth", 8000, "password prompt");
+      await expect(engine.signInAgain(NEW_PASSWORD)).rejects.toMatchObject({ status: 401 });
+      await engine.signInAgain(NEW_PASSWORD, newAddress);
+      expect(engine.state.get().phase).toBe("ready");
+      expect(engine.device.account?.email).toBe(newAddress);
+      expect((await engine.store.device())?.account?.email).toBe(newAddress);
+      // Account recovery didn't touch the encryption identity: same user, same device, messages still decrypt.
+      expect(engine.device.deviceId).toBe(made.device.deviceId);
+      const carol = await server.client("carol2", "Carol");
+      await carol.connect();
+      const dm = (await carol.req("POST", "/v1/conversations/dm", { userId: engine.device.userId })).conversation.id;
+      await carol.send(dm, { type: "text", text: "after recovery" });
+      await until(async () => (await engine.conversationMessages(dm)).some((m) => m.text === "after recovery"), 8000, "message after recovery");
+    } finally {
+      browser.engine.stop();
+    }
+  });
+
+  it("revoking needs the password and leaves no usable codes", async () => {
+    const s = await signUp("sam");
+    const api = authed(s.grant);
+    const { codes } = await api.makeRecoveryCodes(PASSWORD);
+    await expect(api.revokeRecoveryCodes("not my password!")).rejects.toMatchObject({ status: 401 });
+    await api.revokeRecoveryCodes(PASSWORD);
+    expect((await api.recoveryCodesStatus()).remaining).toBe(0);
+    await expect(anon().recoverStart(s.address, codes[1], email("sam.new"))).rejects.toMatchObject({ code: "invalid_recovery" });
+  });
+});

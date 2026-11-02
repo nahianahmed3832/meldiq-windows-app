@@ -1,0 +1,142 @@
+import type { RichContent } from "../model/types";
+import type { Poll } from "../protocol/payload";
+
+/**
+ * Polls (docs/RICH_MESSAGES.md › Polls; android data/model/PollRules.kt, the same rules). A poll and its votes come from
+ * other devices, so everything is bounded and checked; a vote counts only for options the poll really has. Votes travel
+ * as end-to-end encrypted "vote" controls; only the poll's own sender can close it.
+ */
+export const MAX_QUESTION = 300;
+export const MAX_OPTION = 100;
+export const MIN_OPTIONS = 2;
+export const MAX_OPTIONS = 10;
+const OPTION_ID = /^[A-Za-z0-9_-]{1,16}$/;
+const squash = (s: string) => s.replace(/\s+/g, " ").trim();
+
+/** A received or composed poll, cleaned; null when it isn't usable (no question, fewer than two options). */
+export function cleanPoll(p: Poll | null | undefined): Poll | null {
+  if (!p) return null;
+  const question = squash(p.question).slice(0, MAX_QUESTION);
+  if (!question) return null;
+  const seen = new Set<string>();
+  const options = p.options
+    .filter((o) => OPTION_ID.test(o.id) && !seen.has(o.id) && (seen.add(o.id), true))
+    .map((o) => ({ id: o.id, text: squash(o.text).slice(0, MAX_OPTION), ...(cleanEmoji(o.emoji) ? { emoji: cleanEmoji(o.emoji)! } : {}) }))
+    .filter((o) => o.text)
+    .slice(0, MAX_OPTIONS);
+  if (options.length < MIN_OPTIONS) return null;
+  const endsAt = typeof p.endsAt === "number" && Number.isSafeInteger(p.endsAt) && p.endsAt > 0 ? p.endsAt : undefined;
+  return { question, options, multi: p.multi === true, ...(endsAt ? { endsAt } : {}) };
+}
+
+/** An answer's emoji (Android batch B8): no letters or digits, at most 16 characters; undefined otherwise. */
+export function cleanEmoji(e: string | null | undefined): string | undefined {
+  const t = e?.trim();
+  return t && t.length <= 16 && !/[\p{L}\p{N}]/u.test(t) ? t : undefined;
+}
+
+/** Closed by its creator, or past its end time. */
+export function pollClosed(rich: RichContent, now: number): boolean {
+  return rich.pollClosed === true || (rich.poll?.endsAt != null && now >= rich.poll.endsAt);
+}
+
+/** A poll from the composer's fields: blank options dropped, ids "o1", "o2", … in order; null when it isn't valid. */
+export function duplicatePollAnswers(options: readonly string[]): boolean {
+  const answers = options.map((o) => squash(o).toLowerCase()).filter(Boolean);
+  return new Set(answers).size !== answers.length;
+}
+
+export function composePoll(question: string, options: readonly string[], multi: boolean, endsAt?: number): Poll | null {
+  if (duplicatePollAnswers(options)) return null;
+  return cleanPoll({
+    question,
+    options: options
+      .map((t) => t.trim())
+      .filter(Boolean)
+      .map((text, i) => ({ id: `o${i + 1}`, text })),
+    multi,
+    ...(endsAt ? { endsAt } : {}),
+  });
+}
+
+/** [voter]'s vote: their earlier choices replaced (unknown options dropped, one unless several are allowed; empty takes it back). */
+export function applyVote(rich: RichContent, voter: string, choices: readonly string[], at?: number, anonymous?: boolean): RichContent {
+  const poll = rich.poll;
+  if (!poll || rich.pollClosed) return rich;
+  // Votes the server accepted after the poll ended don't count (every device uses the server's time).
+  if (poll.endsAt != null && at != null && at >= poll.endsAt) return rich;
+  const valid = new Set(poll.options.map((o) => o.id));
+  const unique = [...new Set(choices.filter((c) => valid.has(c)))];
+  const picked = poll.multi ? unique : unique.slice(0, 1);
+  const votes = { ...(rich.votes ?? {}) };
+  if (picked.length) votes[voter] = picked;
+  else delete votes[voter];
+  const votePrivacy = { ...rich.votePrivacy };
+  // Old clients omit the field: keep an existing hidden-name preference instead of silently exposing it.
+  if (picked.length && (anonymous ?? votePrivacy[voter]) === true) votePrivacy[voter] = true;
+  else delete votePrivacy[voter];
+  return { ...rich, votes, votePrivacy: Object.keys(votePrivacy).length ? votePrivacy : undefined };
+}
+
+/** Closed by its creator: only the poll's own sender can close it. */
+export function applyClose(rich: RichContent, pollSender: string, closer: string): RichContent {
+  return !rich.poll || pollSender !== closer ? rich : { ...rich, pollClosed: true };
+}
+
+/** Votes per option (every option listed, zero included), in the poll's order. */
+export function tally(rich: RichContent): { id: string; text: string; emoji?: string; votes: number }[] {
+  const counts = new Map<string, number>();
+  for (const [, choices] of ballots(rich)) for (const choice of choices) counts.set(choice, (counts.get(choice) ?? 0) + 1);
+  return (rich.poll?.options ?? []).map((o) => ({ ...o, votes: counts.get(o.id) ?? 0 }));
+}
+
+/** How many people voted (not how many choices). */
+export function voters(rich: RichContent): number {
+  return ballots(rich).length;
+}
+
+function ballots(rich: RichContent): [string, string[]][] {
+  const valid = new Set(rich.poll?.options.map((o) => o.id) ?? []);
+  return Object.entries(rich.votes ?? {}).flatMap(([id, choices]) => {
+    const clean = [...new Set(choices.filter((choice) => valid.has(choice)))];
+    const picked = rich.poll?.multi ? clean : clean.slice(0, 1);
+    return picked.length ? [[id, picked] as [string, string[]]] : [];
+  });
+}
+
+/** Percent of people who voted, including for multiple-answer polls. */
+export function pollPercentage(count: number, total: number): number {
+  return total > 0 ? Math.min(100, Math.max(0, Math.round((count / total) * 100))) : 0;
+}
+
+export interface PollVoter {
+  key: string;
+  userId: string | null;
+  name: string;
+  choices: string[];
+  anonymous: boolean;
+}
+
+/** Privacy boundary for the voter-list UI: hidden records contain no user ID and never resolve a name. */
+export function pollVoterList(rich: RichContent, nameOf: (id: string) => string, optionId: string | null = null): PollVoter[] {
+  const options = new Map(rich.poll?.options.map((o) => [o.id, o.text]) ?? []);
+  let hidden = 0;
+  return ballots(rich)
+    .filter(([, choices]) => !optionId || choices.includes(optionId))
+    .map(([id, choices]) => {
+      const anonymous = rich.votePrivacy?.[id] === true;
+      return {
+        key: anonymous ? `anonymous-${hidden++}` : `member-${id}`,
+        userId: anonymous ? null : id,
+        name: anonymous ? "Anonymous voter" : nameOf(id),
+        choices: choices.map((choice) => options.get(choice)!),
+        anonymous,
+      };
+    })
+    .sort((a, b) => Number(a.anonymous) - Number(b.anonymous) || (a.anonymous ? 0 : a.name.localeCompare(b.name)));
+}
+
+/** The text older apps and notifications show. */
+export function pollFallback(p: Poll): string {
+  return `📊 ${p.question}\n${p.options.map((o, i) => `${i + 1}. ${o.emoji ? `${o.emoji} ` : ""}${o.text}`).join("\n")}`;
+}

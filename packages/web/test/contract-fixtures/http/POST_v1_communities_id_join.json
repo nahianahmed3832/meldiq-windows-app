@@ -1,0 +1,29 @@
+{
+  "org": {
+    "id": "o_6TzxLlbojXEcAjOvbhonbA",
+    "name": "Open Lab",
+    "slug": "open-lab",
+    "description": null,
+    "myRole": "MEMBER",
+    "memberCount": 2,
+    "createdAt": 1793109286688,
+    "photoRev": null,
+    "accent": null,
+    "bannerRev": null,
+    "tag": null,
+    "guestsAllowed": true,
+    "guestMaxDays": null,
+    "kind": "community",
+    "visibility": "public",
+    "joinPolicy": "open",
+    "rules": null,
+    "invitesPausedUntil": null,
+    "dmsPausedUntil": null,
+    "joinQuestions": null,
+    "guide": null,
+    "onboarding": false,
+    "activityAlerts": true,
+    "activityAlert": null
+  },
+  "alreadyMember": false
+}
