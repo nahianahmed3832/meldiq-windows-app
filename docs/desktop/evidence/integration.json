@@ -1,0 +1,33 @@
+{
+  "recordedAt": "2026-11-02T17:07:40.410Z",
+  "platform": "darwin",
+  "backendCommit": "b34d3ee82eeb82cdcce8d2e5af0ad06ead17398d",
+  "environment": "isolated local existing Meldiq backend source via tsx; disposable SQLite and file mail; no cloud credentials",
+  "passed": [
+    "real email/password sign-in",
+    "device/encryption enrollment",
+    "OS-sealed session restoration after reload",
+    "receive message from reference protocol peer",
+    "send response to reference peer"
+  ],
+  "observedCompatibilityIssues": [
+    {
+      "path": "/v2/billing/promotions/preference",
+      "status": 404
+    },
+    {
+      "path": "/v2/billing/promotions/preference",
+      "status": 404
+    }
+  ],
+  "notTested": [
+    "production auth",
+    "physical Android",
+    "S3",
+    "actual voice/video media",
+    "screen sharing",
+    "payments",
+    "Windows installation",
+    "complete feature parity"
+  ]
+}

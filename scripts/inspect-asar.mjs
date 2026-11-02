@@ -1,0 +1,11 @@
+import fs from 'node:fs';
+import { createRequire } from 'node:module';
+import assert from 'node:assert/strict';
+const { listPackage } = createRequire(import.meta.url)('@electron/asar');
+const filename = 'release/win-unpacked/resources/app.asar';
+assert(fs.existsSync(filename), 'Packaged Windows ASAR must exist');
+const files = listPackage(filename).map(p => p.replaceAll('\\','/'));
+assert(files.some(p => p.endsWith('/dist/renderer/index.html')));
+assert(!files.some(p => /\/node_modules\/(next|firebase|@grpc)(\/|$)/.test(p)), 'Server/web-only dependencies must not be shipped in the Electron runtime');
+assert(!files.some(p => /\.(pfx|p12|pem|key|map)$/.test(p) || /\/.env(?:\.|$)/.test(p)), 'No secrets or source maps in the packaged application');
+console.log(`Windows ASAR inspected: ${files.length} entries; only desktop runtime dependencies are packaged.`);

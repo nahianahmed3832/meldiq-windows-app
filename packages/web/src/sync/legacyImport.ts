@@ -93,7 +93,7 @@ export async function importLegacyHistory(ctx: EngineContext): Promise<number> {
   // Everything was accepted: the old copies on this computer go, the sign-in stays.
   const tx = legacy.transaction(["messages", "conversations", "outbox", "pins", "held", "pendingControls"], "readwrite");
   await Promise.all([...(["messages", "conversations", "outbox", "pins", "held", "pendingControls"] as const).map((s) => tx.objectStore(s).clear()), tx.done]);
-  const keys = (await legacy.getAllKeys("kv")).map(String).filter((k) => !["device", "accountTokenKey", "accountTokens"].includes(k));
+  const keys = (await legacy.getAllKeys("kv")).map(String).filter((k) => !["device", "accountTokenKey", "accountTokens", "desktopSealedTokens"].includes(k));
   for (const k of keys) await legacy.delete("kv", k);
   // Files earlier versions kept between visits.
   await forgetAllMedia();

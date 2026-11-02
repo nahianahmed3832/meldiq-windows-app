@@ -5,5 +5,7 @@
   "src/application/webPush.ts": "Use native notifications and disable web service-worker/FCM registration in desktop.",
   "src/auth/socialAuth.ts": "Reuse existing proof-bound native platform callback in the system browser; no new account or auth backend.",
   "src/ui/auth/SocialSignIn.tsx": "Avoid provider popup inside Electron when native browser sign-in is available.",
-  "test/support/apiCalls.ts": "Normalize source-relative test identifiers to slash separators on Windows; preserves delegated API contract coverage instead of skipping the test."
+  "test/support/apiCalls.ts": "Normalize source-relative test identifiers to slash separators on Windows; preserves delegated API contract coverage instead of skipping the test.",
+  "src/store/db.ts": "Include OS-sealed session tokens in the existing persistent-key allowlist so session restoration survives a renderer restart; no account data migration.",
+  "src/sync/legacyImport.ts": "Preserve the OS-sealed credential field during the existing one-time legacy data cleanup; cleanup must never erase the current account session."
 }

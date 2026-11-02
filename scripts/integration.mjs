@@ -87,18 +87,27 @@ try {
   const dm = (await peer.req('POST','/v1/conversations/dm',{userId:me})).conversation.id;
   await peer.send(dm,{type:'text',text:'Actual desktop interoperability message'});
   await page.evaluate(href => { history.pushState({meldiq:1},'',href); window.dispatchEvent(new Event('meldiq:route')); }, `/dms/c/${dm}`);
-  await expect(page.getByText('Actual desktop interoperability message', { exact:true })).toBeVisible({ timeout:20_000 });
-  const composer = page.locator('[contenteditable=true]').first();
+  await expect(page.getByRole('log', { name:'Messages' }).getByText('Actual desktop interoperability message', { exact:true })).toBeVisible({ timeout:20_000 });
+  const composer = page.locator('textarea').first();
   await composer.fill('Actual desktop response'); await composer.press('Enter');
   const receiveDeadline = Date.now()+20_000;
   while (!peer.received.some(m => m.payload.text === 'Actual desktop response')) { if(Date.now()>receiveDeadline)throw Error('Reference peer did not receive desktop response'); await new Promise(resolve => setTimeout(resolve,100)); }
   await page.screenshot({path:'test-results/real-backend-messaging.png'});
-  const report = { recordedAt:new Date().toISOString(), platform:process.platform, backendCommit:execFileSync('git',['-C',backend,'rev-parse','HEAD'],{encoding:'utf8'}).trim(), environment:'isolated local existing Meldiq backend build; disposable SQLite and file mail; no cloud credentials', passed:['real email/password sign-in','device/encryption enrollment','OS-sealed session restoration after reload','receive message from reference protocol peer','send response to reference peer'], notTested:['production auth','physical Android','S3','actual voice/video media','screen sharing','payments','Windows installation','complete feature parity'] };
+  const report = { recordedAt:new Date().toISOString(), platform:process.platform, backendCommit:execFileSync('git',['-C',backend,'rev-parse','HEAD'],{encoding:'utf8'}).trim(), environment:'isolated local existing Meldiq backend source via tsx; disposable SQLite and file mail; no cloud credentials', passed:['real email/password sign-in','device/encryption enrollment','OS-sealed session restoration after reload','receive message from reference protocol peer','send response to reference peer'], observedCompatibilityIssues:failures.filter(f=>f.status), notTested:['production auth','physical Android','S3','actual voice/video media','screen sharing','payments','Windows installation','complete feature parity'] };
   await fs.writeFile('test-results/integration.json',JSON.stringify(report,null,2)); console.log(JSON.stringify(report,null,2));
 } catch (error) {
   if (client?.__failures) console.error(JSON.stringify(client.__failures,null,2));
   if(client?.windows()[0]) console.error('Public runtime config:', await client.windows()[0].evaluate(() => localStorage.getItem('meldiq.config.v1')));
   if(client?.windows()[0]) console.error('Socket data types:', await client.windows()[0].evaluate(() => window.__desktopSocketDiagnostics));
+  if(client?.windows()[0]) console.error('Sealed session diagnostics:', await client.windows()[0].evaluate(async () => {
+    const db = await new Promise((resolve,reject) => {const open=indexedDB.open('orbit-web');open.onsuccess=()=>resolve(open.result);open.onerror=()=>reject(open.error);});
+    try {
+      const sealed = await new Promise((resolve,reject) => {const q=db.transaction('kv').objectStore('kv').get('desktopSealedTokens');q.onsuccess=()=>resolve(q.result);q.onerror=()=>reject(q.error);});
+      if(typeof sealed!=='string') return {stored:typeof sealed};
+      try {const tokens=await window.meldiqDesktop.openSession(sealed);return {stored:'sealed',opened:true,accessUnexpired:tokens.accessTokenExpiresAt>Date.now()};}
+      catch(error){return {stored:'sealed',opened:false,error:error.message};}
+    } finally {db.close();}
+  }));
   if(client) { const pages=client.windows(); if(pages[0]) await pages[0].screenshot({path:'test-results/integration-failure.png'}).catch(()=>undefined); }
   throw error;
 } finally {
