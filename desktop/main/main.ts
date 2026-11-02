@@ -11,7 +11,13 @@ import type { BuildInfo, CaptureSource, DesktopState } from '../shared/contracts
 const appRoot = app.getAppPath();
 const build: BuildInfo = JSON.parse(fs.readFileSync(path.join(appRoot, 'dist/build-info.json'), 'utf8'));
 const config = JSON.parse(fs.readFileSync(path.join(appRoot, 'dist/runtime-config.json'), 'utf8'));
-if (config.origin !== ORIGIN || new URL(config.apiOrigin).protocol !== 'https:' || new URL(config.websocketUrl).protocol !== 'wss:') throw new Error('Invalid packaged network configuration');
+const testApi = !app.isPackaged && process.env.MELDIQ_TEST_USER_DATA && process.env.MELDIQ_TEST_API_ORIGIN;
+if (testApi) {
+  const url = new URL(testApi);
+  if (url.protocol !== 'http:' || url.hostname !== '127.0.0.1' || url.pathname !== '/' || url.search || url.hash || url.username || url.password) throw new Error('Test backend must be an isolated loopback origin');
+  config.apiOrigin = url.origin; config.websocketUrl = `${url.origin.replace('http:', 'ws:')}/v1/ws`;
+}
+if (config.origin !== ORIGIN || !testApi && (new URL(config.apiOrigin).protocol !== 'https:' || new URL(config.websocketUrl).protocol !== 'wss:')) throw new Error('Invalid packaged network configuration');
 app.setName('Meldiq');
 // Tests use their own temporary profile; packaged builds never accept environment profile overrides.
 if (!app.isPackaged && process.env.MELDIQ_TEST_USER_DATA) app.setPath('userData', path.resolve(process.env.MELDIQ_TEST_USER_DATA));
@@ -22,6 +28,7 @@ const single = app.requestSingleInstanceLock();
 let main: BrowserWindow | null = null;
 let tray: Tray | null = null;
 let picker: BrowserWindow | null = null;
+let paymentWindow: BrowserWindow | null = null;
 let quitting = false;
 let rendererBusy = true;
 let downloads = 0;
@@ -34,7 +41,7 @@ const grants = new Set<string>();
 const notices = new Map<string, Notification>();
 const pendingNavigation: string[] = [];
 const social = new Map<string, { resolve: (r: { id: string; receipt: string }) => void; reject: (e: Error) => void; timer: ReturnType<typeof setTimeout> }>();
-const busy = () => rendererBusy || downloads > 0 || capturePending;
+const busy = () => rendererBusy || downloads > 0 || capturePending || paymentWindow !== null;
 function state(): DesktopState {
   return { preferences: prefs.value, profile: performanceProfile(os.totalmem(), os.cpus().length, prefs.value), build, update: updates?.state ?? { status: 'disabled' }, busy: busy(), cacheBytes };
 }
@@ -131,7 +138,25 @@ function installIpc(ses: Electron.Session) {
 function secureWindow(win: BrowserWindow, isPicker = false) {
   const wc = win.webContents;
   wc.on('will-attach-webview', event => event.preventDefault());
-  wc.setWindowOpenHandler(({ url }) => { void external(url).catch(() => undefined); return { action: 'deny' }; });
+  const paymentUrl = (url: string) => {
+    if (url === 'about:blank') return true;
+    try { const u = new URL(url); return u.protocol === 'https:' && !u.username && !u.password && !u.port && ['www.paypal.com', 'www.sandbox.paypal.com'].includes(u.hostname); } catch { return false; }
+  };
+  wc.setWindowOpenHandler(({ url }) => {
+    const checkout = !isPicker && /^\/settings\/(checkout|billing|mojo|spark)$/.test(new URL(wc.getURL()).pathname);
+    if (checkout && !paymentWindow && paymentUrl(url)) return { action: 'allow', overrideBrowserWindowOptions: { width: 520, height: 760, autoHideMenuBar: true, parent: win, webPreferences: { session: session.fromPartition('persist:meldiq-payments'), preload: path.join(appRoot, 'dist/main/payment-preload.cjs'), nodeIntegration: false, contextIsolation: true, sandbox: true, webSecurity: true, webviewTag: false } } };
+    void external(url).catch(() => undefined); return { action: 'deny' };
+  });
+  wc.on('did-create-window', child => {
+    paymentWindow = child; emitState();
+    child.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
+    child.webContents.on('will-attach-webview', event => event.preventDefault());
+    child.webContents.on('will-navigate', (event, url) => { if (!paymentUrl(url)) event.preventDefault(); });
+    child.webContents.on('will-redirect', (event, url) => { if (!paymentUrl(url)) event.preventDefault(); });
+    child.webContents.session.setPermissionRequestHandler((_wc, _permission, callback) => callback(false));
+    child.webContents.session.setPermissionCheckHandler(() => false);
+    child.on('closed', () => { if (paymentWindow === child) paymentWindow = null; emitState(); });
+  });
   wc.on('will-navigate', (event, url) => {
     if (isPicker ? url === `${ORIGIN}/capture-picker` : isLocalPage(url)) return;
     event.preventDefault(); void external(url).catch(() => undefined);

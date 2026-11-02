@@ -68,10 +68,17 @@ try {
   assert.equal(await page.evaluate(() => getComputedStyle(document.body).animationName), 'none');
   await page.screenshot({ path: 'test-results/desktop-settings.png' });
   await page.getByRole('button', { name: 'Close desktop settings' }).click();
+  const paymentPagePromise = client.waitForEvent('window');
+  await page.evaluate(() => { history.pushState({ meldiq: 1 }, '', '/settings/checkout'); window.open('about:blank', '_blank'); });
+  const paymentPage = await paymentPagePromise;
+  assert.deepEqual(await paymentPage.evaluate(() => ({ bridge: typeof window.meldiqDesktop, node: typeof window.require })), { bridge: 'undefined', node: 'undefined' });
+  assert.equal((await page.evaluate(() => window.meldiqDesktop.state())).busy, true, 'Payment approval window must block update restart');
+  await paymentPage.close();
+  await page.evaluate(() => { history.replaceState({ meldiq: 1 }, '', '/'); });
   await page.waitForFunction(() => document.querySelector('#desktop-root')?.textContent?.includes('Meldiq'));
   await page.screenshot({ path: 'test-results/offline-launch.png' });
   assert.deepEqual(errors, [], `Renderer errors: ${errors.join('; ')}`);
-  const report = { platform: process.platform, arch: process.arch, versions: await client.evaluate(({ app }) => ({ app: app.getVersion(), electron: process.versions.electron, chromium: process.versions.chrome })), offlineSmokeMs: Math.round(launchMs), checks: ['local renderer with network blocked', 'sandbox and context isolation', 'untrusted IPC rejection', 'clear cache preserves account storage', 'economy effects', 'native settings'], status: 'passed', windowsInstallation: 'not tested by this smoke' };
+  const report = { platform: process.platform, arch: process.arch, versions: await client.evaluate(({ app }) => ({ app: app.getVersion(), electron: process.versions.electron, chromium: process.versions.chrome })), offlineSmokeMs: Math.round(launchMs), checks: ['local renderer with network blocked', 'sandbox and context isolation', 'untrusted IPC rejection', 'clear cache preserves localStorage and IndexedDB identity', 'cache clearing blocked during communication', 'economy effects', 'native settings', 'payment popup has no native bridge and blocks restart'], status: 'passed', windowsInstallation: 'not tested by this smoke' };
   await fs.writeFile('test-results/smoke.json', JSON.stringify(report, null, 2));
   console.log(JSON.stringify(report, null, 2));
 } finally {

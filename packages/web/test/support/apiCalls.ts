@@ -102,7 +102,7 @@ export function apiCalls(): ApiCall[] {
           const decodes = n.expression.name.text === "json";
           const all = paths(sf, p).map(clean);
           calls.push({
-            at: `${path.relative(SRC, file)}:${sf.getLineAndCharacterOfPosition(n.getStart()).line + 1}`,
+            at: `${path.relative(SRC, file).split(path.sep).join("/")}:${sf.getLineAndCharacterOfPosition(n.getStart()).line + 1}`,
             method: m.text,
             paths: all.every((x) => x.startsWith("/")) ? all : [],
             schema: decodes && schema ? schema.getText(sf) : undefined,

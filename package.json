@@ -26,6 +26,7 @@
     "test": "vitest run --config desktop/vitest.config.ts",
     "test:web": "npm test --workspace packages/web",
     "test:smoke": "node scripts/smoke.mjs",
+    "test:integration": "node scripts/integration.mjs",
     "test:security": "node scripts/verify-package.mjs",
     "package:win:dev": "npm run build && electron-builder --config desktop/builder.dev.cjs --win nsis --x64 --publish never",
     "package:win": "node scripts/package-release.mjs",

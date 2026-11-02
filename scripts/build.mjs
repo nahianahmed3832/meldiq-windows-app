@@ -27,6 +27,7 @@ await fs.writeFile(path.join(root, 'dist/runtime-config.json'), JSON.stringify(c
 await Promise.all([
   esbuild({ entryPoints: [path.join(root, 'desktop/main/main.ts')], outfile: path.join(root, 'dist/main/main.cjs'), platform: 'node', target: 'node22', format: 'cjs', bundle: true, packages: 'external', sourcemap: false }),
   esbuild({ entryPoints: [path.join(root, 'desktop/preload/index.ts')], outfile: path.join(root, 'dist/main/preload.cjs'), platform: 'node', target: 'node22', format: 'cjs', bundle: true, external: ['electron'], sourcemap: false }),
+  esbuild({ entryPoints: [path.join(root, 'desktop/preload/payment.ts')], outfile: path.join(root, 'dist/main/payment-preload.cjs'), platform: 'node', target: 'node22', format: 'cjs', bundle: true, external: ['electron'], sourcemap: false }),
 ]);
 await viteBuild({
   configFile: false, root: path.join(root, 'desktop/renderer'),
