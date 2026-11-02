@@ -30,14 +30,26 @@ await Promise.all([
   esbuild({ entryPoints: [path.join(root, 'desktop/preload/index.ts')], outfile: path.join(root, 'dist/main/preload.cjs'), platform: 'node', target: 'node22', format: 'cjs', bundle: true, external: ['electron'], sourcemap: false }),
   esbuild({ entryPoints: [path.join(root, 'desktop/preload/payment.ts')], outfile: path.join(root, 'dist/main/payment-preload.cjs'), platform: 'node', target: 'node22', format: 'cjs', bundle: true, external: ['electron'], sourcemap: false }),
 ]);
+const rendererModules = [];
+const inventoryPlugin = kind => ({
+  name: 'meldiq-renderer-dependency-inventory',
+  generateBundle(_options, bundle) {
+    for (const chunk of Object.values(bundle)) if (chunk.type === 'chunk') {
+      rendererModules.push({ kind, file: chunk.fileName, modules: Object.entries(chunk.modules).map(([id, module]) => ({ id: id.replaceAll(root, '<project>').replaceAll('\\', '/'), renderedBytes: module.renderedLength })) });
+    }
+  },
+});
 await viteBuild({
   configFile: false, root: path.join(root, 'desktop/renderer'),
   publicDir: path.join(root, 'packages/web/public'),
   resolve: { alias: { 'next/router': path.join(root, 'desktop/renderer/next-router.ts') } },
   define: { 'process.env.NODE_ENV': JSON.stringify('production'), 'process.env.MELDIQ_APP_VERSION': JSON.stringify(pkg.version), 'process.env.NEXT_PUBLIC_MELDIQ_TEST_LINKING': JSON.stringify('0') },
+  plugins: [inventoryPlugin('renderer')],
   build: { outDir: path.join(root, 'dist/renderer'), emptyOutDir: true, sourcemap: false, target: 'chrome150', chunkSizeWarningLimit: 1500 },
-  worker: { format: 'es' },
+  worker: { format: 'es', plugins: () => [inventoryPlugin('worker')] },
 });
+await fs.mkdir(path.join(root, 'test-results'), { recursive: true });
+await fs.writeFile(path.join(root, 'test-results/renderer-module-inventory.json'), JSON.stringify({ build: info, chunks: rendererModules }, null, 2));
 async function allFiles(dir, prefix = '') {
   const entries = await fs.readdir(dir, { withFileTypes: true });
   return (await Promise.all(entries.map(e => e.isDirectory() ? allFiles(path.join(dir, e.name), prefix + e.name + '/') : prefix + e.name))).flat();

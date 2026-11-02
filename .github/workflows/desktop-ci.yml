@@ -40,6 +40,13 @@ jobs:
         run: node scripts/release-manifest.mjs
       - name: Inspect packaged application dependencies and secrets
         run: node scripts/inspect-asar.mjs
+      - name: Record fresh audit and exact packaged dependency exposure
+        shell: pwsh
+        run: |
+          npm audit --json | Out-File -FilePath test-results/dependency-audit.json -Encoding utf8
+          if ($LASTEXITCODE -gt 1) { throw 'Dependency audit could not complete' }
+          node scripts/dependency-exposure.mjs test-results/dependency-audit.json release/win-unpacked/resources/app.asar --require-matching-build
+          if ($LASTEXITCODE -ne 0) { throw 'Packaged dependency inventory failed' }
       - name: Install, launch and uninstall the development installer
         shell: pwsh
         run: ./scripts/windows-install-smoke.ps1
