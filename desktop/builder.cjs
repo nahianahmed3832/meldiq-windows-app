@@ -9,7 +9,7 @@ module.exports = {
   win: {
     target: [{ target: 'nsis', arch: ['x64'] }], icon: 'desktop/resources/icon.png',
     requestedExecutionLevel: 'asInvoker', verifyUpdateCodeSignature: true,
-    publisherName: process.env.MELDIQ_SIGNING_PUBLISHER,
+    signtoolOptions: { publisherName: process.env.MELDIQ_SIGNING_PUBLISHER },
     artifactName: 'Meldiq-Setup-${version}-${arch}.${ext}',
   },
   nsis: { oneClick: false, perMachine: false, allowElevation: false, allowToChangeInstallationDirectory: true, createDesktopShortcut: true, createStartMenuShortcut: true, deleteAppDataOnUninstall: false, differentialPackage: true },

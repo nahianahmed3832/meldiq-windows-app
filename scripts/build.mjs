@@ -4,6 +4,7 @@ import { execFileSync } from 'node:child_process';
 import { build as viteBuild } from 'vite';
 import { build as esbuild } from 'esbuild';
 const root = path.resolve(import.meta.dirname, '..');
+execFileSync(process.execPath, ['scripts/validate-builder.mjs'], { cwd: root, stdio: 'inherit' });
 const pkg = JSON.parse(await fs.readFile(path.join(root, 'package.json'), 'utf8'));
 const channel = process.env.BUILD_CHANNEL ?? 'stable';
 const distribution = process.env.BUILD_DISTRIBUTION ?? 'development';
