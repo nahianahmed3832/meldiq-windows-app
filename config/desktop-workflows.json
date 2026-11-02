@@ -1,0 +1,194 @@
+[
+  {
+    "id": "email-session",
+    "name": "Email/password, device enrollment and sealed session reload",
+    "modulePattern": "auth/(AccountForms|AuthScreen|DeviceSetup|Reauth|useSubmit)|settings/Account|shell/Account",
+    "procedure": "Sign in as QA A; enroll a device; reload and restart; verify no plaintext tokens and correct account."
+  },
+  {
+    "id": "social-login",
+    "name": "Google/Discord login and provider linking",
+    "modulePattern": "auth/Social|oauth/|ConnectedAccounts|AuthorizedApps|ConnectionsCard",
+    "procedure": "Sign in with each advertised provider in the system browser; verify receipt proof, cancellation, linking and unlinking."
+  },
+  {
+    "id": "recovery-security",
+    "name": "Recovery, MFA, passkeys, email change and devices",
+    "modulePattern": "auth/Recover|settings/(Account|Passkeys|Recovery|KeyBackup|Privacy|Advanced)",
+    "procedure": "Verify recovery and MFA with owner-provided codes; inspect sessions; perform reversible QA-only device actions."
+  },
+  {
+    "id": "profiles",
+    "name": "Profiles, free customization, styles and profile photos",
+    "modulePattern": "people/|settings/(Profile|NameStyle|ShownBadge|YouCard|CommunityProfile|noStyle|useStyle|profileDraft)|workspace/(Profile|photo|TagCard|Appearance)|chat/ProfileCards|community/Nickname",
+    "procedure": "Edit QA profile; verify free options persist after restart and are visible to QA B on another client."
+  },
+  {
+    "id": "collectibles",
+    "name": "Decorations, inventory and collectible submissions",
+    "modulePattern": "Decoration|Collection|Collectible|Artist",
+    "procedure": "Inspect inventory and select an owned free item; submit only an approved private test item; do not buy."
+  },
+  {
+    "id": "direct-messages",
+    "name": "Encrypted direct message send, receive and reload",
+    "modulePattern": "chat/(Composer|ConversationView|MessageItem|MessageList|PostedContent|Typing|SecuritySheet)|chat/Markdown",
+    "procedure": "QA A sends a unique marker to QA B; verify both directions, reload persistence and wrong-key rejection."
+  },
+  {
+    "id": "message-actions",
+    "name": "History, replies, edits, deletes, pins and receipts",
+    "modulePattern": "chat/(Message|Rich|Pinned|Threads|jump|useReading|useMessageCollection)|views/Drafts|unread|chat/(PanelHead|SidePanel|contextTarget|gestures|longPress)",
+    "procedure": "Exercise actions on QA-owned messages only; compare receipts/history on the second client."
+  },
+  {
+    "id": "polls-forums",
+    "name": "Poll voting, forums, threads and results",
+    "modulePattern": "chat/(Poll|Forum|Threads)",
+    "procedure": "Create a private QA poll/thread; vote as B and verify results and permissions across clients."
+  },
+  {
+    "id": "expressions",
+    "name": "Emoji, GIFs, stickers and expressions",
+    "modulePattern": "chat/(Animoji|Emoji|Expression|Gif|Sticker|Reactions|reactors)|community/CustomEmoji|workspace/Expressions",
+    "procedure": "Send a small approved expression to private QA chat; verify picker, rendering and resource release."
+  },
+  {
+    "id": "media-files",
+    "name": "Attachments, uploads, downloads and gallery",
+    "modulePattern": "chat/(Attachment|BulkSave|Gallery|Media|Transfer|Zoomable|album|blobUrl|gallery|useNearScreen)|settings/Storage",
+    "procedure": "Send identifiable small files via backend authorization; compare SHA-256 after decryption; verify access denial, cancel/retry and cleanup."
+  },
+  {
+    "id": "calls",
+    "name": "Voice/video calls, devices, permissions and reconnection",
+    "modulePattern": "call/|settings/Calls|chat/(Voice|voiceRoom)",
+    "procedure": "A calls B; verify bidirectional audio/video, absent and disconnected devices, switching, network reconnection and sleep/wake."
+  },
+  {
+    "id": "screen-sharing",
+    "name": "Explicit screen/window sharing and capture release",
+    "modulePattern": "call/|chat/Voice",
+    "procedure": "Share a selected test window; compare receiver output; stop capture and verify tracks end, including disconnect and hangup."
+  },
+  {
+    "id": "notifications",
+    "name": "Native notifications, pause and activity",
+    "modulePattern": "settings/(Notification|Background)|community/Notify|chat/ChannelBell|views/Activity",
+    "procedure": "With QA B in background receive one controlled DM; verify preview privacy, focus, pause and permission denial."
+  },
+  {
+    "id": "friends",
+    "name": "Friends, requests, group membership and blocking",
+    "modulePattern": "people/(Connection|Request)|views/(Friend|Suggested)|chat/(People|ConversationManage|memberList)|workspace/(AddMembers|People|MemberParity|Everyone)",
+    "procedure": "Exchange a QA-only request; create an agreed private group; verify scoped visibility and reversible QA blocking."
+  },
+  {
+    "id": "search",
+    "name": "Message search, saved items and discovery",
+    "modulePattern": "chat/Search|dialogs/Search|later/|views/Discover|workspace/discovery/",
+    "procedure": "Search the unique QA marker; verify saved items and filters; inspect public discovery without publishing."
+  },
+  {
+    "id": "communities",
+    "name": "Private community create, navigation, leave and ownership",
+    "modulePattern": "community/(Community|CreateCommunity|Leave|DeleteCommunity)|workspace/(Overview|Workspace|Transfer|communityRail)|settings/LeaveMany",
+    "procedure": "Use owner-created private QA community; verify navigation and reversible edits. Deletion and ownership transfer require isolated tests."
+  },
+  {
+    "id": "channels",
+    "name": "Channels, categories, options and access",
+    "modulePattern": "community/(Category|Channel|CreateChannel|Locked|lockMenu)|workspace/Channels|chat/(Channel|ConversationDetails|ConversationSettings|ConversationMenu|detailsRules|DetailsTabs)",
+    "procedure": "Create only approved QA channels; verify private visibility, read/write controls and navigation as A/B/C."
+  },
+  {
+    "id": "roles",
+    "name": "Roles, permissions and permission preview",
+    "modulePattern": "workspace/Role|community/(Permission|useCommunityAccess|useCommunityMembers|useCommunityPermissions)|community/reactionRoles/",
+    "procedure": "Assign scoped QA moderator role to C; compare permission preview with real member access; no global role changes."
+  },
+  {
+    "id": "moderation",
+    "name": "Community safety, reports, audit and rules",
+    "modulePattern": "workspace/(Moderation|Reports|Audit|Rules|ProfileSafety|VoiceBans)|chat/Report|community/Rules",
+    "procedure": "Inspect QA audit and safety screens; report QA-owned test content if authorized. Destructive moderation remains isolated."
+  },
+  {
+    "id": "onboarding",
+    "name": "Invitations, community guides, templates and onboarding",
+    "modulePattern": "community/(Guide|Onboarding|Template)|workspace/(Guide|Invitation|InviteLink|StandardInvite|Onboarding|WorkspaceSetup)|LinkScreen|views/(StartChecklist|startRules)",
+    "procedure": "Open a private invite on desktop and second client; verify rule agreement, guide and role-limited onboarding."
+  },
+  {
+    "id": "lobby-events",
+    "name": "Community lobby, voice rooms, meetings and events",
+    "modulePattern": "lobby/|workspace/(Lobby|Meeting)",
+    "procedure": "Create a private QA event/room if authorized; join as A/B; verify updates, permissions and cleanup."
+  },
+  {
+    "id": "bots",
+    "name": "Bots, integrations and diagnostics",
+    "modulePattern": "workspace/(bots/|BotsPage)|people/BotProfile|chat/(SlashCommands|Giveaway|Wordy|wordy)",
+    "procedure": "Inspect configured QA bot; issue scoped harmless command; verify diagnostics without enabling external public actions."
+  },
+  {
+    "id": "webhooks-tickets",
+    "name": "Channel webhooks, reaction roles and tickets",
+    "modulePattern": "community/(webhooks/|tickets/|reactionRoles/)|chat/WebhookSender",
+    "procedure": "Use a private QA channel; verify access controls and ticket/reaction workflows. External webhook creation needs scoped authorization."
+  },
+  {
+    "id": "billing",
+    "name": "Plans, subscriptions, entitlements and checkout",
+    "modulePattern": "billing/|mojo/|workspace/(Sparks|promote/)",
+    "procedure": "Read QA entitlements in production. Execute purchases, cancellation and webhook transitions only on isolated sandbox backend."
+  },
+  {
+    "id": "gifts-points",
+    "name": "Gifts, Spark, points, quests and rewards",
+    "modulePattern": "points/|mojo/(Gift|Spark)|workspace/(Sparks|promote/)",
+    "procedure": "Inspect balances and quests without reward/financial mutations; test gifts and transactions only in isolated sandbox."
+  },
+  {
+    "id": "leaderboards-creators",
+    "name": "Leaderboards, creators and verification",
+    "modulePattern": "leaderboards/|creators/|settings/Creator|people/(Level|ProfilePins)|workspace/Pins",
+    "procedure": "Read current pages and QA visibility; do not change public rankings or submit real verification applications."
+  },
+  {
+    "id": "developer",
+    "name": "Developer apps, OAuth consent and tooling",
+    "modulePattern": "developer/|oauth/",
+    "procedure": "Inspect own QA application/consent; exercise scopes with isolated credentials; never expose app secrets in reports."
+  },
+  {
+    "id": "preferences",
+    "name": "Appearance, privacy, localization, shortcuts and accessibility",
+    "modulePattern": "settings/(Preference|Appearance|Privacy|Shortcuts|SettingsView|settingsSearch)|components/",
+    "procedure": "Change reversible QA/local preferences; verify keyboard/focus, reduced motion, language and 720p layout."
+  },
+  {
+    "id": "operations",
+    "name": "Service health and operator-only screens",
+    "modulePattern": "settings/(AdminUsage|ServiceHealth)",
+    "procedure": "Inspect member-visible health. Operator-only functionality is not applicable to ordinary QA accounts; never promote them to test it."
+  },
+  {
+    "id": "desktop-shell",
+    "name": "App shell, routing, dialogs, common helpers and native integration",
+    "modulePattern": "^(src/ui/(App|StatusScreens|UpdateNotice|format|selectors|unread))|shell/|dialogs/|components/|auth/AuthFrame|settings/InstallButton|views/Home|community/(accent|communityMenu|menuLabels|panelData|useCommunityThemes|useTickAt)|workspace/(Theme|Usage|useLoad)|chat/(SafeLink|inAppLinks)",
+    "procedure": "Verify local offline shell, native settings, IPC boundaries, safe links, cache preservation, economy mode and invite routing."
+  },
+  {
+    "id": "translation",
+    "name": "Local message translation and consent",
+    "modulePattern": "chat/Translate",
+    "procedure": "Use a QA marker message; inspect first-use disclosure; translate locally if supported and verify stored encrypted text is unchanged. Unsupported native translation requires graceful fallback."
+  },
+  {
+    "id": "discord-import",
+    "name": "Discord community import",
+    "modulePattern": "community/DiscordImport",
+    "procedure": "Inspect connection and permission UI; execute imports only on an isolated backend with an owner-approved source fixture. Never import external production data during controlled production QA."
+  }
+]

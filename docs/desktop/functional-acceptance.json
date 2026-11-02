@@ -1,0 +1,5536 @@
+{
+  "schema": 1,
+  "moduleCount": 387,
+  "workflowCount": 32,
+  "associationMethod": "Explicit reviewed source-path rules; associations and existing candidate tests are not executed acceptance",
+  "unmapped": [],
+  "statuses": [
+    "Source included",
+    "Desktop UI verified",
+    "Backend integration verified",
+    "Cross-platform verified",
+    "Windows verified",
+    "Blocked",
+    "Not applicable"
+  ],
+  "workflows": [
+    {
+      "id": "email-session",
+      "name": "Email/password, device enrollment and sealed session reload",
+      "procedure": "Sign in as QA A; enroll a device; reload and restart; verify no plaintext tokens and correct account.",
+      "modules": [
+        "src/ui/auth/AccountForms.tsx",
+        "src/ui/auth/AuthScreen.tsx",
+        "src/ui/auth/DeviceSetupViews.tsx",
+        "src/ui/auth/ReauthScreen.tsx",
+        "src/ui/auth/useSubmit.ts",
+        "src/ui/settings/AccountExtrasCards.tsx",
+        "src/ui/settings/AccountOverview.tsx",
+        "src/ui/settings/AccountPages.tsx",
+        "src/ui/settings/AccountSafetyCards.tsx",
+        "src/ui/settings/AccountSettingsPage.tsx",
+        "src/ui/shell/AccountActions.tsx"
+      ],
+      "verification": [
+        {
+          "stage": "source",
+          "status": "Source included",
+          "evidence": [
+            "docs/desktop/WEB_SOURCE_SNAPSHOT.json"
+          ]
+        },
+        {
+          "stage": "desktopUi",
+          "status": "Desktop UI verified",
+          "scope": "Only the narrow scenarios in integration.json; macOS isolated backend",
+          "evidence": [
+            "docs/desktop/evidence/integration.json"
+          ]
+        },
+        {
+          "stage": "backend",
+          "status": "Backend integration verified",
+          "scope": "Disposable local backend and reference protocol peer only; production account acceptance still blocked",
+          "evidence": [
+            "docs/desktop/evidence/integration.json"
+          ]
+        },
+        {
+          "stage": "crossPlatform",
+          "status": "Blocked",
+          "scope": "Requires actual Android or web peer; reference protocol peer is not a shipped client",
+          "evidence": []
+        },
+        {
+          "stage": "windows",
+          "status": "Blocked",
+          "scope": "Requires authenticated Windows workflow evidence",
+          "evidence": []
+        }
+      ],
+      "production": {
+        "status": "Blocked",
+        "reason": "Internal QA account provisioning/authorization, approved origins and scenario evidence are incomplete. Financial workflows additionally require an isolated sandbox."
+      }
+    },
+    {
+      "id": "social-login",
+      "name": "Google/Discord login and provider linking",
+      "procedure": "Sign in with each advertised provider in the system browser; verify receipt proof, cancellation, linking and unlinking.",
+      "modules": [
+        "src/ui/auth/SocialSignIn.tsx",
+        "src/ui/oauth/ConsentPage.tsx",
+        "src/ui/settings/AuthorizedAppsCard.tsx",
+        "src/ui/settings/ConnectedAccountsCard.tsx",
+        "src/ui/settings/ConnectionsCard.tsx"
+      ],
+      "verification": [
+        {
+          "stage": "source",
+          "status": "Source included",
+          "evidence": [
+            "docs/desktop/WEB_SOURCE_SNAPSHOT.json"
+          ]
+        },
+        {
+          "stage": "desktopUi",
+          "status": "Blocked",
+          "scope": "Source and candidate tests do not establish desktop workflow completion",
+          "evidence": []
+        },
+        {
+          "stage": "backend",
+          "status": "Blocked",
+          "scope": "Requires authorized internal accounts, private QA objects and applicable infrastructure",
+          "evidence": []
+        },
+        {
+          "stage": "crossPlatform",
+          "status": "Blocked",
+          "scope": "Requires actual Android or web peer; reference protocol peer is not a shipped client",
+          "evidence": []
+        },
+        {
+          "stage": "windows",
+          "status": "Blocked",
+          "scope": "Requires authenticated Windows workflow evidence",
+          "evidence": []
+        }
+      ],
+      "production": {
+        "status": "Blocked",
+        "reason": "Internal QA account provisioning/authorization, approved origins and scenario evidence are incomplete. Financial workflows additionally require an isolated sandbox."
+      }
+    },
+    {
+      "id": "recovery-security",
+      "name": "Recovery, MFA, passkeys, email change and devices",
+      "procedure": "Verify recovery and MFA with owner-provided codes; inspect sessions; perform reversible QA-only device actions.",
+      "modules": [
+        "src/ui/auth/RecoverForms.tsx",
+        "src/ui/settings/AccountExtrasCards.tsx",
+        "src/ui/settings/AccountOverview.tsx",
+        "src/ui/settings/AccountPages.tsx",
+        "src/ui/settings/AccountSafetyCards.tsx",
+        "src/ui/settings/AccountSettingsPage.tsx",
+        "src/ui/settings/AdvancedPage.tsx",
+        "src/ui/settings/KeyBackupCard.tsx",
+        "src/ui/settings/PasskeysCard.tsx",
+        "src/ui/settings/PrivacyExtras.tsx",
+        "src/ui/settings/PrivacyPage.tsx",
+        "src/ui/settings/RecoveryCodesCard.tsx"
+      ],
+      "verification": [
+        {
+          "stage": "source",
+          "status": "Source included",
+          "evidence": [
+            "docs/desktop/WEB_SOURCE_SNAPSHOT.json"
+          ]
+        },
+        {
+          "stage": "desktopUi",
+          "status": "Blocked",
+          "scope": "Source and candidate tests do not establish desktop workflow completion",
+          "evidence": []
+        },
+        {
+          "stage": "backend",
+          "status": "Blocked",
+          "scope": "Requires authorized internal accounts, private QA objects and applicable infrastructure",
+          "evidence": []
+        },
+        {
+          "stage": "crossPlatform",
+          "status": "Blocked",
+          "scope": "Requires actual Android or web peer; reference protocol peer is not a shipped client",
+          "evidence": []
+        },
+        {
+          "stage": "windows",
+          "status": "Blocked",
+          "scope": "Requires authenticated Windows workflow evidence",
+          "evidence": []
+        }
+      ],
+      "production": {
+        "status": "Blocked",
+        "reason": "Internal QA account provisioning/authorization, approved origins and scenario evidence are incomplete. Financial workflows additionally require an isolated sandbox."
+      }
+    },
+    {
+      "id": "profiles",
+      "name": "Profiles, free customization, styles and profile photos",
+      "procedure": "Edit QA profile; verify free options persist after restart and are visible to QA B on another client.",
+      "modules": [
+        "src/ui/chat/ProfileCards.tsx",
+        "src/ui/community/NicknameDialog.tsx",
+        "src/ui/people/ArtistDecorations.tsx",
+        "src/ui/people/AvatarFrame.tsx",
+        "src/ui/people/BotProfileDialog.tsx",
+        "src/ui/people/CollectibleLayers.tsx",
+        "src/ui/people/ConnectionRequestViews.tsx",
+        "src/ui/people/ConnectionsDialog.tsx",
+        "src/ui/people/GroupPhotoCard.tsx",
+        "src/ui/people/LevelRing.tsx",
+        "src/ui/people/NameBadge.tsx",
+        "src/ui/people/NameStyle.tsx",
+        "src/ui/people/ProfileConnections.tsx",
+        "src/ui/people/ProfileDialog.tsx",
+        "src/ui/people/ProfilePins.tsx",
+        "src/ui/people/ProfileStyle.tsx",
+        "src/ui/people/RequestBar.tsx",
+        "src/ui/people/connectionRequests.ts",
+        "src/ui/people/profileTheme.ts",
+        "src/ui/settings/CommunityProfileCard.tsx",
+        "src/ui/settings/NameStyleWindow.tsx",
+        "src/ui/settings/ProfilePage.tsx",
+        "src/ui/settings/ProfilePreviewCard.tsx",
+        "src/ui/settings/ProfileStyleCard.tsx",
+        "src/ui/settings/ProfileThemePicker.tsx",
+        "src/ui/settings/ShownBadgePicker.tsx",
+        "src/ui/settings/YouCard.tsx",
+        "src/ui/settings/noStyle.ts",
+        "src/ui/settings/profileDraft.tsx",
+        "src/ui/settings/useStyleDraft.ts",
+        "src/ui/settings/useStyleSaver.ts",
+        "src/ui/workspace/AppearanceCard.tsx",
+        "src/ui/workspace/ProfileExtrasCards.tsx",
+        "src/ui/workspace/ProfileSafety.tsx",
+        "src/ui/workspace/TagCard.tsx",
+        "src/ui/workspace/photo.ts"
+      ],
+      "verification": [
+        {
+          "stage": "source",
+          "status": "Source included",
+          "evidence": [
+            "docs/desktop/WEB_SOURCE_SNAPSHOT.json"
+          ]
+        },
+        {
+          "stage": "desktopUi",
+          "status": "Blocked",
+          "scope": "Source and candidate tests do not establish desktop workflow completion",
+          "evidence": []
+        },
+        {
+          "stage": "backend",
+          "status": "Blocked",
+          "scope": "Requires authorized internal accounts, private QA objects and applicable infrastructure",
+          "evidence": []
+        },
+        {
+          "stage": "crossPlatform",
+          "status": "Blocked",
+          "scope": "Requires actual Android or web peer; reference protocol peer is not a shipped client",
+          "evidence": []
+        },
+        {
+          "stage": "windows",
+          "status": "Blocked",
+          "scope": "Requires authenticated Windows workflow evidence",
+          "evidence": []
+        }
+      ],
+      "production": {
+        "status": "Blocked",
+        "reason": "Internal QA account provisioning/authorization, approved origins and scenario evidence are incomplete. Financial workflows additionally require an isolated sandbox."
+      }
+    },
+    {
+      "id": "collectibles",
+      "name": "Decorations, inventory and collectible submissions",
+      "procedure": "Inspect inventory and select an owned free item; submit only an approved private test item; do not buy.",
+      "modules": [
+        "src/ui/chat/useMessageCollection.tsx",
+        "src/ui/people/ArtistDecorations.tsx",
+        "src/ui/people/CollectibleLayers.tsx",
+        "src/ui/settings/CollectionStudio.tsx",
+        "src/ui/settings/DecorationPicker.tsx",
+        "src/ui/settings/DecorationWindow.tsx",
+        "src/ui/settings/SubmitDecorationDialog.tsx",
+        "src/ui/settings/useDecorationFavorites.ts"
+      ],
+      "verification": [
+        {
+          "stage": "source",
+          "status": "Source included",
+          "evidence": [
+            "docs/desktop/WEB_SOURCE_SNAPSHOT.json"
+          ]
+        },
+        {
+          "stage": "desktopUi",
+          "status": "Blocked",
+          "scope": "Source and candidate tests do not establish desktop workflow completion",
+          "evidence": []
+        },
+        {
+          "stage": "backend",
+          "status": "Blocked",
+          "scope": "Requires authorized internal accounts, private QA objects and applicable infrastructure",
+          "evidence": []
+        },
+        {
+          "stage": "crossPlatform",
+          "status": "Blocked",
+          "scope": "Requires actual Android or web peer; reference protocol peer is not a shipped client",
+          "evidence": []
+        },
+        {
+          "stage": "windows",
+          "status": "Blocked",
+          "scope": "Requires authenticated Windows workflow evidence",
+          "evidence": []
+        }
+      ],
+      "production": {
+        "status": "Blocked",
+        "reason": "Internal QA account provisioning/authorization, approved origins and scenario evidence are incomplete. Financial workflows additionally require an isolated sandbox."
+      }
+    },
+    {
+      "id": "direct-messages",
+      "name": "Encrypted direct message send, receive and reload",
+      "procedure": "QA A sends a unique marker to QA B; verify both directions, reload persistence and wrong-key rejection.",
+      "modules": [
+        "src/ui/chat/Composer.tsx",
+        "src/ui/chat/ComposerGates.tsx",
+        "src/ui/chat/ConversationView.tsx",
+        "src/ui/chat/Markdown.tsx",
+        "src/ui/chat/MessageItem.tsx",
+        "src/ui/chat/MessageList.tsx",
+        "src/ui/chat/PostedContent.tsx",
+        "src/ui/chat/SecuritySheet.tsx",
+        "src/ui/chat/TypingIndicator.tsx"
+      ],
+      "verification": [
+        {
+          "stage": "source",
+          "status": "Source included",
+          "evidence": [
+            "docs/desktop/WEB_SOURCE_SNAPSHOT.json"
+          ]
+        },
+        {
+          "stage": "desktopUi",
+          "status": "Desktop UI verified",
+          "scope": "Only the narrow scenarios in integration.json; macOS isolated backend",
+          "evidence": [
+            "docs/desktop/evidence/integration.json"
+          ]
+        },
+        {
+          "stage": "backend",
+          "status": "Backend integration verified",
+          "scope": "Disposable local backend and reference protocol peer only; production account acceptance still blocked",
+          "evidence": [
+            "docs/desktop/evidence/integration.json"
+          ]
+        },
+        {
+          "stage": "crossPlatform",
+          "status": "Blocked",
+          "scope": "Requires actual Android or web peer; reference protocol peer is not a shipped client",
+          "evidence": []
+        },
+        {
+          "stage": "windows",
+          "status": "Blocked",
+          "scope": "Requires authenticated Windows workflow evidence",
+          "evidence": []
+        }
+      ],
+      "production": {
+        "status": "Blocked",
+        "reason": "Internal QA account provisioning/authorization, approved origins and scenario evidence are incomplete. Financial workflows additionally require an isolated sandbox."
+      }
+    },
+    {
+      "id": "message-actions",
+      "name": "History, replies, edits, deletes, pins and receipts",
+      "procedure": "Exercise actions on QA-owned messages only; compare receipts/history on the second client.",
+      "modules": [
+        "src/ui/chat/MessageInfo.tsx",
+        "src/ui/chat/MessageItem.tsx",
+        "src/ui/chat/MessageList.tsx",
+        "src/ui/chat/PanelHead.tsx",
+        "src/ui/chat/PinnedPanel.tsx",
+        "src/ui/chat/RichDialogs.tsx",
+        "src/ui/chat/RichText.tsx",
+        "src/ui/chat/SidePanel.tsx",
+        "src/ui/chat/ThreadsPanel.tsx",
+        "src/ui/chat/contextTarget.tsx",
+        "src/ui/chat/gestures.ts",
+        "src/ui/chat/jump.ts",
+        "src/ui/chat/longPress.ts",
+        "src/ui/chat/useMessageCollection.tsx",
+        "src/ui/chat/useReadingPosition.ts",
+        "src/ui/components/UnreadBadge.tsx",
+        "src/ui/unread.ts",
+        "src/ui/views/DraftsAndSent.tsx"
+      ],
+      "verification": [
+        {
+          "stage": "source",
+          "status": "Source included",
+          "evidence": [
+            "docs/desktop/WEB_SOURCE_SNAPSHOT.json"
+          ]
+        },
+        {
+          "stage": "desktopUi",
+          "status": "Blocked",
+          "scope": "Source and candidate tests do not establish desktop workflow completion",
+          "evidence": []
+        },
+        {
+          "stage": "backend",
+          "status": "Blocked",
+          "scope": "Requires authorized internal accounts, private QA objects and applicable infrastructure",
+          "evidence": []
+        },
+        {
+          "stage": "crossPlatform",
+          "status": "Blocked",
+          "scope": "Requires actual Android or web peer; reference protocol peer is not a shipped client",
+          "evidence": []
+        },
+        {
+          "stage": "windows",
+          "status": "Blocked",
+          "scope": "Requires authenticated Windows workflow evidence",
+          "evidence": []
+        }
+      ],
+      "production": {
+        "status": "Blocked",
+        "reason": "Internal QA account provisioning/authorization, approved origins and scenario evidence are incomplete. Financial workflows additionally require an isolated sandbox."
+      }
+    },
+    {
+      "id": "polls-forums",
+      "name": "Poll voting, forums, threads and results",
+      "procedure": "Create a private QA poll/thread; vote as B and verify results and permissions across clients.",
+      "modules": [
+        "src/ui/chat/ForumView.tsx",
+        "src/ui/chat/PollDialog.tsx",
+        "src/ui/chat/PollResultsDialog.tsx",
+        "src/ui/chat/PollView.tsx",
+        "src/ui/chat/ThreadsPanel.tsx"
+      ],
+      "verification": [
+        {
+          "stage": "source",
+          "status": "Source included",
+          "evidence": [
+            "docs/desktop/WEB_SOURCE_SNAPSHOT.json"
+          ]
+        },
+        {
+          "stage": "desktopUi",
+          "status": "Blocked",
+          "scope": "Source and candidate tests do not establish desktop workflow completion",
+          "evidence": []
+        },
+        {
+          "stage": "backend",
+          "status": "Blocked",
+          "scope": "Requires authorized internal accounts, private QA objects and applicable infrastructure",
+          "evidence": []
+        },
+        {
+          "stage": "crossPlatform",
+          "status": "Blocked",
+          "scope": "Requires actual Android or web peer; reference protocol peer is not a shipped client",
+          "evidence": []
+        },
+        {
+          "stage": "windows",
+          "status": "Blocked",
+          "scope": "Requires authenticated Windows workflow evidence",
+          "evidence": []
+        }
+      ],
+      "production": {
+        "status": "Blocked",
+        "reason": "Internal QA account provisioning/authorization, approved origins and scenario evidence are incomplete. Financial workflows additionally require an isolated sandbox."
+      }
+    },
+    {
+      "id": "expressions",
+      "name": "Emoji, GIFs, stickers and expressions",
+      "procedure": "Send a small approved expression to private QA chat; verify picker, rendering and resource release.",
+      "modules": [
+        "src/ui/chat/AnimojiView.tsx",
+        "src/ui/chat/EmojiPicker.tsx",
+        "src/ui/chat/ExpressionLibrary.tsx",
+        "src/ui/chat/ExpressionPicker.tsx",
+        "src/ui/chat/GifView.tsx",
+        "src/ui/chat/Reactions.tsx",
+        "src/ui/chat/StickerView.tsx",
+        "src/ui/chat/reactors.ts",
+        "src/ui/community/CustomEmoji.tsx",
+        "src/ui/workspace/ExpressionsPage.tsx"
+      ],
+      "verification": [
+        {
+          "stage": "source",
+          "status": "Source included",
+          "evidence": [
+            "docs/desktop/WEB_SOURCE_SNAPSHOT.json"
+          ]
+        },
+        {
+          "stage": "desktopUi",
+          "status": "Blocked",
+          "scope": "Source and candidate tests do not establish desktop workflow completion",
+          "evidence": []
+        },
+        {
+          "stage": "backend",
+          "status": "Blocked",
+          "scope": "Requires authorized internal accounts, private QA objects and applicable infrastructure",
+          "evidence": []
+        },
+        {
+          "stage": "crossPlatform",
+          "status": "Blocked",
+          "scope": "Requires actual Android or web peer; reference protocol peer is not a shipped client",
+          "evidence": []
+        },
+        {
+          "stage": "windows",
+          "status": "Blocked",
+          "scope": "Requires authenticated Windows workflow evidence",
+          "evidence": []
+        }
+      ],
+      "production": {
+        "status": "Blocked",
+        "reason": "Internal QA account provisioning/authorization, approved origins and scenario evidence are incomplete. Financial workflows additionally require an isolated sandbox."
+      }
+    },
+    {
+      "id": "media-files",
+      "name": "Attachments, uploads, downloads and gallery",
+      "procedure": "Send identifiable small files via backend authorization; compare SHA-256 after decryption; verify access denial, cancel/retry and cleanup.",
+      "modules": [
+        "src/ui/chat/AttachmentDrafts.tsx",
+        "src/ui/chat/Attachments.tsx",
+        "src/ui/chat/BulkSaveBar.tsx",
+        "src/ui/chat/GalleryMediaViewer.tsx",
+        "src/ui/chat/MediaGalleryDialog.tsx",
+        "src/ui/chat/MediaLinkCard.tsx",
+        "src/ui/chat/MediaViewer.tsx",
+        "src/ui/chat/TransferList.tsx",
+        "src/ui/chat/ZoomableImage.tsx",
+        "src/ui/chat/album.ts",
+        "src/ui/chat/blobUrl.ts",
+        "src/ui/chat/gallery.ts",
+        "src/ui/chat/useNearScreen.ts",
+        "src/ui/settings/StoragePage.tsx"
+      ],
+      "verification": [
+        {
+          "stage": "source",
+          "status": "Source included",
+          "evidence": [
+            "docs/desktop/WEB_SOURCE_SNAPSHOT.json"
+          ]
+        },
+        {
+          "stage": "desktopUi",
+          "status": "Blocked",
+          "scope": "Source and candidate tests do not establish desktop workflow completion",
+          "evidence": []
+        },
+        {
+          "stage": "backend",
+          "status": "Blocked",
+          "scope": "Requires authorized internal accounts, private QA objects and applicable infrastructure",
+          "evidence": []
+        },
+        {
+          "stage": "crossPlatform",
+          "status": "Blocked",
+          "scope": "Requires actual Android or web peer; reference protocol peer is not a shipped client",
+          "evidence": []
+        },
+        {
+          "stage": "windows",
+          "status": "Blocked",
+          "scope": "Requires authenticated Windows workflow evidence",
+          "evidence": []
+        }
+      ],
+      "production": {
+        "status": "Blocked",
+        "reason": "Internal QA account provisioning/authorization, approved origins and scenario evidence are incomplete. Financial workflows additionally require an isolated sandbox."
+      }
+    },
+    {
+      "id": "calls",
+      "name": "Voice/video calls, devices, permissions and reconnection",
+      "procedure": "A calls B; verify bidirectional audio/video, absent and disconnected devices, switching, network reconnection and sleep/wake.",
+      "modules": [
+        "src/ui/call/CallAvatar.tsx",
+        "src/ui/call/CallConnection.tsx",
+        "src/ui/call/CallLayer.tsx",
+        "src/ui/call/CallStage.tsx",
+        "src/ui/call/ConnectedCallPanel.tsx",
+        "src/ui/call/RoomControls.tsx",
+        "src/ui/call/ShareViews.tsx",
+        "src/ui/call/callShared.ts",
+        "src/ui/call/callText.ts",
+        "src/ui/call/miniPosition.ts",
+        "src/ui/call/useNow.ts",
+        "src/ui/call/usePushToTalk.ts",
+        "src/ui/call/voiceModeration.tsx",
+        "src/ui/chat/VoiceBar.tsx",
+        "src/ui/chat/VoiceRoomView.tsx",
+        "src/ui/chat/voiceRoomRules.ts",
+        "src/ui/settings/CallsPage.tsx"
+      ],
+      "verification": [
+        {
+          "stage": "source",
+          "status": "Source included",
+          "evidence": [
+            "docs/desktop/WEB_SOURCE_SNAPSHOT.json"
+          ]
+        },
+        {
+          "stage": "desktopUi",
+          "status": "Blocked",
+          "scope": "Source and candidate tests do not establish desktop workflow completion",
+          "evidence": []
+        },
+        {
+          "stage": "backend",
+          "status": "Blocked",
+          "scope": "Requires authorized internal accounts, private QA objects and applicable infrastructure",
+          "evidence": []
+        },
+        {
+          "stage": "crossPlatform",
+          "status": "Blocked",
+          "scope": "Requires actual Android or web peer; reference protocol peer is not a shipped client",
+          "evidence": []
+        },
+        {
+          "stage": "windows",
+          "status": "Blocked",
+          "scope": "Requires authenticated Windows workflow evidence",
+          "evidence": []
+        }
+      ],
+      "production": {
+        "status": "Blocked",
+        "reason": "Internal QA account provisioning/authorization, approved origins and scenario evidence are incomplete. Financial workflows additionally require an isolated sandbox."
+      }
+    },
+    {
+      "id": "screen-sharing",
+      "name": "Explicit screen/window sharing and capture release",
+      "procedure": "Share a selected test window; compare receiver output; stop capture and verify tracks end, including disconnect and hangup.",
+      "modules": [
+        "src/ui/call/CallAvatar.tsx",
+        "src/ui/call/CallConnection.tsx",
+        "src/ui/call/CallLayer.tsx",
+        "src/ui/call/CallStage.tsx",
+        "src/ui/call/ConnectedCallPanel.tsx",
+        "src/ui/call/RoomControls.tsx",
+        "src/ui/call/ShareViews.tsx",
+        "src/ui/call/callShared.ts",
+        "src/ui/call/callText.ts",
+        "src/ui/call/miniPosition.ts",
+        "src/ui/call/useNow.ts",
+        "src/ui/call/usePushToTalk.ts",
+        "src/ui/call/voiceModeration.tsx",
+        "src/ui/chat/VoiceBar.tsx",
+        "src/ui/chat/VoiceRoomView.tsx",
+        "src/ui/chat/voiceRoomRules.ts"
+      ],
+      "verification": [
+        {
+          "stage": "source",
+          "status": "Source included",
+          "evidence": [
+            "docs/desktop/WEB_SOURCE_SNAPSHOT.json"
+          ]
+        },
+        {
+          "stage": "desktopUi",
+          "status": "Blocked",
+          "scope": "Source and candidate tests do not establish desktop workflow completion",
+          "evidence": []
+        },
+        {
+          "stage": "backend",
+          "status": "Blocked",
+          "scope": "Requires authorized internal accounts, private QA objects and applicable infrastructure",
+          "evidence": []
+        },
+        {
+          "stage": "crossPlatform",
+          "status": "Blocked",
+          "scope": "Requires actual Android or web peer; reference protocol peer is not a shipped client",
+          "evidence": []
+        },
+        {
+          "stage": "windows",
+          "status": "Blocked",
+          "scope": "Requires authenticated Windows workflow evidence",
+          "evidence": []
+        }
+      ],
+      "production": {
+        "status": "Blocked",
+        "reason": "Internal QA account provisioning/authorization, approved origins and scenario evidence are incomplete. Financial workflows additionally require an isolated sandbox."
+      }
+    },
+    {
+      "id": "notifications",
+      "name": "Native notifications, pause and activity",
+      "procedure": "With QA B in background receive one controlled DM; verify preview privacy, focus, pause and permission denial.",
+      "modules": [
+        "src/ui/chat/ChannelBell.tsx",
+        "src/ui/community/NotifyDialogs.tsx",
+        "src/ui/settings/BackgroundNotifications.tsx",
+        "src/ui/settings/NotificationOverview.tsx",
+        "src/ui/views/ActivityView.tsx"
+      ],
+      "verification": [
+        {
+          "stage": "source",
+          "status": "Source included",
+          "evidence": [
+            "docs/desktop/WEB_SOURCE_SNAPSHOT.json"
+          ]
+        },
+        {
+          "stage": "desktopUi",
+          "status": "Blocked",
+          "scope": "Source and candidate tests do not establish desktop workflow completion",
+          "evidence": []
+        },
+        {
+          "stage": "backend",
+          "status": "Blocked",
+          "scope": "Requires authorized internal accounts, private QA objects and applicable infrastructure",
+          "evidence": []
+        },
+        {
+          "stage": "crossPlatform",
+          "status": "Blocked",
+          "scope": "Requires actual Android or web peer; reference protocol peer is not a shipped client",
+          "evidence": []
+        },
+        {
+          "stage": "windows",
+          "status": "Blocked",
+          "scope": "Requires authenticated Windows workflow evidence",
+          "evidence": []
+        }
+      ],
+      "production": {
+        "status": "Blocked",
+        "reason": "Internal QA account provisioning/authorization, approved origins and scenario evidence are incomplete. Financial workflows additionally require an isolated sandbox."
+      }
+    },
+    {
+      "id": "friends",
+      "name": "Friends, requests, group membership and blocking",
+      "procedure": "Exchange a QA-only request; create an agreed private group; verify scoped visibility and reversible QA blocking.",
+      "modules": [
+        "src/ui/chat/ConversationManage.tsx",
+        "src/ui/chat/PeoplePanels.tsx",
+        "src/ui/chat/memberListRules.ts",
+        "src/ui/people/ConnectionRequestViews.tsx",
+        "src/ui/people/ConnectionsDialog.tsx",
+        "src/ui/people/RequestBar.tsx",
+        "src/ui/people/connectionRequests.ts",
+        "src/ui/views/FriendRows.tsx",
+        "src/ui/views/FriendsView.tsx",
+        "src/ui/views/SuggestedPeople.tsx",
+        "src/ui/workspace/AddMembersDialog.tsx",
+        "src/ui/workspace/EveryoneDialog.tsx",
+        "src/ui/workspace/MemberParityActions.tsx",
+        "src/ui/workspace/PeoplePage.tsx"
+      ],
+      "verification": [
+        {
+          "stage": "source",
+          "status": "Source included",
+          "evidence": [
+            "docs/desktop/WEB_SOURCE_SNAPSHOT.json"
+          ]
+        },
+        {
+          "stage": "desktopUi",
+          "status": "Blocked",
+          "scope": "Source and candidate tests do not establish desktop workflow completion",
+          "evidence": []
+        },
+        {
+          "stage": "backend",
+          "status": "Blocked",
+          "scope": "Requires authorized internal accounts, private QA objects and applicable infrastructure",
+          "evidence": []
+        },
+        {
+          "stage": "crossPlatform",
+          "status": "Blocked",
+          "scope": "Requires actual Android or web peer; reference protocol peer is not a shipped client",
+          "evidence": []
+        },
+        {
+          "stage": "windows",
+          "status": "Blocked",
+          "scope": "Requires authenticated Windows workflow evidence",
+          "evidence": []
+        }
+      ],
+      "production": {
+        "status": "Blocked",
+        "reason": "Internal QA account provisioning/authorization, approved origins and scenario evidence are incomplete. Financial workflows additionally require an isolated sandbox."
+      }
+    },
+    {
+      "id": "search",
+      "name": "Message search, saved items and discovery",
+      "procedure": "Search the unique QA marker; verify saved items and filters; inspect public discovery without publishing.",
+      "modules": [
+        "src/ui/chat/SearchPanel.tsx",
+        "src/ui/dialogs/SearchDialog.tsx",
+        "src/ui/later/LaterView.tsx",
+        "src/ui/later/RemindMeDialog.tsx",
+        "src/ui/later/ReminderEditor.tsx",
+        "src/ui/later/RemindersList.tsx",
+        "src/ui/later/SavedList.tsx",
+        "src/ui/later/when.ts",
+        "src/ui/views/DiscoverCard.tsx",
+        "src/ui/views/DiscoverView.tsx",
+        "src/ui/workspace/discovery/DiscoveryCard.tsx",
+        "src/ui/workspace/discovery/TemplateCard.tsx"
+      ],
+      "verification": [
+        {
+          "stage": "source",
+          "status": "Source included",
+          "evidence": [
+            "docs/desktop/WEB_SOURCE_SNAPSHOT.json"
+          ]
+        },
+        {
+          "stage": "desktopUi",
+          "status": "Blocked",
+          "scope": "Source and candidate tests do not establish desktop workflow completion",
+          "evidence": []
+        },
+        {
+          "stage": "backend",
+          "status": "Blocked",
+          "scope": "Requires authorized internal accounts, private QA objects and applicable infrastructure",
+          "evidence": []
+        },
+        {
+          "stage": "crossPlatform",
+          "status": "Blocked",
+          "scope": "Requires actual Android or web peer; reference protocol peer is not a shipped client",
+          "evidence": []
+        },
+        {
+          "stage": "windows",
+          "status": "Blocked",
+          "scope": "Requires authenticated Windows workflow evidence",
+          "evidence": []
+        }
+      ],
+      "production": {
+        "status": "Blocked",
+        "reason": "Internal QA account provisioning/authorization, approved origins and scenario evidence are incomplete. Financial workflows additionally require an isolated sandbox."
+      }
+    },
+    {
+      "id": "communities",
+      "name": "Private community create, navigation, leave and ownership",
+      "procedure": "Use owner-created private QA community; verify navigation and reversible edits. Deletion and ownership transfer require isolated tests.",
+      "modules": [
+        "src/ui/community/CommunityHeader.tsx",
+        "src/ui/community/CommunityPanel.tsx",
+        "src/ui/community/CommunityPreviewDialog.tsx",
+        "src/ui/community/CreateCommunityDialog.tsx",
+        "src/ui/community/DeleteCommunityDialog.tsx",
+        "src/ui/community/LeaveDialog.tsx",
+        "src/ui/community/communityMenu.tsx",
+        "src/ui/settings/LeaveManyDialog.tsx",
+        "src/ui/workspace/OverviewPage.tsx",
+        "src/ui/workspace/TransferOwnership.tsx",
+        "src/ui/workspace/WorkspaceSetupCards.tsx",
+        "src/ui/workspace/WorkspaceView.tsx",
+        "src/ui/workspace/communityRail.tsx"
+      ],
+      "verification": [
+        {
+          "stage": "source",
+          "status": "Source included",
+          "evidence": [
+            "docs/desktop/WEB_SOURCE_SNAPSHOT.json"
+          ]
+        },
+        {
+          "stage": "desktopUi",
+          "status": "Blocked",
+          "scope": "Source and candidate tests do not establish desktop workflow completion",
+          "evidence": []
+        },
+        {
+          "stage": "backend",
+          "status": "Blocked",
+          "scope": "Requires authorized internal accounts, private QA objects and applicable infrastructure",
+          "evidence": []
+        },
+        {
+          "stage": "crossPlatform",
+          "status": "Blocked",
+          "scope": "Requires actual Android or web peer; reference protocol peer is not a shipped client",
+          "evidence": []
+        },
+        {
+          "stage": "windows",
+          "status": "Blocked",
+          "scope": "Requires authenticated Windows workflow evidence",
+          "evidence": []
+        }
+      ],
+      "production": {
+        "status": "Blocked",
+        "reason": "Internal QA account provisioning/authorization, approved origins and scenario evidence are incomplete. Financial workflows additionally require an isolated sandbox."
+      }
+    },
+    {
+      "id": "channels",
+      "name": "Channels, categories, options and access",
+      "procedure": "Create only approved QA channels; verify private visibility, read/write controls and navigation as A/B/C.",
+      "modules": [
+        "src/ui/chat/ChannelBell.tsx",
+        "src/ui/chat/ChannelDetails.tsx",
+        "src/ui/chat/ConversationDetails.tsx",
+        "src/ui/chat/ConversationMenu.tsx",
+        "src/ui/chat/ConversationSettings.tsx",
+        "src/ui/chat/DetailsTabs.tsx",
+        "src/ui/chat/detailsRules.ts",
+        "src/ui/community/CategoryDialogs.tsx",
+        "src/ui/community/ChannelDialogs.tsx",
+        "src/ui/community/ChannelOptionsFields.tsx",
+        "src/ui/community/CreateChannelDialog.tsx",
+        "src/ui/community/LockedBanner.tsx",
+        "src/ui/community/lockMenu.tsx",
+        "src/ui/workspace/ChannelsPage.tsx"
+      ],
+      "verification": [
+        {
+          "stage": "source",
+          "status": "Source included",
+          "evidence": [
+            "docs/desktop/WEB_SOURCE_SNAPSHOT.json"
+          ]
+        },
+        {
+          "stage": "desktopUi",
+          "status": "Blocked",
+          "scope": "Source and candidate tests do not establish desktop workflow completion",
+          "evidence": []
+        },
+        {
+          "stage": "backend",
+          "status": "Blocked",
+          "scope": "Requires authorized internal accounts, private QA objects and applicable infrastructure",
+          "evidence": []
+        },
+        {
+          "stage": "crossPlatform",
+          "status": "Blocked",
+          "scope": "Requires actual Android or web peer; reference protocol peer is not a shipped client",
+          "evidence": []
+        },
+        {
+          "stage": "windows",
+          "status": "Blocked",
+          "scope": "Requires authenticated Windows workflow evidence",
+          "evidence": []
+        }
+      ],
+      "production": {
+        "status": "Blocked",
+        "reason": "Internal QA account provisioning/authorization, approved origins and scenario evidence are incomplete. Financial workflows additionally require an isolated sandbox."
+      }
+    },
+    {
+      "id": "roles",
+      "name": "Roles, permissions and permission preview",
+      "procedure": "Assign scoped QA moderator role to C; compare permission preview with real member access; no global role changes.",
+      "modules": [
+        "src/ui/community/PermissionPreview.tsx",
+        "src/ui/community/PermissionsDialog.tsx",
+        "src/ui/community/reactionRoles/ReactionRolesDialog.tsx",
+        "src/ui/community/reactionRoles/useReactionRolesItem.tsx",
+        "src/ui/community/useCommunityAccess.ts",
+        "src/ui/community/useCommunityMembers.ts",
+        "src/ui/community/useCommunityPermissions.ts",
+        "src/ui/workspace/RoleDisplayTab.tsx",
+        "src/ui/workspace/RoleEditor.tsx",
+        "src/ui/workspace/RoleMembers.tsx",
+        "src/ui/workspace/RolePermissionsTab.tsx",
+        "src/ui/workspace/RolesPage.tsx"
+      ],
+      "verification": [
+        {
+          "stage": "source",
+          "status": "Source included",
+          "evidence": [
+            "docs/desktop/WEB_SOURCE_SNAPSHOT.json"
+          ]
+        },
+        {
+          "stage": "desktopUi",
+          "status": "Blocked",
+          "scope": "Source and candidate tests do not establish desktop workflow completion",
+          "evidence": []
+        },
+        {
+          "stage": "backend",
+          "status": "Blocked",
+          "scope": "Requires authorized internal accounts, private QA objects and applicable infrastructure",
+          "evidence": []
+        },
+        {
+          "stage": "crossPlatform",
+          "status": "Blocked",
+          "scope": "Requires actual Android or web peer; reference protocol peer is not a shipped client",
+          "evidence": []
+        },
+        {
+          "stage": "windows",
+          "status": "Blocked",
+          "scope": "Requires authenticated Windows workflow evidence",
+          "evidence": []
+        }
+      ],
+      "production": {
+        "status": "Blocked",
+        "reason": "Internal QA account provisioning/authorization, approved origins and scenario evidence are incomplete. Financial workflows additionally require an isolated sandbox."
+      }
+    },
+    {
+      "id": "moderation",
+      "name": "Community safety, reports, audit and rules",
+      "procedure": "Inspect QA audit and safety screens; report QA-owned test content if authorized. Destructive moderation remains isolated.",
+      "modules": [
+        "src/ui/chat/ReportDialog.tsx",
+        "src/ui/community/RulesViews.tsx",
+        "src/ui/workspace/AuditPage.tsx",
+        "src/ui/workspace/ModerationPages.tsx",
+        "src/ui/workspace/ProfileSafety.tsx",
+        "src/ui/workspace/ReportsPage.tsx",
+        "src/ui/workspace/RulesPage.tsx",
+        "src/ui/workspace/VoiceBansCard.tsx"
+      ],
+      "verification": [
+        {
+          "stage": "source",
+          "status": "Source included",
+          "evidence": [
+            "docs/desktop/WEB_SOURCE_SNAPSHOT.json"
+          ]
+        },
+        {
+          "stage": "desktopUi",
+          "status": "Blocked",
+          "scope": "Source and candidate tests do not establish desktop workflow completion",
+          "evidence": []
+        },
+        {
+          "stage": "backend",
+          "status": "Blocked",
+          "scope": "Requires authorized internal accounts, private QA objects and applicable infrastructure",
+          "evidence": []
+        },
+        {
+          "stage": "crossPlatform",
+          "status": "Blocked",
+          "scope": "Requires actual Android or web peer; reference protocol peer is not a shipped client",
+          "evidence": []
+        },
+        {
+          "stage": "windows",
+          "status": "Blocked",
+          "scope": "Requires authenticated Windows workflow evidence",
+          "evidence": []
+        }
+      ],
+      "production": {
+        "status": "Blocked",
+        "reason": "Internal QA account provisioning/authorization, approved origins and scenario evidence are incomplete. Financial workflows additionally require an isolated sandbox."
+      }
+    },
+    {
+      "id": "onboarding",
+      "name": "Invitations, community guides, templates and onboarding",
+      "procedure": "Open a private invite on desktop and second client; verify rule agreement, guide and role-limited onboarding.",
+      "modules": [
+        "src/ui/LinkScreen.tsx",
+        "src/ui/community/GuideOnboarding.tsx",
+        "src/ui/community/OnboardingFinish.tsx",
+        "src/ui/community/TemplatePreviewDialog.tsx",
+        "src/ui/views/StartChecklist.tsx",
+        "src/ui/views/startRules.ts",
+        "src/ui/workspace/GuidePages.tsx",
+        "src/ui/workspace/InvitationsPage.tsx",
+        "src/ui/workspace/InviteLink.tsx",
+        "src/ui/workspace/OnboardingGateCard.tsx",
+        "src/ui/workspace/StandardInvite.tsx",
+        "src/ui/workspace/WorkspaceSetupCards.tsx"
+      ],
+      "verification": [
+        {
+          "stage": "source",
+          "status": "Source included",
+          "evidence": [
+            "docs/desktop/WEB_SOURCE_SNAPSHOT.json"
+          ]
+        },
+        {
+          "stage": "desktopUi",
+          "status": "Blocked",
+          "scope": "Source and candidate tests do not establish desktop workflow completion",
+          "evidence": []
+        },
+        {
+          "stage": "backend",
+          "status": "Blocked",
+          "scope": "Requires authorized internal accounts, private QA objects and applicable infrastructure",
+          "evidence": []
+        },
+        {
+          "stage": "crossPlatform",
+          "status": "Blocked",
+          "scope": "Requires actual Android or web peer; reference protocol peer is not a shipped client",
+          "evidence": []
+        },
+        {
+          "stage": "windows",
+          "status": "Blocked",
+          "scope": "Requires authenticated Windows workflow evidence",
+          "evidence": []
+        }
+      ],
+      "production": {
+        "status": "Blocked",
+        "reason": "Internal QA account provisioning/authorization, approved origins and scenario evidence are incomplete. Financial workflows additionally require an isolated sandbox."
+      }
+    },
+    {
+      "id": "lobby-events",
+      "name": "Community lobby, voice rooms, meetings and events",
+      "procedure": "Create a private QA event/room if authorized; join as A/B; verify updates, permissions and cleanup.",
+      "modules": [
+        "src/ui/lobby/CardEditor.tsx",
+        "src/ui/lobby/EditorLook.tsx",
+        "src/ui/lobby/EditorSections.tsx",
+        "src/ui/lobby/EditorTemplates.tsx",
+        "src/ui/lobby/FeedUrl.tsx",
+        "src/ui/lobby/LobbyCard.tsx",
+        "src/ui/lobby/LobbyEditorPanel.tsx",
+        "src/ui/lobby/LobbyHeader.tsx",
+        "src/ui/lobby/LobbyPage.tsx",
+        "src/ui/lobby/LobbyRow.tsx",
+        "src/ui/lobby/LobbySurface.tsx",
+        "src/ui/lobby/Markdown.tsx",
+        "src/ui/lobby/PickRolesCard.tsx",
+        "src/ui/lobby/cardsChannels.tsx",
+        "src/ui/lobby/cardsInfo.tsx",
+        "src/ui/lobby/cardsPeople.tsx",
+        "src/ui/lobby/editorRequest.ts",
+        "src/ui/lobby/fieldEditors.tsx",
+        "src/ui/lobby/lobbyContext.ts",
+        "src/ui/lobby/lobbyInfo.ts",
+        "src/ui/lobby/markdownParse.ts",
+        "src/ui/lobby/useLobbyEditor.ts",
+        "src/ui/lobby/useLobbyLanding.ts",
+        "src/ui/workspace/LobbySettingsPage.tsx",
+        "src/ui/workspace/MeetingsPage.tsx"
+      ],
+      "verification": [
+        {
+          "stage": "source",
+          "status": "Source included",
+          "evidence": [
+            "docs/desktop/WEB_SOURCE_SNAPSHOT.json"
+          ]
+        },
+        {
+          "stage": "desktopUi",
+          "status": "Blocked",
+          "scope": "Source and candidate tests do not establish desktop workflow completion",
+          "evidence": []
+        },
+        {
+          "stage": "backend",
+          "status": "Blocked",
+          "scope": "Requires authorized internal accounts, private QA objects and applicable infrastructure",
+          "evidence": []
+        },
+        {
+          "stage": "crossPlatform",
+          "status": "Blocked",
+          "scope": "Requires actual Android or web peer; reference protocol peer is not a shipped client",
+          "evidence": []
+        },
+        {
+          "stage": "windows",
+          "status": "Blocked",
+          "scope": "Requires authenticated Windows workflow evidence",
+          "evidence": []
+        }
+      ],
+      "production": {
+        "status": "Blocked",
+        "reason": "Internal QA account provisioning/authorization, approved origins and scenario evidence are incomplete. Financial workflows additionally require an isolated sandbox."
+      }
+    },
+    {
+      "id": "bots",
+      "name": "Bots, integrations and diagnostics",
+      "procedure": "Inspect configured QA bot; issue scoped harmless command; verify diagnostics without enabling external public actions.",
+      "modules": [
+        "src/ui/chat/GiveawayStatus.tsx",
+        "src/ui/chat/SlashCommands.tsx",
+        "src/ui/chat/WordyGameDialog.tsx",
+        "src/ui/chat/WordyHeaderAction.tsx",
+        "src/ui/chat/wordyLaunch.ts",
+        "src/ui/people/BotProfileDialog.tsx",
+        "src/ui/workspace/BotsPage.tsx",
+        "src/ui/workspace/bots/AlertsWatches.tsx",
+        "src/ui/workspace/bots/BotDiagnostics.tsx",
+        "src/ui/workspace/bots/BotLook.tsx",
+        "src/ui/workspace/bots/BotParts.tsx",
+        "src/ui/workspace/bots/BotSettingsForm.tsx",
+        "src/ui/workspace/bots/BotWindow.tsx",
+        "src/ui/workspace/bots/CommunityBotsCard.tsx",
+        "src/ui/workspace/bots/HelperLevelsForms.tsx",
+        "src/ui/workspace/bots/LoggerStarboardForms.tsx",
+        "src/ui/workspace/bots/OfficialBotsSection.tsx",
+        "src/ui/workspace/bots/PartTwoForms.tsx",
+        "src/ui/workspace/bots/WelcomerForm.tsx",
+        "src/ui/workspace/bots/botForm.ts"
+      ],
+      "verification": [
+        {
+          "stage": "source",
+          "status": "Source included",
+          "evidence": [
+            "docs/desktop/WEB_SOURCE_SNAPSHOT.json"
+          ]
+        },
+        {
+          "stage": "desktopUi",
+          "status": "Blocked",
+          "scope": "Source and candidate tests do not establish desktop workflow completion",
+          "evidence": []
+        },
+        {
+          "stage": "backend",
+          "status": "Blocked",
+          "scope": "Requires authorized internal accounts, private QA objects and applicable infrastructure",
+          "evidence": []
+        },
+        {
+          "stage": "crossPlatform",
+          "status": "Blocked",
+          "scope": "Requires actual Android or web peer; reference protocol peer is not a shipped client",
+          "evidence": []
+        },
+        {
+          "stage": "windows",
+          "status": "Blocked",
+          "scope": "Requires authenticated Windows workflow evidence",
+          "evidence": []
+        }
+      ],
+      "production": {
+        "status": "Blocked",
+        "reason": "Internal QA account provisioning/authorization, approved origins and scenario evidence are incomplete. Financial workflows additionally require an isolated sandbox."
+      }
+    },
+    {
+      "id": "webhooks-tickets",
+      "name": "Channel webhooks, reaction roles and tickets",
+      "procedure": "Use a private QA channel; verify access controls and ticket/reaction workflows. External webhook creation needs scoped authorization.",
+      "modules": [
+        "src/ui/chat/WebhookSender.tsx",
+        "src/ui/community/reactionRoles/ReactionRolesDialog.tsx",
+        "src/ui/community/reactionRoles/useReactionRolesItem.tsx",
+        "src/ui/community/tickets/OpenTicketsList.tsx",
+        "src/ui/community/tickets/PanelEditor.tsx",
+        "src/ui/community/tickets/TicketDialogs.tsx",
+        "src/ui/community/tickets/TicketHeaderActions.tsx",
+        "src/ui/community/tickets/TicketsCard.tsx",
+        "src/ui/community/webhooks/BoxEditor.tsx",
+        "src/ui/community/webhooks/ButtonsEditor.tsx",
+        "src/ui/community/webhooks/ChannelDialogTabs.tsx",
+        "src/ui/community/webhooks/ImportJsonDialog.tsx",
+        "src/ui/community/webhooks/PostBuilder.tsx",
+        "src/ui/community/webhooks/PostPreview.tsx",
+        "src/ui/community/webhooks/WebhookRow.tsx",
+        "src/ui/community/webhooks/WebhooksTab.tsx",
+        "src/ui/community/webhooks/useWebhooksAllowed.ts"
+      ],
+      "verification": [
+        {
+          "stage": "source",
+          "status": "Source included",
+          "evidence": [
+            "docs/desktop/WEB_SOURCE_SNAPSHOT.json"
+          ]
+        },
+        {
+          "stage": "desktopUi",
+          "status": "Blocked",
+          "scope": "Source and candidate tests do not establish desktop workflow completion",
+          "evidence": []
+        },
+        {
+          "stage": "backend",
+          "status": "Blocked",
+          "scope": "Requires authorized internal accounts, private QA objects and applicable infrastructure",
+          "evidence": []
+        },
+        {
+          "stage": "crossPlatform",
+          "status": "Blocked",
+          "scope": "Requires actual Android or web peer; reference protocol peer is not a shipped client",
+          "evidence": []
+        },
+        {
+          "stage": "windows",
+          "status": "Blocked",
+          "scope": "Requires authenticated Windows workflow evidence",
+          "evidence": []
+        }
+      ],
+      "production": {
+        "status": "Blocked",
+        "reason": "Internal QA account provisioning/authorization, approved origins and scenario evidence are incomplete. Financial workflows additionally require an isolated sandbox."
+      }
+    },
+    {
+      "id": "billing",
+      "name": "Plans, subscriptions, entitlements and checkout",
+      "procedure": "Read QA entitlements in production. Execute purchases, cancellation and webhook transitions only on isolated sandbox backend.",
+      "modules": [
+        "src/ui/billing/AddonCheckoutPage.tsx",
+        "src/ui/billing/BillingPage.tsx",
+        "src/ui/billing/CheckoutPage.tsx",
+        "src/ui/billing/PayPalButton.tsx",
+        "src/ui/billing/checkoutDraft.ts",
+        "src/ui/mojo/CharLimit.tsx",
+        "src/ui/mojo/MojoBadge.tsx",
+        "src/ui/mojo/MojoBanner.tsx",
+        "src/ui/mojo/MojoGifts.tsx",
+        "src/ui/mojo/MojoPage.tsx",
+        "src/ui/mojo/MojoPlans.tsx",
+        "src/ui/mojo/PlusPromotion.tsx",
+        "src/ui/mojo/PlusRenewalNotice.tsx",
+        "src/ui/mojo/PlusSupportNotice.tsx",
+        "src/ui/mojo/SparkDialog.tsx",
+        "src/ui/mojo/SparkGoal.tsx",
+        "src/ui/mojo/SparkPage.tsx",
+        "src/ui/mojo/SparkSection.tsx",
+        "src/ui/mojo/SparkTrack.tsx",
+        "src/ui/mojo/mojoFormat.ts",
+        "src/ui/mojo/useMojoLimits.ts",
+        "src/ui/workspace/SparksPromotePages.tsx",
+        "src/ui/workspace/promote/BoostCards.tsx",
+        "src/ui/workspace/promote/PromotePage.tsx",
+        "src/ui/workspace/promote/PromotedRowCard.tsx",
+        "src/ui/workspace/promote/usePromoteBuy.ts"
+      ],
+      "verification": [
+        {
+          "stage": "source",
+          "status": "Source included",
+          "evidence": [
+            "docs/desktop/WEB_SOURCE_SNAPSHOT.json"
+          ]
+        },
+        {
+          "stage": "desktopUi",
+          "status": "Blocked",
+          "scope": "Source and candidate tests do not establish desktop workflow completion",
+          "evidence": []
+        },
+        {
+          "stage": "backend",
+          "status": "Blocked",
+          "scope": "Requires authorized internal accounts, private QA objects and applicable infrastructure",
+          "evidence": []
+        },
+        {
+          "stage": "crossPlatform",
+          "status": "Blocked",
+          "scope": "Requires actual Android or web peer; reference protocol peer is not a shipped client",
+          "evidence": []
+        },
+        {
+          "stage": "windows",
+          "status": "Blocked",
+          "scope": "Requires authenticated Windows workflow evidence",
+          "evidence": []
+        }
+      ],
+      "production": {
+        "status": "Blocked",
+        "reason": "Internal QA account provisioning/authorization, approved origins and scenario evidence are incomplete. Financial workflows additionally require an isolated sandbox."
+      }
+    },
+    {
+      "id": "gifts-points",
+      "name": "Gifts, Spark, points, quests and rewards",
+      "procedure": "Inspect balances and quests without reward/financial mutations; test gifts and transactions only in isolated sandbox.",
+      "modules": [
+        "src/ui/mojo/SparkDialog.tsx",
+        "src/ui/mojo/SparkGoal.tsx",
+        "src/ui/mojo/SparkPage.tsx",
+        "src/ui/mojo/SparkSection.tsx",
+        "src/ui/mojo/SparkTrack.tsx",
+        "src/ui/points/AchievementGallery.tsx",
+        "src/ui/points/PointsEarn.tsx",
+        "src/ui/points/PointsPage.tsx",
+        "src/ui/points/PointsQuests.tsx",
+        "src/ui/points/pointsWords.ts",
+        "src/ui/workspace/SparksPromotePages.tsx",
+        "src/ui/workspace/promote/BoostCards.tsx",
+        "src/ui/workspace/promote/PromotePage.tsx",
+        "src/ui/workspace/promote/PromotedRowCard.tsx",
+        "src/ui/workspace/promote/usePromoteBuy.ts"
+      ],
+      "verification": [
+        {
+          "stage": "source",
+          "status": "Source included",
+          "evidence": [
+            "docs/desktop/WEB_SOURCE_SNAPSHOT.json"
+          ]
+        },
+        {
+          "stage": "desktopUi",
+          "status": "Blocked",
+          "scope": "Source and candidate tests do not establish desktop workflow completion",
+          "evidence": []
+        },
+        {
+          "stage": "backend",
+          "status": "Blocked",
+          "scope": "Requires authorized internal accounts, private QA objects and applicable infrastructure",
+          "evidence": []
+        },
+        {
+          "stage": "crossPlatform",
+          "status": "Blocked",
+          "scope": "Requires actual Android or web peer; reference protocol peer is not a shipped client",
+          "evidence": []
+        },
+        {
+          "stage": "windows",
+          "status": "Blocked",
+          "scope": "Requires authenticated Windows workflow evidence",
+          "evidence": []
+        }
+      ],
+      "production": {
+        "status": "Blocked",
+        "reason": "Internal QA account provisioning/authorization, approved origins and scenario evidence are incomplete. Financial workflows additionally require an isolated sandbox."
+      }
+    },
+    {
+      "id": "leaderboards-creators",
+      "name": "Leaderboards, creators and verification",
+      "procedure": "Read current pages and QA visibility; do not change public rankings or submit real verification applications.",
+      "modules": [
+        "src/ui/creators/CreatorsPage.tsx",
+        "src/ui/leaderboards/LeaderboardsPage.tsx",
+        "src/ui/people/LevelRing.tsx",
+        "src/ui/people/ProfilePins.tsx",
+        "src/ui/settings/CreatorVerificationCard.tsx",
+        "src/ui/workspace/PinsPage.tsx"
+      ],
+      "verification": [
+        {
+          "stage": "source",
+          "status": "Source included",
+          "evidence": [
+            "docs/desktop/WEB_SOURCE_SNAPSHOT.json"
+          ]
+        },
+        {
+          "stage": "desktopUi",
+          "status": "Blocked",
+          "scope": "Source and candidate tests do not establish desktop workflow completion",
+          "evidence": []
+        },
+        {
+          "stage": "backend",
+          "status": "Blocked",
+          "scope": "Requires authorized internal accounts, private QA objects and applicable infrastructure",
+          "evidence": []
+        },
+        {
+          "stage": "crossPlatform",
+          "status": "Blocked",
+          "scope": "Requires actual Android or web peer; reference protocol peer is not a shipped client",
+          "evidence": []
+        },
+        {
+          "stage": "windows",
+          "status": "Blocked",
+          "scope": "Requires authenticated Windows workflow evidence",
+          "evidence": []
+        }
+      ],
+      "production": {
+        "status": "Blocked",
+        "reason": "Internal QA account provisioning/authorization, approved origins and scenario evidence are incomplete. Financial workflows additionally require an isolated sandbox."
+      }
+    },
+    {
+      "id": "developer",
+      "name": "Developer apps, OAuth consent and tooling",
+      "procedure": "Inspect own QA application/consent; exercise scopes with isolated credentials; never expose app secrets in reports.",
+      "modules": [
+        "src/ui/developer/AppsSection.tsx",
+        "src/ui/developer/BotListingCard.tsx",
+        "src/ui/developer/BotsSection.tsx",
+        "src/ui/developer/DeveloperPage.tsx",
+        "src/ui/oauth/ConsentPage.tsx"
+      ],
+      "verification": [
+        {
+          "stage": "source",
+          "status": "Source included",
+          "evidence": [
+            "docs/desktop/WEB_SOURCE_SNAPSHOT.json"
+          ]
+        },
+        {
+          "stage": "desktopUi",
+          "status": "Blocked",
+          "scope": "Source and candidate tests do not establish desktop workflow completion",
+          "evidence": []
+        },
+        {
+          "stage": "backend",
+          "status": "Blocked",
+          "scope": "Requires authorized internal accounts, private QA objects and applicable infrastructure",
+          "evidence": []
+        },
+        {
+          "stage": "crossPlatform",
+          "status": "Blocked",
+          "scope": "Requires actual Android or web peer; reference protocol peer is not a shipped client",
+          "evidence": []
+        },
+        {
+          "stage": "windows",
+          "status": "Blocked",
+          "scope": "Requires authenticated Windows workflow evidence",
+          "evidence": []
+        }
+      ],
+      "production": {
+        "status": "Blocked",
+        "reason": "Internal QA account provisioning/authorization, approved origins and scenario evidence are incomplete. Financial workflows additionally require an isolated sandbox."
+      }
+    },
+    {
+      "id": "preferences",
+      "name": "Appearance, privacy, localization, shortcuts and accessibility",
+      "procedure": "Change reversible QA/local preferences; verify keyboard/focus, reduced motion, language and 720p layout.",
+      "modules": [
+        "src/ui/components/Avatar.tsx",
+        "src/ui/components/BadgeMark.tsx",
+        "src/ui/components/BotTag.tsx",
+        "src/ui/components/BrandMark.tsx",
+        "src/ui/components/CommunityOwnerBadge.tsx",
+        "src/ui/components/CopyButton.tsx",
+        "src/ui/components/EmberIcon.tsx",
+        "src/ui/components/IdentityGlyph.tsx",
+        "src/ui/components/LanguagePicker.tsx",
+        "src/ui/components/LiveCallBadge.tsx",
+        "src/ui/components/MeldlingArt.tsx",
+        "src/ui/components/MotionImage.tsx",
+        "src/ui/components/OrgAvatar.tsx",
+        "src/ui/components/Overlay.tsx",
+        "src/ui/components/QrCode.tsx",
+        "src/ui/components/SettingsIcon.tsx",
+        "src/ui/components/Toggle.tsx",
+        "src/ui/components/UnreadBadge.tsx",
+        "src/ui/components/dragSort.ts",
+        "src/ui/components/photos.ts",
+        "src/ui/components/scrollStrip.ts",
+        "src/ui/settings/AppearanceExtras.tsx",
+        "src/ui/settings/PreferencePages.tsx",
+        "src/ui/settings/PrivacyExtras.tsx",
+        "src/ui/settings/PrivacyPage.tsx",
+        "src/ui/settings/SettingsView.tsx",
+        "src/ui/settings/ShortcutsPage.tsx",
+        "src/ui/settings/settingsSearch.ts"
+      ],
+      "verification": [
+        {
+          "stage": "source",
+          "status": "Source included",
+          "evidence": [
+            "docs/desktop/WEB_SOURCE_SNAPSHOT.json"
+          ]
+        },
+        {
+          "stage": "desktopUi",
+          "status": "Blocked",
+          "scope": "Source and candidate tests do not establish desktop workflow completion",
+          "evidence": []
+        },
+        {
+          "stage": "backend",
+          "status": "Blocked",
+          "scope": "Requires authorized internal accounts, private QA objects and applicable infrastructure",
+          "evidence": []
+        },
+        {
+          "stage": "crossPlatform",
+          "status": "Blocked",
+          "scope": "Requires actual Android or web peer; reference protocol peer is not a shipped client",
+          "evidence": []
+        },
+        {
+          "stage": "windows",
+          "status": "Blocked",
+          "scope": "Requires authenticated Windows workflow evidence",
+          "evidence": []
+        }
+      ],
+      "production": {
+        "status": "Blocked",
+        "reason": "Internal QA account provisioning/authorization, approved origins and scenario evidence are incomplete. Financial workflows additionally require an isolated sandbox."
+      }
+    },
+    {
+      "id": "operations",
+      "name": "Service health and operator-only screens",
+      "procedure": "Inspect member-visible health. Operator-only functionality is not applicable to ordinary QA accounts; never promote them to test it.",
+      "modules": [
+        "src/ui/settings/AdminUsagePage.tsx",
+        "src/ui/settings/ServiceHealthPage.tsx"
+      ],
+      "verification": [
+        {
+          "stage": "source",
+          "status": "Source included",
+          "evidence": [
+            "docs/desktop/WEB_SOURCE_SNAPSHOT.json"
+          ]
+        },
+        {
+          "stage": "desktopUi",
+          "status": "Blocked",
+          "scope": "Source and candidate tests do not establish desktop workflow completion",
+          "evidence": []
+        },
+        {
+          "stage": "backend",
+          "status": "Blocked",
+          "scope": "Requires authorized internal accounts, private QA objects and applicable infrastructure",
+          "evidence": []
+        },
+        {
+          "stage": "crossPlatform",
+          "status": "Blocked",
+          "scope": "Requires actual Android or web peer; reference protocol peer is not a shipped client",
+          "evidence": []
+        },
+        {
+          "stage": "windows",
+          "status": "Blocked",
+          "scope": "Requires authenticated Windows workflow evidence",
+          "evidence": []
+        }
+      ],
+      "production": {
+        "status": "Blocked",
+        "reason": "Internal QA account provisioning/authorization, approved origins and scenario evidence are incomplete. Financial workflows additionally require an isolated sandbox."
+      }
+    },
+    {
+      "id": "desktop-shell",
+      "name": "App shell, routing, dialogs, common helpers and native integration",
+      "procedure": "Verify local offline shell, native settings, IPC boundaries, safe links, cache preservation, economy mode and invite routing.",
+      "modules": [
+        "src/ui/App.tsx",
+        "src/ui/StatusScreens.tsx",
+        "src/ui/UpdateNotice.tsx",
+        "src/ui/auth/AuthFrame.tsx",
+        "src/ui/chat/SafeLink.tsx",
+        "src/ui/chat/inAppLinks.ts",
+        "src/ui/community/accent.ts",
+        "src/ui/community/communityMenu.tsx",
+        "src/ui/community/menuLabels.tsx",
+        "src/ui/community/panelData.ts",
+        "src/ui/community/useCommunityThemes.ts",
+        "src/ui/community/useTickAt.ts",
+        "src/ui/components/Avatar.tsx",
+        "src/ui/components/BadgeMark.tsx",
+        "src/ui/components/BotTag.tsx",
+        "src/ui/components/BrandMark.tsx",
+        "src/ui/components/CommunityOwnerBadge.tsx",
+        "src/ui/components/CopyButton.tsx",
+        "src/ui/components/EmberIcon.tsx",
+        "src/ui/components/IdentityGlyph.tsx",
+        "src/ui/components/LanguagePicker.tsx",
+        "src/ui/components/LiveCallBadge.tsx",
+        "src/ui/components/MeldlingArt.tsx",
+        "src/ui/components/MotionImage.tsx",
+        "src/ui/components/OrgAvatar.tsx",
+        "src/ui/components/Overlay.tsx",
+        "src/ui/components/QrCode.tsx",
+        "src/ui/components/SettingsIcon.tsx",
+        "src/ui/components/Toggle.tsx",
+        "src/ui/components/UnreadBadge.tsx",
+        "src/ui/components/dragSort.ts",
+        "src/ui/components/photos.ts",
+        "src/ui/components/scrollStrip.ts",
+        "src/ui/dialogs/ChannelBrowser.tsx",
+        "src/ui/dialogs/ForwardDialog.tsx",
+        "src/ui/dialogs/IdentityReview.tsx",
+        "src/ui/dialogs/NewGroupDialog.tsx",
+        "src/ui/dialogs/NewMessageDialog.tsx",
+        "src/ui/dialogs/SearchDialog.tsx",
+        "src/ui/dialogs/ShortcutsDialog.tsx",
+        "src/ui/dialogs/StatusDialogs.tsx",
+        "src/ui/dialogs/WorkspaceDialogs.tsx",
+        "src/ui/format.ts",
+        "src/ui/selectors.ts",
+        "src/ui/settings/InstallButton.tsx",
+        "src/ui/shell/AccountActions.tsx",
+        "src/ui/shell/ConnectionBanner.tsx",
+        "src/ui/shell/ConversationRow.tsx",
+        "src/ui/shell/DmPromos.tsx",
+        "src/ui/shell/Notices.tsx",
+        "src/ui/shell/ProfileMenu.tsx",
+        "src/ui/shell/Rail.tsx",
+        "src/ui/shell/RailCommunity.tsx",
+        "src/ui/shell/RailFolder.tsx",
+        "src/ui/shell/SettingsWindow.tsx",
+        "src/ui/shell/Shell.tsx",
+        "src/ui/shell/Sidebar.tsx",
+        "src/ui/shell/SidebarSections.tsx",
+        "src/ui/shell/TabBar.tsx",
+        "src/ui/shell/TabIndicators.tsx",
+        "src/ui/shell/TopBar.tsx",
+        "src/ui/shell/UserPanel.tsx",
+        "src/ui/shell/VoiceRooms.tsx",
+        "src/ui/unread.ts",
+        "src/ui/views/HomeView.tsx",
+        "src/ui/workspace/ThemePage.tsx",
+        "src/ui/workspace/UsagePage.tsx",
+        "src/ui/workspace/useLoad.ts"
+      ],
+      "verification": [
+        {
+          "stage": "source",
+          "status": "Source included",
+          "evidence": [
+            "docs/desktop/WEB_SOURCE_SNAPSHOT.json"
+          ]
+        },
+        {
+          "stage": "desktopUi",
+          "status": "Desktop UI verified",
+          "scope": "Only offline/native smoke assertions; macOS and Windows CI",
+          "evidence": [
+            "docs/desktop/evidence/smoke.json",
+            "docs/desktop/evidence/windows-smoke.json"
+          ]
+        },
+        {
+          "stage": "backend",
+          "status": "Blocked",
+          "scope": "Requires authorized internal accounts, private QA objects and applicable infrastructure",
+          "evidence": []
+        },
+        {
+          "stage": "crossPlatform",
+          "status": "Blocked",
+          "scope": "Requires actual Android or web peer; reference protocol peer is not a shipped client",
+          "evidence": []
+        },
+        {
+          "stage": "windows",
+          "status": "Windows verified",
+          "scope": "Only native smoke + installer launch/uninstall on CI; no physical hardware guarantee",
+          "evidence": [
+            "docs/desktop/evidence/windows-smoke.json",
+            "docs/desktop/evidence/windows-install.json"
+          ]
+        }
+      ],
+      "production": {
+        "status": "Blocked",
+        "reason": "Internal QA account provisioning/authorization, approved origins and scenario evidence are incomplete. Financial workflows additionally require an isolated sandbox."
+      }
+    },
+    {
+      "id": "translation",
+      "name": "Local message translation and consent",
+      "procedure": "Use a QA marker message; inspect first-use disclosure; translate locally if supported and verify stored encrypted text is unchanged. Unsupported native translation requires graceful fallback.",
+      "modules": [
+        "src/ui/chat/Translate.tsx"
+      ],
+      "verification": [
+        {
+          "stage": "source",
+          "status": "Source included",
+          "evidence": [
+            "docs/desktop/WEB_SOURCE_SNAPSHOT.json"
+          ]
+        },
+        {
+          "stage": "desktopUi",
+          "status": "Blocked",
+          "scope": "Source and candidate tests do not establish desktop workflow completion",
+          "evidence": []
+        },
+        {
+          "stage": "backend",
+          "status": "Blocked",
+          "scope": "Requires authorized internal accounts, private QA objects and applicable infrastructure",
+          "evidence": []
+        },
+        {
+          "stage": "crossPlatform",
+          "status": "Blocked",
+          "scope": "Requires actual Android or web peer; reference protocol peer is not a shipped client",
+          "evidence": []
+        },
+        {
+          "stage": "windows",
+          "status": "Blocked",
+          "scope": "Requires authenticated Windows workflow evidence",
+          "evidence": []
+        }
+      ],
+      "production": {
+        "status": "Blocked",
+        "reason": "Internal QA account provisioning/authorization, approved origins and scenario evidence are incomplete. Financial workflows additionally require an isolated sandbox."
+      }
+    },
+    {
+      "id": "discord-import",
+      "name": "Discord community import",
+      "procedure": "Inspect connection and permission UI; execute imports only on an isolated backend with an owner-approved source fixture. Never import external production data during controlled production QA.",
+      "modules": [
+        "src/ui/community/DiscordImport.tsx"
+      ],
+      "verification": [
+        {
+          "stage": "source",
+          "status": "Source included",
+          "evidence": [
+            "docs/desktop/WEB_SOURCE_SNAPSHOT.json"
+          ]
+        },
+        {
+          "stage": "desktopUi",
+          "status": "Blocked",
+          "scope": "Source and candidate tests do not establish desktop workflow completion",
+          "evidence": []
+        },
+        {
+          "stage": "backend",
+          "status": "Blocked",
+          "scope": "Requires authorized internal accounts, private QA objects and applicable infrastructure",
+          "evidence": []
+        },
+        {
+          "stage": "crossPlatform",
+          "status": "Blocked",
+          "scope": "Requires actual Android or web peer; reference protocol peer is not a shipped client",
+          "evidence": []
+        },
+        {
+          "stage": "windows",
+          "status": "Blocked",
+          "scope": "Requires authenticated Windows workflow evidence",
+          "evidence": []
+        }
+      ],
+      "production": {
+        "status": "Blocked",
+        "reason": "Internal QA account provisioning/authorization, approved origins and scenario evidence are incomplete. Financial workflows additionally require an isolated sandbox."
+      }
+    }
+  ],
+  "modules": [
+    {
+      "module": "src/ui/App.tsx",
+      "workflows": [
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [
+        "test/live-roles-apps.test.ts",
+        "test/app-reload.test.ts"
+      ],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/LinkScreen.tsx",
+      "workflows": [
+        "onboarding"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/StatusScreens.tsx",
+      "workflows": [
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/UpdateNotice.tsx",
+      "workflows": [
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/auth/AccountForms.tsx",
+      "workflows": [
+        "email-session"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/auth/AuthFrame.tsx",
+      "workflows": [
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/auth/AuthScreen.tsx",
+      "workflows": [
+        "email-session"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/auth/DeviceSetupViews.tsx",
+      "workflows": [
+        "email-session"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/auth/ReauthScreen.tsx",
+      "workflows": [
+        "email-session"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/auth/RecoverForms.tsx",
+      "workflows": [
+        "recovery-security"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/auth/SocialSignIn.tsx",
+      "workflows": [
+        "social-login"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/auth/useSubmit.ts",
+      "workflows": [
+        "email-session"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/billing/AddonCheckoutPage.tsx",
+      "workflows": [
+        "billing"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/billing/BillingPage.tsx",
+      "workflows": [
+        "billing"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/billing/CheckoutPage.tsx",
+      "workflows": [
+        "billing"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [
+        "test/paypal-checkout-draft.test.ts"
+      ],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/billing/PayPalButton.tsx",
+      "workflows": [
+        "billing"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/billing/checkoutDraft.ts",
+      "workflows": [
+        "billing"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/call/CallAvatar.tsx",
+      "workflows": [
+        "calls",
+        "screen-sharing"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/call/CallConnection.tsx",
+      "workflows": [
+        "calls",
+        "screen-sharing"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/call/CallLayer.tsx",
+      "workflows": [
+        "calls",
+        "screen-sharing"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/call/CallStage.tsx",
+      "workflows": [
+        "calls",
+        "screen-sharing"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/call/ConnectedCallPanel.tsx",
+      "workflows": [
+        "calls",
+        "screen-sharing"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/call/RoomControls.tsx",
+      "workflows": [
+        "calls",
+        "screen-sharing"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/call/ShareViews.tsx",
+      "workflows": [
+        "calls",
+        "screen-sharing"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/call/callShared.ts",
+      "workflows": [
+        "calls",
+        "screen-sharing"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/call/callText.ts",
+      "workflows": [
+        "calls",
+        "screen-sharing"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/call/miniPosition.ts",
+      "workflows": [
+        "calls",
+        "screen-sharing"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/call/useNow.ts",
+      "workflows": [
+        "calls",
+        "screen-sharing"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/call/usePushToTalk.ts",
+      "workflows": [
+        "calls",
+        "screen-sharing"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/call/voiceModeration.tsx",
+      "workflows": [
+        "calls",
+        "screen-sharing"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/AnimojiView.tsx",
+      "workflows": [
+        "expressions"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/AttachmentDrafts.tsx",
+      "workflows": [
+        "media-files"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/Attachments.tsx",
+      "workflows": [
+        "media-files"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/BulkSaveBar.tsx",
+      "workflows": [
+        "media-files"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/ChannelBell.tsx",
+      "workflows": [
+        "notifications",
+        "channels"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/ChannelDetails.tsx",
+      "workflows": [
+        "channels"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/Composer.tsx",
+      "workflows": [
+        "direct-messages"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/ComposerGates.tsx",
+      "workflows": [
+        "direct-messages"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/ConversationDetails.tsx",
+      "workflows": [
+        "channels"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/ConversationManage.tsx",
+      "workflows": [
+        "friends"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/ConversationMenu.tsx",
+      "workflows": [
+        "channels"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/ConversationSettings.tsx",
+      "workflows": [
+        "channels"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/ConversationView.tsx",
+      "workflows": [
+        "direct-messages"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/DetailsTabs.tsx",
+      "workflows": [
+        "channels"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/EmojiPicker.tsx",
+      "workflows": [
+        "expressions"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/ExpressionLibrary.tsx",
+      "workflows": [
+        "expressions"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/ExpressionPicker.tsx",
+      "workflows": [
+        "expressions"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/ForumView.tsx",
+      "workflows": [
+        "polls-forums"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/GalleryMediaViewer.tsx",
+      "workflows": [
+        "media-files"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/GifView.tsx",
+      "workflows": [
+        "expressions"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/GiveawayStatus.tsx",
+      "workflows": [
+        "bots"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/Markdown.tsx",
+      "workflows": [
+        "direct-messages"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/MediaGalleryDialog.tsx",
+      "workflows": [
+        "media-files"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/MediaLinkCard.tsx",
+      "workflows": [
+        "media-files"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/MediaViewer.tsx",
+      "workflows": [
+        "media-files"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/MessageInfo.tsx",
+      "workflows": [
+        "message-actions"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/MessageItem.tsx",
+      "workflows": [
+        "direct-messages",
+        "message-actions"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/MessageList.tsx",
+      "workflows": [
+        "direct-messages",
+        "message-actions"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/PanelHead.tsx",
+      "workflows": [
+        "message-actions"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/PeoplePanels.tsx",
+      "workflows": [
+        "friends"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/PinnedPanel.tsx",
+      "workflows": [
+        "message-actions"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/PollDialog.tsx",
+      "workflows": [
+        "polls-forums"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/PollResultsDialog.tsx",
+      "workflows": [
+        "polls-forums"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/PollView.tsx",
+      "workflows": [
+        "polls-forums"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/PostedContent.tsx",
+      "workflows": [
+        "direct-messages"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/ProfileCards.tsx",
+      "workflows": [
+        "profiles"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/Reactions.tsx",
+      "workflows": [
+        "expressions"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/ReportDialog.tsx",
+      "workflows": [
+        "moderation"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/RichDialogs.tsx",
+      "workflows": [
+        "message-actions"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/RichText.tsx",
+      "workflows": [
+        "message-actions"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/SafeLink.tsx",
+      "workflows": [
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/SearchPanel.tsx",
+      "workflows": [
+        "search"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/SecuritySheet.tsx",
+      "workflows": [
+        "direct-messages"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/SidePanel.tsx",
+      "workflows": [
+        "message-actions"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/SlashCommands.tsx",
+      "workflows": [
+        "bots"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/StickerView.tsx",
+      "workflows": [
+        "expressions"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/ThreadsPanel.tsx",
+      "workflows": [
+        "message-actions",
+        "polls-forums"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/TransferList.tsx",
+      "workflows": [
+        "media-files"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/Translate.tsx",
+      "workflows": [
+        "translation"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [
+        "test/translate.test.ts"
+      ],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/TypingIndicator.tsx",
+      "workflows": [
+        "direct-messages"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/VoiceBar.tsx",
+      "workflows": [
+        "calls",
+        "screen-sharing"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/VoiceRoomView.tsx",
+      "workflows": [
+        "calls",
+        "screen-sharing"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/WebhookSender.tsx",
+      "workflows": [
+        "webhooks-tickets"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/WordyGameDialog.tsx",
+      "workflows": [
+        "bots"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/WordyHeaderAction.tsx",
+      "workflows": [
+        "bots"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/ZoomableImage.tsx",
+      "workflows": [
+        "media-files"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/album.ts",
+      "workflows": [
+        "media-files"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/blobUrl.ts",
+      "workflows": [
+        "media-files"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/contextTarget.tsx",
+      "workflows": [
+        "message-actions"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/detailsRules.ts",
+      "workflows": [
+        "channels"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/gallery.ts",
+      "workflows": [
+        "media-files"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [
+        "test/gallery.test.ts"
+      ],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/gestures.ts",
+      "workflows": [
+        "message-actions"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [
+        "test/gestures.test.ts"
+      ],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/inAppLinks.ts",
+      "workflows": [
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/jump.ts",
+      "workflows": [
+        "message-actions"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/longPress.ts",
+      "workflows": [
+        "message-actions"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/memberListRules.ts",
+      "workflows": [
+        "friends"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/reactors.ts",
+      "workflows": [
+        "expressions"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [
+        "test/reactors.test.ts"
+      ],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/useMessageCollection.tsx",
+      "workflows": [
+        "collectibles",
+        "message-actions"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/useNearScreen.ts",
+      "workflows": [
+        "media-files"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/useReadingPosition.ts",
+      "workflows": [
+        "message-actions"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/voiceRoomRules.ts",
+      "workflows": [
+        "calls",
+        "screen-sharing"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/chat/wordyLaunch.ts",
+      "workflows": [
+        "bots"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/community/CategoryDialogs.tsx",
+      "workflows": [
+        "channels"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/community/ChannelDialogs.tsx",
+      "workflows": [
+        "channels"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/community/ChannelOptionsFields.tsx",
+      "workflows": [
+        "channels"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/community/CommunityHeader.tsx",
+      "workflows": [
+        "communities"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/community/CommunityPanel.tsx",
+      "workflows": [
+        "communities"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/community/CommunityPreviewDialog.tsx",
+      "workflows": [
+        "communities"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/community/CreateChannelDialog.tsx",
+      "workflows": [
+        "channels"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/community/CreateCommunityDialog.tsx",
+      "workflows": [
+        "communities"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/community/CustomEmoji.tsx",
+      "workflows": [
+        "expressions"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/community/DeleteCommunityDialog.tsx",
+      "workflows": [
+        "communities"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/community/DiscordImport.tsx",
+      "workflows": [
+        "discord-import"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/community/GuideOnboarding.tsx",
+      "workflows": [
+        "onboarding"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/community/LeaveDialog.tsx",
+      "workflows": [
+        "communities"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/community/LockedBanner.tsx",
+      "workflows": [
+        "channels"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/community/NicknameDialog.tsx",
+      "workflows": [
+        "profiles"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/community/NotifyDialogs.tsx",
+      "workflows": [
+        "notifications"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/community/OnboardingFinish.tsx",
+      "workflows": [
+        "onboarding"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/community/PermissionPreview.tsx",
+      "workflows": [
+        "roles"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/community/PermissionsDialog.tsx",
+      "workflows": [
+        "roles"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/community/RulesViews.tsx",
+      "workflows": [
+        "moderation"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/community/TemplatePreviewDialog.tsx",
+      "workflows": [
+        "onboarding"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/community/accent.ts",
+      "workflows": [
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [
+        "test/community-accent.test.ts"
+      ],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/community/communityMenu.tsx",
+      "workflows": [
+        "communities",
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/community/lockMenu.tsx",
+      "workflows": [
+        "channels"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/community/menuLabels.tsx",
+      "workflows": [
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/community/panelData.ts",
+      "workflows": [
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/community/reactionRoles/ReactionRolesDialog.tsx",
+      "workflows": [
+        "roles",
+        "webhooks-tickets"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/community/reactionRoles/useReactionRolesItem.tsx",
+      "workflows": [
+        "roles",
+        "webhooks-tickets"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/community/tickets/OpenTicketsList.tsx",
+      "workflows": [
+        "webhooks-tickets"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/community/tickets/PanelEditor.tsx",
+      "workflows": [
+        "webhooks-tickets"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/community/tickets/TicketDialogs.tsx",
+      "workflows": [
+        "webhooks-tickets"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/community/tickets/TicketHeaderActions.tsx",
+      "workflows": [
+        "webhooks-tickets"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/community/tickets/TicketsCard.tsx",
+      "workflows": [
+        "webhooks-tickets"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/community/useCommunityAccess.ts",
+      "workflows": [
+        "roles"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/community/useCommunityMembers.ts",
+      "workflows": [
+        "roles"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/community/useCommunityPermissions.ts",
+      "workflows": [
+        "roles"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/community/useCommunityThemes.ts",
+      "workflows": [
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/community/useTickAt.ts",
+      "workflows": [
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/community/webhooks/BoxEditor.tsx",
+      "workflows": [
+        "webhooks-tickets"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/community/webhooks/ButtonsEditor.tsx",
+      "workflows": [
+        "webhooks-tickets"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/community/webhooks/ChannelDialogTabs.tsx",
+      "workflows": [
+        "webhooks-tickets"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/community/webhooks/ImportJsonDialog.tsx",
+      "workflows": [
+        "webhooks-tickets"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/community/webhooks/PostBuilder.tsx",
+      "workflows": [
+        "webhooks-tickets"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/community/webhooks/PostPreview.tsx",
+      "workflows": [
+        "webhooks-tickets"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/community/webhooks/WebhookRow.tsx",
+      "workflows": [
+        "webhooks-tickets"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/community/webhooks/WebhooksTab.tsx",
+      "workflows": [
+        "webhooks-tickets"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/community/webhooks/useWebhooksAllowed.ts",
+      "workflows": [
+        "webhooks-tickets"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/components/Avatar.tsx",
+      "workflows": [
+        "preferences",
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [
+        "test/avatar-presence.test.tsx"
+      ],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/components/BadgeMark.tsx",
+      "workflows": [
+        "preferences",
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/components/BotTag.tsx",
+      "workflows": [
+        "preferences",
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/components/BrandMark.tsx",
+      "workflows": [
+        "preferences",
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/components/CommunityOwnerBadge.tsx",
+      "workflows": [
+        "preferences",
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/components/CopyButton.tsx",
+      "workflows": [
+        "preferences",
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/components/EmberIcon.tsx",
+      "workflows": [
+        "preferences",
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/components/IdentityGlyph.tsx",
+      "workflows": [
+        "preferences",
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/components/LanguagePicker.tsx",
+      "workflows": [
+        "preferences",
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/components/LiveCallBadge.tsx",
+      "workflows": [
+        "preferences",
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/components/MeldlingArt.tsx",
+      "workflows": [
+        "preferences",
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/components/MotionImage.tsx",
+      "workflows": [
+        "preferences",
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/components/OrgAvatar.tsx",
+      "workflows": [
+        "preferences",
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/components/Overlay.tsx",
+      "workflows": [
+        "preferences",
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/components/QrCode.tsx",
+      "workflows": [
+        "preferences",
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/components/SettingsIcon.tsx",
+      "workflows": [
+        "preferences",
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/components/Toggle.tsx",
+      "workflows": [
+        "preferences",
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/components/UnreadBadge.tsx",
+      "workflows": [
+        "message-actions",
+        "preferences",
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/components/dragSort.ts",
+      "workflows": [
+        "preferences",
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/components/photos.ts",
+      "workflows": [
+        "preferences",
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [
+        "test/automatic-photos.test.ts"
+      ],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/components/scrollStrip.ts",
+      "workflows": [
+        "preferences",
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/creators/CreatorsPage.tsx",
+      "workflows": [
+        "leaderboards-creators"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/developer/AppsSection.tsx",
+      "workflows": [
+        "developer"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/developer/BotListingCard.tsx",
+      "workflows": [
+        "developer"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/developer/BotsSection.tsx",
+      "workflows": [
+        "developer"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/developer/DeveloperPage.tsx",
+      "workflows": [
+        "developer"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/dialogs/ChannelBrowser.tsx",
+      "workflows": [
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/dialogs/ForwardDialog.tsx",
+      "workflows": [
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/dialogs/IdentityReview.tsx",
+      "workflows": [
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/dialogs/NewGroupDialog.tsx",
+      "workflows": [
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/dialogs/NewMessageDialog.tsx",
+      "workflows": [
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/dialogs/SearchDialog.tsx",
+      "workflows": [
+        "search",
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/dialogs/ShortcutsDialog.tsx",
+      "workflows": [
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/dialogs/StatusDialogs.tsx",
+      "workflows": [
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/dialogs/WorkspaceDialogs.tsx",
+      "workflows": [
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/format.ts",
+      "workflows": [
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/later/LaterView.tsx",
+      "workflows": [
+        "search"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/later/RemindMeDialog.tsx",
+      "workflows": [
+        "search"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/later/ReminderEditor.tsx",
+      "workflows": [
+        "search"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/later/RemindersList.tsx",
+      "workflows": [
+        "search"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/later/SavedList.tsx",
+      "workflows": [
+        "search"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/later/when.ts",
+      "workflows": [
+        "search"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/leaderboards/LeaderboardsPage.tsx",
+      "workflows": [
+        "leaderboards-creators"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/lobby/CardEditor.tsx",
+      "workflows": [
+        "lobby-events"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/lobby/EditorLook.tsx",
+      "workflows": [
+        "lobby-events"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/lobby/EditorSections.tsx",
+      "workflows": [
+        "lobby-events"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/lobby/EditorTemplates.tsx",
+      "workflows": [
+        "lobby-events"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/lobby/FeedUrl.tsx",
+      "workflows": [
+        "lobby-events"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/lobby/LobbyCard.tsx",
+      "workflows": [
+        "lobby-events"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/lobby/LobbyEditorPanel.tsx",
+      "workflows": [
+        "lobby-events"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/lobby/LobbyHeader.tsx",
+      "workflows": [
+        "lobby-events"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/lobby/LobbyPage.tsx",
+      "workflows": [
+        "lobby-events"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [
+        "test/lobby.test.ts"
+      ],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/lobby/LobbyRow.tsx",
+      "workflows": [
+        "lobby-events"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/lobby/LobbySurface.tsx",
+      "workflows": [
+        "lobby-events"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/lobby/Markdown.tsx",
+      "workflows": [
+        "lobby-events"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/lobby/PickRolesCard.tsx",
+      "workflows": [
+        "lobby-events"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/lobby/cardsChannels.tsx",
+      "workflows": [
+        "lobby-events"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/lobby/cardsInfo.tsx",
+      "workflows": [
+        "lobby-events"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/lobby/cardsPeople.tsx",
+      "workflows": [
+        "lobby-events"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/lobby/editorRequest.ts",
+      "workflows": [
+        "lobby-events"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/lobby/fieldEditors.tsx",
+      "workflows": [
+        "lobby-events"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/lobby/lobbyContext.ts",
+      "workflows": [
+        "lobby-events"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/lobby/lobbyInfo.ts",
+      "workflows": [
+        "lobby-events"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/lobby/markdownParse.ts",
+      "workflows": [
+        "lobby-events"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/lobby/useLobbyEditor.ts",
+      "workflows": [
+        "lobby-events"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/lobby/useLobbyLanding.ts",
+      "workflows": [
+        "lobby-events"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/mojo/CharLimit.tsx",
+      "workflows": [
+        "billing"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/mojo/MojoBadge.tsx",
+      "workflows": [
+        "billing"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/mojo/MojoBanner.tsx",
+      "workflows": [
+        "billing"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/mojo/MojoGifts.tsx",
+      "workflows": [
+        "billing"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/mojo/MojoPage.tsx",
+      "workflows": [
+        "billing"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [
+        "test/mojo.test.ts"
+      ],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/mojo/MojoPlans.tsx",
+      "workflows": [
+        "billing"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/mojo/PlusPromotion.tsx",
+      "workflows": [
+        "billing"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/mojo/PlusRenewalNotice.tsx",
+      "workflows": [
+        "billing"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/mojo/PlusSupportNotice.tsx",
+      "workflows": [
+        "billing"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/mojo/SparkDialog.tsx",
+      "workflows": [
+        "billing",
+        "gifts-points"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/mojo/SparkGoal.tsx",
+      "workflows": [
+        "billing",
+        "gifts-points"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/mojo/SparkPage.tsx",
+      "workflows": [
+        "billing",
+        "gifts-points"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/mojo/SparkSection.tsx",
+      "workflows": [
+        "billing",
+        "gifts-points"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/mojo/SparkTrack.tsx",
+      "workflows": [
+        "billing",
+        "gifts-points"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/mojo/mojoFormat.ts",
+      "workflows": [
+        "billing"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/mojo/useMojoLimits.ts",
+      "workflows": [
+        "billing"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/oauth/ConsentPage.tsx",
+      "workflows": [
+        "social-login",
+        "developer"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/people/ArtistDecorations.tsx",
+      "workflows": [
+        "profiles",
+        "collectibles"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/people/AvatarFrame.tsx",
+      "workflows": [
+        "profiles"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/people/BotProfileDialog.tsx",
+      "workflows": [
+        "profiles",
+        "bots"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/people/CollectibleLayers.tsx",
+      "workflows": [
+        "profiles",
+        "collectibles"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/people/ConnectionRequestViews.tsx",
+      "workflows": [
+        "profiles",
+        "friends"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/people/ConnectionsDialog.tsx",
+      "workflows": [
+        "profiles",
+        "friends"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/people/GroupPhotoCard.tsx",
+      "workflows": [
+        "profiles"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/people/LevelRing.tsx",
+      "workflows": [
+        "profiles",
+        "leaderboards-creators"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/people/NameBadge.tsx",
+      "workflows": [
+        "profiles"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/people/NameStyle.tsx",
+      "workflows": [
+        "profiles"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/people/ProfileConnections.tsx",
+      "workflows": [
+        "profiles"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/people/ProfileDialog.tsx",
+      "workflows": [
+        "profiles"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/people/ProfilePins.tsx",
+      "workflows": [
+        "profiles",
+        "leaderboards-creators"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/people/ProfileStyle.tsx",
+      "workflows": [
+        "profiles"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/people/RequestBar.tsx",
+      "workflows": [
+        "profiles",
+        "friends"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/people/connectionRequests.ts",
+      "workflows": [
+        "profiles",
+        "friends"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/people/profileTheme.ts",
+      "workflows": [
+        "profiles"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/points/AchievementGallery.tsx",
+      "workflows": [
+        "gifts-points"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/points/PointsEarn.tsx",
+      "workflows": [
+        "gifts-points"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/points/PointsPage.tsx",
+      "workflows": [
+        "gifts-points"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/points/PointsQuests.tsx",
+      "workflows": [
+        "gifts-points"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/points/pointsWords.ts",
+      "workflows": [
+        "gifts-points"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/selectors.ts",
+      "workflows": [
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/settings/AccountExtrasCards.tsx",
+      "workflows": [
+        "email-session",
+        "recovery-security"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/settings/AccountOverview.tsx",
+      "workflows": [
+        "email-session",
+        "recovery-security"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/settings/AccountPages.tsx",
+      "workflows": [
+        "email-session",
+        "recovery-security"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [
+        "test/saved-accounts.test.ts",
+        "test/live-accounts.test.ts"
+      ],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/settings/AccountSafetyCards.tsx",
+      "workflows": [
+        "email-session",
+        "recovery-security"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/settings/AccountSettingsPage.tsx",
+      "workflows": [
+        "email-session",
+        "recovery-security"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/settings/AdminUsagePage.tsx",
+      "workflows": [
+        "operations"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/settings/AdvancedPage.tsx",
+      "workflows": [
+        "recovery-security"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/settings/AppearanceExtras.tsx",
+      "workflows": [
+        "preferences"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/settings/AuthorizedAppsCard.tsx",
+      "workflows": [
+        "social-login"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/settings/BackgroundNotifications.tsx",
+      "workflows": [
+        "notifications"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/settings/CallsPage.tsx",
+      "workflows": [
+        "calls"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [
+        "test/live-calls.test.ts"
+      ],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/settings/CollectionStudio.tsx",
+      "workflows": [
+        "collectibles"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/settings/CommunityProfileCard.tsx",
+      "workflows": [
+        "profiles"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/settings/ConnectedAccountsCard.tsx",
+      "workflows": [
+        "social-login"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/settings/ConnectionsCard.tsx",
+      "workflows": [
+        "social-login"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/settings/CreatorVerificationCard.tsx",
+      "workflows": [
+        "leaderboards-creators"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/settings/DecorationPicker.tsx",
+      "workflows": [
+        "collectibles"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/settings/DecorationWindow.tsx",
+      "workflows": [
+        "collectibles"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/settings/InstallButton.tsx",
+      "workflows": [
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/settings/KeyBackupCard.tsx",
+      "workflows": [
+        "recovery-security"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/settings/LeaveManyDialog.tsx",
+      "workflows": [
+        "communities"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/settings/NameStyleWindow.tsx",
+      "workflows": [
+        "profiles"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/settings/NotificationOverview.tsx",
+      "workflows": [
+        "notifications"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/settings/PasskeysCard.tsx",
+      "workflows": [
+        "recovery-security"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/settings/PreferencePages.tsx",
+      "workflows": [
+        "preferences"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/settings/PrivacyExtras.tsx",
+      "workflows": [
+        "recovery-security",
+        "preferences"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/settings/PrivacyPage.tsx",
+      "workflows": [
+        "recovery-security",
+        "preferences"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/settings/ProfilePage.tsx",
+      "workflows": [
+        "profiles"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [
+        "test/profile-collectibles.test.ts",
+        "test/legacy-profile-compatibility.test.ts",
+        "test/profile-cards.test.ts"
+      ],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/settings/ProfilePreviewCard.tsx",
+      "workflows": [
+        "profiles"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/settings/ProfileStyleCard.tsx",
+      "workflows": [
+        "profiles"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/settings/ProfileThemePicker.tsx",
+      "workflows": [
+        "profiles"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/settings/RecoveryCodesCard.tsx",
+      "workflows": [
+        "recovery-security"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/settings/ServiceHealthPage.tsx",
+      "workflows": [
+        "operations"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/settings/SettingsView.tsx",
+      "workflows": [
+        "preferences"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/settings/ShortcutsPage.tsx",
+      "workflows": [
+        "preferences"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/settings/ShownBadgePicker.tsx",
+      "workflows": [
+        "profiles"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/settings/StoragePage.tsx",
+      "workflows": [
+        "media-files"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [
+        "test/keystorage.test.ts"
+      ],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/settings/SubmitDecorationDialog.tsx",
+      "workflows": [
+        "collectibles"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/settings/YouCard.tsx",
+      "workflows": [
+        "profiles"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/settings/noStyle.ts",
+      "workflows": [
+        "profiles"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/settings/profileDraft.tsx",
+      "workflows": [
+        "profiles"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/settings/settingsSearch.ts",
+      "workflows": [
+        "preferences"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/settings/useDecorationFavorites.ts",
+      "workflows": [
+        "collectibles"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/settings/useStyleDraft.ts",
+      "workflows": [
+        "profiles"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/settings/useStyleSaver.ts",
+      "workflows": [
+        "profiles"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/shell/AccountActions.tsx",
+      "workflows": [
+        "email-session",
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/shell/ConnectionBanner.tsx",
+      "workflows": [
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/shell/ConversationRow.tsx",
+      "workflows": [
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/shell/DmPromos.tsx",
+      "workflows": [
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/shell/Notices.tsx",
+      "workflows": [
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/shell/ProfileMenu.tsx",
+      "workflows": [
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/shell/Rail.tsx",
+      "workflows": [
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [
+        "test/rail-folders.test.ts"
+      ],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/shell/RailCommunity.tsx",
+      "workflows": [
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/shell/RailFolder.tsx",
+      "workflows": [
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/shell/SettingsWindow.tsx",
+      "workflows": [
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/shell/Shell.tsx",
+      "workflows": [
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/shell/Sidebar.tsx",
+      "workflows": [
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/shell/SidebarSections.tsx",
+      "workflows": [
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/shell/TabBar.tsx",
+      "workflows": [
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/shell/TabIndicators.tsx",
+      "workflows": [
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/shell/TopBar.tsx",
+      "workflows": [
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/shell/UserPanel.tsx",
+      "workflows": [
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/shell/VoiceRooms.tsx",
+      "workflows": [
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/unread.ts",
+      "workflows": [
+        "message-actions",
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [
+        "test/unread-markers.test.ts"
+      ],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/views/ActivityView.tsx",
+      "workflows": [
+        "notifications"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/views/DiscoverCard.tsx",
+      "workflows": [
+        "search"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/views/DiscoverView.tsx",
+      "workflows": [
+        "search"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/views/DraftsAndSent.tsx",
+      "workflows": [
+        "message-actions"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/views/FriendRows.tsx",
+      "workflows": [
+        "friends"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/views/FriendsView.tsx",
+      "workflows": [
+        "friends"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/views/HomeView.tsx",
+      "workflows": [
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/views/StartChecklist.tsx",
+      "workflows": [
+        "onboarding"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/views/SuggestedPeople.tsx",
+      "workflows": [
+        "friends"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/views/startRules.ts",
+      "workflows": [
+        "onboarding"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/AddMembersDialog.tsx",
+      "workflows": [
+        "friends"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/AppearanceCard.tsx",
+      "workflows": [
+        "profiles"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/AuditPage.tsx",
+      "workflows": [
+        "moderation"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/BotsPage.tsx",
+      "workflows": [
+        "bots"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [
+        "test/official-bots.test.ts",
+        "test/official-bots-part2.test.ts"
+      ],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/ChannelsPage.tsx",
+      "workflows": [
+        "channels"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/EveryoneDialog.tsx",
+      "workflows": [
+        "friends"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/ExpressionsPage.tsx",
+      "workflows": [
+        "expressions"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [
+        "test/live-expressions.test.ts"
+      ],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/GuidePages.tsx",
+      "workflows": [
+        "onboarding"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/InvitationsPage.tsx",
+      "workflows": [
+        "onboarding"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/InviteLink.tsx",
+      "workflows": [
+        "onboarding"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/LobbySettingsPage.tsx",
+      "workflows": [
+        "lobby-events"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/MeetingsPage.tsx",
+      "workflows": [
+        "lobby-events"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/MemberParityActions.tsx",
+      "workflows": [
+        "friends"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/ModerationPages.tsx",
+      "workflows": [
+        "moderation"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/OnboardingGateCard.tsx",
+      "workflows": [
+        "onboarding"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/OverviewPage.tsx",
+      "workflows": [
+        "communities"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/PeoplePage.tsx",
+      "workflows": [
+        "friends"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/PinsPage.tsx",
+      "workflows": [
+        "leaderboards-creators"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/ProfileExtrasCards.tsx",
+      "workflows": [
+        "profiles"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/ProfileSafety.tsx",
+      "workflows": [
+        "profiles",
+        "moderation"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/ReportsPage.tsx",
+      "workflows": [
+        "moderation"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/RoleDisplayTab.tsx",
+      "workflows": [
+        "roles"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/RoleEditor.tsx",
+      "workflows": [
+        "roles"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/RoleMembers.tsx",
+      "workflows": [
+        "roles"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/RolePermissionsTab.tsx",
+      "workflows": [
+        "roles"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/RolesPage.tsx",
+      "workflows": [
+        "roles"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [
+        "test/live-roles-apps.test.ts"
+      ],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/RulesPage.tsx",
+      "workflows": [
+        "moderation"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [
+        "test/link-rules.test.ts",
+        "test/rules.test.ts",
+        "test/report-rules.test.ts",
+        "test/wake-rules.test.ts",
+        "test/rules-channel.test.ts",
+        "test/guide-rules.test.ts",
+        "test/forum-rules.test.ts",
+        "test/stage1-rules.test.ts",
+        "test/call-rules.test.ts",
+        "test/member-list-rules.test.ts",
+        "test/reminder-rules.test.ts",
+        "test/social-rules.test.ts",
+        "test/push-rules.test.ts",
+        "test/delete-account-rules.test.ts",
+        "test/community-rules.test.ts",
+        "test/workspace-rules.test.ts",
+        "test/meeting-rules.test.ts",
+        "test/details-rules.test.ts",
+        "test/expression-rules.test.ts"
+      ],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/SparksPromotePages.tsx",
+      "workflows": [
+        "billing",
+        "gifts-points"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/StandardInvite.tsx",
+      "workflows": [
+        "onboarding"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/TagCard.tsx",
+      "workflows": [
+        "profiles"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/ThemePage.tsx",
+      "workflows": [
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/TransferOwnership.tsx",
+      "workflows": [
+        "communities"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/UsagePage.tsx",
+      "workflows": [
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/VoiceBansCard.tsx",
+      "workflows": [
+        "moderation"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/WorkspaceSetupCards.tsx",
+      "workflows": [
+        "communities",
+        "onboarding"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/WorkspaceView.tsx",
+      "workflows": [
+        "communities"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/bots/AlertsWatches.tsx",
+      "workflows": [
+        "bots"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/bots/BotDiagnostics.tsx",
+      "workflows": [
+        "bots"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/bots/BotLook.tsx",
+      "workflows": [
+        "bots"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/bots/BotParts.tsx",
+      "workflows": [
+        "bots"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/bots/BotSettingsForm.tsx",
+      "workflows": [
+        "bots"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/bots/BotWindow.tsx",
+      "workflows": [
+        "bots"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/bots/CommunityBotsCard.tsx",
+      "workflows": [
+        "bots"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/bots/HelperLevelsForms.tsx",
+      "workflows": [
+        "bots"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/bots/LoggerStarboardForms.tsx",
+      "workflows": [
+        "bots"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/bots/OfficialBotsSection.tsx",
+      "workflows": [
+        "bots"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/bots/PartTwoForms.tsx",
+      "workflows": [
+        "bots"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/bots/WelcomerForm.tsx",
+      "workflows": [
+        "bots"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/bots/botForm.ts",
+      "workflows": [
+        "bots"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/communityRail.tsx",
+      "workflows": [
+        "communities"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/discovery/DiscoveryCard.tsx",
+      "workflows": [
+        "search"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/discovery/TemplateCard.tsx",
+      "workflows": [
+        "search"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/photo.ts",
+      "workflows": [
+        "profiles"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [
+        "test/automatic-photos.test.ts",
+        "test/photo-quality.test.ts"
+      ],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/promote/BoostCards.tsx",
+      "workflows": [
+        "billing",
+        "gifts-points"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/promote/PromotePage.tsx",
+      "workflows": [
+        "billing",
+        "gifts-points"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/promote/PromotedRowCard.tsx",
+      "workflows": [
+        "billing",
+        "gifts-points"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/promote/usePromoteBuy.ts",
+      "workflows": [
+        "billing",
+        "gifts-points"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    },
+    {
+      "module": "src/ui/workspace/useLoad.ts",
+      "workflows": [
+        "desktop-shell"
+      ],
+      "association": "Source-path association; execute the procedure to establish functional coverage",
+      "candidateTestFiles": [],
+      "status": "Source included"
+    }
+  ]
+}

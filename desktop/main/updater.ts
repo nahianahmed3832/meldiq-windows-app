@@ -8,6 +8,8 @@ export class Updates {
   private enabled: boolean;
   private verifiedFile: string | null = null;
   private installing = false;
+  private downloading = false;
+  private verifying = false;
   constructor(private readonly build: BuildInfo, private readonly origin: string, approved: boolean,
     private readonly publisher: string | null, private readonly prefs: () => Preferences, private readonly busy: () => boolean, private readonly changed: () => void) {
     this.enabled = build.distribution === 'direct' && approved && process.platform === 'win32';
@@ -25,11 +27,12 @@ export class Updates {
     autoUpdater.on('update-not-available', () => this.set({ status: 'idle', message: 'You have the latest version for this channel.' }));
     autoUpdater.on('download-progress', info => this.set({ status: 'downloading', percent: info.percent }));
     autoUpdater.on('update-downloaded', info => {
+      this.verifying = true;
       void verifyWindowsSignature(this.publisher ? [this.publisher] : [], info.downloadedFile).then(problem => {
         if (problem) { this.verifiedFile = null; this.set({ status: 'error', message: problem }); return; }
         this.verifiedFile = info.downloadedFile;
         this.set({ status: 'downloaded', version: info.version, message: 'Ready to install when your calls and transfers finish.' });
-      });
+      }).catch(() => { this.verifiedFile = null; this.set({ status: 'error', message: 'The update signature could not be verified.' }); }).finally(() => { this.verifying = false; });
     });
     autoUpdater.on('error', () => this.set({ status: 'error', message: 'Update failed. Check your connection and try again.' }));
     this.configure();
@@ -39,6 +42,7 @@ export class Updates {
   }
   configure() {
     if (!this.enabled) return;
+    this.assertCanConfigure();
     const channel = this.prefs().channel;
     autoUpdater.allowPrerelease = channel !== 'stable';
     autoUpdater.channel = channel === 'stable' ? 'latest' : channel;
@@ -46,6 +50,9 @@ export class Updates {
     // Switching a channel invalidates a previously offered installer.
     this.verifiedFile = null;
     this.set({ status: 'idle' });
+  }
+  assertCanConfigure() {
+    if (this.enabled && (this.checking || this.downloading || this.verifying || this.installing || this.state.status === 'downloading')) throw new Error('Finish the update check, download or verification before changing channels.');
   }
   async action(action: unknown) {
     if (!['check', 'download', 'install'].includes(String(action))) throw new Error('Invalid update action');
@@ -74,9 +81,11 @@ export class Updates {
   }
   private async download() {
     if (!['available', 'error'].includes(this.state.status)) return;
+    this.downloading = true;
     this.set({ status: 'downloading', percent: 0 });
     try { await autoUpdater.downloadUpdate(); }
     catch { this.set({ status: 'error', message: 'Download failed. Check for updates to retry.' }); }
+    finally { this.downloading = false; }
   }
   private set(state: UpdateState) { this.state = state; this.changed(); }
 }

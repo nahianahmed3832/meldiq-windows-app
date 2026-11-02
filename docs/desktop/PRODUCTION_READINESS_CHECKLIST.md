@@ -1,0 +1,26 @@
+# Production readiness checklist
+
+**Decision: not ready for public beta or production.** Source inclusion, public contracts and CI install checks do not pass the gates below.
+
+| Gate | State and evidence |
+|---|---|
+| Preview provenance | Preserved original unsigned installer from commit `490da683ea29ea984055d3487e0c0ba0e3fc6375`; 123,287,259 bytes; SHA-256 `9a8460e981d5df4e31ff3e93aef2e8b258083cf7340778c0d5f1b91ba7d8757c`. Private draft preview remains separate from new validation artifacts. |
+| Source/module accounting | 1,722 upstream files checked; nine documented adaptations. All 387 UI modules associated with 32 workflow families; zero unmapped modules. Associations and candidate tests are not accepted workflows. See functional-acceptance.json. |
+| Unit/regression validation | 50 desktop tests, 924 shared web tests and three acceptance loader tests pass locally; two inherited web skips remain explicit. Native PowerShell signing fixtures and current Windows CI results must be recorded for the final commit. |
+| Local backend integration | Existing real backend rerun passes email login, enrollment, sealed reload and two-way reference-peer messaging. Older local backend preference 404 is recorded, not suppressed. This is not production or actual Android/web parity. |
+| Public production contracts | Existing macOS Electron reaches API 0.76.1, social config, live plans and unauthenticated WSS. Preference route answers 401. Some urllib requests receive Cloudflare 403; owner investigation remains open. |
+| Authenticated production workflows | BLOCKED: owner authorization, actual A/B/C accounts, private community/channel IDs, verification/MFA procedure and run ownership. Provisioning checklist prepared; no accounts created. |
+| S3/media | BLOCKED: approved exact origins/CORS, actual backend-authorized uploads/downloads, integrity, wrong-account denial, quotas, cancel/retry, cross-client receive and cleanup. Existing restricted AWS profile cannot read bucket CORS. |
+| Calling/screen sharing | BLOCKED: actual room grants/media, expiry, microphone/camera/output handling, screen capture, device hotplug/reconnection and sleep/wake on Windows and peer client. |
+| Payments/entitlements | BLOCKED: isolated sandbox backend/provider accounts and webhooks. Production is live PayPal; no transactions authorized. Read-only plans passed; real QA entitlements still pending. |
+| Functional parity | BLOCKED: per-procedure authenticated evidence across all families; actual shipped Android/web peer. No complete parity percentage claimed. |
+| Windows install | Existing native CI installs/launches/uninstalls unsigned x64 preview. Current regression candidate needs native CI. Actual Windows 10 22H2/11 desktop workflow acceptance remains pending. |
+| Windows upgrade/session retention | BLOCKED: signed previous/next version scenario with existing account/device/key/session/history and rollback/recovery validation. |
+| Hardware/performance | BLOCKED: actual 4 GB basic messaging and 8/16 GB low/mid systems, plus 16–32 GB high-end; measure cold/warm startup, idle process RAM/CPU, messaging, files, calls, capture and long sessions. Existing Mac warm signed-out sample is not a Windows requirement. |
+| Security/dependencies | BLOCKED: fresh 4 high/25 moderate advisory review/remediation plus remaining production media/auth/payment/update checks. ASAR Node dependency exposure documented without blanket waiver. |
+| Signing/protected CI | BLOCKED: exact real publisher, certificate/key service, protected GitHub environment/approvers/secrets. At inspection no repository secrets/variables/environments were configured. Exact signer checks prepared; no signing keys invented or uploaded. |
+| Update/CDN publication | BLOCKED: actual signed update round trip, approved immutable bucket/CDN/OIDC configuration, metadata-last promotion, staged rollout, cache/recovery tests and owner publication authorization. Automatic updates remain disabled for preview. No AWS/DNS provisioning or publication performed. |
+
+Release preparation continues in [AWS_RELEASE_SETUP.md](AWS_RELEASE_SETUP.md), [RELEASE_ARCHITECTURE.md](RELEASE_ARCHITECTURE.md) and [SIGNING_CONFIGURATION.md](SIGNING_CONFIGURATION.md). Those documents describe a proposed pipeline, not deployed infrastructure. Before promotion, pin final source/artifact hashes, resolve all required evidence against that commit, review actual least-privilege OIDC roles and immutable release paths, upload binaries/blockmaps first, verify retrieval/signatures, then atomically promote metadata. Retain previous compatible release metadata/assets for recovery; do not restore whole production databases over new customer writes. Busy calls/transfers/payment flows must prevent forced restart.
+
+The owner inputs listed in [PRODUCTION_ACCEPTANCE_SETUP.md](PRODUCTION_ACCEPTANCE_SETUP.md) are required to continue dependent production tests. Physical hardware and signed update acceptance cannot be replaced by a cloud runner, compile result or Mac timing. Keep proposed system requirements provisional until actual measurements are documented.

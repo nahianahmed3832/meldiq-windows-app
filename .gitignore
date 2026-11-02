@@ -18,3 +18,8 @@ playwright-report/
 benchmarks/results/*.json
 !benchmarks/results/.gitkeep
 docs/desktop/RELEASE_ACCEPTANCE.json
+# Acceptance credentials live outside this checkout; also protect accidental local copies.
+/Users/nahian/Library/Application Support/Meldiq/desktop-acceptance.env
+desktop-acceptance.env
+config/desktop-acceptance.env
+!config/desktop-acceptance.env.example

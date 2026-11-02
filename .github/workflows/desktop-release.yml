@@ -22,8 +22,8 @@ jobs:
       CSC_KEY_PASSWORD: ${{ secrets.WINDOWS_CSC_KEY_PASSWORD }}
       MELDIQ_RELEASE_ACCEPTANCE_JSON: ${{ secrets.MELDIQ_RELEASE_ACCEPTANCE_JSON }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: '22'
           cache: npm
@@ -33,18 +33,18 @@ jobs:
       - run: npm run lint
       - run: npm run typecheck
       - run: npm test
+      - run: npm run test:acceptance-config
+      - run: npm run matrix:check
+      - name: Check fail-closed signature policy
+        shell: pwsh
+        run: ./scripts/windows-signature-policy.test.ps1
       - run: npm run test:web
       - run: npm run verify:snapshot
       - run: npm run package:win
       - name: Verify Authenticode on every executable
         shell: pwsh
-        run: |
-          Get-ChildItem release -Recurse -Filter *.exe | ForEach-Object {
-            $signature = Get-AuthenticodeSignature $_.FullName
-            if ($signature.Status -ne 'Valid') { throw "Invalid Authenticode signature: $($_.Name)" }
-            if ($signature.SignerCertificate.Subject -notlike "*CN=$env:MELDIQ_SIGNING_PUBLISHER*") { throw 'Unexpected signing subject' }
-          }
-      - uses: actions/upload-artifact@v4
+        run: ./scripts/verify-windows-signatures.ps1
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: Meldiq-signed-${{ inputs.channel }}
           path: |

@@ -32,7 +32,13 @@
     "package:win": "node scripts/package-release.mjs",
     "package:mac:dev": "npm run build && electron-builder --config desktop/builder.dev.cjs --mac dir --publish never",
     "benchmark": "node scripts/benchmark.mjs",
-    "verify:snapshot": "node scripts/verify-snapshot.mjs"
+    "verify:snapshot": "node scripts/verify-snapshot.mjs",
+    "test:acceptance-config": "node --test scripts/acceptance-config.test.mjs",
+    "acceptance:preflight": "node scripts/acceptance.mjs --mode preflight",
+    "acceptance:discover": "node scripts/acceptance.mjs --mode discover",
+    "acceptance:desktop": "node scripts/acceptance-desktop.mjs",
+    "matrix:generate": "node scripts/workflow-matrix.mjs",
+    "matrix:check": "node scripts/workflow-matrix.mjs --check"
   },
   "dependencies": {
     "electron-updater": "6.8.11"

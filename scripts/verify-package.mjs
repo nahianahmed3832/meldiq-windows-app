@@ -8,6 +8,10 @@ assert(!/<script[^>]+src=["']https?:/.test(html), 'Application scripts must be p
 const main = await fs.readFile('dist/main/main.cjs', 'utf8');
 assert(main.includes('contextIsolation: true') && main.includes('nodeIntegration: false') && main.includes('sandbox: true'));
 assert(!main.includes('webSecurity: false'));
+for (const filename of ['dist/main/main.cjs', 'dist/main/preload.cjs', 'dist/main/payment-preload.cjs', ...files.filter(n => /\.(js|html|json)$/.test(n)).map(n => 'dist/renderer/' + n)]) {
+  const text = await fs.readFile(filename, 'utf8');
+  assert(!text.includes('MELDIQ_ACCEPTANCE_') && !text.includes('desktop-acceptance.env'), 'Acceptance configuration leaked into packaged code: ' + filename);
+}
 const config = JSON.parse(await fs.readFile('dist/runtime-config.json', 'utf8'));
 assert.equal(config.apiOrigin, 'https://web.meldiq.app');
 console.log(`Package checks passed: ${files.length} local renderer assets, no service worker shell or source maps.`);

@@ -87,6 +87,8 @@ function installIpc(ses: Electron.Session) {
   handle('state', async () => { cacheBytes = await ses.getCacheSize(); return state(); });
   handle('preferences', input => {
     const previous = prefs.value;
+    // Refuse before persisting; an in-flight old-channel installer must never reappear under a new channel.
+    if (input && typeof input === 'object' && 'channel' in input && input.channel !== previous.channel) updates.assertCanConfigure();
     prefs.patch(input);
     if (previous.startAtLogin !== prefs.value.startAtLogin && ['win32', 'darwin'].includes(process.platform)) app.setLoginItemSettings({ openAtLogin: prefs.value.startAtLogin, path: process.execPath });
     if (previous.channel !== prefs.value.channel) updates.configure();

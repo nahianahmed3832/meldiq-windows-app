@@ -1,0 +1,34 @@
+# Desktop production security validation — 2026-11-03
+
+Status: **security acceptance incomplete**. Preserved the existing security architecture and tested preview. This is targeted validation, not an independent penetration-test certification.
+
+## Concrete fixes and checks
+
+- Reproduced an updater race with a failing regression test: channel reconfiguration during an asynchronous signature check was accepted, allowing the old-channel installer callback to restore an offer after resetting the feed. Channel changes now fail before preferences are saved while checks, downloads, signature verification or installation are active. A completed safe switch still invalidates the old candidate. Four updater tests cover verification, checking, downloading/rejection and install-time recheck. The original preview bytes remain unchanged; updated source requires its own validation artifact.
+- Release workflow previously accepted a certificate subject beginning with the expected CN. It now uses the exact certificate SimpleName with ordinal equality, valid Authenticode only, and rejects no-executable/missing-publisher cases. Native PowerShell fixtures reproduce the old prefix flaw and test mismatches, unsigned/error/catalog results and missing values. This does not constitute actual production certificate or signed-update acceptance.
+- Acceptance configuration is external, owner-only and parsed as data from an explicit path. Unknown/build-prefixed fields, duplicate keys, insecure/credential-bearing origins and live payment mode are rejected. Credentials never become build environment variables or child Electron configuration. Three loader tests passed. Packaged-code checks reject acceptance configuration markers.
+- Existing Electron boundaries remain: sandbox, context isolation, no renderer Node, restricted typed IPC with exact main-frame sender, local packaged documents/scripts, navigation/deep-link validation, no privileged payment popup, OS-sealed sessions, and signed update verification. Existing desktop/security tests and native smoke provide bounded evidence. No CSP, origin check, authentication or signature assertion was weakened.
+- Cache clear preserves localStorage/IndexedDB identity and rejects communication-busy requests in existing native Windows/macOS smoke. Existing backend integration rerun verifies real email sign-in, encryption/device enrollment, sealed reload restoration and bidirectional messaging in isolated local storage. Real production E2EE/cross-device and media acceptance remain blocked.
+
+## Fresh dependency audit and exposure
+
+`npm audit --json` still reports **4 high and 25 moderate** findings. High propagation is Firebase → Firestore → nested `@grpc/grpc-js` 1.9.16. The existing root override does not replace that nested installed version; it must not be reported as fixed. Moderate propagation includes minimatch in lint/package tooling. Audit suggestions include incompatible historical downgrades, so `npm audit fix --force` was not applied.
+
+The inspected Windows ASAR has 334 entries and 16 packaged Node dependency packages. None of the 29 named audit findings is present as a Node package there; Firestore/gRPC/Next/Firebase are absent from that Node runtime. This is narrower than saying every bundled renderer dependency is safe. Renderer source imports Firebase app/messaging only in the web push adapter, with native desktop push using the existing native bridge. Vite may retain bundled Firebase app/messaging chunks despite those runtime guards. Renderer exposure and Electron/Chromium advisories require separate review; package-name absence is not a blanket waiver.
+
+Unresolved dependency findings remain a release review gate. Upstream Firebase dependency remediation or a tested narrowly scoped dependency change, build-environment exposure review, and reproducible runtime/renderer inventories are needed. No incompatible major override or silent advisory exclusion was introduced.
+
+Evidence: [fresh full audit](evidence/dependency-audit-20261103.json), [ASAR exposure inventory](evidence/dependency-exposure-20261103.json), [update regression](evidence/update-channel-regression.json), existing [security review](SECURITY_REVIEW.md), native CI and unit reports. Reproduce exposure with `node scripts/dependency-exposure.mjs <fresh-audit.json> <app.asar>`.
+
+Primary references checked: [Electron security recommendations](https://github.com/electron/electron/blob/main/docs/tutorial/security.md), [gRPC maintainer advisories](https://github.com/grpc/grpc-node/security/advisories), [gRPC certificate authorization advisory](https://github.com/grpc/grpc-node/security/advisories/GHSA-m9gg-hp2v-232j). An npm audit result alone does not establish the exact Electron/Chromium patch acceptance for a future release date.
+
+## Remaining gates
+
+- Production QA secrets, authorization and exact approved S3/LiveKit origins; real access-control, token expiry and wrong-account tests.
+- Actual Windows provider callbacks, account switching/sign-out/refresh/key recovery and long-session token/storage behavior.
+- Device/capture cleanup during real calls, unsupported acceleration, hardware/device disconnection and notification privacy.
+- Isolated sandbox payment/webhook entitlement transitions, replay/authorization failures and provider callback cancellation.
+- Protected signing environment, actual publisher/certificate custody, signed install/upgrade and signed update round trip, wrong signer/hash/channel rejection, recovery and session retention.
+- Fresh Electron/Chromium and dependency security review tied to the final immutable release artifact.
+
+No production account was created; no provider permanent secret was copied; no live payment, customer-data mutation or infrastructure deployment was performed. Reports contain only selected public fields/statuses, not credential-bearing bodies or signed URLs.

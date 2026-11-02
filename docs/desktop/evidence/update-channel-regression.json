@@ -1,0 +1,7 @@
+{
+  "scenario": "Channel reconfiguration during pending signature verification",
+  "before": "Assertion failed: configure did not throw; a pending old-channel installer could be offered after channel reset",
+  "after": "Channel changes rejected before preferences persist while checking, downloading, verifying or installing; verified old candidate invalidated after a completed safe channel switch",
+  "regressionTest": "desktop/test/updater.test.ts",
+  "originalPreviewModified": false
+}

@@ -15,8 +15,8 @@ jobs:
   checks:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: '22'
           cache: npm
@@ -24,6 +24,11 @@ jobs:
       - run: npm run lint
       - run: npm run typecheck
       - run: npm test
+      - run: npm run test:acceptance-config
+      - run: npm run matrix:check
+      - name: Check fail-closed signature policy
+        shell: pwsh
+        run: ./scripts/windows-signature-policy.test.ps1
       - run: npm run test:web
       - run: npm run verify:snapshot
       - run: npm run build
@@ -38,7 +43,7 @@ jobs:
       - name: Install, launch and uninstall the development installer
         shell: pwsh
         run: ./scripts/windows-install-smoke.ps1
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()
         with:
           name: Meldiq-Windows-x64-UNSIGNED-DEV

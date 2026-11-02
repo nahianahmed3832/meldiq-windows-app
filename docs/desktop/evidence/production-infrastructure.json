@@ -1,0 +1,32 @@
+{
+  "checkedAt": "2026-11-02T23:01:11.609229+00:00",
+  "method": "Read-only SSH Docker and nginx inspection, selected public runtime fields and unauthenticated health/contracts; no environment dump or credential contents",
+  "apiVersion": "0.76.1",
+  "image": "griip-internal-messaging-api:0.76.1-plus-708353fe",
+  "containerHealthy": true,
+  "restartCount": 0,
+  "databaseMode": "atlas",
+  "mongodbHealthy": true,
+  "redisHealthy": true,
+  "livekitConfigured": true,
+  "apiOrigin": "https://web.meldiq.app",
+  "separateApiIngress": "https://msg.meldiq.app",
+  "websocketUrl": "wss://web.meldiq.app/v1/ws",
+  "livekitUrl": "wss://rtc.meldiq.app",
+  "s3Origin": "https://griipbuddy-orbit-media-sg.s3.ap-southeast-1.amazonaws.com",
+  "socialProviders": [
+    "google",
+    "discord"
+  ],
+  "socialAuthorizeOrigin": "https://web.meldiq.app",
+  "socialWebOrigin": "https://web.meldiq.app",
+  "billingProvider": "paypal",
+  "paymentEnvironment": "live",
+  "stripeSecretConfigured": false,
+  "webOriginsEnvironmentConfigured": false,
+  "fcmProjectId": "meldiq",
+  "mailTransport": "smtp",
+  "s3CorsInspection": "AccessDenied for existing restricted profile; no permissions changed",
+  "accountProvisioningPerformed": false,
+  "productionMutationsPerformed": false
+}
