@@ -45,6 +45,17 @@ try {
     socket.on('framereceived', frame => { try { failures.push({frameType:JSON.parse(String(frame.payload)).t}); } catch { failures.push({frameType:'binary'}); } });
   });
   client.__failures = failures;
+  await page.evaluate(() => {
+    const Original = WebSocket;
+    window.__desktopSocketDiagnostics = [];
+    window.WebSocket = class extends Original {
+      constructor(url, protocols) {
+        super(url, protocols);
+        this.addEventListener('message', event => window.__desktopSocketDiagnostics.push({type:typeof event.data,constructor:event.data?.constructor?.name}));
+        this.addEventListener('close', event => window.__desktopSocketDiagnostics.push({close:event.code,reason:event.reason}));
+      }
+    };
+  });
   await page.getByRole('button', { name: 'Continue with email', exact: true }).click();
   const email = `desktop.${Date.now()}@example.test`, password = 'Isolated desktop test password 42!';
   // Create a disposable account through the actual backend, then exercise the real desktop sign-in and enrollment.
@@ -87,6 +98,7 @@ try {
 } catch (error) {
   if (client?.__failures) console.error(JSON.stringify(client.__failures,null,2));
   if(client?.windows()[0]) console.error('Public runtime config:', await client.windows()[0].evaluate(() => localStorage.getItem('meldiq.config.v1')));
+  if(client?.windows()[0]) console.error('Socket data types:', await client.windows()[0].evaluate(() => window.__desktopSocketDiagnostics));
   if(client) { const pages=client.windows(); if(pages[0]) await pages[0].screenshot({path:'test-results/integration-failure.png'}).catch(()=>undefined); }
   throw error;
 } finally {

@@ -174,9 +174,10 @@ function secureWindow(win: BrowserWindow, isPicker = false) {
   }
 }
 function permissions(ses: Electron.Session) {
-  ses.setPermissionCheckHandler((wc, permission, origin) => wc === main?.webContents && origin === ORIGIN && (permission === 'media' || permission === 'display-capture' || permission === 'speaker-selection' || permission === 'notifications' && prefs.value.notifications));
+  ses.setPermissionCheckHandler((wc, permission, origin) => wc === main?.webContents && origin === ORIGIN && (Boolean(testApi) && ['local-network', 'local-network-access', 'loopback-network'].includes(permission) || permission === 'media' || permission === 'display-capture' || permission === 'speaker-selection' || permission === 'notifications' && prefs.value.notifications));
   ses.setPermissionRequestHandler((wc, permission, callback, details) => {
     if (wc !== main?.webContents || !isLocalPage(wc.getURL()) || !details.isMainFrame) return callback(false);
+    if (testApi && ['local-network', 'local-network-access', 'loopback-network'].includes(permission)) return callback(true);
     if (!['media', 'notifications', 'speaker-selection', 'display-capture'].includes(permission)) return callback(false);
     if (permission === 'notifications') return callback(prefs.value.notifications);
     if (permission === 'display-capture') return callback(true); // Actual source selection is mandatory below.
