@@ -70,3 +70,4 @@ if ($LASTEXITCODE -ne 0) { throw 'Public candidate download failed' }
 $publicInstaller = Join-Path $working $public.filename
 if ((Get-FileHash $publicInstaller -Algorithm SHA256).Hash.ToLowerInvariant() -ne $public.sha256) { throw 'Public installer hash mismatch' }
 & "$PSScriptRoot/windows-install-smoke.ps1" -InstallerPath $publicInstaller -SourceCommit $metadata.sourceCommit -RequirePrivateUpdates
+Write-Output ('MELDIQ_PRIVATE_QUALIFIED=' + ((Get-Content test-results/private-update-qualification.json -Raw | ConvertFrom-Json) | ConvertTo-Json -Depth 10 -Compress))
