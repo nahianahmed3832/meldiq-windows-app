@@ -1,0 +1,14 @@
+{
+  "sourceCommit": "2dae0d27955ac8e44170bed5057a20c0d4f065ba",
+  "scope": "existing backend source with fake PayPal/Discord/provider endpoints and disposable data; not deployed production/provider acceptance",
+  "files": [
+    "billing_paypal.test.ts",
+    "billing_paypal_live.test.ts",
+    "paypal_capabilities.test.ts",
+    "paypal_sandbox_gift_lifecycle.test.ts",
+    "discord_import.test.ts",
+    "discord_mapping.test.ts",
+    "social_auth.test.ts"
+  ],
+  "backendSourceDirty": true
+}

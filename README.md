@@ -2,6 +2,8 @@
 
 Locally packaged Meldiq client for Windows x64, built with Electron, React and TypeScript. Owned and authored by MD.NAHIAN AHMED. Repository: [nahianahmed3832/meldiq-windows-app](https://github.com/nahianahmed3832/meldiq-windows-app).
 
+**Current remediation: 0.3.0-readiness.1.** Windows installer/protocol, browser handoff, permissions and localization work is tracked in the [readiness report](docs/desktop/WINDOWS_READINESS_REPORT.md). Production acceptance remains gated; the existing public release/feed has not been promoted by this work.
+
 **Windows 0.2.0 has a qualified private-key updater.** Installed Windows tests passed automatic download/upgrade, corrupt-update rejection, busy guards and local fixture retention. The existing client source is reused, including messaging, communities, media, encrypted calls, Plus/Spark/gifts, profiles and customization. Complete authenticated desktop parity and physical hardware benchmarks remain pending. See [release-key distribution and operating instructions](docs/desktop/PRIVATE_UPDATE_RELEASE.md) and [native evidence](docs/desktop/evidence/private-update-0.2.0/README.md). Private update signatures do not provide Windows publisher signing.
 
 Download Windows 0.2.0 from [meldiq.app/download](https://meldiq.app/download). The live signed feed and complete 124.2 MB public installer were authenticated after publication on 2026-11-03; see [the publication and integrity records](docs/desktop/evidence/private-update-0.2.0/README.md).

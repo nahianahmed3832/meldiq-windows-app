@@ -1,0 +1,134 @@
+{
+  "recordedAt": "2026-11-03T14:55:34.419Z",
+  "complete": false,
+  "locales": [
+    {
+      "language": "en",
+      "keys": 602,
+      "translated": 602,
+      "missing": 0
+    },
+    {
+      "language": "bn",
+      "keys": 602,
+      "translated": 524,
+      "missing": 78
+    },
+    {
+      "language": "zh-CN",
+      "keys": 602,
+      "translated": 524,
+      "missing": 78
+    },
+    {
+      "language": "zh-TW",
+      "keys": 602,
+      "translated": 36,
+      "missing": 566
+    },
+    {
+      "language": "hi",
+      "keys": 602,
+      "translated": 36,
+      "missing": 566
+    },
+    {
+      "language": "ur",
+      "keys": 602,
+      "translated": 36,
+      "missing": 566
+    },
+    {
+      "language": "ar",
+      "keys": 602,
+      "translated": 36,
+      "missing": 566
+    },
+    {
+      "language": "id",
+      "keys": 602,
+      "translated": 36,
+      "missing": 566
+    },
+    {
+      "language": "ja",
+      "keys": 602,
+      "translated": 36,
+      "missing": 566
+    },
+    {
+      "language": "ko",
+      "keys": 602,
+      "translated": 36,
+      "missing": 566
+    },
+    {
+      "language": "vi",
+      "keys": 602,
+      "translated": 36,
+      "missing": 566
+    },
+    {
+      "language": "th",
+      "keys": 602,
+      "translated": 36,
+      "missing": 566
+    },
+    {
+      "language": "tr",
+      "keys": 602,
+      "translated": 36,
+      "missing": 566
+    },
+    {
+      "language": "es",
+      "keys": 602,
+      "translated": 36,
+      "missing": 566
+    },
+    {
+      "language": "fr",
+      "keys": 602,
+      "translated": 36,
+      "missing": 566
+    },
+    {
+      "language": "de",
+      "keys": 602,
+      "translated": 36,
+      "missing": 566
+    },
+    {
+      "language": "it",
+      "keys": 602,
+      "translated": 36,
+      "missing": 566
+    },
+    {
+      "language": "pt-BR",
+      "keys": 602,
+      "translated": 36,
+      "missing": 566
+    },
+    {
+      "language": "ru",
+      "keys": 602,
+      "translated": 36,
+      "missing": 566
+    },
+    {
+      "language": "nl",
+      "keys": 602,
+      "translated": 36,
+      "missing": 566
+    },
+    {
+      "language": "pl",
+      "keys": 602,
+      "translated": 36,
+      "missing": 566
+    }
+  ],
+  "hardcodedUiFindings": 2670,
+  "scope": "Central keys plus JSX text, accessible attributes, and common error setters. Dynamic/native literals require additional review."
+}

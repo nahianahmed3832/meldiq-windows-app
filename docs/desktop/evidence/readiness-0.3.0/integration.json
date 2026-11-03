@@ -1,0 +1,24 @@
+{
+  "recordedAt": "2026-11-03T14:43:23.172Z",
+  "platform": "darwin",
+  "backendCommit": "2dae0d27955ac8e44170bed5057a20c0d4f065ba",
+  "environment": "isolated local existing Meldiq backend source via tsx; disposable SQLite and file mail; no cloud credentials",
+  "passed": [
+    "real email/password sign-in",
+    "device/encryption enrollment",
+    "OS-sealed session restoration after reload",
+    "receive message from reference protocol peer",
+    "send response to reference peer"
+  ],
+  "observedCompatibilityIssues": [],
+  "notTested": [
+    "production auth",
+    "physical Android",
+    "S3",
+    "actual voice/video media",
+    "screen sharing",
+    "payments",
+    "Windows installation",
+    "complete feature parity"
+  ]
+}

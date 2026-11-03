@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "checkedAt": "2026-11-03T15:07:24.044Z",
+  "mode": "preflight",
+  "scope": "Production setup only; no account creation, transactions or customer-data mutations",
+  "missing": [
+    "MELDIQ_ACCEPTANCE_OWNER_REFERENCE",
+    "MELDIQ_ACCEPTANCE_QA_COMMUNITY_ID",
+    "MELDIQ_ACCEPTANCE_QA_CHANNEL_ID",
+    "MELDIQ_ACCEPTANCE_QA_A_EMAIL",
+    "MELDIQ_ACCEPTANCE_QA_A_PASSWORD",
+    "MELDIQ_ACCEPTANCE_QA_A_USER_ID",
+    "MELDIQ_ACCEPTANCE_QA_B_EMAIL",
+    "MELDIQ_ACCEPTANCE_QA_B_PASSWORD",
+    "MELDIQ_ACCEPTANCE_QA_B_USER_ID",
+    "MELDIQ_ACCEPTANCE_QA_C_EMAIL",
+    "MELDIQ_ACCEPTANCE_QA_C_PASSWORD",
+    "MELDIQ_ACCEPTANCE_QA_C_USER_ID"
+  ],
+  "gates": {
+    "originsApproved": false,
+    "dedicatedQaAuthorized": false,
+    "isolatedPaymentSandbox": false
+  },
+  "probes": [],
+  "setupReady": false,
+  "publicContractsReachable": false,
+  "productionAccepted": false
+}

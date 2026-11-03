@@ -1,0 +1,117 @@
+{
+  "recordedAt": "2026-11-03T14:44:57.414930+00:00",
+  "scope": "unauthenticated, read-only production endpoints",
+  "responses": {
+    "/v2/mojo/catalog": {
+      "status": "200",
+      "body": {
+        "plans": [
+          {
+            "key": "free",
+            "name": "Meldiq Free",
+            "listPriceMinor": 0,
+            "messageChars": 2000,
+            "uploadBytes": 50000000,
+            "screen": [
+              "720p60"
+            ],
+            "sparks": 0,
+            "badge": null,
+            "check": false,
+            "customItems": 20,
+            "bots": 2,
+            "botReview": "regular"
+          },
+          {
+            "key": "plus",
+            "name": "Meldiq Plus",
+            "listPriceMinor": 499,
+            "messageChars": 8000,
+            "uploadBytes": 1000000000,
+            "screen": [
+              "1440p60"
+            ],
+            "sparks": 2,
+            "badge": "plus",
+            "check": true,
+            "customItems": 250,
+            "bots": 10,
+            "botReview": "priority"
+          }
+        ],
+        "onSale": {
+          "mode": "live",
+          "go": null,
+          "plus": null,
+          "spark": {
+            "currency": "USD",
+            "amountMinor": 99
+          },
+          "botsPlus": {
+            "currency": "USD",
+            "amountMinor": 399
+          },
+          "gifts": false
+        },
+        "plusTerms": [
+          {
+            "key": "monthly",
+            "months": 1,
+            "amountMinor": 499,
+            "interval": "month",
+            "billingFrequency": 1,
+            "currency": "USD",
+            "savingsMinor": 0,
+            "monthlyEquivalentMinor": 499,
+            "savingsPercent": 0,
+            "available": false
+          },
+          {
+            "key": "quarterly",
+            "months": 3,
+            "amountMinor": 1299,
+            "interval": "month",
+            "billingFrequency": 3,
+            "currency": "USD",
+            "savingsMinor": 198,
+            "monthlyEquivalentMinor": 433,
+            "savingsPercent": 13.23,
+            "available": false
+          },
+          {
+            "key": "yearly",
+            "months": 12,
+            "amountMinor": 4999,
+            "interval": "year",
+            "billingFrequency": 1,
+            "currency": "USD",
+            "savingsMinor": 989,
+            "monthlyEquivalentMinor": 417,
+            "savingsPercent": 16.52,
+            "available": false
+          }
+        ]
+      }
+    },
+    "/v2/auth/social/config": {
+      "status": "200",
+      "body": {
+        "providers": [
+          "google",
+          "discord"
+        ],
+        "googleClientId": null,
+        "authorizeOrigin": "https://web.meldiq.app"
+      }
+    },
+    "/v2/billing/paypal/config": {
+      "status": "401",
+      "body": {
+        "error": {
+          "code": "unauthorized",
+          "message": "Authentication required"
+        }
+      }
+    }
+  }
+}

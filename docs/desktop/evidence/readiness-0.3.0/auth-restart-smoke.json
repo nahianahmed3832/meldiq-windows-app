@@ -1,0 +1,15 @@
+{
+  "recordedAt": "2026-11-03T14:59:51.494Z",
+  "platform": "darwin",
+  "scope": "real Electron safeStorage and cold process restart; loopback fake completion endpoint; no real session/provider",
+  "passed": [
+    "pending PKCE proof is OS encrypted on disk",
+    "cold launch accepts only the saved flow callback",
+    "restored proof reaches the existing backend exchange once",
+    "completion removes the pending proof"
+  ],
+  "counts": {
+    "passed": 4,
+    "failed": 0
+  }
+}
