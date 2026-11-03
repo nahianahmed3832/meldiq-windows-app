@@ -52,7 +52,7 @@ export default function Home() {
           <em>your channels, one place to talk.</em>
         </h1>
         <p>
-          Meldiq brings your friends and communities together to talk, call and share. The core experience is free. Mojo
+          Meldiq brings your friends and communities together to talk, call and share. The core experience is free. Meldiq
           Plus is optional.
         </p>
         <Actions />

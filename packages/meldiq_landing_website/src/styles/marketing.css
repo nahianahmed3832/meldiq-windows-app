@@ -1,6 +1,6 @@
 @font-face {
   font-family: Jakarta;
-  src: url("/fonts/PlusJakartaSans.ttf") format("truetype");
+  src: url("/fonts/PlusJakartaSans.woff2") format("woff2");
   font-style: normal;
   font-weight: 200 800;
   font-display: swap;
