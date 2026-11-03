@@ -9,6 +9,8 @@ describe("approved subscription rollout", () => {
       { ...plus, key: "go", amountMinor: 99 },
       { ...plus, amountMinor: 399 },
       { ...plus, interval: "year" as const },
+      { ...plus, billingFrequency: 3 },
+      { ...plus, term: "quarterly" as const },
       { ...plus, audience: "organization" as const },
       { ...plus, currency: "EUR" },
       plus,

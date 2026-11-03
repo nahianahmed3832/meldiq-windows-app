@@ -14,10 +14,11 @@ import { CatalogStatus } from "../components/MarketingStatus";
 import { FinalCta } from "../components/MarketingArt";
 import { SITE } from "../lib/site";
 import { formatPrice } from "../lib/money";
+import { BillingTerms } from "../components/BillingTerms";
 
 const FREE_INCLUDES = [
   "Communities, channels, threads and forums",
-  "End-to-end encrypted direct messages and groups",
+  "Direct messages and private groups",
   "Voice and video calls, voice channels, screen sharing",
   "Encrypted file sharing",
   "Android and the web, with one account",
@@ -88,7 +89,7 @@ export default function Pricing() {
           Test payments only. No real money is charged.
         </div>
       ) : null}
-      <section className="page-hero legacy-hero">
+      <section className="page-hero legacy-hero pricing-hero">
         <div className="wrap">
           <TrialPill load={load} />
           <span className="eyebrow" style={{ display: "block" }}>
@@ -97,17 +98,20 @@ export default function Pricing() {
           <a href="/" className="breadcrumb">
             Home / Meldiq Plus
           </a>
-          <h1>Free messaging. Optional Meldiq Plus.</h1>
+          <h1>
+            Free messaging. <br />
+            <em>Optional Meldiq Plus.</em>
+          </h1>
           <p>
-            Optional subscriptions help cover server costs, ongoing maintenance and platform improvements so Meldiq can keep running smoothly. Your support
-            helps us keep core messaging free for everyone.
+            Your everyday conversations stay free. Plus adds more room for files, longer messages and account extras, while helping support Meldiq’s servers and
+            ongoing development.
           </p>
           <p>Meldiq Plus adds account extras for $4.99/month, including files up to 1 GB each, with one subscription across supported devices.</p>
           <CatalogStatus />
         </div>
       </section>
 
-      <section className="section">
+      <section className="section pricing-plans" id="plans">
         <div className="wrap">
           {chooseError ? (
             <div className="callout warning" role="alert" style={{ marginBottom: 20 }}>
@@ -117,6 +121,7 @@ export default function Pricing() {
 
           <div className="plan-grid" aria-live="polite" aria-busy={load.state === "loading"}>
             <article className="plan" aria-labelledby="plan-free">
+              <span className="plan-label">THE EVERYDAY ESSENTIALS</span>
               <h3 id="plan-free" style={{ margin: 0 }}>
                 Free
               </h3>
@@ -153,6 +158,12 @@ export default function Pricing() {
         </div>
       </section>
 
+      <section className="section terms-section">
+        <div className="wrap">
+          <BillingTerms mojo={mojo} monthlyAvailable={!announced} />
+        </div>
+      </section>
+
       {botsPlus ? (
         <section className="section alt" aria-labelledby="bots-plus-heading">
           <div className="wrap split">
@@ -160,8 +171,8 @@ export default function Pricing() {
               <span className="eyebrow">Community add-on</span>
               <h2 id="bots-plus-heading">Meldiq Bots+</h2>
               <p>
-                Premium bots for one community, {formatPrice(botsPlus.amountMinor, botsPlus.currency, botsPlus.interval)}. Separate from your personal Meldiq Plus
-                plan and Spark boosting.
+                Premium bots for one community, {formatPrice(botsPlus.amountMinor, botsPlus.currency, botsPlus.interval)}. Separate from your personal Meldiq
+                Plus plan and Spark boosting.
               </p>
             </div>
             <div>
@@ -247,7 +258,7 @@ export default function Pricing() {
         </section>
       ) : null}
 
-      {load.state === "ready" && load.catalog.trial ? (
+      {load.state === "ready" && load.catalog.trial && load.catalog.trial.days > 0 ? (
         <section className="section" style={{ paddingTop: 0 }}>
           <div className="wrap">
             <div className="section-head">

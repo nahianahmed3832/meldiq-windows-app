@@ -17,7 +17,9 @@ function currentAnswer(question: string, fallback: string, load: CatalogLoad, mo
   if (question === "Is there a free Meldiq Plus trial?")
     return trial && trial.days > 0
       ? `The current offer is ${dayCount(trial.days)} of ${trialPlanName(load, ANNOUNCED_PLANS)}, with no card required. A free trial ends by itself without a charge. Check your account for the offer that applies to you.`
-      : "Trial availability could not be confirmed. Check the existing account or pricing page for the offer that applies to you. Free trial periods end by themselves, without a charge.";
+      : load.state === "ready"
+        ? "No automatic sign-up trial is currently offered. Check your account for any referral or account-specific free period. Free periods end by themselves without a charge. Core messaging remains free."
+        : "Trial availability could not be confirmed. Check your account or the pricing page for the offer that applies to you. Free trial periods end by themselves, without a charge.";
   if (question === "Can I buy Meldiq Plus now?")
     return load.state === "ready"
       ? load.catalog.available && subscriptionOffers(load.catalog.plans, mojo).length > 0

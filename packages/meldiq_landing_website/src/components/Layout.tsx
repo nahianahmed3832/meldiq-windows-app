@@ -93,7 +93,7 @@ function Header({ light, toggleTheme }: { light: boolean; toggleTheme?: () => vo
         </button>
         <nav ref={nav} id="navigation" className={open ? "is-open" : ""} aria-label="Main navigation">
           <div className="nav-links">
-            {["/download", "/features", "/pricing"]
+            {["/download", "/features", "/developers", "/pricing"]
               .map((href) => NAV.find((n) => n.href === href)!)
               .map((n) => (
                 <Link key={n.href} href={n.href} aria-current={pathname === n.href ? "page" : undefined}>
@@ -134,12 +134,10 @@ function Header({ light, toggleTheme }: { light: boolean; toggleTheme?: () => vo
 export function Layout({ title, description, children, noindex, landing = false }: LayoutProps) {
   const [light, setLight] = useState(false);
   useEffect(() => {
-    if (landing) {
-      try {
-        setLight(localStorage.getItem("meldiq.marketing.theme") === "light");
-      } catch {
-        /* Optional preference. */
-      }
+    try {
+      setLight(localStorage.getItem("meldiq.marketing.theme") === "light");
+    } catch {
+      /* Optional preference. */
     }
   }, [landing]);
   const toggleTheme = () => {
@@ -153,7 +151,7 @@ export function Layout({ title, description, children, noindex, landing = false 
   };
   return (
     <div
-      className={`marketing-site${landing ? " minimal-landing reference-home" : ""}${landing && light ? " is-light" : ""}`}
+      className={`marketing-site reference-home meldiq-refresh${landing ? " minimal-landing" : ""}${light ? " is-light" : ""}`}
       id="top"
       itemScope
       itemType="https://schema.org/WebSite"
@@ -165,7 +163,7 @@ export function Layout({ title, description, children, noindex, landing = false 
       <a className="skip-link" href="#main">
         Skip to content
       </a>
-      <Header light={light} toggleTheme={landing ? toggleTheme : undefined} />
+      <Header light={light} toggleTheme={toggleTheme} />
       <main id="main" tabIndex={-1}>
         {children}
       </main>

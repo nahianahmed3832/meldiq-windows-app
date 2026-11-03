@@ -8,6 +8,13 @@ const PUBLIC_PAGES = [
   ["/download", /Download Meldiq/],
   ["/faq", /Questions, answered/],
   ["/support", /How can we help/],
+  ["/community", /Bring your people together/],
+  ["/tutorials", /Less setup.*More conversation/],
+  ["/security", /Privacy, explained plainly/],
+  ["/roadmap", /More places to connect/],
+  ["/bots", /Make room for your bots/],
+  ["/developers", /Useful tools.*Clear boundaries/],
+  ["/brand", /A familiar face for your space/],
   ["/legal/terms", /Terms of Service/],
   ["/legal/privacy", /Privacy Policy/],
   ["/legal/billing", /Meldiq Plus: renewal, cancellation/],
@@ -114,6 +121,44 @@ test.describe("redesigned public pages", () => {
     await page.goto("/faq");
     await page.getByText("What is Meldiq Spark?", { exact: true }).click();
     await expect(page.locator("details[open]")).toContainText("$0.99 each as a one-time purchase");
+  });
+  test("configured longer terms stay unavailable and never open checkout", async ({ page }) => {
+    await page.goto("/pricing");
+    const terms = page.getByRole("region", { name: "The same Plus. Your preferred rhythm." });
+    await expect(terms).toContainText("$4.99");
+    const quarterly = terms.getByRole("article").filter({ hasText: "Quarterly" });
+    await expect(quarterly).toContainText("$12.99");
+    await expect(quarterly).toContainText("Billed every 3 months");
+    await expect(quarterly).toContainText("Not available yet");
+    await expect(quarterly.locator("a,button")).toHaveCount(0);
+    const yearly = terms.getByRole("article").filter({ hasText: "Yearly" });
+    await expect(yearly).toContainText("$49.99");
+    await expect(yearly).toContainText("Not available yet");
+    await expect(yearly.locator("a,button")).toHaveCount(0);
+    await expect(page.getByRole("button", { name: "Choose Meldiq Plus" })).toBeEnabled();
+  });
+  test("theme preference survives navigation across the website", async ({ page }) => {
+    await page.goto("/pricing");
+    if (await page.getByRole("button", { name: "Open navigation", exact: true }).isVisible()) {
+      await page.getByRole("button", { name: "Open navigation", exact: true }).click();
+    }
+    await page.getByRole("button", { name: "Switch to light mode", exact: true }).click();
+    await expect(page.locator(".marketing-site")).toHaveClass(/is-light/);
+    await page.goto("/security");
+    await expect(page.locator(".marketing-site")).toHaveClass(/is-light/);
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+  });
+  test("disabled signup trials do not advertise free days", async ({ page }) => {
+    await page.route("**/v2/billing/plans", async (route) => {
+      const response = await route.fetch();
+      const body = await response.json();
+      body.trial.days = 0;
+      await route.fulfill({ response, json: body });
+    });
+    await page.goto("/pricing");
+    await expect(page.getByRole("button", { name: "Choose Meldiq Plus" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Try it before you pay anything" })).toHaveCount(0);
+    await expect(page.locator(".trial-pill")).toHaveCount(0);
   });
   test("community Bots+ stays separate from the personal subscription", async ({ page }) => {
     await page.route("**/v2/billing/plans", async (route) => {

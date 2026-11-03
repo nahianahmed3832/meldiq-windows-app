@@ -11,6 +11,8 @@ export function subscriptionOffers(offers: readonly Offer[], mojo: MojoCatalog |
       o.key === plus.key &&
       o.audience === "personal" &&
       o.interval === plus.interval &&
+      (o.billingFrequency ?? 1) === 1 &&
+      (!o.term || o.term === "monthly") &&
       o.currency.toUpperCase() === plus.currency &&
       o.amountMinor === plus.amountMinor,
   );

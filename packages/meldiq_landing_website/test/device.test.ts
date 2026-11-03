@@ -44,6 +44,6 @@ describe("navigation content", () => {
       expect(l.label.trim()).not.toBe("");
       expect(l.href).toMatch(/^(\/|https:\/\/)/);
     }
-    expect(FOOTER.map((c) => c.title)).toEqual(["Product", "Account", "Legal"]);
+    expect(FOOTER.map((c) => c.title)).toEqual(["Product", "Community", "Legal"]);
   });
 });

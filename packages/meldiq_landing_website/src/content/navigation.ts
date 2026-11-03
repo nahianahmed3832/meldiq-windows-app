@@ -21,6 +21,7 @@ export interface FooterColumn {
 
 export const HEADER_LINKS: NavLink[] = [
   { href: "/features", label: "Features" },
+  { href: "/developers", label: "Developers" },
   { href: "/pricing", label: "Plus" },
   { href: "/download", label: "Download" },
   { href: "/faq", label: "FAQ" },
@@ -34,15 +35,22 @@ export const FOOTER: FooterColumn[] = [
       { href: "/features", label: "Features" },
       { href: "/pricing", label: "Pricing" },
       { href: "/download", label: "Download" },
-      { href: "/faq", label: "FAQ" },
+      { href: "/developers", label: "Developers" },
+      { href: "/bots", label: "Bots" },
+      { href: "/roadmap", label: "Roadmap" },
+      { href: "/brand", label: "Brand kit" },
+      { href: "https://status.meldiq.app", label: "Service status" },
     ],
   },
   {
-    title: "Account",
+    title: "Community",
     links: [
+      { href: "/community", label: "Find your community" },
+      { href: "/tutorials", label: "Getting started" },
+      { href: "/faq", label: "Questions & answers" },
+      { href: "/legal/acceptable-use", label: "Community guidelines" },
       { href: "/account", label: "Your account" },
       { href: "/account/billing", label: "Billing" },
-      { href: "/legal/billing#cancel", label: "Cancel Meldiq Plus" },
       { href: "/support", label: "Contact support" },
     ],
   },
@@ -54,6 +62,8 @@ export const FOOTER: FooterColumn[] = [
       { href: "/legal/billing", label: "Meldiq Plus terms" },
       { href: "/legal/acceptable-use", label: "Acceptable use" },
       { href: "/legal/account-deletion", label: "Account deletion & your data" },
+      { href: "/security", label: "Security & encryption" },
+      { href: "/legal/billing#cancel", label: "Cancel Meldiq Plus" },
     ],
   },
 ];
