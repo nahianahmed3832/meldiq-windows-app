@@ -3,9 +3,10 @@ import { createServer } from 'node:http';
 import { build } from 'esbuild';
 import assert from 'node:assert/strict';
 import { chromium, expect } from '@playwright/test';
+import { fileURLToPath } from 'node:url';
 const output = await build({ stdin: { contents: `import React from 'react';import{createRoot}from'react-dom/client';import{AddDeviceView}from'./src/ui/auth/DeviceSetupViews';
 window.meldiqDesktop={};const backup=location.search.includes('backup');const accounts={api:{base:location.origin},keyBackupStatus:async()=>({exists:backup}),startKeyUnlock:async()=>({email:'fixture@example.test',delivery:'email'})};
-createRoot(document.getElementById('app')).render(<AddDeviceView creds={{accounts}} account={{id:'fixture-account',email:'fixture@example.test',identity:{identityKey:'fixture-identity'}}} deviceName="Fixture desktop" onEnrolled={()=>{throw Error('An unapproved fixture must not enroll')}} onSignOut={()=>{}}/>);`, loader: 'tsx', resolveDir: new URL('../packages/web', import.meta.url).pathname }, bundle: true, write: false, jsx: 'automatic', format: 'esm', platform: 'browser', define: { 'process.env.NODE_ENV': '"production"' } });
+createRoot(document.getElementById('app')).render(<AddDeviceView creds={{accounts}} account={{id:'fixture-account',email:'fixture@example.test',identity:{identityKey:'fixture-identity'}}} deviceName="Fixture desktop" onEnrolled={()=>{throw Error('An unapproved fixture must not enroll')}} onSignOut={()=>{}}/>);`, loader: 'tsx', resolveDir: fileURLToPath(new URL('../packages/web', import.meta.url)) }, bundle: true, write: false, jsx: 'automatic', format: 'esm', platform: 'browser', define: { 'process.env.NODE_ENV': '"production"' } });
 let pairings = 0;
 const server = createServer((req, res) => {
   res.setHeader('cache-control', 'no-store');
@@ -26,6 +27,8 @@ try {
   await expect(page.getByRole('button', { name: 'Approve from my phone', exact: true })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Use my recovery key', exact: true })).toBeVisible();
   assert.equal(pairings, 0); assert.equal(await page.locator('.code-box').count(), 0);
+  await fs.mkdir('test-results', { recursive: true });
+  await page.screenshot({ path: 'test-results/compact-signin-options.png' });
   passed.push('native key restore opens with two simple choices and no automatic pairing request');
   await page.getByRole('button', { name: 'Approve from my phone', exact: true }).click();
   await expect(page.getByText('AAAAA BBBBB', { exact: true })).toBeVisible();
