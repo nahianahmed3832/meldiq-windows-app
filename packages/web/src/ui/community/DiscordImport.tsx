@@ -82,6 +82,7 @@ export function DiscordImport({ returned, onClose }: { returned: DiscordReturn |
     })();
     return () => {
       live = false;
+      void window.meldiqDesktop?.cancelDiscord();
     };
   }, [engine, returned]);
 
@@ -91,7 +92,14 @@ export function DiscordImport({ returned, onClose }: { returned: DiscordReturn |
     try {
       const url = await discordConnectUrl(engine);
       if (new URL(url).origin !== DISCORD_ORIGIN) throw new Error("unexpected address");
-      window.location.assign(url);
+      if (window.meldiqDesktop) {
+        const result = await window.meldiqDesktop.discordAuthorize(url);
+        setStep({ kind: 'finishing' });
+        const connection = await finishDiscordConnect(engine, result);
+        setConnections(current => [connection, ...current.filter(c => c.id !== connection.id)]);
+        setStep({ kind: 'review', connection });
+        setBusy(false);
+      } else window.location.assign(url);
     } catch (e) {
       setError(errorText(e, "Couldn't start connecting Discord. Try again."));
       setBusy(false);
@@ -114,6 +122,7 @@ export function DiscordImport({ returned, onClose }: { returned: DiscordReturn |
 
   return (
     <div className="discord-import">
+      {busy && step.kind !== 'finishing' && window.meldiqDesktop && <p role="status">Complete authorization in your browser, then select Open Meldiq for Windows. <button className="btn btn-secondary" onClick={() => void window.meldiqDesktop!.cancelDiscord()}>Cancel authorization</button></p>}
       {error && (
         <div className="banner danger" role="alert">
           {error}
@@ -191,7 +200,7 @@ function Intro(props: { configured: boolean; connections: DiscordConnection[]; b
           </ul>
         </section>
       </div>
-      <p className="faint discord-footnote">Discord doesn't allow copying messages or members. You can remove the bot from your Discord server afterwards.</p>
+      <p className="faint discord-footnote">This import does not copy messages or members. You can remove the bot from your Discord server afterwards.</p>
     </>
   );
 }

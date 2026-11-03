@@ -1,7 +1,10 @@
-import { app, BrowserWindow, Menu, Tray, nativeImage, ipcMain, shell, dialog, session, safeStorage, Notification, desktopCapturer, screen, powerMonitor, autoUpdater as nativeUpdater } from 'electron';
+import { net, app, BrowserWindow, Menu, Tray, nativeImage, ipcMain, shell, dialog, session, safeStorage, Notification, desktopCapturer, screen, powerMonitor, autoUpdater as nativeUpdater } from 'electron';
 import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
+import { PermissionStore, mediaCapabilities } from './permissions';
+import { restoreWindow } from '../shared/window-state';
+import { BROWSER_BRIDGE_VERSION, checkoutReturn, discordAuthorization } from '../shared/browser-flows';
 import { PreferenceStore } from './preferences';
 import { installProtocol } from './protocol';
 import { Updates } from './updater';
@@ -51,13 +54,16 @@ let cacheBytes = 0;
 let updates: Updates;
 let sources: Electron.DesktopCapturerSource[] = [];
 let chooseCapture: ((id: string | null) => void) | null = null;
-const grants = new Set<string>();
+const permissionStore = new PermissionStore(path.join(app.getPath('userData'), 'device-permissions.json'));
+let browserHandoff = false;
+let protocolRegistered = false;
+let discord: { state: string; resolve: (result: { code: string; state: string; guildId: string | null }) => void; reject: (error: Error) => void; timer: ReturnType<typeof setTimeout> } | null = null;
 const notices = new Map<string, Notification>();
 const pendingNavigation: string[] = [];
 const social = new Map<string, { resolve: (r: { id: string; receipt: string }) => void; reject: (e: Error) => void; timer: ReturnType<typeof setTimeout> }>();
 const busy = () => rendererBusy || downloads > 0 || capturePending || paymentWindow !== null;
 function state(): DesktopState {
-  return { preferences: prefs.value, profile: performanceProfile(os.totalmem(), os.cpus().length, prefs.value), build, update: updates?.state ?? { status: 'disabled' }, busy: busy(), cacheBytes };
+  return { permissions: { ...permissionStore.value }, browserHandoff, protocolRegistered, systemLanguages: app.isReady() ? app.getPreferredSystemLanguages() : [], preferences: prefs.value, profile: performanceProfile(os.totalmem(), os.cpus().length, prefs.value), build, update: updates?.state ?? { status: 'disabled' }, busy: busy(), cacheBytes };
 }
 function emitState() { if (main && !main.isDestroyed()) main.webContents.send('desktop:state-changed', state()); }
 function show() { if (main?.isMinimized()) main.restore(); main?.show(); main?.focus(); }
@@ -71,6 +77,13 @@ function deepLink(raw: string) {
   const link = parseDeepLink(raw);
   if (!link) return;
   if (link.kind === 'navigate') return navigate(link.href);
+  if (link.kind === 'discord') {
+    if (!discord || discord.state !== link.state) return;
+    const pending = discord; discord = null; clearTimeout(pending.timer);
+    if (link.code) pending.resolve({ code: link.code, state: link.state, guildId: link.guildId });
+    else pending.reject(new Error('Discord authorization cancelled. You can try again.'));
+    show(); return;
+  }
   const pending = social.get(link.id);
   if (!pending) return; // Unsolicited/replayed callbacks never establish sessions.
   clearTimeout(pending.timer); social.delete(link.id);
@@ -115,6 +128,7 @@ function installIpc(ses: Electron.Session) {
     // Deliberately never clearStorageData: IndexedDB/localStorage contain accounts and E2EE keys.
     cacheBytes = await ses.getCacheSize(); emitState();
   });
+  handle('reset-permissions', () => { permissionStore.reset(); emitState(); return state(); });
   handle('external', raw => external(raw));
   handle('update', action => updates.action(action));
   handle('seal', raw => {
@@ -140,14 +154,30 @@ function installIpc(ses: Electron.Session) {
   handle('social', raw => {
     if (!raw || typeof raw !== 'object') throw new Error('Invalid sign-in flow');
     const flow = raw as { id: string; url: string; expiresAt: number };
-    if (typeof flow.id !== 'string' || !/^[\w-]{43}$/.test(flow.id) || flow.url !== `${config.apiOrigin}/v2/auth/social/authorize/${flow.id}` || !Number.isFinite(flow.expiresAt) || flow.expiresAt <= Date.now() || flow.expiresAt > Date.now() + 15 * 60_000 || social.has(flow.id) || social.size > 2) throw new Error('Invalid sign-in authorization');
+    if (typeof flow.id !== 'string' || !/^[\w-]{43}$/.test(flow.id) || flow.url !== `${config.apiOrigin}/v2/auth/social/authorize/${flow.id}` || !Number.isFinite(flow.expiresAt) || flow.expiresAt <= Date.now() || flow.expiresAt > Date.now() + 15 * 60_000 || social.has(flow.id) || social.size >= 2) throw new Error('Invalid sign-in authorization');
+    if (app.isPackaged && !protocolRegistered) throw new Error('Windows could not register Meldiq callbacks. Reinstall Meldiq for your Windows account and try again.');
     return new Promise<{ id: string; receipt: string }>((resolve, reject) => {
       const timer = setTimeout(() => { social.delete(flow.id); reject(new Error('Sign-in expired. Try again.')); }, flow.expiresAt - Date.now());
       social.set(flow.id, { resolve, reject, timer });
-      void external(flow.url, false).catch(() => { clearTimeout(timer); social.delete(flow.id); reject(new Error('Unable to open your browser.')); });
+      const url = browserHandoff ? `${ORIGIN}/desktop-bridge.html#${new URLSearchParams({ kind: 'social', id: flow.id })}` : flow.url;
+      void external(url, false).catch(() => { clearTimeout(timer); social.delete(flow.id); reject(new Error('Unable to open your browser.')); });
     });
   });
   handle('cancel-social', id => { if (typeof id !== 'string') return; const pending = social.get(id); if (pending) { clearTimeout(pending.timer); pending.reject(new Error('Sign-in cancelled.')); social.delete(id); } });
+  handle('discord', raw => {
+    const flow = discordAuthorization(raw);
+    if (!flow || discord) throw new Error('Invalid or already active Discord authorization.');
+    if (!browserHandoff) throw new Error('Discord desktop return is not available on this web deployment yet. Update Meldiq or try again after the browser handoff is deployed.');
+    if (app.isPackaged && !protocolRegistered) throw new Error('Reinstall Meldiq to restore the Windows callback registration.');
+    return new Promise<{ code: string; state: string; guildId: string | null }>((resolve, reject) => {
+      const timer = setTimeout(() => { discord = null; reject(new Error('Discord authorization expired. Try again.')); }, 10 * 60_000);
+      discord = { state: flow.state, resolve, reject, timer };
+      void external(`${ORIGIN}/desktop-bridge.html#${new URLSearchParams({ kind: 'discord', url: flow.url })}`, false).catch(() => {
+        clearTimeout(timer); discord = null; reject(new Error('Unable to open your browser.'));
+      });
+    });
+  });
+  handle('cancel-discord', () => { if (discord) { clearTimeout(discord.timer); discord.reject(new Error('Discord authorization cancelled.')); discord = null; } });
   handle('capture-sources', (): CaptureSource[] => sources.map(s => ({ id: s.id, name: s.name, thumbnail: s.thumbnail.toDataURL(), displayId: s.display_id })), 'picker');
   handle('capture-choose', id => { if (id !== null && (typeof id !== 'string' || !sources.some(s => s.id === id))) throw new Error('Invalid capture source'); chooseCapture?.(id as string | null); }, 'picker');
 }
@@ -167,11 +197,20 @@ function secureWindow(win: BrowserWindow, isPicker = false) {
     paymentWindow = child; emitState();
     child.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
     child.webContents.on('will-attach-webview', event => event.preventDefault());
-    child.webContents.on('will-navigate', (event, url) => { if (!paymentUrl(url)) event.preventDefault(); });
-    child.webContents.on('will-redirect', (event, url) => { if (!paymentUrl(url)) event.preventDefault(); });
+    let returned = false;
+    const paymentNavigation = (event: Electron.Event, url: string) => {
+      const result = checkoutReturn(url);
+      if (result) {
+        event.preventDefault(); returned = true;
+        main?.webContents.send('desktop:checkout', { kind: 'returned', canceled: result.canceled });
+        setImmediate(() => { if (!child.isDestroyed()) child.close(); show(); });
+      } else if (!paymentUrl(url)) event.preventDefault();
+    };
+    child.webContents.on('will-navigate', paymentNavigation);
+    child.webContents.on('will-redirect', paymentNavigation);
     child.webContents.session.setPermissionRequestHandler((_wc, _permission, callback) => callback(false));
     child.webContents.session.setPermissionCheckHandler(() => false);
-    child.on('closed', () => { if (paymentWindow === child) paymentWindow = null; emitState(); });
+    child.on('closed', () => { if (paymentWindow === child) paymentWindow = null; if (!returned) main?.webContents.send('desktop:checkout', { kind: 'closed', canceled: true }); emitState(); });
   });
   wc.on('will-navigate', (event, url) => {
     if (isPicker ? url === `${ORIGIN}/capture-picker` : isLocalPage(url)) return;
@@ -190,16 +229,26 @@ function secureWindow(win: BrowserWindow, isPicker = false) {
   }
 }
 function permissions(ses: Electron.Session) {
-  ses.setPermissionCheckHandler((wc, permission, origin) => wc === main?.webContents && origin === ORIGIN && (Boolean(testApi) && ['local-network', 'local-network-access', 'loopback-network'].includes(permission) || permission === 'media' || permission === 'display-capture' || permission === 'speaker-selection' || permission === 'notifications' && prefs.value.notifications));
+  ses.setPermissionCheckHandler((wc, permission, origin, details) => {
+    if (wc !== main?.webContents || origin !== ORIGIN || !isLocalPage(wc.getURL())) return false;
+    if (testApi && ['local-network', 'local-network-access', 'loopback-network'].includes(permission)) return true;
+    if (permission === 'notifications') return prefs.value.notifications;
+    if (permission === 'display-capture') return true; // Every capture still requires the gesture-bound picker.
+    if (permission === 'speaker-selection') return permissionStore.value.speakers === true;
+    const capabilities = mediaCapabilities(details.mediaType ? [details.mediaType] : undefined);
+    return permission === 'media' && capabilities.length > 0 && capabilities.every(c => permissionStore.value[c] === true);
+  });
   ses.setPermissionRequestHandler((wc, permission, callback, details) => {
     if (wc !== main?.webContents || !isLocalPage(wc.getURL()) || !details.isMainFrame) return callback(false);
     if (testApi && ['local-network', 'local-network-access', 'loopback-network'].includes(permission)) return callback(true);
-    if (!['media', 'notifications', 'speaker-selection', 'display-capture'].includes(permission)) return callback(false);
     if (permission === 'notifications') return callback(prefs.value.notifications);
-    if (permission === 'display-capture') return callback(true); // Actual source selection is mandatory below.
-    const key = permission + ('mediaTypes' in details ? JSON.stringify(details.mediaTypes) : '');
-    if (grants.has(key)) return callback(true);
-    void dialog.showMessageBox(main!, { type: 'question', message: permission === 'media' ? `Allow Meldiq to use ${'mediaTypes' in details ? details.mediaTypes?.join(' and ') ?? 'your microphone and camera' : 'your microphone and camera'}?` : 'Allow Meldiq to select an audio output?', buttons: ['Do not allow', 'Allow this session'], defaultId: 0, cancelId: 0, noLink: true }).then(({ response }) => { if (response === 1) grants.add(key); callback(response === 1); }, () => callback(false));
+    if (permission === 'display-capture') return callback(true);
+    const capabilities = permission === 'speaker-selection' ? ['speakers' as const] : permission === 'media' && 'mediaTypes' in details ? mediaCapabilities(details.mediaTypes) : [];
+    void permissionStore.request(capabilities, async () => {
+      if (!main || main.isDestroyed()) return false;
+      const { response } = await dialog.showMessageBox(main, { type: 'question', message: `Allow Meldiq to use your ${capabilities.join(' and ')}?`, detail: 'Meldiq remembers your choice on this computer. Reset device permissions in Desktop settings. Windows privacy settings still apply.', buttons: ['Do not allow', 'Allow'], defaultId: 0, cancelId: 0, noLink: true });
+      return response === 1;
+    }).then(allow => { emitState(); callback(allow); }, () => callback(false));
   });
   ses.setDisplayMediaRequestHandler(async (request, callback) => {
     if (!main || request.frame !== main.webContents.mainFrame || !isLocalPage(request.frame.url) || !request.userGesture || capturePending) return callback({});
@@ -229,20 +278,30 @@ function permissions(ses: Electron.Session) {
   }, { useSystemPicker: false });
 }
 function makeWindow(ses: Electron.Session) {
-  const work = screen.getPrimaryDisplay().workArea;
-  let bounds: Partial<Electron.Rectangle> = { width: Math.min(1320, work.width), height: Math.min(860, work.height) };
-  try { const b = JSON.parse(fs.readFileSync(path.join(app.getPath('userData'), 'window.json'), 'utf8')); if ([b.width, b.height, b.x, b.y].every(Number.isFinite) && screen.getAllDisplays().some(d => b.x >= d.workArea.x && b.y >= d.workArea.y && b.x < d.workArea.x + d.workArea.width - 100 && b.y < d.workArea.y + d.workArea.height - 100)) bounds = { x: b.x, y: b.y, width: Math.max(960, Math.min(b.width, work.width)), height: Math.max(600, Math.min(b.height, work.height)) }; } catch { /* defaults */ }
-  main = new BrowserWindow({ ...bounds, minWidth: 960, minHeight: 600, title: 'Meldiq', backgroundColor: '#1e1f22', show: false, icon: path.join(appRoot, 'desktop/resources/icon.png'), webPreferences: { session: ses, preload: path.join(appRoot, 'dist/main/preload.cjs'), contextIsolation: true, nodeIntegration: false, sandbox: true, webSecurity: true, webviewTag: false, spellcheck: true, backgroundThrottling: true } });
+  let saved: unknown = null;
+  try { saved = JSON.parse(fs.readFileSync(path.join(app.getPath('userData'), 'window.json'), 'utf8')); } catch { /* default bounds */ }
+  const primary = screen.getPrimaryDisplay();
+  const restored = restoreWindow(saved, [primary.workArea, ...screen.getAllDisplays().filter(d => d.id !== primary.id).map(d => d.workArea)]);
+  const bounds = restored.bounds;
+  main = new BrowserWindow({ ...bounds, minWidth: Math.min(960, bounds.width), minHeight: Math.min(600, bounds.height), title: 'Meldiq', backgroundColor: '#1e1f22', show: false, icon: path.join(appRoot, process.platform === 'win32' ? 'desktop/resources/icon.ico' : 'desktop/resources/icon.png'), webPreferences: { session: ses, preload: path.join(appRoot, 'dist/main/preload.cjs'), contextIsolation: true, nodeIntegration: false, sandbox: true, webSecurity: true, webviewTag: false, spellcheck: true, backgroundThrottling: true } });
   secureWindow(main);
-  main.once('ready-to-show', show);
+  main.once('ready-to-show', () => { if (restored.maximized) main?.maximize(); show(); });
   main.on('close', event => {
     if (!quitting && prefs.value.closeToTray && tray) { event.preventDefault(); main?.hide(); return; }
     if (!quitting && busy()) { event.preventDefault(); void dialog.showMessageBox(main!, { type: 'info', message: 'Finish your call, screen sharing and transfers before quitting Meldiq.', buttons: ['Keep Meldiq open'] }); }
   });
   main.on('closed', () => { main = null; });
+  let wasMaximized = restored.maximized;
+  main.on("maximize", () => { wasMaximized = true; });
+  main.on("unmaximize", () => { wasMaximized = false; });
   let boundsTimer: ReturnType<typeof setTimeout>;
-  const saveBounds = () => { clearTimeout(boundsTimer); boundsTimer = setTimeout(() => { if (main && !main.isMaximized() && !main.isMinimized()) fs.writeFileSync(path.join(app.getPath('userData'), 'window.json'), JSON.stringify(main.getBounds())); }, 500); };
-  main.on('resize', saveBounds); main.on('move', saveBounds);
+  const writeBounds = () => {
+    if (!main || main.isDestroyed()) return;
+    try { fs.writeFileSync(path.join(app.getPath('userData'), 'window.json'), JSON.stringify({ bounds: main.getNormalBounds(), maximized: main.isMaximized() || main.isMinimized() && wasMaximized }), { mode: 0o600 }); } catch { /* Window state must not prevent startup or shutdown. */ }
+  };
+  const saveBounds = () => { clearTimeout(boundsTimer); boundsTimer = setTimeout(writeBounds, 500); };
+  main.on('resize', saveBounds); main.on('move', saveBounds); main.on('maximize', saveBounds); main.on('unmaximize', saveBounds);
+  main.on('close', () => { clearTimeout(boundsTimer); writeBounds(); });
   void main.loadURL(ORIGIN);
 }
 function menu() {
@@ -287,8 +346,14 @@ else {
     makeWindow(ses); menu();
     // eslint-disable-next-line no-unused-labels
     UPDATER_LAB: { void import('./update-lab').then(lab => lab.runUpdateLab({ app, main: main!, updates, control: config.updateLabControl })); }
-    if (app.isPackaged) app.setAsDefaultProtocolClient('meldiq');
-    else if (process.defaultApp && process.argv[1]) app.setAsDefaultProtocolClient('meldiq', process.execPath, [path.resolve(process.argv[1])]);
+    if (app.isPackaged) protocolRegistered = app.isDefaultProtocolClient('meldiq') || app.setAsDefaultProtocolClient('meldiq');
+    else if (!process.env.MELDIQ_TEST_USER_DATA && process.defaultApp && process.argv[1]) app.setAsDefaultProtocolClient('meldiq', process.execPath, [path.resolve(process.argv[1])]);
+    // Discover the separately deployed, same-origin browser handoff. Old deployments retain the existing native social route.
+    void net.fetch(`${ORIGIN}/desktop-bridge.json`, { redirect: 'error', signal: AbortSignal.timeout(5000), cache: 'no-store' }).then(async response => {
+      if (response.ok && response.headers.get('content-type')?.includes('application/json') && Number(response.headers.get('content-length') ?? 0) < 1024) {
+        const capability = await response.json(); browserHandoff = capability?.version === BROWSER_BRIDGE_VERSION; emitState();
+      }
+    }).catch(() => undefined);
     process.argv.filter(arg => arg.startsWith('meldiq://')).forEach(deepLink);
     powerMonitor.on('resume', () => main?.webContents.send('desktop:navigate', '__resume'));
     app.on('activate', () => main ? show() : makeWindow(ses));

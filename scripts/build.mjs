@@ -5,6 +5,8 @@ import { build as viteBuild } from 'vite';
 import { build as esbuild } from 'esbuild';
 const root = path.resolve(import.meta.dirname, '..');
 execFileSync(process.execPath, ['scripts/validate-builder.mjs'], { cwd: root, stdio: 'inherit' });
+execFileSync(process.execPath, ['scripts/generate-windows-icon.mjs', '--check'], { cwd: root, stdio: 'inherit' });
+execFileSync(process.execPath, ['scripts/check-localization.mjs'], { cwd: root, stdio: 'inherit' });
 const pkg = JSON.parse(await fs.readFile(path.join(root, 'package.json'), 'utf8'));
 const channel = process.env.BUILD_CHANNEL ?? 'stable';
 const distribution = process.env.BUILD_DISTRIBUTION ?? 'development';
@@ -65,6 +67,6 @@ async function allFiles(dir, prefix = '') {
 }
 const renderer = path.join(root, 'dist/renderer');
 // PWA callbacks and manifests are web entry points; none may replace the desktop bundle.
-for (const name of ['social-auth-callback.html', 'social-auth-callback.js', 'invite.html', 'invite.js', 'manifest.webmanifest', 'sw.js']) await fs.rm(path.join(renderer, name), { force: true });
+for (const name of ['desktop-bridge.html', 'desktop-bridge.js', 'desktop-bridge.json', 'social-auth-callback.html', 'social-auth-callback.js', 'invite.html', 'invite.js', 'manifest.webmanifest', 'sw.js']) await fs.rm(path.join(renderer, name), { force: true });
 await fs.writeFile(path.join(renderer, 'asset-manifest.json'), JSON.stringify((await allFiles(renderer)).sort()));
 console.log(`Built Meldiq ${pkg.version}, ${distribution}/${channel}, ${commit.slice(0, 12)}.`);

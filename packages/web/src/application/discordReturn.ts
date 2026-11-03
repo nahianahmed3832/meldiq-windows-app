@@ -27,6 +27,19 @@ let pending: DiscordReturn | null = null;
 export function captureDiscordReturn(): void {
   const ret = discordReturnFrom(location.pathname, location.search);
   if (!ret) return;
+  // Browser storage is distinct from Electron. Only a flow started by the desktop bridge returns to it.
+  try {
+    const desktop = JSON.parse(sessionStorage.getItem('meldiq.desktop.browserFlow') || 'null');
+    const q = new URLSearchParams(location.search);
+    if (desktop?.kind === 'discord' && desktop.expires > Date.now() && desktop.state === q.get('state')) {
+      q.set('kind', 'discord-return');
+      // Discord may add permissions; do not forward unneeded query fields into a native callback.
+      for (const key of [...q.keys()]) if (!['kind', 'state', 'code', 'guild_id', 'error'].includes(key)) q.delete(key);
+      history.replaceState(history.state, '', '/discord/callback');
+      location.replace(`/desktop-bridge.html#${q}`);
+      return;
+    }
+  } catch { /* Existing browser import remains available. */ }
   pending = ret;
   try {
     sessionStorage.setItem(KEY, JSON.stringify(ret));

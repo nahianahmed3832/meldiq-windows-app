@@ -8,7 +8,7 @@ import { relative } from "../format";
 import { useLoad } from "../workspace/useLoad";
 import { money } from "./mojoFormat";
 
-const PLAN_NAME = { go: "Legacy Go", plus: "Meldiq Plus" } as const;
+const PLAN_NAME = { go: "Legacy membership", plus: "Meldiq Plus" } as const;
 
 /**
  * Buying Meldiq Plus for a friend (server docs/MOJO.md › Gifts): one payment, for 1, 3 or 12 months, priced by the server. The
@@ -136,7 +136,7 @@ export function GiftsReceived({ me }: { me: MojoMe }) {
               {PLAN_NAME[g.planKey]} for {g.months === 12 ? "a year" : `${g.months} month${g.months === 1 ? "" : "s"}`}, from {g.person.name ?? "a friend"}
             </strong>
             {g.note && <small>“{g.note}”</small>}
-            {me.plan !== "free" && <small className="muted">You already have {me.perks.name}: gift time is kept separate from your existing renewal and does not start another recurring charge.</small>}
+            {me.plan !== "free" && <small className="muted">You already have {me.plan === "go" ? "Legacy membership" : me.perks.name}: gift time is kept separate from your existing renewal and does not start another recurring charge.</small>}
           </span>
           <button className="btn btn-mojo btn-sm" disabled={starting !== null || !online} onClick={() => void start(g.id)}>
             {starting === g.id ? "Starting…" : "Start it"}

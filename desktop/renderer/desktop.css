@@ -11,3 +11,13 @@ html[data-performance=economy] *,html[data-performance=economy] *::before,html[d
 html[data-performance=economy] .profile-style,html[data-performance=economy] .profile-banner{filter:none!important;box-shadow:none!important}
 .sidebar{resize:horizontal;flex-basis:auto;min-width:220px;max-width:min(420px,40vw);overflow:auto}
 @media(prefers-reduced-motion:reduce){.desktop-dialog,.capture-grid *{animation:none!important;transition:none!important}}
+/* Logical placement follows the interface; message content keeps its own bidi direction. */
+.desktop-settings-launch{right:auto;inset-inline-end:8px}
+.desktop-update-toast{right:auto;inset-inline-end:50px}
+.capture-grid button{text-align:start}
+.lang-picker{flex-wrap:wrap;max-width:100%;gap:6px}
+.lang-picker .lang-search{width:150px;min-width:100px;max-width:100%;font-size:12px;padding:5px 8px}
+html{font-family:"Segoe UI Variable","Segoe UI","Noto Sans Bengali","Noto Sans Arabic","Noto Sans Devanagari","Microsoft YaHei UI","Microsoft JhengHei UI","Yu Gothic UI","Malgun Gothic",sans-serif}
+html[dir=rtl] .desktop-dialog,html[dir=rtl] .capture-picker{text-align:start}
+
+.msg-text{unicode-bidi:plaintext;text-align:start}

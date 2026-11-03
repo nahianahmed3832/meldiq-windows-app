@@ -35,8 +35,9 @@ export async function startSocial(
   signal: AbortSignal,
 ): Promise<SocialReceipt> {
   const verifier = random();
+  const browserHandoff = typeof window !== "undefined" && window.meldiqDesktop ? (await window.meldiqDesktop.state()).browserHandoff : false;
   const started = await api.json("POST", "/v2/auth/social/start", zStarted, {
-    body: { provider, challenge: await socialChallenge(verifier), platform: typeof window !== "undefined" && window.meldiqDesktop ? "android" : "web", mode: options.mode ?? "login", password: options.password || undefined, totpCode: options.totpCode || undefined },
+    body: { provider, challenge: await socialChallenge(verifier), platform: typeof window !== "undefined" && window.meldiqDesktop && !browserHandoff ? "android" : "web", mode: options.mode ?? "login", password: options.password || undefined, totpCode: options.totpCode || undefined },
     auth: options.mode === "link",
     signal,
   });

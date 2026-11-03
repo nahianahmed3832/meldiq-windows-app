@@ -1,5 +1,5 @@
 const config = require('./builder.cjs');
 module.exports = { ...config, forceCodeSigning: false, publish: null,
-  win: { ...config.win, signtoolOptions: undefined, artifactName: 'Meldiq-Setup-${version}-${arch}-UNSIGNED-DEV.${ext}', signAndEditExecutable: false },
+  win: { ...config.win, signtoolOptions: undefined, artifactName: 'Meldiq-Setup-${version}-${arch}-UNSIGNED-DEV.${ext}', signExecutable: false },
   mac: { ...config.mac, identity: null, hardenedRuntime: false },
 };

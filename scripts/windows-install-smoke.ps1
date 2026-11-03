@@ -6,6 +6,21 @@ $destination = Join-Path $env:RUNNER_TEMP 'Meldiq-install-smoke'
 $installedExecutable = Join-Path $destination 'Meldiq.exe'
 $install = Start-Process -FilePath $installer.FullName -ArgumentList @('/S', "/D=$destination") -Wait -PassThru
 if ($install.ExitCode -ne 0 -or -not (Test-Path $installedExecutable)) { throw 'Silent installation failed' }
+# Inspect the installed executable, not merely the source builder settings.
+$branding = & "$PSScriptRoot/windows-branding-check.ps1" -Executable $installedExecutable
+$protocolKey = Get-Item 'HKCU:\Software\Classes\meldiq\shell\open\command' -ErrorAction Stop
+$protocolCommand = $protocolKey.GetValue('')
+if (-not $protocolCommand.Contains('"' + $installedExecutable + '"') -or -not $protocolCommand.Contains('"%1"')) { throw 'Protocol command does not quote the installed executable and callback argument' }
+$shortcutRoot = [Environment]::GetFolderPath('Programs')
+$shortcut = Get-ChildItem -LiteralPath $shortcutRoot -Filter 'Meldiq.lnk' -Recurse | Select-Object -First 1
+if (-not $shortcut) { throw 'Meldiq Start Menu shortcut is missing' }
+$link = (New-Object -ComObject WScript.Shell).CreateShortcut($shortcut.FullName)
+if ($link.TargetPath -cne $installedExecutable) { throw 'Start Menu shortcut points to the wrong executable' }
+$manifestTool = Get-ChildItem "${env:ProgramFiles(x86)}\Windows Kits\10\bin\*\x64\mt.exe" -ErrorAction SilentlyContinue | Sort-Object FullName -Descending | Select-Object -First 1
+if (-not $manifestTool) { throw 'Windows SDK manifest inspection tool is required' }
+$manifestFile = Join-Path $env:RUNNER_TEMP 'Meldiq-installed-manifest.xml'
+& $manifestTool.FullName "-inputresource:$installedExecutable;#1" "-out:$manifestFile"
+if ($LASTEXITCODE -ne 0 -or (Get-Content -Raw $manifestFile) -notmatch 'requestedExecutionLevel[^>]+level=["'']asInvoker["'']') { throw 'Installed executable must request asInvoker privileges' }
 $launched = $null
 try {
   $launched = Start-Process -FilePath $installedExecutable -PassThru
@@ -38,7 +53,11 @@ $report = @{
   installer = $installer.Name
   installerBytes = $installer.Length
   signature = 'Unsigned Windows installer; publisher certificate is not configured'
-  passed = @('actual silent NSIS installation', 'installed native application window launch', 'actual silent uninstall')
+  branding = $branding
+  protocolCommandVerified = $true
+  startMenuShortcutVerified = $true
+  executionLevel = 'asInvoker'
+  passed = @('actual silent NSIS installation', 'installed native application window launch', 'actual silent uninstall', 'canonical embedded executable icon', 'quoted per-user protocol registration', 'Start Menu shortcut target', 'asInvoker executable manifest')
   pending = @('versioned upgrade', 'signed update', 'physical hardware benchmarks', 'complete authenticated Windows feature acceptance')
 }
 New-Item -ItemType Directory -Force test-results | Out-Null

@@ -2,7 +2,7 @@ import { applyVibe, HEX } from "./vibes";
 import { useSyncExternalStore } from "react";
 import { type ShareQuality, shareQualityOf } from "../call/shareQuality";
 import { TRANSLATE_TARGETS, type TranslateTarget } from "../sync/translate";
-import { LANGUAGES, type LanguageChoice, resolveLanguage } from "../i18n/languages";
+import { LANGUAGES, type LanguageChoice, resolveLanguage, languageDirection } from "../i18n/languages";
 
 /**
  * Per-browser preferences. They hold no account data, so they live in localStorage, and every read and write tolerates
@@ -356,6 +356,7 @@ export function applyTheme({
   const root = document.documentElement;
   // The page's language follows the interface's (screen readers, fonts, spelling).
   root.setAttribute("lang", resolveLanguage(language ?? "system"));
+  root.setAttribute("dir", languageDirection(resolveLanguage(language ?? "system")));
   root.setAttribute("data-density", density);
   root.setAttribute("data-motion", reducedMotion);
   root.setAttribute("data-contrast", highContrast ? "high" : "normal");

@@ -1,7 +1,7 @@
 {
   "name": "meldiq-desktop",
   "productName": "Meldiq",
-  "version": "0.2.1",
+  "version": "0.3.0-readiness.1",
   "private": true,
   "description": "Meldiq Desktop — the existing Meldiq client packaged locally with native desktop integrations",
   "author": "MD.NAHIAN AHMED <254077813+nahianahmed3832@users.noreply.github.com>",
@@ -39,7 +39,12 @@
     "acceptance:desktop": "node scripts/acceptance-desktop.mjs",
     "matrix:generate": "node scripts/workflow-matrix.mjs",
     "matrix:check": "node scripts/workflow-matrix.mjs --check",
-    "prepare:website-preview": "node scripts/prepare-website-preview.mjs"
+    "prepare:website-preview": "node scripts/prepare-website-preview.mjs",
+    "icons:generate": "node scripts/generate-windows-icon.mjs",
+    "icons:check": "node scripts/generate-windows-icon.mjs --check",
+    "i18n:check": "node scripts/check-localization.mjs",
+    "i18n:release": "node scripts/check-localization.mjs --strict",
+    "test:readiness": "node scripts/readiness-smoke.mjs"
   },
   "dependencies": {
     "electron-updater": "6.8.11"
@@ -60,6 +65,7 @@
     "eslint": "10.13.0",
     "eslint-plugin-react-hooks": "7.1.1",
     "globals": "17.13.0",
+    "sharp": "0.35.5",
     "typescript": "5.9.3",
     "typescript-eslint": "8.71.2",
     "vite": "7.3.7",

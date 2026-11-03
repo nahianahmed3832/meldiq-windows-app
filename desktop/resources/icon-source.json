@@ -1,0 +1,16 @@
+{
+  "sizes": [
+    16,
+    20,
+    24,
+    32,
+    40,
+    48,
+    64,
+    128,
+    256
+  ],
+  "bytes": 35886,
+  "canonicalSha256": "8c1efca9251803f5984cda97f7dd22e060de197786ca9f5f7e0185b503ce29d9",
+  "icoSha256": "311ea1308dfcbdd2869ad4b3f74ea74b7013776be3a449fbb14498de66ed1ef3"
+}

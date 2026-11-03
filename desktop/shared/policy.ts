@@ -40,12 +40,20 @@ export function externalUrl(raw: unknown): string | null {
     return u.protocol === 'https:' && u.hostname.includes('.') ? u.href : null;
   } catch { return null; }
 }
-export type DeepLink = { kind: 'navigate'; href: string } | { kind: 'social'; id: string; receipt: string | null; error: string | null };
+export type DiscordCallback = { kind: 'discord'; state: string; code: string | null; guildId: string | null; canceled: boolean };
+export type DeepLink = DiscordCallback | { kind: 'navigate'; href: string } | { kind: 'social'; id: string; receipt: string | null; error: string | null };
 export function parseDeepLink(raw: unknown): DeepLink | null {
   if (typeof raw !== 'string' || raw.length > 2048 || [...raw].some(c => c.charCodeAt(0) <= 32 || c.charCodeAt(0) === 127) || raw.includes('\\') || /%2e|%2f|%5c|\/\.\.?\//i.test(raw)) return null;
   try {
     const u = new URL(raw);
     if (u.protocol !== 'meldiq:' || u.username || u.password || u.port) return null;
+    if (u.hostname === 'discord' && u.pathname === '/callback' && !u.search) {
+      const q = new URLSearchParams(u.hash.slice(1));
+      if ([...q.keys()].some(k => !['state', 'code', 'guild_id', 'error'].includes(k)) || [...q.keys()].length !== new Set(q.keys()).size) return null;
+      const state = q.get('state') ?? '', code = q.get('code'), guildId = q.get('guild_id'), error = q.get('error');
+      if (!/^[A-Za-z0-9_-]{43}$/.test(state) || (code !== null && !/^[A-Za-z0-9._~-]{1,200}$/.test(code)) || (guildId !== null && !/^\d{5,25}$/.test(guildId)) || (error !== null && error !== 'access_denied') || Boolean(code) === Boolean(error) || (error && guildId)) return null;
+      return { kind: 'discord', state, code, guildId, canceled: error === 'access_denied' };
+    }
     if (u.hostname === 'auth' && u.pathname === '/callback' && !u.search) {
       const q = new URLSearchParams(u.hash.slice(1));
       const id = q.get('id') ?? '', receipt = q.get('receipt'), error = q.get('error');
