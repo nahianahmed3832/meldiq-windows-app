@@ -1,0 +1,19 @@
+{
+  "passed": [
+    "actual silent NSIS installation",
+    "installed native application window launch",
+    "actual silent uninstall"
+  ],
+  "platform": "Windows CI virtual machine",
+  "osVersion": "Microsoft Windows NT 10.0.26100.0",
+  "sourceCommit": "90175e1b21d17171f727a3895edad795f5f38150",
+  "pending": [
+    "versioned upgrade",
+    "signed update",
+    "physical hardware benchmarks",
+    "complete authenticated Windows feature acceptance"
+  ],
+  "installerBytes": 124227227,
+  "installer": "Meldiq-Setup-0.2.0-x64.exe",
+  "signature": "Unsigned Windows installer; publisher certificate is not configured"
+}

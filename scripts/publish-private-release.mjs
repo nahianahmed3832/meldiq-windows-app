@@ -32,7 +32,11 @@ if (artifact.build.updateLab !== false || artifact.version !== authenticated.ver
 const details = { product: 'Meldiq Desktop', version: artifact.version, platform: 'Windows x64', sourceCommit: staging.sourceCommit, installer: artifact.filename, bytes: artifact.size, sha256: artifact.sha256, windowsPublisherSigned: false, automaticUpdates: true, updateAuthentication: 'Pinned Ed25519 release-key signatures and artifact digests', releaseKeyId: key.keyId, candidateRun: staging.runId, qualificationRun, productionFeatureAcceptance: false };
 const code = await fs.readFile('scripts/remote-stage-desktop.py', 'utf8');
 const result = spawnSync('ssh', ['-o', 'BatchMode=yes', '-o', 'ConnectTimeout=10', 'root@72.60.107.88', 'python3 -c ' + "'" + code.replaceAll("'", "'\\''") + "'"], { input: JSON.stringify({ mode: 'publish', run: staging.runId, qualificationRun, artifact, envelope, details }), encoding: 'utf8', maxBuffer: 1048576, timeout: 60000 });
-if (result.status !== 0) throw new Error('Private release publication failed; no credential-bearing diagnostics retained');
+if (result.status !== 0) {
+  const lines = [...(result.stderr ?? '').matchAll(/File "<string>", line (\d+)/g)].map(match => match[1]);
+  const kind = (result.stderr ?? '').match(/^(AssertionError|FileNotFoundError|KeyError|PermissionError|BlockingIOError|ValueError|OSError|TypeError|NameError):?/m)?.[1] ?? result.error?.code ?? 'remote-error';
+  throw new Error(`Private release publication failed (${kind}, exit ${result.status}, helper lines ${lines.join(',')}); credential-bearing diagnostics withheld`);
+}
 const receipt = JSON.parse(result.stdout);
 await fs.writeFile('test-results/private-release-publication.json', JSON.stringify(receipt, null, 2) + '\n');
 console.log(JSON.stringify(receipt));

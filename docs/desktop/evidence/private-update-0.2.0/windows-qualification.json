@@ -1,0 +1,39 @@
+{
+  "platform": "native Windows CI",
+  "status": "passed",
+  "keyId": "abb61b4909c9803f0e1f360b441ef8e65c35c98271fe9957b82d76d48af41f8d",
+  "sourceCommit": "90175e1b21d17171f727a3895edad795f5f38150",
+  "candidateRun": "41585285792",
+  "tests": [
+    {
+      "status": "passed",
+      "rejectedBeforeDownload": true,
+      "scenario": "bad-signature",
+      "version": "0.2.0-canary.1",
+      "scope": "Installed NSIS upgrade with local fixture account/message and OS-sealed session; no production account or backend mutations"
+    },
+    {
+      "status": "passed",
+      "corruptArtifactRejected": true,
+      "scenario": "bad-hash",
+      "version": "0.2.0-canary.1",
+      "scope": "Installed NSIS upgrade with local fixture account/message and OS-sealed session; no production account or backend mutations"
+    },
+    {
+      "status": "passed",
+      "actualInstallerUpgrade": true,
+      "automaticCheckAndDownload": true,
+      "automaticInstallOnSafeExit": true,
+      "busyGuardPassed": true,
+      "accountRetained": true,
+      "messageRetained": true,
+      "sealedSessionRetained": true,
+      "localStorageRetained": true,
+      "oldVersion": "0.2.0-canary.1",
+      "newVersion": "0.2.0-canary.2",
+      "scenario": "upgrade",
+      "version": "0.2.0-canary.2",
+      "scope": "Installed NSIS upgrade with local fixture account/message and OS-sealed session; no production account or backend mutations"
+    }
+  ]
+}

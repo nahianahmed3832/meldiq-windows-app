@@ -1,0 +1,14 @@
+[
+  {
+    "viewport": "desktop",
+    "width": 1280,
+    "overflow": false,
+    "download": "/downloads/windows/0.2.0/6e53a63f4953fa7a/Meldiq-Setup-0.2.0-x64.exe"
+  },
+  {
+    "viewport": "phone",
+    "width": 390,
+    "overflow": false,
+    "download": "/downloads/windows/0.2.0/6e53a63f4953fa7a/Meldiq-Setup-0.2.0-x64.exe"
+  }
+]

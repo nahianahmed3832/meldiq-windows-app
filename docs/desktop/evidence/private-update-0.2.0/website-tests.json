@@ -1,0 +1,23 @@
+{
+  "sourceDirectory": "packages/meldiq_landing_website",
+  "typecheck": "passed",
+  "lint": "passed",
+  "unitTests": {
+    "passed": 46
+  },
+  "browserTests": {
+    "passed": 114,
+    "durationSeconds": 45.8,
+    "projects": [
+      "desktop Chromium 1280x860",
+      "phone Chromium Pixel 7",
+      "desktop WebKit"
+    ]
+  },
+  "staticExport": "passed",
+  "visualInspection": [
+    "desktop 1280x860",
+    "phone 390x844"
+  ],
+  "scope": "Website tests use a mock API; no production transactions or authenticated acceptance claimed"
+}

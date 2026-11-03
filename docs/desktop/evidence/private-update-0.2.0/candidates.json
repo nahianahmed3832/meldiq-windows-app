@@ -1,0 +1,58 @@
+{
+  "runId": "41585285792",
+  "sourceCommit": "90175e1b21d17171f727a3895edad795f5f38150",
+  "keyId": "abb61b4909c9803f0e1f360b441ef8e65c35c98271fe9957b82d76d48af41f8d",
+  "artifacts": [
+    {
+      "role": "production",
+      "version": "0.2.0",
+      "filename": "Meldiq-Setup-0.2.0-x64.exe",
+      "size": 124227227,
+      "sha256": "6e53a63f4953fa7a5650865deacf5e8a45b377d60fcfad1c08582486b9383313",
+      "sha512": "lTtJHmuKx3swqBCRvZwxFq3mqqgrPekfkE+7Dz1qiSVBQrBRYwFa5vcU+VEHetm5DnOZLO01lhcsg5gPnDLiCA==",
+      "build": {
+        "version": "0.2.0",
+        "commit": "90175e1b21d17171f727a3895edad795f5f38150",
+        "timestamp": "2026-11-03T05:42:46.779Z",
+        "channel": "stable",
+        "distribution": "private-direct",
+        "updateLab": false
+      },
+      "downloadUrl": "https://meldiq.app/downloads/windows/0.2.0/6e53a63f4953fa7a/Meldiq-Setup-0.2.0-x64.exe"
+    },
+    {
+      "role": "lab-old",
+      "version": "0.2.0-canary.1",
+      "filename": "Meldiq-UpdateLab-0.2.0-canary.1-x64.exe",
+      "size": 124229379,
+      "sha256": "fc75feacabedd1de0f284cb13bbb259828d3df108b2719497547c9668a6b6993",
+      "sha512": "EiVlbI6v/oyhhUzC9IQJI3HLYsqcieyzwN/We3N13ROvD0HdAc50cWk6BKwYEKTABPpeDqYN/hSTF70XE2ewig==",
+      "build": {
+        "version": "0.2.0-canary.1",
+        "commit": "90175e1b21d17171f727a3895edad795f5f38150",
+        "timestamp": "2026-11-03T05:43:47.550Z",
+        "channel": "canary",
+        "distribution": "private-direct",
+        "updateLab": true
+      },
+      "downloadUrl": "https://meldiq.app/downloads/windows/0.2.0-canary.1/fc75feacabedd1de/Meldiq-UpdateLab-0.2.0-canary.1-x64.exe"
+    },
+    {
+      "role": "lab-new",
+      "version": "0.2.0-canary.2",
+      "filename": "Meldiq-UpdateLab-0.2.0-canary.2-x64.exe",
+      "size": 124229274,
+      "sha256": "376fb54ac02c74643a6fe3734ba84afef4fd2366f5f591d5d40d7a30c2bf01b3",
+      "sha512": "hWiZNgR2l/VSZSFFn6ghIlBD5wH1DniIcelKMBZA5ckhshXuYFpRqrcdlmVp0ho83/7ASwngFzDqx5eOmGbMGw==",
+      "build": {
+        "version": "0.2.0-canary.2",
+        "commit": "90175e1b21d17171f727a3895edad795f5f38150",
+        "timestamp": "2026-11-03T05:44:43.566Z",
+        "channel": "canary",
+        "distribution": "private-direct",
+        "updateLab": true
+      },
+      "downloadUrl": "https://meldiq.app/downloads/windows/0.2.0-canary.2/376fb54ac02c7464/Meldiq-UpdateLab-0.2.0-canary.2-x64.exe"
+    }
+  ]
+}
