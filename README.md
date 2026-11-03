@@ -2,7 +2,7 @@
 
 Locally packaged Meldiq client for Windows x64, built with Electron, React and TypeScript. Owned and authored by MD.NAHIAN AHMED. Repository: [nahianahmed3832/meldiq-windows-app](https://github.com/nahianahmed3832/meldiq-windows-app).
 
-**Development preview. Not approved for stable release.** The existing client source is reused, including messaging, communities, media, encrypted calls, Plus/Spark/gifts, profiles and customization. Source inclusion does not certify authenticated desktop parity. Signing, authenticated backend/provider verification, versioned upgrade/signed-update acceptance and physical hardware benchmarks remain required. Native Windows CI install/launch/uninstall passed; see the test report.
+**Windows 0.2.0 has a qualified private-key updater.** Installed Windows tests passed automatic download/upgrade, corrupt-update rejection, busy guards and local fixture retention. The existing client source is reused, including messaging, communities, media, encrypted calls, Plus/Spark/gifts, profiles and customization. Complete authenticated desktop parity and physical hardware benchmarks remain pending. See [release-key distribution and operating instructions](docs/desktop/PRIVATE_UPDATE_RELEASE.md) and [native evidence](docs/desktop/evidence/private-update-0.2.0/README.md). Private update signatures do not provide Windows publisher signing.
 
 ```sh
 npm ci
@@ -23,7 +23,7 @@ npm run package:win:dev
 node scripts/release-manifest.mjs
 ```
 
-Output: `release/Meldiq-Setup-0.1.0-x64-UNSIGNED-DEV.exe`. GitHub Actions also builds this artifact without publishing it to stable. Development updates are disabled. This is a complete local installer, not a downloader or hosted website wrapper.
+Output uses the current version, for example `release/Meldiq-Setup-0.2.0-x64-UNSIGNED-DEV.exe`. Development updates are disabled. The separately qualified private-key distribution uses `Meldiq-Setup-0.2.0-x64.exe` and enables automatic updates. These are complete local installers.
 
 The renderer builds all application code and assets into `dist/renderer`; Electron serves those files from disk in an isolated session. Existing `/v1`, `/v2` and realtime services remain cloud-backed. There is no second account, messaging backend, storage bucket or billing system.
 
@@ -31,8 +31,8 @@ Open **Meldiq → Desktop settings** or **Ctrl+,** for automatic/economy perform
 
 See [architecture audit](docs/desktop/ARCHITECTURE_AUDIT.md), [feature inventory](docs/desktop/WEB_FEATURE_INVENTORY.md), [parity matrix](docs/desktop/FEATURE_PARITY_MATRIX.md), [test report](docs/desktop/TEST_REPORT.md), [system requirements and benchmarks](docs/desktop/SYSTEM_REQUIREMENTS.md), and [build/release guide](docs/desktop/RELEASE_ARCHITECTURE.md). The source snapshot and documented adaptations are checked by `npm run verify:snapshot`.
 
-The [private unsigned development preview](https://github.com/nahianahmed3832/meldiq-windows-app/releases) contains the 117.58 MiB installer, checksums, build facts and native Windows install evidence. It is a draft; production signing, complete feature acceptance, versioned upgrades and physical hardware benchmarks remain pending. See [the implementation report](docs/desktop/IMPLEMENTATION_REPORT.md).
+The original 0.1.0 [development preview](https://github.com/nahianahmed3832/meldiq-windows-app/releases) remains preserved as a draft with its original checksums and provenance. Users of that build need a one-time manual installation of 0.2.0 to enable the new updater. See [the implementation report](docs/desktop/IMPLEMENTATION_REPORT.md) for historical implementation evidence.
 
-Production acceptance configuration, dedicated QA provisioning and remaining gates are documented in [the acceptance setup](docs/desktop/PRODUCTION_ACCEPTANCE_SETUP.md). The owner selected website distribution; [the website handoff guide](docs/desktop/WEBSITE_DISTRIBUTION.md) explains the preserved unsigned internal preview and how to obtain trusted publisher signing. Nothing has been published to the website.
+Production acceptance configuration, dedicated QA provisioning and remaining gates are documented in [the acceptance setup](docs/desktop/PRODUCTION_ACCEPTANCE_SETUP.md). The owner selected website distribution and locally protected Ed25519 release signing. The [landing website source](packages/meldiq_landing_website) is preserved here alongside the desktop app; the actual working site remains at `/Volumes/code_files/meldiq_landing_website`. Live publication evidence is recorded separately from build/qualification evidence.
 
-Latest [production validation report](docs/desktop/PRODUCTION_VALIDATION_REPORT.md): native Windows CI passed all current regression, inventory, installer and public API/WSS checks. Authenticated workflows, real media/calls, sandbox payments, signing/upgrades and physical hardware acceptance remain blocked.
+The earlier [production validation report](docs/desktop/PRODUCTION_VALIDATION_REPORT.md) records regression, inventory, installer and public API/WSS checks. [Newer private-update evidence](docs/desktop/evidence/private-update-0.2.0/README.md) supersedes its update-specific blockers. Authenticated workflows, real media/calls, sandbox payments, Windows publisher signing and physical hardware acceptance remain pending.
