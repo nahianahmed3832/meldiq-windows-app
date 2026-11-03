@@ -1,0 +1,54 @@
+{
+  "checkedAt": "2026-11-03T16:48:00.767Z",
+  "environment": "live",
+  "productId": "PROD-1YK92193UL249543V",
+  "legacyPlan": {
+    "id": "P-86K28769KY221561YNLTPK6I",
+    "status": "ACTIVE",
+    "cycles": [
+      {
+        "pricing_scheme": {
+          "version": 1,
+          "fixed_price": {
+            "currency_code": "USD",
+            "value": "3.99"
+          },
+          "create_time": "2026-11-01T08:16:57Z",
+          "update_time": "2026-11-01T08:16:57Z"
+        },
+        "frequency": {
+          "interval_unit": "MONTH",
+          "interval_count": 1
+        },
+        "tenure_type": "REGULAR",
+        "sequence": 1,
+        "total_cycles": 0
+      }
+    ],
+    "productId": "PROD-1YK92193UL249543V"
+  },
+  "expectedMonthlyAmountMinor": 499,
+  "webhook": {
+    "url": "https://msg.meldiq.app/v1/billing/webhooks/paypal",
+    "requiredEventsConfigured": true,
+    "signedDeliveryVerified": false
+  },
+  "checkoutCreated": false,
+  "buyerApproved": false,
+  "publicCatalogChanged": false,
+  "runtimeConfigurationChanged": false,
+  "preparedPlan": {
+    "id": "P-49S40199EV0769032NLVBAQI",
+    "status": "ACTIVE",
+    "productId": "PROD-1YK92193UL249543V",
+    "currency": "USD",
+    "amountMinor": 499,
+    "interval": "month",
+    "billingFrequency": 1
+  },
+  "legacyPricingPreserved": true,
+  "publicSalesEnabled": false,
+  "note": "Separate merchant plan only. Backend catalog publication and account-owned buyer approval remain required; no customer charge created.",
+  "sourceCommit": "f944b92b572b6e7ed3246f7a2290c96dae9ab56b",
+  "apiImage": "sha256:9bb580a8be7a5f2823cd0b9a1ad95bed65291389321658d29124feebe321ba5c"
+}

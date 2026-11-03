@@ -1,0 +1,29 @@
+{
+  "recordedAt": "2026-11-03T16:54:36.712Z",
+  "counts": {
+    "passed": 149,
+    "failed": 0,
+    "skipped": 1
+  },
+  "scope": "existing backend source with fake PayPal/Discord/provider endpoints and disposable data; not deployed production/provider acceptance",
+  "files": [
+    "billing_paypal.test.ts",
+    "billing_paypal_live.test.ts",
+    "paypal_capabilities.test.ts",
+    "paypal_sandbox_gift_lifecycle.test.ts",
+    "billing_plus_terms.test.ts",
+    "billing_program.test.ts",
+    "billing_trial_default.test.ts",
+    "billing_trials.test.ts",
+    "billing_notifications.test.ts",
+    "standalone_commerce_paypal.test.ts",
+    "discord_import.test.ts",
+    "discord_mapping.test.ts",
+    "social_auth.test.ts"
+  ],
+  "testCheckoutHead": "2dae0d27955ac8e44170bed5057a20c0d4f065ba",
+  "deployedApiCommit": "b9e6f005",
+  "billingAndOperatorSourceAndSelectedTestsMatchDeployedCommit": true,
+  "testCheckoutHasUnrelatedChanges": true,
+  "providerEndpoints": "local test doubles; real signed success, approval and payment completion are not implied"
+}

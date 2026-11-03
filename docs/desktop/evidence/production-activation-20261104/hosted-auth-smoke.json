@@ -1,0 +1,23 @@
+{
+  "recordedAt": "2026-11-03T16:54:41.709Z",
+  "scope": "actual Chromium, isolated origin routing and synthetic one-use codes only; no live provider account approval",
+  "passed": [
+    "social receipt returns through state-bound desktop bridge",
+    "uninitiated native social handoff rejected",
+    "mismatched social flow rejected",
+    "expired social flow rejected",
+    "duplicate social result rejected",
+    "Discord desktop return filters provider extras",
+    "Discord trailing-slash callback preserves the one-use return",
+    "Discord denied consent returns cancellation",
+    "mismatched Discord state rejected",
+    "expired Discord state rejected",
+    "duplicate Discord parameter rejected",
+    "existing web Discord return contract retained",
+    "existing web Discord cancellation retained"
+  ],
+  "counts": {
+    "passed": 13,
+    "failed": 0
+  }
+}

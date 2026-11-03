@@ -1,0 +1,27 @@
+{
+  "backupDirectory": "/var/backups/meldiq/20261103T165505Z",
+  "backup": {
+    "capturedAt": "20261103T165505Z",
+    "complete": true,
+    "authority": "Supabase PostgreSQL",
+    "encrypted": true,
+    "allPayloadDecryptionVerified": true,
+    "consistentReadOnlySnapshot": true,
+    "fullDumpParsingVerified": true,
+    "independentRestoreVerified": false,
+    "tables": 317,
+    "rows": 688206,
+    "apiImageId": "sha256:9bb580a8be7a5f2823cd0b9a1ad95bed65291389321658d29124feebe321ba5c"
+  },
+  "health": {
+    "ok": true,
+    "version": "0.76.1",
+    "time": 1793725923444,
+    "livekit": true,
+    "postgres": true,
+    "databaseMode": "supabase",
+    "redis": true
+  },
+  "containerHealth": "healthy",
+  "releaseLocks": []
+}
