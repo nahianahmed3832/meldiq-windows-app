@@ -7,6 +7,7 @@ import urllib.request
 import shutil
 import fcntl
 import datetime
+import base64
 from pathlib import Path
 from urllib.parse import urlparse
 
@@ -73,6 +74,11 @@ elif data["mode"] == "publish":
         temporary.chmod(0o644)
         os.replace(temporary, target)
     assert target.stat().st_size == item["size"]
+    value = hashlib.sha256()
+    with target.open("rb") as stream:
+        for chunk in iter(lambda: stream.read(1048576), b""):
+            value.update(chunk)
+    assert value.hexdigest() == item["sha256"], "Published artifact integrity mismatch"
     (target.parent / "checksums.sha256").write_text(item["sha256"] + "  " + item["filename"] + "\n")
     (target.parent / "release.json").write_text(json.dumps(data["details"], indent=2) + "\n")
     for filename in ["checksums.sha256", "release.json"]:
@@ -81,6 +87,10 @@ elif data["mode"] == "publish":
     feed.parent.mkdir(parents=True, exist_ok=True)
     backup = None
     if feed.exists():
+        previous = json.loads(base64.b64decode(json.loads(feed.read_text())["payload"]))
+        incoming = json.loads(base64.b64decode(json.loads(data["envelope"])["payload"]))
+        assert incoming["sequence"] > previous["sequence"] or data["envelope"] == feed.read_text(), "Refuse metadata rollback"
+        assert tuple(map(int, incoming["version"].split("."))) >= tuple(map(int, previous["version"].split("."))), "Refuse release downgrade"
         history = Path("/opt/meldiq-desktop/history")
         history.mkdir(parents=True, exist_ok=True)
         backup = history / ("stable-" + datetime.datetime.now(datetime.timezone.utc).strftime("%Y%m%dT%H%M%SZ") + ".json")
