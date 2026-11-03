@@ -1,0 +1,42 @@
+{
+  "recordedAtUTC": "2026-11-03T18:13Z",
+  "websiteSource": "87a1079",
+  "activeSite": "/opt/meldiq-site/releases/site-20261103T181028Z-a07de9ec4e",
+  "previousSite": "/opt/meldiq-site/releases/site-20261103T174833Z-18a4f6c773",
+  "productionBuild": "passed (webpack)",
+  "typecheck": "passed",
+  "lint": "passed",
+  "unit": {
+    "passed": 49,
+    "skipped": 2
+  },
+  "browser": {
+    "passed": 96,
+    "failed": 0,
+    "layouts": [
+      "desktop",
+      "phone"
+    ],
+    "payments": "provider doubles"
+  },
+  "actualBrowserLoginDestination": "https://web.meldiq.app/settings/mojo",
+  "observedMethods": [
+    "Google",
+    "Discord",
+    "email",
+    "passkey"
+  ],
+  "health": {
+    "ok": true,
+    "version": "0.76.1",
+    "time": 1793729694897,
+    "livekit": true,
+    "mongodb": null,
+    "postgres": true,
+    "databaseMode": "supabase",
+    "redis": true
+  },
+  "realProviderConsentCompleted": false,
+  "buyerPaymentCompleted": false,
+  "statusIncidentDetailHTTP": 500
+}

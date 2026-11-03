@@ -1,5 +1,7 @@
 # Production activation — 4 November 2026
 
+**Historical activation receipt:** the Windows 0.2.1/blocker statements below describe the earlier activation. The owner subsequently selected the existing release-key distribution. Windows **0.3.0 is now published**; see [the superseding release report](WINDOWS_0_3_0_RELEASE.md) for the current updater, shared website sign-in and remaining acceptance limits.
+
 **Monthly Plus sales and hosted desktop authentication returns are enabled. A new Windows production update has not been published. Full production acceptance is not complete.** Physical Windows testing is deferred at the owner's request; real provider consent, an approved buyer transaction, successful signed webhook delivery, entitlement activation and publisher signing are not reported as passed.
 
 ## Deployed changes
