@@ -11,3 +11,11 @@ Public candidate source: `90175e1b21d17171f727a3895edad795f5f38150`. The actual 
 The first qualification attempt, run `41584112497`, failed because the isolated lab requested the stable channel while its signed fixture was canary. The lab channel was corrected, and negative tests were strengthened to require the precise cryptographic failure cause so a transport/404 failure cannot count as signature or hash rejection. All candidates were rebuilt from the corrected source; none of the first run's candidates was published as the stable release.
 
 Fixture account/message/session retention proves installed local-data preservation. Authenticated production accounts, Android interoperability, S3, LiveKit, payments, Windows 10 and physical hardware benchmarks remain separate acceptance gates. The installer has no Windows publisher certificate.
+
+## Live publication
+
+Published **2026-11-03 06:19 UTC** at [meldiq.app/download](https://meldiq.app/download). `publication.json` records the immutable binary URL, exact size/hash, passing preparation/qualification run IDs and metadata-last promotion. `website-deployment.json` records atomic activation of the reviewed site baseline and retained previous chunks.
+
+`live-integrity.json` records authentication of the actual public stable feed with the same verifier used by the client, an exact page link, correct immutable/no-store/download headers, and a complete HTTPS installer download checked against both signed digests. `live-browser.json` records real desktop/phone page rendering with release details visible, no horizontal overflow and no page errors. `stable-release-envelope.json` preserves the exact published signed metadata; signatures are public verification data, not private keys. Its current expiry is 2027-02-01 05:51:36 UTC.
+
+Publication waited until the separate database operation released the shared lock. This task deployed only static website content and desktop assets/metadata on the existing host. No backend/database/payment credentials/DNS/AWS resources were changed. The original 0.1.0 installer remains preserved.

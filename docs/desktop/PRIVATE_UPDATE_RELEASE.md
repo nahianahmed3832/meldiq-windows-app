@@ -27,3 +27,11 @@ Use the owner's Mac for signing. Generate/reuse the protected signer with `npx e
 Signed metadata expires after 90 days. Issue and verify fresh metadata before expiry, even if no new installer is needed; rerunning the same staged/qualified candidate procedure produces a new sequence and expiry. An expired feed fails closed and does not disable the installed messaging client. Never extend timestamps by editing the hosted JSON without signing it.
 
 Version 0.1.0 has no enabled/pinned updater. Its users must install 0.2.0 manually once. Subsequent compatible releases use the new signed feed. Default checks run 15 seconds after launch and every six hours; automatic mode downloads and installs on safe exit. Users can select manual behavior in Desktop settings.
+
+## Published release
+
+Windows 0.2.0 was published at 2026-11-03 06:19 UTC to [the Meldiq download page](https://meldiq.app/download). Its private update feed is [the signed stable envelope](https://meldiq.app/desktop-updates/windows/stable/release.json). The public installer is 124,227,227 bytes, SHA-256 `6e53a63f4953fa7a5650865deacf5e8a45b377d60fcfad1c08582486b9383313`, built from `90175e1b21d17171f727a3895edad795f5f38150`.
+
+The [native qualification and permanent publication evidence](evidence/private-update-0.2.0/README.md) include actual installed Windows upgrade/retention/tamper tests, public candidate install/launch/configuration/uninstall, metadata-last promotion, full public HTTPS download verification against signed SHA-256 and SHA-512, correct cache/download headers, and live desktop/phone browser rendering. The landing site activated atomically as `site-20261103T061933Z-13fb02d5a6`, retaining its previous release/chunks. Publication waited for the independent database migration's release lock and did not modify the backend, database, payment credentials, DNS or AWS resources. The original 0.1.0 preview remains preserved.
+
+The current envelope expires **2027-02-01 05:51:36 UTC**. Renew it before that time. This publication authorizes the selected release-key distribution; full production feature/hardware acceptance and Windows publisher signing remain incomplete.

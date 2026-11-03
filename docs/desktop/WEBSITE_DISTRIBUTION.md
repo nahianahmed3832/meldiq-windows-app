@@ -2,6 +2,8 @@
 
 **2026-11-03 update:** The owner subsequently selected a locally protected Ed25519 release key and authorized website publication with automatic updates. The new 0.2.0 private-key distribution passed native Windows qualification; see [PRIVATE_UPDATE_RELEASE.md](PRIVATE_UPDATE_RELEASE.md) and [the permanent evidence](evidence/private-update-0.2.0/README.md). The earlier preview handoff and no-publication statements below describe the original 0.1.0 work, not the later release. Current publication receipts are recorded alongside the new evidence.
 
+**Live:** Windows 0.2.0 is available at [meldiq.app/download](https://meldiq.app/download), with private-key authenticated automatic updates. Publication and complete public installer verification passed on 2026-11-03. This does not provide a Windows publisher certificate or pass the remaining full feature/hardware acceptance gates.
+
 The owner's chosen distribution channel is the Meldiq website. No Authenticode certificate or dedicated physical Windows/Android test devices are currently available. Website hosting and Windows publisher signing are separate tasks; a website TLS certificate does not sign an EXE.
 
 The existing landing source at `/Volumes/code_files/meldiq_landing_website` has `/download`, a Windows coming-soon card, and a null Windows download target in `src/lib/device.ts`. That public entry should stay truthful until a specific installer is approved and hosted. No landing source, public link, DNS, AWS resource or production web deployment was changed by this desktop task.

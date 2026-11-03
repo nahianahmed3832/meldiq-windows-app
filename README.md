@@ -4,6 +4,8 @@ Locally packaged Meldiq client for Windows x64, built with Electron, React and T
 
 **Windows 0.2.0 has a qualified private-key updater.** Installed Windows tests passed automatic download/upgrade, corrupt-update rejection, busy guards and local fixture retention. The existing client source is reused, including messaging, communities, media, encrypted calls, Plus/Spark/gifts, profiles and customization. Complete authenticated desktop parity and physical hardware benchmarks remain pending. See [release-key distribution and operating instructions](docs/desktop/PRIVATE_UPDATE_RELEASE.md) and [native evidence](docs/desktop/evidence/private-update-0.2.0/README.md). Private update signatures do not provide Windows publisher signing.
 
+Download Windows 0.2.0 from [meldiq.app/download](https://meldiq.app/download). The live signed feed and complete 124.2 MB public installer were authenticated after publication on 2026-11-03; see [the publication and integrity records](docs/desktop/evidence/private-update-0.2.0/README.md).
+
 ```sh
 npm ci
 npm run typecheck

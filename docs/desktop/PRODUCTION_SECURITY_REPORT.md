@@ -2,6 +2,16 @@
 
 Status: **security acceptance incomplete**. Preserved the existing security architecture and tested preview. This is targeted validation, not an independent penetration-test certification.
 
+## Private update release — 2026-11-03 06:19 UTC
+
+The owner selected locally protected Ed25519 release signing. Windows 0.2.0 is now published through the existing website with automatic checks/downloads and safe-exit installation. The private key is encrypted with the owner's macOS Keychain outside the checkout; only its fingerprint/public key are in source and clients. No private key is on GitHub, the website, CI or the renderer.
+
+The custom provider authenticates a domain-separated, bounded manifest with exact app/platform/channel/version/artifact binding, expiry and persistent sequence/digest checkpoints. Both signed artifact hashes and byte length are rechecked after download and immediately before installation. There is no unsigned-feed fallback. Busy communication/payment activity prevents installation. Public builds remove the isolated qualification controls, verified again from the actual installed ASAR.
+
+[Native Windows qualification](evidence/private-update-0.2.0/README.md) passed modified-signature rejection, corrupt-artifact rejection for the correct authentication reasons, automatic installed NSIS upgrade, busy guards and local fixture account/message/OS-sealed-session retention. The actual public candidate passed install/window launch/key/updater inspection/uninstall. [Live integrity evidence](evidence/private-update-0.2.0/live-integrity.json) authenticates the public stable feed and complete public binary against SHA-256 and SHA-512. Exact website links and cache/download headers passed. Metadata was promoted last under the shared release lock; publication waited for the independent database operation to release it.
+
+This supersedes the earlier private-update round-trip blocker below. It does not supply a Windows Authenticode identity, certify first-install publisher reputation, pass real production-account/E2EE/call/payment acceptance or resolve the separately recorded dependency findings. Windows still sees an unsigned installer. Keep the encrypted signer and matching Keychain backed up; renew the current envelope before 2027-02-01 05:51:36 UTC.
+
 ## Concrete fixes and checks
 
 - Reproduced an updater race with a failing regression test: channel reconfiguration during an asynchronous signature check was accepted, allowing the old-channel installer callback to restore an offer after resetting the feed. Channel changes now fail before preferences are saved while checks, downloads, signature verification or installation are active. A completed safe switch still invalidates the old candidate. Four updater tests cover verification, checking, downloading/rejection and install-time recheck. The original preview bytes remain unchanged; updated source requires its own validation artifact.
@@ -29,7 +39,7 @@ Primary references checked: [Electron security recommendations](https://github.c
 - Actual Windows provider callbacks, account switching/sign-out/refresh/key recovery and long-session token/storage behavior.
 - Device/capture cleanup during real calls, unsupported acceleration, hardware/device disconnection and notification privacy.
 - Isolated sandbox payment/webhook entitlement transitions, replay/authorization failures and provider callback cancellation.
-- Protected signing environment, actual publisher/certificate custody, signed install/upgrade and signed update round trip, wrong signer/hash/channel rejection, recovery and session retention.
+- Protected certificate-backed signing environment and actual Authenticode publisher/certificate custody remain pending. The separately authorized private-key update round trip, signature/hash rejection and fixture retention passed as documented above; broader recovery and real production-session acceptance remain pending.
 - Fresh Electron/Chromium and dependency security review tied to the final immutable release artifact.
 
 No production account was created; no provider permanent secret was copied; no live payment, customer-data mutation or infrastructure deployment was performed. Reports contain only selected public fields/statuses, not credential-bearing bodies or signed URLs.

@@ -1,0 +1,14 @@
+{
+  "publishedAt": "2026-11-03T06:19:33.406930+00:00",
+  "website": "https://meldiq.app/download",
+  "release": "site-20261103T061933Z-13fb02d5a6",
+  "previous": "site-20261101T190258Z-c68b793a32",
+  "baselineChecked": true,
+  "atomicActivation": true,
+  "previousImmutableChunksRetained": true,
+  "nginxConfigReinstalled": false,
+  "sourceSnapshotCommit": "ec0314861f7e02f5648f375784c202fedcb0dd1a",
+  "scope": "Static website and desktop download/update files on existing host; no database, backend, payment credentials, DNS or AWS resource modifications",
+  "nginxConfigSha256After": "1eff908802b7da760175585a6c9899b624f86ff13d75cb83ec9ffee30e97895c",
+  "backendObservedHealthyAfter": true
+}
