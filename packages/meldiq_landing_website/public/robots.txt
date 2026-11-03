@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /account
+Disallow: /login
+Disallow: /signup
+Disallow: /verify-email
+Disallow: /forgot-password
+Sitemap: https://meldiq.app/sitemap.xml

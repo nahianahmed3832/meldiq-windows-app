@@ -1,0 +1,153 @@
+[
+  [
+    "General",
+    "What is Meldiq?",
+    "Meldiq brings communities, channels, direct messages, private groups and calls together. It’s a place for friends, gaming groups, creators and communities to talk, with messages encrypted on your devices before they’re sent."
+  ],
+  [
+    "General",
+    "Is Meldiq free?",
+    "Yes. Communities, channels, direct messages, private groups, voice and video calls, screen sharing and encrypted file sharing are part of the free experience. Mojo Plus is optional."
+  ],
+  [
+    "General",
+    "How do I create an account?",
+    "Use the Create a Free Account link to open Meldiq’s existing registration page. Your account works on the web and Android."
+  ],
+  [
+    "General",
+    "Is there a free Mojo Plus trial?",
+    "Trial offers are set by the current billing catalog. Check Pricing or your account for the number of free days and eligibility. No card is required for a free period, and it ends without a charge."
+  ],
+  [
+    "Communities",
+    "Can I create a public or private community?",
+    "Yes. Create a community in Meldiq, then make it discoverable or keep it invitation-only. Organize it with categories, text and announcement channels, forums, threads and voice channels."
+  ],
+  [
+    "Communities",
+    "How do invitations work?",
+    "Invite people into your community using Meldiq’s invitation tools. Invitations can have limits. Community invites and personal referral offers are different: check the offer shown in your account before relying on referral rewards."
+  ],
+  [
+    "Communities",
+    "What are roles and permissions?",
+    "Owners, administrators, moderators and custom roles help organize a community. Permissions apply at channel and category level, so you can decide who can see and participate in each space."
+  ],
+  [
+    "Communities",
+    "How does moderation work?",
+    "Community controls include reports, bans, timeouts, invitation limits and slow mode. Reports sent from the app go to the community’s moderators. Community rules also need to follow Meldiq’s Acceptable Use Policy."
+  ],
+  [
+    "Privacy",
+    "How does end-to-end encryption work?",
+    "Message text, attachments, reactions, edits and read receipts are encrypted on the sending device. Meldiq’s published architecture says its servers store and relay ciphertext rather than readable conversation content. Private keys stay on your devices."
+  ],
+  [
+    "Privacy",
+    "What information can the server see?",
+    "Encryption doesn’t hide all metadata. The server can see account and profile information, community and channel names, roles and memberships, and routing information such as which conversation a message goes to, when it was sent and its size. Read the Privacy Policy for the full description."
+  ],
+  [
+    "Privacy",
+    "Are files and calls encrypted?",
+    "Files are encrypted before upload. Call audio, video and screen sharing are end-to-end encrypted when call encryption is on, which is the default. Check the encryption indicator in the app for your call."
+  ],
+  [
+    "Privacy",
+    "Has Meldiq had an independent security audit?",
+    "No independent security audit is claimed by the current public website. It describes established encryption libraries and automated tests. Those are not an independent audit."
+  ],
+  [
+    "Platforms",
+    "Which devices are supported?",
+    "Meldiq is available on the web, Android and Windows. Visit Download for the Windows installer. Native iPhone, iPad and macOS apps are planned."
+  ],
+  [
+    "Platforms",
+    "Can I use Meldiq in a browser?",
+    "Yes. The public download page lists recent Chrome, Edge, Firefox and Safari versions. Open web.meldiq.app; there’s nothing to install."
+  ],
+  [
+    "Platforms",
+    "Is there an official Android app?",
+    "Yes. The official Meldiq website links to the Google Play listing for com.meldiq.android. Find that same official link on the Download page. Store availability can vary by location."
+  ],
+  [
+    "Subscriptions",
+    "Can I buy Mojo Plus now?",
+    "Check Pricing for current Mojo Plus availability and the terms before subscribing. Website checkout uses PayPal. Core messaging remains free."
+  ],
+  [
+    "Subscriptions",
+    "What does Mojo Plus cost and include?",
+    "Mojo Plus is the optional personal plan at $3.99 USD per month, with files up to 1,024 MB each. See Pricing for the current message, screen-sharing, Spark, custom emoji, sticker and bot allowances. Core messaging remains free. Spark community boosting and Bots+ for a community are separate products."
+  ],
+  [
+    "Subscriptions",
+    "Does one subscription cover multiple devices?",
+    "Yes. Mojo Plus belongs to your Meldiq account. Sign in with the same account on supported devices to use the same subscription."
+  ],
+  [
+    "Subscriptions",
+    "How do I cancel?",
+    "For a PayPal subscription, sign in to Billing, choose “Cancel subscription” and confirm. For an earlier subscription with a billing portal, use “Manage payment method, invoices and cancellation”. The published terms say access continues until the end of the paid period, then the subscription stops renewing."
+  ],
+  [
+    "Subscriptions",
+    "What happens if a payment fails?",
+    "The payment provider may retry failed payments and a grace period may apply. The current public configuration does not specify its length. Check the terms shown for your subscription or your existing billing account rather than assuming a number of days."
+  ],
+  [
+    "Subscriptions",
+    "What happens when Mojo Plus ends?",
+    "The published terms say your messages, communities, files and members stay. The account returns to the free tier; adding more beyond applicable free limits can be restricted. No existing content is deleted solely because Mojo Plus ends."
+  ],
+  [
+    "Subscriptions",
+    "Does Meldiq store my card details?",
+    "PayPal processes new website subscriptions on its own secure pages. Meldiq keeps billing references rather than card numbers. This marketing website does not collect payment information."
+  ],
+  [
+    "Sparks",
+    "What is Meldiq Spark?",
+    "Sparks boost a community for everyone in it, with extra emoji and sticker capacity, file capacity and voice or screen-sharing quality. See Pricing for current levels, benefits and purchase terms."
+  ],
+  [
+    "Sparks",
+    "Which plans include Sparks?",
+    "See Pricing for the current Mojo Plus Spark allowance. Extra Sparks are a separate purchase, available on any plan when offered in the app."
+  ],
+  ["Sparks", "Can communities receive multiple Sparks?", "Yes. The current community Spark thresholds and benefits appear on Pricing and in Meldiq."],
+  [
+    "Sparks",
+    "Can Sparks be moved or removed?",
+    "Assign Sparks to a community you belong to, move them or take them back in Meldiq. Check the purchase and expiration terms in the app before paying."
+  ],
+  [
+    "Gifts",
+    "Can I gift Mojo Plus to another user?",
+    "Gifting is not currently on sale according to the public catalog. The existing website describes planned Mojo Plus gifts of one, three or twelve months, paid once without automatic renewal, with the recipient choosing when to start. Check availability in the app before making plans."
+  ],
+  [
+    "Account",
+    "How do I reset my password?",
+    "Use the original Meldiq password-recovery page linked from Support. Follow its instructions in your account email. Never send a password or recovery code to someone offering support."
+  ],
+  [
+    "Account",
+    "How can I secure my account?",
+    "Meldiq’s public feature list includes passkeys, authenticator-based two-step sign-in, recovery codes and signed-in session management. Set these up in the app and keep recovery material somewhere safe."
+  ],
+  [
+    "Account",
+    "How do I revoke a device session?",
+    "Open your account’s signed-in sessions in Meldiq and end the session you no longer recognize or use. This marketing website does not manage device access."
+  ],
+  [
+    "Account",
+    "How do I delete my account?",
+    "In the Meldiq app, go to Settings › Account. Cancel any subscription that still renews first. Read Account deletion & your data for what is removed and what may remain with other participants or in required records."
+  ]
+]
