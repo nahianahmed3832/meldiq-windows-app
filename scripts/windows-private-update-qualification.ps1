@@ -1,5 +1,6 @@
 param([Parameter(Mandatory=$true)][string]$CandidateRun)
 $ErrorActionPreference = 'Stop'
+if ($CandidateRun -notmatch '^[1-9][0-9]+$') { throw 'Invalid candidate run ID' }
 $working = Join-Path $env:RUNNER_TEMP "Meldiq-update-qualification-$CandidateRun"
 New-Item -ItemType Directory -Force $working | Out-Null
 $tag = "windows-private-candidate-$CandidateRun"
@@ -63,3 +64,9 @@ foreach ($scenario in @('bad-signature', 'bad-hash', 'upgrade')) {
 New-Item -ItemType Directory -Force test-results | Out-Null
 @{ status='passed'; candidateRun=$CandidateRun; sourceCommit=$metadata.sourceCommit; keyId=$metadata.keyId; platform='native Windows CI'; tests=$results } | ConvertTo-Json -Depth 10 | Set-Content -Encoding utf8 test-results/private-update-qualification.json
 Get-Content test-results/private-update-qualification.json -Raw | Write-Output
+$public = $metadata.artifacts | Where-Object role -eq 'production'
+gh release download $tag --pattern $public.filename --dir $working
+if ($LASTEXITCODE -ne 0) { throw 'Public candidate download failed' }
+$publicInstaller = Join-Path $working $public.filename
+if ((Get-FileHash $publicInstaller -Algorithm SHA256).Hash.ToLowerInvariant() -ne $public.sha256) { throw 'Public installer hash mismatch' }
+& "$PSScriptRoot/windows-install-smoke.ps1" -InstallerPath $publicInstaller -SourceCommit $metadata.sourceCommit -RequirePrivateUpdates

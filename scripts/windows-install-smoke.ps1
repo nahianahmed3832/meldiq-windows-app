@@ -1,5 +1,6 @@
+param([string]$InstallerPath, [string]$SourceCommit = $env:GITHUB_SHA, [switch]$RequirePrivateUpdates)
 $ErrorActionPreference = 'Stop'
-$installer = Get-ChildItem release -Filter '*UNSIGNED-DEV.exe' | Select-Object -First 1
+$installer = if ($InstallerPath) { Get-Item -LiteralPath $InstallerPath } else { Get-ChildItem release -Filter '*UNSIGNED-DEV.exe' | Select-Object -First 1 }
 if (-not $installer) { throw 'Development installer is missing' }
 $destination = Join-Path $env:RUNNER_TEMP 'Meldiq-install-smoke'
 $installedExecutable = Join-Path $destination 'Meldiq.exe'
@@ -15,6 +16,10 @@ try {
     if ($launched.HasExited) { throw 'Installed application exited before opening its window' }
   } until ($launched.MainWindowHandle -ne 0 -or (Get-Date) -ge $deadline)
   if ($launched.MainWindowHandle -eq 0) { throw 'Installed application did not open its native window' }
+  if ($RequirePrivateUpdates) {
+    node scripts/inspect-private-installed.mjs (Join-Path $destination 'resources/app.asar')
+    if ($LASTEXITCODE -ne 0) { throw 'Installed private updater configuration is invalid' }
+  }
 } finally {
   # Only the disposable installed test process is stopped; this is an ephemeral Windows CI runner.
   if ($launched -and -not $launched.HasExited) { Stop-Process -Id $launched.Id -Force }
@@ -27,12 +32,12 @@ $deadline = (Get-Date).AddSeconds(30)
 while ((Test-Path $installedExecutable) -and (Get-Date) -lt $deadline) { Start-Sleep -Milliseconds 500 }
 if (Test-Path $installedExecutable) { throw 'Uninstall left the application executable behind' }
 $report = @{
-  sourceCommit = $env:GITHUB_SHA
+  sourceCommit = $SourceCommit
   platform = 'Windows CI virtual machine'
   osVersion = [Environment]::OSVersion.VersionString
   installer = $installer.Name
   installerBytes = $installer.Length
-  signature = 'Unsigned development build; production signing is not configured'
+  signature = 'Unsigned Windows installer; publisher certificate is not configured'
   passed = @('actual silent NSIS installation', 'installed native application window launch', 'actual silent uninstall')
   pending = @('versioned upgrade', 'signed update', 'physical hardware benchmarks', 'complete authenticated Windows feature acceptance')
 }
