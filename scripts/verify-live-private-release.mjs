@@ -10,8 +10,11 @@ import { build } from 'esbuild';
 
 const base = 'https://meldiq.app', temporary = await fs.mkdtemp(path.join(os.tmpdir(), 'meldiq-live-release-'));
 try {
+  const option = process.argv.indexOf('--candidates');
+  const candidateFile = option < 0 ? 'docs/desktop/evidence/private-update-0.2.0/candidates.json' : process.argv[option + 1];
+  if (!candidateFile) throw new Error('Pass the reviewed candidate provenance JSON path');
   const key = JSON.parse(await fs.readFile('config/update-key.json', 'utf8'));
-  const candidate = JSON.parse(await fs.readFile('docs/desktop/evidence/private-update-0.2.0/candidates.json', 'utf8'));
+  const candidate = JSON.parse(await fs.readFile(candidateFile, 'utf8'));
   const artifact = candidate.artifacts.find(a => a.role === 'production');
   await build({ entryPoints: ['desktop/main/signed-release.ts'], outfile: path.join(temporary, 'verifier.cjs'), bundle: true, platform: 'node', format: 'cjs' });
   const { SignedReleaseTrust } = createRequire(import.meta.url)(path.join(temporary, 'verifier.cjs'));
