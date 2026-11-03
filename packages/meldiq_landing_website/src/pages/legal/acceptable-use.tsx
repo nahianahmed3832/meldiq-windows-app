@@ -48,8 +48,7 @@ export default function AcceptableUse() {
           title: "Reporting",
           body: (
             <p>
-              Report a message or person from the app. Reports go to the community&apos;s moderators. Because most content is end-to-end encrypted, we can only
-              see what a report shares with us. For anything else, contact <Detail value={op.supportEmail} />.
+              Report a message or person from the app. Reports go to the community&apos;s moderators. Include the details you want moderators to review. For anything else, contact <Detail value={op.supportEmail} />.
             </p>
           ),
         },

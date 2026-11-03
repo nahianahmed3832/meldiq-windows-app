@@ -43,8 +43,8 @@ export function MojoAvailability() {
       {shown.length
         ? shown.map((p) => `${p.name} ${formatMoney(p.amountMinor, p.currency)}/month`).join(" · ")
         : load.state === "ready"
-          ? "Mojo Plus · $3.99/month · Not on sale yet"
-          : "Mojo Plus · $3.99/month · Check current availability"}
+          ? "Meldiq Plus · $4.99/month · Not on sale yet"
+          : "Meldiq Plus · $4.99/month · Check current availability"}
     </span>
   );
 }
@@ -60,14 +60,14 @@ export function CatalogStatus() {
       <span>
         <strong>
           {available
-            ? "Mojo Plus · $3.99/month · Subscribe securely with PayPal."
+            ? "Meldiq Plus · $4.99/month · Subscribe securely with PayPal."
             : load.state === "ready"
-              ? "Free is available. Mojo Plus is not on sale yet."
+              ? "Free is available. Meldiq Plus is not on sale yet."
               : "Free is available. Check billing for paid-plan availability."}
         </strong>
         <br />
         {catalog.state === "ready" && catalog.mojo && catalog.mojo.enforced !== true
-          ? "Mojo Plus: $3.99/month with files up to 1,024 MB each. Updated benefits are a preview until available."
+          ? "Meldiq Plus: $4.99/month with files up to 1 GB each. Updated benefits are a preview until available."
           : "Prices and account benefits are confirmed before checkout."}
       </span>
     </div>

@@ -231,7 +231,7 @@ export const MessageItem = memo(function MessageItem(p: MessageItemProps) {
             <MapPin size={16} /> {m.rich.location.label ?? "Shared location"} · open map
           </a>
         ) : shownText ? (
-          <div className={`msg-text${isEmojiOnly(shownText) ? " big-emoji" : ""}`}>
+          <div dir="auto" className={`msg-text${isEmojiOnly(shownText) ? " big-emoji" : ""}`}>
             <RichText text={shownText} mentionNames={p.mentionNames} myUsername={p.myUsername} customEmoji={m.rich?.customEmoji} />
             {m.editedAt && <span className="msg-meta">(edited)</span>}
             {translation && <TranslationView text={translation} onHide={() => setTranslation(null)} />}

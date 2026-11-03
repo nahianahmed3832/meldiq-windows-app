@@ -1,27 +1,25 @@
-/**
- * Interface languages (2026-10-23), the same three as Meldiq Android (meldiq_android docs/LANGUAGES.md): English,
- * Simplified Chinese and Bengali. The person picks one on the sign-in screens or in Settings › Appearance, or follows the
- * browser. Screens not translated yet stay in English; the Chinese and Bengali text should be reviewed by native
- * speakers.
- */
-export const LANGUAGES = ["en", "zh-CN", "bn"] as const;
-export type Language = (typeof LANGUAGES)[number];
-export type LanguageChoice = "system" | Language;
-
-/** Each language in its own words, as pickers show them. */
-export const LANGUAGE_NAMES: Record<Language, string> = { en: "English", "zh-CN": "简体中文", bn: "বাংলা" };
-
-/** The browser's preferred languages mapped to one Meldiq has (any Chinese → Simplified, any Bengali → Bengali). */
+/** Bundled interface locale registry. Partial catalogs fall back to English and are audited before release. */
+export const LANGUAGES = ['en', 'bn', 'zh-CN', 'zh-TW', 'hi', 'ur', 'ar', 'id', 'ja', 'ko', 'vi', 'th', 'tr', 'es', 'fr', 'de', 'it', 'pt-BR', 'ru', 'nl', 'pl'] as const;
+export type Language = typeof LANGUAGES[number];
+export type LanguageChoice = 'system' | Language;
+export const LANGUAGE_NAMES: Record<Language, string> = {
+  en: 'English', bn: 'বাংলা', 'zh-CN': '简体中文', 'zh-TW': '繁體中文', hi: 'हिन्दी', ur: 'اردو', ar: 'العربية', id: 'Bahasa Indonesia', ja: '日本語', ko: '한국어', vi: 'Tiếng Việt', th: 'ไทย', tr: 'Türkçe', es: 'Español', fr: 'Français', de: 'Deutsch', it: 'Italiano', 'pt-BR': 'Português (Brasil)', ru: 'Русский', nl: 'Nederlands', pl: 'Polski',
+};
 export function browserLanguage(preferred: readonly string[]): Language {
   for (const tag of preferred) {
-    const base = tag.toLowerCase().split("-")[0];
-    if (base === "zh") return "zh-CN";
-    if (base === "bn") return "bn";
-    if (base === "en") return "en";
+    const normalized = tag.toLowerCase().replaceAll('_', '-');
+    if (/^zh(?:-|$)/.test(normalized)) return /(?:^|-)(?:hant|tw|hk|mo)(?:-|$)/.test(normalized) ? 'zh-TW' : 'zh-CN';
+    if (/^pt(?:-|$)/.test(normalized)) return 'pt-BR';
+    const exact = LANGUAGES.find(l => l.toLowerCase() === normalized);
+    if (exact) return exact;
+    const base = LANGUAGES.find(l => l.toLowerCase() === normalized.split('-')[0]);
+    if (base) return base;
   }
-  return "en";
+  return 'en';
 }
-
-export function resolveLanguage(choice: LanguageChoice, preferred: readonly string[] = typeof navigator !== "undefined" ? navigator.languages : []): Language {
-  return choice === "system" ? browserLanguage(preferred) : choice;
+let systemLanguages: readonly string[] | null = null;
+export function setSystemLanguages(preferred: readonly string[]) { systemLanguages = [...preferred]; }
+export function resolveLanguage(choice: LanguageChoice, preferred?: readonly string[]): Language {
+  return choice === 'system' ? browserLanguage(preferred ?? systemLanguages ?? (typeof navigator !== 'undefined' ? navigator.languages : [])) : LANGUAGES.includes(choice) ? choice : 'en';
 }
+export const languageDirection = (language: Language): 'ltr' | 'rtl' => language === 'ar' || language === 'ur' ? 'rtl' : 'ltr';

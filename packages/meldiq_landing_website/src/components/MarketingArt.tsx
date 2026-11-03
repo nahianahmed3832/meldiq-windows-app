@@ -266,7 +266,7 @@ export function PrivacyStory() {
             {"should stay "}
             <em>{"private."}</em>
           </h2>
-          <p>{"Messages and attachments are encrypted on your devices before they’re sent. Your private keys stay with you."}</p>
+          <p>{"Files are encrypted before upload. Meldiq checks conversation access before serving an attachment."}</p>
           <div className={"privacy-points"}>
             <span>
               <svg

@@ -33,7 +33,7 @@ export function PreviewPlanCard({ planKey, load, mojo }: { planKey: string; load
         </>
       ) : (
         <ul className="checklist">
-          <li>Files up to 1,024 MB each</li>
+          <li>Files up to 1 GB each</li>
           <li>One subscription across supported devices</li>
         </ul>
       )}

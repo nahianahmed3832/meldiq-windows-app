@@ -101,6 +101,11 @@ function PlusCheckoutPage({ initial }: { initial: ReturnType<typeof readCheckout
     };
   }, [engine, userId, verify]);
 
+  useEffect(() => window.meldiqDesktop?.onCheckout(result => {
+    setMessage(result.kind === 'closed' || result.canceled ? 'PayPal checkout closed. Checking your saved purchase with Meldiq before any retry.' : 'Returned from PayPal. Verifying your saved purchase with Meldiq.');
+    void verify(result.kind === 'returned' && !result.canceled);
+  }), [verify]);
+
   const create = async () => {
     setError(null);
     setMessage(null);

@@ -1,5 +1,6 @@
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
+execFileSync(process.execPath, ['scripts/check-localization.mjs', '--strict'], { stdio: 'inherit' });
 const required = ['MELDIQ_SIGNING_PUBLISHER', 'MELDIQ_RELEASE_APPROVED'];
 for (const key of required) if (!process.env[key]) throw new Error(`Missing required release setting: ${key}`);
 if (process.env.MELDIQ_RELEASE_APPROVED !== '1') throw new Error('Release acceptance has not been approved');
@@ -12,6 +13,6 @@ const channel = process.env.BUILD_CHANNEL ?? 'stable';
 if (channel === 'stable' && version.includes('-')) throw new Error('Stable builds require a stable version number');
 if (!fs.existsSync('docs/desktop/RELEASE_ACCEPTANCE.json')) throw new Error('Missing signed-off release acceptance evidence');
 const acceptance = JSON.parse(fs.readFileSync('docs/desktop/RELEASE_ACCEPTANCE.json', 'utf8'));
-for (const key of ['featureParity', 'windowsInstall', 'windowsUpgrade', 'signedUpdate', 'hardwareBenchmarks', 'backendCompatibility', 'securityReview']) if (acceptance[key] !== true) throw new Error(`Release acceptance pending: ${key}`);
+for (const key of ['featureParity', 'windowsInstall', 'windowsUpgrade', 'signedUpdate', 'hardwareBenchmarks', 'backendCompatibility', 'securityReview', 'browserAuthReturn', 'discordImport', 'paypalLive', 'paypalSignedWebhook', 'paypalFailureRecovery', 'localization', 'windows10', 'windows11', 'brandingUpgrade', 'standardUser']) if (acceptance[key] !== true) throw new Error(`Release acceptance pending: ${key}`);
 if (acceptance.commit !== execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim()) throw new Error('Release acceptance must reference this source commit');
 console.log('Release prerequisites validated. Packaging still verifies actual signatures.');

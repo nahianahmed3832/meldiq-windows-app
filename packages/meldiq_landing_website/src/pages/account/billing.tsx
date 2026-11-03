@@ -19,7 +19,7 @@ const CONFIRM_POLL_MS = 6_000;
 type Confirm = "idle" | "waiting" | "confirmed" | "scheduled" | "slow" | "canceled";
 
 /**
- * The signed-in account's billing page (Mojo Plus: Mojo Plus, personal plans). Everything shown comes from the
+ * The signed-in account's billing page (Meldiq Plus: Meldiq Plus, personal plans). Everything shown comes from the
  * server; coming back from checkout with ?checkout=success grants nothing by itself: the page asks the server to read
  * the subscription from the provider and waits until the server says the plan applies.
  */
@@ -203,11 +203,11 @@ export default function Billing() {
       {billingNotDeployed(billing.error) ? (
         <section className="card">
           <div className="row">
-            <h2 style={{ fontSize: "1.3rem", margin: 0 }}>Mojo Plus</h2>
+            <h2 style={{ fontSize: "1.3rem", margin: 0 }}>Meldiq Plus</h2>
             <span className="badge">Free</span>
           </div>
           <p className="muted" style={{ marginTop: 10, marginBottom: 0 }}>
-            Your account is on the free tier. Mojo Plus isn&apos;t on sale yet: <Link href="/pricing">see the prices</Link>.
+            Your account is on the free tier. Meldiq Plus isn&apos;t on sale yet: <Link href="/pricing">see the prices</Link>.
           </p>
         </section>
       ) : billing.error ? (
@@ -221,7 +221,7 @@ export default function Billing() {
         <>
           <section className="card">
             <div className="row">
-              <h2 style={{ fontSize: "1.3rem", margin: 0 }}>Mojo Plus</h2>
+              <h2 style={{ fontSize: "1.3rem", margin: 0 }}>Meldiq Plus</h2>
               {sub ? (
                 <span className={`badge ${sub.standing === "entitled" ? "success" : sub.standing === "grace" ? "warning" : "danger"}`}>
                   {confirm === "scheduled" ? "Approved · billing scheduled" : statusLabel(sub.status)}
@@ -320,14 +320,14 @@ export default function Billing() {
 
           {!sub ? (
             <section className="stack">
-              <h2 style={{ fontSize: "1.3rem", margin: 0 }}>Choose Mojo Plus</h2>
+              <h2 style={{ fontSize: "1.3rem", margin: 0 }}>Choose Meldiq Plus</h2>
               {!b.available ? (
                 <div className="empty">
-                  <p>Mojo Plus isn&apos;t on sale yet. Everything Meldiq does today is free.</p>
+                  <p>Meldiq Plus isn&apos;t on sale yet. Everything Meldiq does today is free.</p>
                 </div>
               ) : offers.length === 0 ? (
                 <div className="empty">
-                  <p>Mojo Plus isn&apos;t on sale yet.</p>
+                  <p>Meldiq Plus isn&apos;t on sale yet.</p>
                 </div>
               ) : (
                 <div className="plan-grid">

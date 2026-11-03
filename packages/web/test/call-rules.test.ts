@@ -296,3 +296,50 @@ describe("preview mirroring (android round 7 CallMediaPolicy.mirrorPreview)", ()
     expect(mirrorPreview(false, "user")).toBe(false); // other people are never mirrored
   });
 });
+
+describe('muted calls keep transport and verified key state separate', () => {
+  it('retains proven current remote media when it is muted, but invalidates a removed/replaced track', () => {
+    const tracker = new MediaSecurityTracker();
+    const key = MediaSecurityTracker.key('peer', 'mic');
+    tracker.trackAdded(key, 'peer', true, false);
+    tracker.audit(audit('peer', 'mic'));
+    expect(tracker.security()).toBe('encrypted');
+    tracker.trackMuted(key, true);
+    expect(tracker.security()).toBe('encrypted');
+    tracker.trackMuted(key, false);
+    expect(tracker.security()).toBe('encrypted');
+    tracker.trackRemoved(key);
+    tracker.trackAdded(key, 'peer', true, true);
+    expect(tracker.security()).toBe('waiting');
+    tracker.trackMuted(key, false);
+    expect(tracker.security()).toBe('verifying');
+    tracker.audit(audit('peer', 'mic', { verified: 0, frames: 50 }));
+    tracker.trackMuted(key, true);
+    expect(tracker.security()).toBe('problem');
+  });
+  it('does not treat muted tracks or DTX silence as a transport reconnect, while video still detects stalled bytes', () => {
+    const monitor = new MediaFlowMonitor();
+    expect(monitor.sample(100, 'intermittent')).toBe('waiting');
+    expect(monitor.sample(200, 'intermittent')).toBe('flowing');
+    for (let n = 0; n < 10; n++) expect(monitor.sample(200, 'paused')).toBe('quiet');
+    expect(monitor.sample(200, 'intermittent')).toBe('waiting');
+    expect(monitor.sample(300, 'intermittent')).toBe('flowing');
+    monitor.sample(300, 'intermittent');
+    expect(monitor.sample(300, 'intermittent')).toBe('quiet');
+    expect(monitor.sample(400, 'continuous')).toBe('flowing');
+    monitor.sample(400, 'continuous');
+    expect(monitor.sample(400, 'continuous')).toBe('stalled');
+  });
+});
+
+it('empty DTX frames neither prove a new key nor mark a verified call as failing', () => {
+  const tracker = new MediaSecurityTracker();
+  tracker.trackAdded(MediaSecurityTracker.key('peer', 'mic'), 'peer', true, false);
+  tracker.audit(audit('peer', 'mic', { frames: 50, verified: 0, empty: 50 }));
+  expect(tracker.security()).toBe('verifying');
+  tracker.audit(audit('peer', 'mic'));
+  tracker.audit(audit('peer', 'mic', { frames: 50, verified: 0, empty: 50 }));
+  expect(tracker.security()).toBe('encrypted');
+  tracker.audit(audit('peer', 'mic', { frames: 50, verified: 0, empty: 47 }));
+  expect(tracker.security()).toBe('problem');
+});

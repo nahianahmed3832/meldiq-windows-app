@@ -90,15 +90,15 @@ describe("plans", () => {
   it("tells someone in a free period that the first payment waits for its end", () => {
     const end = Date.UTC(2026, 10, 12);
     const d = disclosures(offer({ trialDays: 7 }), true, end).join(" ");
-    expect(d).toContain("free Mojo Plus period until November 12, 2026");
+    expect(d).toContain("free Meldiq Plus period until November 12, 2026");
     expect(d).not.toContain("7-day free trial");
   });
 
   it("describes trials and invite bonuses", () => {
-    const base = { quotaPlanId: null, subscription: null, standing: "entitled" as const, renews: false, plan: { key: "plus", name: "Mojo Plus" } };
+    const base = { quotaPlanId: null, subscription: null, standing: "entitled" as const, renews: false, plan: { key: "plus", name: "Meldiq Plus" } };
     const at = Date.UTC(2026, 10, 12);
     expect(describeGrant({ ...base, accessUntil: at, trial: { source: "signup", endsAt: at } })).toBe(
-      "Your free Mojo Plus trial runs until November 12, 2026.",
+      "Your free Meldiq Plus trial runs until November 12, 2026.",
     );
     expect(describeGrant({ ...base, accessUntil: at, trial: { source: "invite", endsAt: at } })).toMatch(/joined through an invite/);
     expect(describeGrant({ ...base, accessUntil: at, trial: { source: "gift", endsAt: at } })).toMatch(/a gift from a friend/);

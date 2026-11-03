@@ -7,7 +7,7 @@ export default function Terms() {
   return (
     <LegalPage
       title="Terms of Service"
-      description="The terms for using Meldiq: your account, your content, acceptable use, Mojo Plus, availability, and how these terms change."
+      description="The terms for using Meldiq: your account, your content, acceptable use, Meldiq Plus, availability, and how these terms change."
       intro={
         <p>
           These terms are an agreement between you and <Detail value={op.legalName} /> (&ldquo;Meldiq&rdquo;, &ldquo;we&rdquo;), registered at{" "}
@@ -37,8 +37,7 @@ export default function Terms() {
           title: "Your content",
           body: (
             <p>
-              What you send stays yours. You give Meldiq only the permission it needs to store, relay and deliver it to the people you send it to. Most content
-              is end-to-end encrypted, so we can&apos;t read it. You&apos;re responsible for what you share and must have the right to share it.
+              What you send stays yours. You give Meldiq only the permission it needs to store, relay and deliver it to the people you send it to. You&apos;re responsible for what you share and must have the right to share it.
             </p>
           ),
         },
@@ -55,10 +54,10 @@ export default function Terms() {
         },
         {
           id: "plans",
-          title: "Free tier and Mojo Plus",
+          title: "Free tier and Meldiq Plus",
           body: (
             <p>
-              Meldiq has a free tier. Mojo Plus is an optional subscription, described, with its price and renewal terms, before you pay. Buying, renewing,
+              Meldiq has a free tier. Meldiq Plus is an optional subscription, described, with its price and renewal terms, before you pay. Buying, renewing,
               cancelling and refunds are covered by the <Link href="/legal/billing">subscription terms</Link>, which are part of these terms. Payments for new
               website subscriptions are processed by PayPal.
             </p>

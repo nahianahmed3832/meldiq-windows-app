@@ -94,6 +94,10 @@ export function AddonCheckoutPage({ draft, initial }: { draft: Addon; initial: R
     },
     [engine, remember, validate],
   );
+  useEffect(() => window.meldiqDesktop?.onCheckout(result => {
+    if (result.kind === 'closed' || result.canceled) setError('Checkout closed. Check the saved purchase status before trying again.');
+    void check(result.kind === 'returned' && !result.canceled);
+  }), [check]);
   useEffect(() => {
     if (!awaiting || purchase?.confirmed) return;
     let stopped = false;

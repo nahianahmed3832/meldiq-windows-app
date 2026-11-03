@@ -18,11 +18,11 @@ export default function Privacy() {
       sections={[
         {
           id: "encrypted",
-          title: "What we can't see",
+          title: "Messages, files and calls",
           body: (
             <p>
-              Message text, attachments, reactions, edits, read receipts and call media (with call encryption on, the default) are end-to-end encrypted on your
-              devices. Our servers store and relay only the encrypted form and can&apos;t read it. Your private keys never leave your devices.
+              Meldiq stores messages to deliver conversation history. Files are encrypted before upload. Current messages can include attachment keys that the
+              Meldiq server can read. Call media is end-to-end encrypted when call encryption is on. Check the call indicator in the app.
             </p>
           ),
         },
@@ -76,9 +76,9 @@ export default function Privacy() {
           body: (
             <ul>
               <li>Hostinger: the server that runs Meldiq&apos;s API.</li>
-              <li>MongoDB Atlas: part of Meldiq&apos;s database.</li>
-              <li>Amazon Web Services: encrypted file storage (Singapore region) and account emails.</li>
-              <li>Cloudflare: DNS for meldiq.app.</li>
+              <li>Supabase: the PostgreSQL database used by Meldiq. MongoDB Atlas holds the prior database during recovery retention.</li>
+              <li>Amazon Web Services: encrypted file storage. Frankfurt, Germany, is the primary region for file storage. We retain historical copies in Singapore for recovery. New uploads, including from older Windows apps, are stored in Frankfurt.</li>
+              <li>Cloudflare: DNS, website delivery and authorized file delivery through its global network.</li>
               <li>PayPal: payment authorization, subscriptions, receipts and payment verification for new website purchases.</li>
               <li>Stripe: billing records and the customer portal for earlier Stripe subscriptions, where applicable.</li>
               <li>
@@ -94,9 +94,9 @@ export default function Privacy() {
           body: (
             <ul>
               <li>Encrypted messages waiting for a device: until delivered, at most 7 days.</li>
-              <li>Encrypted file uploads: 7 days, or up to a year after you last asked to keep one in your history.</li>
+              <li>Completed file uploads are kept until you request deletion. When a disappearing-message timer ends, the message disappears but its file stays stored. Files you have not sent are accessible only to you.</li>
               <li>Encrypted history you keep: until you delete it or your account.</li>
-              <li>Call records: 90 days. Audit logs: 365 days.</li>
+              <li>The current retention settings for call records and audit logs are 36,500 days.</li>
               <li>
                 Billing records: as long as tax and accounting law requires: <Detail value={op.billingRecordRetention} />.
               </li>

@@ -3,7 +3,6 @@
   "apiOrigin": "https://web.meldiq.app",
   "websocketUrl": "wss://web.meldiq.app/v1/ws",
   "connectOrigins": [
-    "https://griipbuddy-orbit-media-sg.s3.ap-southeast-1.amazonaws.com",
     "https://rtc.meldiq.app",
     "wss://rtc.meldiq.app"
   ],

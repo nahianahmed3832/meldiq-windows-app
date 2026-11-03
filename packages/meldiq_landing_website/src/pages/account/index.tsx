@@ -26,7 +26,7 @@ export default function AccountHome() {
         <div className="callout success" role="status">
           <p>
             Welcome to Meldiq! Your account is ready
-            {router.query.invited ? `, and your invite gave you and your friend ${trial ? dayCount(trial.referralDays) : "free days"} of Mojo Plus` : ""}. Open
+            {router.query.invited ? `, and your invite gave you and your friend ${trial ? dayCount(trial.referralDays) : "free days"} of Meldiq Plus` : ""}. Open
             the app to start a community or join one.
           </p>
         </div>
@@ -53,11 +53,11 @@ export default function AccountHome() {
       {billingNotDeployed(ent.error) ? (
         <section className="card">
           <div className="row">
-            <h2 style={{ fontSize: "1.3rem", margin: 0 }}>Mojo Plus</h2>
+            <h2 style={{ fontSize: "1.3rem", margin: 0 }}>Meldiq Plus</h2>
             <span className="badge">Free</span>
           </div>
           <p className="muted" style={{ marginTop: 10, marginBottom: 0 }}>
-            Your account is on the free tier. Mojo Plus isn&apos;t on sale yet: <Link href="/pricing">see the prices</Link>.
+            Your account is on the free tier. Meldiq Plus isn&apos;t on sale yet: <Link href="/pricing">see the prices</Link>.
           </p>
         </section>
       ) : ent.error ? (
@@ -80,7 +80,7 @@ export default function AccountHome() {
           {free ? <DaysLeft endsAt={free.endsAt} totalDays={freeLength} /> : null}
           {free ? (
             <p style={{ marginTop: 0 }}>
-              Subscribe now and your first payment waits until these free days end. <Link href="/pricing">See Mojo Plus</Link>
+              Subscribe now and your first payment waits until these free days end. <Link href="/pricing">See Meldiq Plus</Link>
             </p>
           ) : null}
           <p style={{ marginBottom: 0 }}>

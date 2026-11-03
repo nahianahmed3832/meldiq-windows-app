@@ -10,7 +10,7 @@ import type { MediaSecurity } from "./types";
  * or missing key) or one would have crossed unencrypted. LiveKit's own encryption errors for a participant also mark
  * their tracks failing until they decrypt again.
  *
- * `encrypted` only when every live track (published or subscribed, not muted) is proven and at least one is remote;
+ * `encrypted` only when every live track (published or subscribed, not muted) is proven and at least one current remote track has been proven (including while muted);
  * `problem` when any current track is failing; otherwise `verifying`. Removed tracks are forgotten and their late
  * reports ignored.
  */
@@ -64,7 +64,7 @@ export class MediaSecurityTracker {
     const key = MediaSecurityTracker.key(a.participantIdentity, a.trackId);
     if (this.removed.has(key)) return false;
     if (a.verified > 0 && a.unencrypted === 0) this.states.set(key, "proven");
-    else if (a.unencrypted > 0 || a.frames - a.injected >= FAILING_FRAMES) this.states.set(key, "failing");
+    else if (a.unencrypted > 0 || a.frames - a.injected - (a.empty ?? 0) >= FAILING_FRAMES) this.states.set(key, "failing");
     return true;
   }
 
@@ -94,7 +94,11 @@ export class MediaSecurityTracker {
     const current = [...this.tracks.entries()];
     if (current.some(([k]) => this.states.get(k) === "failing")) return "problem";
     const live = current.filter(([, t]) => !t.muted);
-    const proven = live.length > 0 && live.some(([, t]) => t.remote) && live.every(([k]) => this.states.get(k) === "proven");
-    return proven ? "encrypted" : "verifying";
+    // Muting does not replace the track, key, or cryptor. Keep its authenticated evidence until
+    // unsubscription/removal/error invalidates it; silence cannot prove a new remote track.
+    const remoteProof = current.some(([key, track]) => track.remote && this.states.get(key) === 'proven');
+    if (remoteProof && live.every(([key]) => this.states.get(key) === 'proven')) return 'encrypted';
+    if (current.some(([, track]) => track.remote) && !live.some(([, track]) => track.remote)) return 'waiting';
+    return 'verifying';
   }
 }

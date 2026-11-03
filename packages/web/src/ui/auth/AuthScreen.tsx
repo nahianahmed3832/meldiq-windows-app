@@ -55,16 +55,28 @@ export function AuthScreen(props: {
   const base = props.base ?? apiBase();
   const { savedAccounts, onUseSavedAccount } = props;
   const [step, setStep] = useState<Step>({ k: "signIn" });
+  const [serverAttempt, retryServer] = useState(0);
+  const [serverFailed, setServerFailed] = useState(false);
   const [server, setServer] = useState<ServerInfo | null>(null);
   const t = useT();
   const ctx: FormContext = useMemo(() => ({ accounts: AccountApi.anonymous(base), deviceName: browserDeviceName() }), [base]);
 
   useEffect(() => {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 10_000);
+    let live = true;
     new ApiClient(base)
-      .json("GET", "/v1/server-info", zServerInfo, { auth: false })
-      .then(setServer)
-      .catch(() => setServer(null));
-  }, [base]);
+      .json("GET", "/v1/server-info", zServerInfo, { auth: false, signal: controller.signal })
+      .then(info => { if (live) { setServer(info); setServerFailed(false); } })
+      .catch(() => { if (live) setServerFailed(true); })
+      .finally(() => clearTimeout(timeout));
+    return () => { live = false; clearTimeout(timeout); controller.abort(); };
+  }, [base, serverAttempt]);
+  useEffect(() => {
+    const online = () => { if (serverFailed) retryServer(attempt => attempt + 1); };
+    window.addEventListener('online', online);
+    return () => window.removeEventListener('online', online);
+  }, [serverFailed]);
 
   /**
    * Signed in: set up encryption on this browser. [password] stays in memory for the key backup (unlocking it, or
@@ -191,5 +203,5 @@ export function AuthScreen(props: {
       break;
   }
 
-  return <AuthFrame>{body}</AuthFrame>;
+  return <AuthFrame>{serverFailed && step.k === 'signIn' && <div className="banner danger" role="alert"><p>{t('signin_methods_unavailable')}</p><button className="btn btn-secondary" onClick={() => retryServer(attempt => attempt + 1)}>{t('collection_refresh')}</button></div>}{body}</AuthFrame>;
 }

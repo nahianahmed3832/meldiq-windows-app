@@ -308,7 +308,7 @@ http
         confirmed: !!me.plan,
         approved: !me.plan,
         currency: "USD",
-        amountMinor: 399,
+        amountMinor: 499,
         interval: "month",
         expiresAt: Date.now() + 100000,
       });

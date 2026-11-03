@@ -2,12 +2,11 @@ import type { MojoCatalog, PlanPerks, SparkLevel } from "../lib/api";
 import { formatMoney } from "../lib/money";
 
 /**
- * Mojo Plus's perks and Meldiq Spark, from the API's Mojo catalog (GET /v2/mojo/catalog). The marketing preview applies the approved Plus upload limit; other values come from the catalog.
+ * Meldiq Plus's perks and Meldiq Spark, from the API's Mojo catalog (GET /v2/mojo/catalog). The marketing preview applies the approved Plus upload limit; other values come from the catalog.
  */
 
-/** Decimal units, as the catalog counts them: 1 MB = 1,000,000 bytes, 1,024 MB = 1,000,000,000. */
+/** The API reports decimal byte counts. */
 export function decimalBytes(n: number): string {
-  if (n === 1_024_000_000) return "1,024 MB";
   if (n >= 1_000_000_000) return `${+(n / 1_000_000_000).toFixed(1)} GB`;
   return `${Math.round(n / 1_000_000)} MB`;
 }
@@ -46,7 +45,7 @@ export function CompareTable({ mojo }: { mojo: MojoCatalog }) {
   return (
     <div className="table-scroll" role="region" aria-label="Plan comparison, horizontally scrollable" tabIndex={0}>
       <table className="compare">
-        <caption>{mojo.enforced === true ? "Current account entitlements" : "Free and Mojo Plus — updated plan preview, not active yet"}</caption>
+        <caption>{mojo.enforced === true ? "Current account entitlements" : "Free and Meldiq Plus — updated plan preview, not active yet"}</caption>
         <thead>
           <tr>
             <th scope="col">
@@ -111,7 +110,7 @@ export function SparkLevels({ mojo }: { mojo: MojoCatalog }) {
         ))}
       </div>
       <p className="muted" style={{ margin: 0 }}>
-        Spark is separate community boosting. Mojo Plus {mojo.enforced === true ? "includes" : "is configured to include"}{" "}
+        Spark is separate community boosting. Meldiq Plus {mojo.enforced === true ? "includes" : "is configured to include"}{" "}
         {mojo.plans.find((p) => p.key === "plus")?.sparks ?? 0} Sparks.{" "}
         {price
           ? `Extra Sparks are ${formatMoney(price.amountMinor, price.currency)} each${sparkPaymentTerms(mojo.spark.interval)}, on any plan.`

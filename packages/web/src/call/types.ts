@@ -7,13 +7,13 @@ export type CallPhase = "idle" | "incoming" | "outgoing" | "connecting" | "conne
 
 /**
  * What the encryption badge may claim (android MediaSecurity, rule D-17): `encrypted` only when every live track has
- * been encrypted or decrypted with the call's key, including at least one remote track; `problem` when any current
- * track fails; otherwise `verifying`.
+ * been encrypted or decrypted with the call's key, including current remote frame evidence retained while muted; `problem` when any current
+ * track fails; `waiting` when remote media is intentionally muted without prior proof; otherwise `verifying`.
  */
-export type MediaSecurity = "verifying" | "encrypted" | "problem";
+export type MediaSecurity = "verifying" | "waiting" | "encrypted" | "problem";
 
 /** Whether remote media actually arrives (android MediaFlow), from inbound byte counters. */
-export type MediaFlow = "none" | "waiting" | "flowing" | "stalled";
+export type MediaFlow = "none" | "waiting" | "flowing" | "quiet" | "stalled";
 
 /** Why a microphone or camera isn't in use. */
 export type DeviceIssue = "denied" | "missing" | "busy" | "failed";

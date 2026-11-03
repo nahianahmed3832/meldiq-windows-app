@@ -172,7 +172,7 @@ export function MojoPage() {
         <div className="mojo-hero-plan" aria-label="Your plan">
           <span className="faint">You're on</span>
           <strong>
-            {me.perks.name} {me.badge.kind && <MojoBadgeMark badge={me.badge.kind} check={me.badge.check} />}
+            {me.plan === "go" ? "Legacy membership" : me.perks.name} {me.badge.kind && <MojoBadgeMark badge={me.badge.kind} check={me.badge.check} />}
           </strong>
           <small>
             {paid

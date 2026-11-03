@@ -1,6 +1,6 @@
 /**
  * Example answers of the Meldiq API used by the mock API and checked against the server's contracts
- * (test/contracts.test.ts). They follow the owner's decision of 2026-11-01: Meldiq Mojo, one personal plan: Mojo Plus at $3.99 a month with 1 GB uploads. Free periods are server grants (14-day trial, 30 days through an invite link, up to 90 bonus days a year), not Stripe trials. What is sold comes only from the published catalog.
+ * (test/contracts.test.ts). They follow the owner's decision of 2026-11-01: Meldiq Mojo, one personal plan: Meldiq Plus at $4.99 a month with 1 GB uploads. Free periods are server grants (14-day trial, 30 days through an invite link, up to 90 bonus days a year), not Stripe trials. What is sold comes only from the published catalog.
  */
 export const FIXTURE_PLANS = {
   available: true,
@@ -8,12 +8,12 @@ export const FIXTURE_PLANS = {
   plans: [
     {
       key: "plus",
-      name: "Mojo Plus",
+      name: "Meldiq Plus",
       description: "",
       audience: "personal",
       interval: "month",
       currency: "USD",
-      amountMinor: 399,
+      amountMinor: 499,
       trialDays: 0,
       graceDays: 0,
       limits: {},
@@ -60,10 +60,10 @@ export const FIXTURE_MOJO = {
     },
     {
       key: "plus",
-      name: "Mojo Plus",
-      listPriceMinor: 399,
+      name: "Meldiq Plus",
+      listPriceMinor: 499,
       messageChars: 8000,
-      uploadBytes: 1024000000,
+      uploadBytes: 1000000000,
       screen: ["1440p60"],
       sparks: 2,
       badge: "plus",
@@ -89,7 +89,7 @@ export const FIXTURE_MOJO = {
       { level: 0, sparks: 0, emojiSlots: 50, stickerSlots: 20, uploadBytes: null, voiceKbps: 48, screen: [] },
       { level: 1, sparks: 2, emojiSlots: 100, stickerSlots: 20, uploadBytes: 50000000, voiceKbps: 128, screen: ["720p30"] },
       { level: 2, sparks: 5, emojiSlots: 200, stickerSlots: 20, uploadBytes: 200000000, voiceKbps: 256, screen: ["1080p60"] },
-      { level: 3, sparks: 8, emojiSlots: 500, stickerSlots: 20, uploadBytes: 1024000000, voiceKbps: 384, screen: ["1080p60", "1440p30"] },
+      { level: 3, sparks: 8, emojiSlots: 500, stickerSlots: 20, uploadBytes: 1000000000, voiceKbps: 384, screen: ["1080p60", "1440p30"] },
     ],
   },
   gifts: { months: [1, 3, 12], noteMax: 280 },
@@ -97,7 +97,7 @@ export const FIXTURE_MOJO = {
   onSale: {
     mode: "test",
     go: null,
-    plus: { currency: "USD", amountMinor: 399 },
+    plus: { currency: "USD", amountMinor: 499 },
     spark: { currency: "USD", amountMinor: 99 },
     botsPlus: { currency: "USD", amountMinor: 399 },
     gifts: false,

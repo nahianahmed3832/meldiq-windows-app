@@ -31,10 +31,10 @@ export function InviteCard({ session }: { session: StoredSession | null }) {
   return (
     <section className="card" aria-labelledby="invite-heading">
       <h2 id="invite-heading" style={{ fontSize: "1.3rem" }}>
-        Invite friends, get Mojo Plus free
+        Invite friends, get Meldiq Plus free
       </h2>
       <p className="muted">
-        When a friend creates their Meldiq account through your link, you both get {r.daysEach} days of Mojo Plus free. You can earn up to {r.yearlyCapDays}{" "}
+        When a friend creates their Meldiq account through your link, you both get {r.daysEach} days of Meldiq Plus free. You can earn up to {r.yearlyCapDays}{" "}
         days a year this way.
       </p>
       <div className="row" style={{ justifyContent: "flex-start" }}>

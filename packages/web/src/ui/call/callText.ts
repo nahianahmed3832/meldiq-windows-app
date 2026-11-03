@@ -63,5 +63,6 @@ export function duration(ms: number): string {
 export const SECURITY_LABEL = {
   encrypted: "Encrypted call",
   verifying: "Checking encryption…",
+  waiting: "Waiting for encrypted media",
   problem: "Encryption problem",
 } as const;

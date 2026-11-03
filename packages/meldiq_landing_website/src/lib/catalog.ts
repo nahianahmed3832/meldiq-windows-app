@@ -48,10 +48,10 @@ export function dayCount(n: number): string {
   return `${n} ${n === 1 ? "day" : "days"}`;
 }
 
-/** The name of the plan free days give ("Mojo Plus"), from the price list, else the announced plans, else its key. */
+/** The name of the plan free days give ("Meldiq Plus"), from the price list, else the announced plans, else its key. */
 export function trialPlanName(load: CatalogLoad, announced: readonly { key: string; name: string }[]): string {
   const key = trialOf(load)?.planKey;
-  if (!key) return "Mojo Plus";
+  if (!key) return "Meldiq Plus";
   const sold = load.state === "ready" ? load.catalog.plans.find((p) => p.key === key) : undefined;
   return sold?.name ?? announced.find((p) => p.key === key)?.name ?? key;
 }
@@ -60,7 +60,7 @@ export type MojoLoad = { state: "loading" } | { state: "ready"; mojo: MojoCatalo
 
 let mojoPending: Promise<MojoCatalog | null> | null = null;
 
-/** Mojo Plus's perks and Spark levels (GET /v2/mojo/catalog), once per page load. */
+/** Meldiq Plus's perks and Spark levels (GET /v2/mojo/catalog), once per page load. */
 export function useMojoCatalog(): MojoLoad {
   const [load, setLoad] = useState<MojoLoad>({ state: "loading" });
   useEffect(() => {

@@ -4,6 +4,9 @@
  * রিকভারি কী for the recovery key, 登录 / সাইন ইন for signing in.
  */
 export const STRINGS = {
+  desktop_local_test: ["Isolated local test", "隔离本地测试", "আলাদা স্থানীয় পরীক্ষা"],
+  signin_methods_unavailable: ["Could not check all sign-in methods. Refresh options to try again.", "无法检查所有登录方式。请刷新选项后重试。", "সব সাইন-ইন পদ্ধতি যাচাই করা যায়নি। আবার চেষ্টা করতে অপশন রিফ্রেশ করুন।"],
+  call_security_waiting: ["Waiting for encrypted media", "等待加密媒体", "এনক্রিপ্টেড মিডিয়ার অপেক্ষায়"],
   // Conversation history pages share the same controls on desktop and phones.
   collection_pages: ["Collection pages", "消息分页", "বার্তার পৃষ্ঠা"],
   collection_previous: ["Previous page", "上一页", "পূর্ববর্তী পৃষ্ঠা"],

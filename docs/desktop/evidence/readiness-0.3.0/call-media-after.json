@@ -1,0 +1,199 @@
+{
+  "recordedAt": "2026-11-03T15:52:24.466Z",
+  "platform": "darwin",
+  "scope": "packaged Electron renderer/worker, real loopback LiveKit and native encrypted audio; no production connection, user media, provider credentials or account changes",
+  "active": {
+    "security": "encrypted",
+    "flow": "flowing",
+    "errors": [],
+    "samples": [
+      {
+        "flow": "waiting",
+        "security": "encrypted"
+      },
+      {
+        "flow": "flowing",
+        "security": "encrypted"
+      }
+    ],
+    "tracks": [
+      {
+        "key": "native-peer|4d5e3d0e-f2ae-4a68-b5c0-59c28aa173e1",
+        "remote": true,
+        "muted": false,
+        "state": "proven"
+      }
+    ],
+    "participants": [
+      {
+        "micOn": true,
+        "isLocal": false
+      },
+      {
+        "micOn": false,
+        "isLocal": true
+      }
+    ]
+  },
+  "muted": {
+    "security": "encrypted",
+    "flow": "quiet",
+    "errors": [],
+    "samples": [
+      {
+        "flow": "waiting",
+        "security": "encrypted"
+      },
+      {
+        "flow": "flowing",
+        "security": "encrypted"
+      },
+      {
+        "flow": "quiet",
+        "security": "encrypted"
+      },
+      {
+        "flow": "quiet",
+        "security": "encrypted"
+      },
+      {
+        "flow": "quiet",
+        "security": "encrypted"
+      }
+    ],
+    "tracks": [
+      {
+        "key": "native-peer|4d5e3d0e-f2ae-4a68-b5c0-59c28aa173e1",
+        "remote": true,
+        "muted": true,
+        "state": "proven"
+      }
+    ],
+    "participants": [
+      {
+        "micOn": false,
+        "isLocal": false
+      },
+      {
+        "micOn": false,
+        "isLocal": true
+      }
+    ]
+  },
+  "resumed": {
+    "security": "encrypted",
+    "flow": "flowing",
+    "errors": [],
+    "samples": [
+      {
+        "flow": "waiting",
+        "security": "encrypted"
+      },
+      {
+        "flow": "flowing",
+        "security": "encrypted"
+      },
+      {
+        "flow": "quiet",
+        "security": "encrypted"
+      },
+      {
+        "flow": "quiet",
+        "security": "encrypted"
+      },
+      {
+        "flow": "quiet",
+        "security": "encrypted"
+      },
+      {
+        "flow": "waiting",
+        "security": "encrypted"
+      },
+      {
+        "flow": "flowing",
+        "security": "encrypted"
+      }
+    ],
+    "tracks": [
+      {
+        "key": "native-peer|4d5e3d0e-f2ae-4a68-b5c0-59c28aa173e1",
+        "remote": true,
+        "muted": false,
+        "state": "proven"
+      }
+    ],
+    "participants": [
+      {
+        "micOn": true,
+        "isLocal": false
+      },
+      {
+        "micOn": false,
+        "isLocal": true
+      }
+    ]
+  },
+  "initiallyMuted": {
+    "security": "waiting",
+    "flow": "quiet",
+    "errors": [],
+    "samples": [
+      {
+        "flow": "quiet",
+        "security": "waiting"
+      }
+    ],
+    "tracks": [
+      {
+        "key": "native-peer|9612a1e9-882c-4c58-9654-9827f1c46c25",
+        "remote": true,
+        "muted": true,
+        "state": null
+      }
+    ],
+    "participants": [
+      {
+        "micOn": false,
+        "isLocal": false
+      },
+      {
+        "micOn": false,
+        "isLocal": true
+      }
+    ]
+  },
+  "initiallyMutedThenResumed": {
+    "security": "encrypted",
+    "flow": "quiet",
+    "errors": [],
+    "samples": [
+      {
+        "flow": "quiet",
+        "security": "waiting"
+      }
+    ],
+    "tracks": [
+      {
+        "key": "native-peer|9612a1e9-882c-4c58-9654-9827f1c46c25",
+        "remote": true,
+        "muted": false,
+        "state": "proven"
+      }
+    ],
+    "participants": [
+      {
+        "micOn": true,
+        "isLocal": false
+      },
+      {
+        "micOn": false,
+        "isLocal": true
+      }
+    ]
+  },
+  "wrongKey": {
+    "security": "problem",
+    "attachedAudio": 0
+  },
+  "mutedFalseReconnect": false
+}

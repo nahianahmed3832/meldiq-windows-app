@@ -14,19 +14,19 @@ const QUESTIONS = questions as [string, string, string][];
 const CATEGORIES = ["All", ...new Set(QUESTIONS.map((q) => q[0]))];
 function currentAnswer(question: string, fallback: string, load: CatalogLoad, mojo: MojoCatalog | null): string {
   const trial = trialOf(load);
-  if (question === "Is there a free Mojo Plus trial?")
+  if (question === "Is there a free Meldiq Plus trial?")
     return trial && trial.days > 0
       ? `The current offer is ${dayCount(trial.days)} of ${trialPlanName(load, ANNOUNCED_PLANS)}, with no card required. A free trial ends by itself without a charge. Check your account for the offer that applies to you.`
       : "Trial availability could not be confirmed. Check the existing account or pricing page for the offer that applies to you. Free trial periods end by themselves, without a charge.";
-  if (question === "Can I buy Mojo Plus now?")
+  if (question === "Can I buy Meldiq Plus now?")
     return load.state === "ready"
       ? load.catalog.available && subscriptionOffers(load.catalog.plans, mojo).length > 0
-        ? "Mojo Plus is available for $3.99 USD/month with secure PayPal checkout. Visit Pricing to review the exact terms before subscribing. Core messaging remains free."
+        ? "Meldiq Plus is available for $4.99 USD/month with secure PayPal checkout. Visit Pricing to review the exact terms before subscribing. Core messaging remains free."
         : "The current billing catalog reports that paid plans are not on sale. Use your existing billing account to check availability. Core messaging remains free."
       : "Paid-plan availability could not be confirmed. Check the existing billing page before making plans to subscribe. Core messaging remains free.";
   if (question === "Which plans include Sparks?")
     return mojo
-      ? `The current catalog configures ${mojo.plans.find((p) => p.key === "plus")?.sparks ?? 0} Spark(s) for Mojo Plus; Spark boosting is also separate from the personal plan. ${mojo.enforced === true ? "See Pricing for the current account benefits." : "These are preview values; catalog limits are not currently enforced."} Final benefits must be confirmed before purchase.`
+      ? `The current catalog configures ${mojo.plans.find((p) => p.key === "plus")?.sparks ?? 0} Spark(s) for Meldiq Plus; Spark boosting is also separate from the personal plan. ${mojo.enforced === true ? "See Pricing for the current account benefits." : "These are preview values; catalog limits are not currently enforced."} Final benefits must be confirmed before purchase.`
       : "The current Spark allowances could not be confirmed. See Pricing or your billing account for current availability and benefits.";
   if (question === "Can communities receive multiple Sparks?")
     return mojo
@@ -39,10 +39,10 @@ function currentAnswer(question: string, fallback: string, load: CatalogLoad, mo
       : "The catalog describes community Spark levels. The current thresholds could not be confirmed; check Pricing before relying on specific benefits.";
   if (question === "What is Meldiq Spark?")
     return `Sparks boost a community for everyone in it, with extra emoji and sticker capacity, file capacity and voice or screen-sharing quality. ${mojo?.enforced === true ? "See Pricing for the current benefits." : "Configured benefits are a preview; enforced entitlements have not been confirmed."} ${mojo?.onSale?.spark ? `Extra Sparks cost ${formatMoney(mojo.onSale.spark.amountMinor, mojo.onSale.spark.currency)} each${sparkPaymentTerms(mojo.spark.interval)}. Review the purchase and expiration terms in the app.` : "Paid Spark availability is not confirmed; check the app before planning a purchase."}`;
-  if (question === "Can I gift Mojo Plus to another user?")
+  if (question === "Can I gift Meldiq Plus to another user?")
     return mojo?.onSale?.gifts
       ? `The current catalog offers gifts for ${mojo.gifts.months.join(", ")} months. The published website describes a one-time payment without automatic renewal, with the recipient choosing when to start. Confirm the terms in the app.`
-      : "Gifting is not currently confirmed for sale. The existing website describes planned Mojo Plus gifts paid once without automatic renewal, with the recipient choosing when to start. Check availability and terms in the app.";
+      : "Gifting is not currently confirmed for sale. The existing website describes planned Meldiq Plus gifts paid once without automatic renewal, with the recipient choosing when to start. Check availability and terms in the app.";
   return fallback;
 }
 export default function Faq() {
@@ -67,7 +67,7 @@ export default function Faq() {
   return (
     <Layout
       title="FAQ — Questions, answered"
-      description="Find clear answers about Meldiq communities, privacy, web and Android, Mojo Plus, Sparks, gifts and your account."
+      description="Find clear answers about Meldiq communities, privacy, web and Android, Meldiq Plus, Sparks, gifts and your account."
     >
       <section className="page-hero wrap">
         <Link className="breadcrumb" href="/">

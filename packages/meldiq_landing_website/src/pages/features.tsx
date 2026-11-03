@@ -40,9 +40,9 @@ const sections = [
   {
     id: "privacy",
     title: "Privacy & encryption",
-    text: "Messages and attachments are encrypted on your devices before they’re sent. Private keys stay on your devices.",
+    text: "Files are encrypted before upload. Current messages can include attachment keys that the Meldiq server can read.",
     items: [
-      "Message text, reactions, edits and read receipts encrypted on the sending device",
+      "Conversation history available to authorized members",
       "Attachments encrypted before upload",
       "Call media encrypted when call encryption is on",
       "Account details, memberships and routing metadata remain visible to the server",
@@ -115,7 +115,7 @@ export default function Features() {
       <section className="plain-page-end wrap">
         <h2>Ready when you are.</h2>
         <p>
-          Create a free account or find the right app for your device. <Link href="/pricing">Explore optional Mojo Plus benefits and community add-ons.</Link>
+          Create a free account or find the right app for your device. <Link href="/pricing">Explore optional Meldiq Plus benefits and community add-ons.</Link>
         </p>
         <div className="button-row">
           <Link className="button primary" href="/signup">

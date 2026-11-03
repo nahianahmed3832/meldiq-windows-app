@@ -1,0 +1,25 @@
+{
+  "recordedAt": "2026-11-03T14:42:50.802Z",
+  "platform": "darwin",
+  "sourceScope": "development Electron artifact, synthetic provider result dispatch; no real provider transaction",
+  "passed": [
+    "actual social IPC receives only its matching single-instance callback",
+    "native browser login cancellation and retry do not establish a session",
+    "device permissions reset through trusted IPC",
+    "Arabic UI direction and bundled core translations persist across reload",
+    "searchable selector updates French interface immediately and restores LTR",
+    "isolated approval window rejects foreign redirects, closes on owned return, emits no payment tokens, and releases busy hold"
+  ],
+  "counts": {
+    "passed": 6,
+    "failed": 0
+  },
+  "unverified": [
+    "Windows registry protocol dispatch",
+    "real provider approval",
+    "payment capture/webhook/entitlement lifecycle",
+    "real Discord import",
+    "Windows 10/11 physical-device behavior",
+    "complete localization"
+  ]
+}

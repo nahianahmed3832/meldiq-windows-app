@@ -1,3 +1,4 @@
+import { useT } from "../../i18n";
 import {
   AlertTriangle,
   Hand,
@@ -81,11 +82,13 @@ export function CallStage() {
 }
 
 function SecurityBadge({ call, open, onToggle }: { call: CallUiState; open: boolean; onToggle: () => void }) {
+  const t = useT();
+  const label = call.security === "waiting" ? t("call_security_waiting") : SECURITY_LABEL[call.security];
   const icon = call.security === "encrypted" ? <Lock size={14} /> : call.security === "problem" ? <ShieldAlert size={14} /> : <ShieldQuestion size={14} />;
   return (
-    <button className={`e2ee-badge ${call.security}`} onClick={onToggle} aria-expanded={open} aria-label={`${SECURITY_LABEL[call.security]}. Show the call's verification code`}>
+    <button className={`e2ee-badge ${call.security}`} onClick={onToggle} aria-expanded={open} aria-label={`${label}. Show the call's verification code`}>
       {icon}
-      {SECURITY_LABEL[call.security]}
+      {label}
     </button>
   );
 }

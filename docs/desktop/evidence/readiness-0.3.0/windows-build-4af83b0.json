@@ -1,0 +1,24 @@
+{
+  "build": {
+    "version": "0.3.0-readiness.1",
+    "commit": "4af83b0437190b2d115eb65d3a63fe583f3c88f0",
+    "timestamp": "2026-11-03T15:07:36.910Z",
+    "channel": "stable",
+    "distribution": "development",
+    "updateLab": false
+  },
+  "artifacts": [
+    {
+      "name": "Meldiq-Setup-0.3.0-readiness.1-x64-UNSIGNED-DEV.exe",
+      "size": 124336058,
+      "sha256": "485a7f3c3d2a69777b2517aca371e4f0048d7a8fd5795961e88f98e825e47e1a",
+      "sha512": "0jANEee8/N3m7zEGMsvvK5nKe7dwHiG5ReYYnKNg+dsoDaJLSE/pq1/dlB7MQRINBKjdNtkX5Un7MyGSL+IZqQ=="
+    },
+    {
+      "name": "Meldiq-Setup-0.3.0-readiness.1-x64-UNSIGNED-DEV.exe.blockmap",
+      "size": 130641,
+      "sha256": "42334d66508a1204d21b2c97aa7f27fc6aaeff78cc0518a0d5cd62c87c71588a",
+      "sha512": "aldJe5AS1CA+ztToKlzd26xr09Cn/bR/R+xw3miMMUjNl2U3L+nxusdFXgqVmqR1fRuHcNjChcsLj6VK43vwBw=="
+    }
+  ]
+}

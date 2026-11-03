@@ -5,7 +5,7 @@ import path from 'node:path';
 import { DEFAULT_PREFERENCES, performanceProfile, validatePreferences, parseDeepLink, externalUrl, validateTokens, isLocalPage } from '../shared/policy';
 import { PreferenceStore } from '../main/preferences';
 vi.mock('electron', () => ({ net: {} }));
-import { localAsset, contentSecurityPolicy } from '../main/protocol';
+import { localAsset, contentSecurityPolicy, webConnectionOrigins } from '../main/protocol';
 describe('Hardware adaptation', () => {
   it.each([4,8])('keeps %i GB devices in economy mode without blocking messaging', ram => {
     const profile = performanceProfile(ram * 1024 ** 3, 2, DEFAULT_PREFERENCES);
@@ -47,6 +47,10 @@ describe('Untrusted inputs', () => {
   });
 });
 describe('Local renderer files', () => {
+  it('only adopts exact HTTPS connection origins from the web policy', () => {
+    expect(webConnectionOrigins("script-src https://script.example; connect-src 'self' https://media.example https://*.other.example https: https://bad.example/path wss://other.example")).toEqual(['https://media.example']);
+    expect(webConnectionOrigins(null)).toEqual([]);
+  });
   const files = new Set(['index.html', 'assets/app.js']);
   it('allows only manifest files and known application routes', () => {
     expect(localAsset('/bundle', '/assets/app.js', files)).toBe(path.join('/bundle','assets/app.js'));

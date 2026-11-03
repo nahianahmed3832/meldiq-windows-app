@@ -150,6 +150,7 @@ export class LiveKitSession implements MediaSession {
     await room.connect(grant.url, grant.token, { autoSubscribe: false });
     if (this.closed) throw new Error("call closed while connecting");
     this.syncSubscriptions();
+    this.publishSecurity();
     for (const t of this.prepared) await room.localParticipant.publishTrack(t, { simulcast: t.kind === Track.Kind.Video });
     this.prepared = [];
     this.events.audioBlocked(!room.canPlaybackAudio);
@@ -441,7 +442,11 @@ export class LiveKitSession implements MediaSession {
   }
 
   private publishSecurity(): void {
-    const s = this.tracker.security();
+    let s = this.tracker.security();
+    // A peer may have joined with every publication muted, before any track/frames
+    // can be subscribed. That is waiting for media, not a missing encryption key.
+    if (s === 'verifying' && this.room && this.room.remoteParticipants.size > 0 &&
+        [...this.room.remoteParticipants.values()].every(p => [...p.trackPublications.values()].every(pub => pub.isMuted))) s = 'waiting';
     if (s === this.lastSecurity) return;
     this.lastSecurity = s;
     this.events.security(s);
@@ -454,9 +459,15 @@ export class LiveKitSession implements MediaSession {
     let bytes: number | null = null;
     let path: string | null = null;
     let latency: number | null = null;
+    let activeRemoteTracks = 0;
+    let continuousRemoteVideo = false;
     const watched = this.watched;
     for (const p of room.remoteParticipants.values()) {
       for (const pub of p.trackPublications.values()) {
+        if (pub.track && !pub.isMuted) {
+          activeRemoteTracks++;
+          continuousRemoteVideo ||= pub.track.kind === Track.Kind.Video;
+        }
         const report = await pub.track?.getRTCStatsReport().catch(() => undefined);
         if (!report) continue;
         const stats = [...report.values()] as { id: string; type: string; bytesReceived?: number }[];
@@ -479,7 +490,7 @@ export class LiveKitSession implements MediaSession {
       }
     if (this.room !== room) return;
     this.events.latency?.(latency);
-    this.events.flow(this.monitor.sample(bytes), path);
+    this.events.flow(this.monitor.sample(bytes, activeRemoteTracks === 0 ? 'paused' : continuousRemoteVideo ? 'continuous' : 'intermittent'), path);
     await this.share.sample(Date.now());
   }
 

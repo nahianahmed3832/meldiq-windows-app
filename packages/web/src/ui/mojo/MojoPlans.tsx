@@ -13,13 +13,13 @@ const ROWS: { label: string; value: (p: PlanPerks, c: MojoCatalog) => string }[]
   { label: "Custom emoji and stickers you add", value: (p) => String(p.customItems) },
   { label: "Bots you can make", value: (p) => String(p.bots) },
   { label: "Profile customization", value: () => "Free: avatars, decorations, effects and appearance" },
-  { label: "Name badge", value: (p) => (p.badge === "plus" ? "Plus, with Meldiq Check" : p.badge === "go" ? "Go" : "None") },
+  { label: "Name badge", value: (p) => (p.badge === "plus" ? "Plus, with Meldiq Check" : p.badge === "go" ? "Legacy membership" : "None") },
 ];
 
 /** One line under each plan's price: who it's for, in the plan's own numbers. */
 const PITCH: Record<PlanKey, string> = {
   free: "Everything you need to talk, call and run a community.",
-  go: "A little more room, a Spark to give and a Go badge.",
+  go: "An existing legacy membership.",
   plus: "The biggest files, the sharpest streams and two Sparks.",
 };
 

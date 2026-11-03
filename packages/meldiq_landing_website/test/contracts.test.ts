@@ -23,7 +23,7 @@ describe.skipIf(!present)("contracts shared with meldiq_android/server", () => {
       accountId: "acc_1",
       billing: { available: true, mode: "test" },
       personal: {
-        plan: { key: "plus", name: "Mojo Plus" },
+        plan: { key: "plus", name: "Meldiq Plus" },
         standing: "entitled",
         accessUntil: 2,
         renews: false,

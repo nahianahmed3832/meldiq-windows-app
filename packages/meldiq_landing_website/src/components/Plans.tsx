@@ -123,6 +123,7 @@ export function CheckoutDialog({ offer, firstSubscription = true, onClose }: Che
       rememberPayment(sessionStorage, {
         accountId,
         checkoutId: started.checkoutId,
+        amountMinor: offer.amountMinor,
         provider: started.provider,
         mode: started.mode,
         approvalUrl: started.url,
@@ -157,7 +158,7 @@ export function CheckoutDialog({ offer, firstSubscription = true, onClose }: Che
             : "Loading secure payment details…"}{" "}
           Meldiq never sees or stores your card details. See{" "}
           <Link href="/legal/billing" target="_blank">
-            Mojo Plus terms
+            Meldiq Plus terms
           </Link>
           .
         </p>

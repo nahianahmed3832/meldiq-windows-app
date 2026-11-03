@@ -2,12 +2,12 @@
   [
     "General",
     "What is Meldiq?",
-    "Meldiq brings communities, channels, direct messages, private groups and calls together. It’s a place for friends, gaming groups, creators and communities to talk, with messages encrypted on your devices before they’re sent."
+    "Meldiq brings communities, channels, direct messages, private groups and calls together. It’s a place for friends, gaming groups, creators and communities to talk."
   ],
   [
     "General",
     "Is Meldiq free?",
-    "Yes. Communities, channels, direct messages, private groups, voice and video calls, screen sharing and encrypted file sharing are part of the free experience. Mojo Plus is optional."
+    "Yes. Communities, channels, direct messages, private groups, voice and video calls, screen sharing and encrypted file sharing are part of the free experience. Meldiq Plus is optional."
   ],
   [
     "General",
@@ -16,7 +16,7 @@
   ],
   [
     "General",
-    "Is there a free Mojo Plus trial?",
+    "Is there a free Meldiq Plus trial?",
     "Trial offers are set by the current billing catalog. Check Pricing or your account for the number of free days and eligibility. No card is required for a free period, and it ends without a charge."
   ],
   [
@@ -42,17 +42,17 @@
   [
     "Privacy",
     "How does end-to-end encryption work?",
-    "Message text, attachments, reactions, edits and read receipts are encrypted on the sending device. Meldiq’s published architecture says its servers store and relay ciphertext rather than readable conversation content. Private keys stay on your devices."
+    "Meldiq stores messages to deliver conversation history. Files are encrypted before upload. Current messages can include attachment keys that the Meldiq server can read. Call-media encryption has its own indicator."
   ],
   [
     "Privacy",
     "What information can the server see?",
-    "Encryption doesn’t hide all metadata. The server can see account and profile information, community and channel names, roles and memberships, and routing information such as which conversation a message goes to, when it was sent and its size. Read the Privacy Policy for the full description."
+    "The service stores messages for conversation history.  The server can see account and profile information, community and channel names, roles and memberships, and routing information such as which conversation a message goes to, when it was sent and its size. Read the Privacy Policy for the full description."
   ],
   [
     "Privacy",
     "Are files and calls encrypted?",
-    "Files are encrypted before upload. Call audio, video and screen sharing are end-to-end encrypted when call encryption is on, which is the default. Check the encryption indicator in the app for your call."
+    "Files are encrypted before upload. Current attachment keys can be read by the Meldiq server. Call audio, video and screen sharing are end-to-end encrypted when call encryption is on, which is the default. Check the encryption indicator in the app for your call."
   ],
   [
     "Privacy",
@@ -76,18 +76,18 @@
   ],
   [
     "Subscriptions",
-    "Can I buy Mojo Plus now?",
-    "Check Pricing for current Mojo Plus availability and the terms before subscribing. Website checkout uses PayPal. Core messaging remains free."
+    "Can I buy Meldiq Plus now?",
+    "Check Pricing for current Meldiq Plus availability and the terms before subscribing. Website checkout uses PayPal. Core messaging remains free."
   ],
   [
     "Subscriptions",
-    "What does Mojo Plus cost and include?",
-    "Mojo Plus is the optional personal plan at $3.99 USD per month, with files up to 1,024 MB each. See Pricing for the current message, screen-sharing, Spark, custom emoji, sticker and bot allowances. Core messaging remains free. Spark community boosting and Bots+ for a community are separate products."
+    "What does Meldiq Plus cost and include?",
+    "Meldiq Plus is the optional personal plan at $4.99 USD per month, with files up to 1 GB each. See Pricing for the current message, screen-sharing, Spark, custom emoji, sticker and bot allowances. Core messaging remains free. Spark community boosting and Bots+ for a community are separate products."
   ],
   [
     "Subscriptions",
     "Does one subscription cover multiple devices?",
-    "Yes. Mojo Plus belongs to your Meldiq account. Sign in with the same account on supported devices to use the same subscription."
+    "Yes. Meldiq Plus belongs to your Meldiq account. Sign in with the same account on supported devices to use the same subscription."
   ],
   [
     "Subscriptions",
@@ -101,8 +101,8 @@
   ],
   [
     "Subscriptions",
-    "What happens when Mojo Plus ends?",
-    "The published terms say your messages, communities, files and members stay. The account returns to the free tier; adding more beyond applicable free limits can be restricted. No existing content is deleted solely because Mojo Plus ends."
+    "What happens when Meldiq Plus ends?",
+    "The published terms say your messages, communities, files and members stay. The account returns to the free tier; adding more beyond applicable free limits can be restricted. No existing content is deleted solely because Meldiq Plus ends."
   ],
   [
     "Subscriptions",
@@ -117,7 +117,7 @@
   [
     "Sparks",
     "Which plans include Sparks?",
-    "See Pricing for the current Mojo Plus Spark allowance. Extra Sparks are a separate purchase, available on any plan when offered in the app."
+    "See Pricing for the current Meldiq Plus Spark allowance. Extra Sparks are a separate purchase, available on any plan when offered in the app."
   ],
   ["Sparks", "Can communities receive multiple Sparks?", "Yes. The current community Spark thresholds and benefits appear on Pricing and in Meldiq."],
   [
@@ -127,8 +127,8 @@
   ],
   [
     "Gifts",
-    "Can I gift Mojo Plus to another user?",
-    "Gifting is not currently on sale according to the public catalog. The existing website describes planned Mojo Plus gifts of one, three or twelve months, paid once without automatic renewal, with the recipient choosing when to start. Check availability in the app before making plans."
+    "Can I gift Meldiq Plus to another user?",
+    "Gifting is not currently on sale according to the public catalog. The existing website describes planned Meldiq Plus gifts of one, three or twelve months, paid once without automatic renewal, with the recipient choosing when to start. Check availability in the app before making plans."
   ],
   [
     "Account",

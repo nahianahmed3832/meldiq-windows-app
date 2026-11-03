@@ -1,28 +1,18 @@
-import { usePrefs } from "../application/prefs";
-import type { Language } from "./languages";
-import { resolveLanguage } from "./languages";
-import { STRINGS, type StringKey } from "./strings";
-
-export { browserLanguage, LANGUAGE_NAMES, LANGUAGES, resolveLanguage, type Language, type LanguageChoice } from "./languages";
-
-const INDEX: Record<Language, 0 | 1 | 2> = { en: 0, "zh-CN": 1, bn: 2 };
-
-/** The text for [key] in [lang], with {name} placeholders filled from [vars]. */
+import { useCallback } from 'react';
+import { usePrefs } from '../application/prefs';
+import { resolveLanguage, type Language } from './languages';
+import { CATALOGS, ENGLISH, type StringKey } from './catalog';
+export { browserLanguage, LANGUAGE_NAMES, LANGUAGES, resolveLanguage, languageDirection, setSystemLanguages, type Language, type LanguageChoice } from './languages';
+export { missingTranslations, localizationCoverage } from './catalog';
+/** Missing keys fall back at lookup time, keeping resource completeness measurable. */
 export function translate(lang: Language, key: StringKey, vars?: Record<string, string | number>): string {
-  const text = STRINGS[key][INDEX[lang]];
-  return vars ? text.replace(/\{(\w+)\}/g, (m, name: string) => (name in vars ? String(vars[name]) : m)) : text;
+  const text = CATALOGS[lang]?.[key] || ENGLISH[key];
+  return vars ? text.replace(/\{(\w+)\}/g, (match, name: string) => Object.hasOwn(vars, name) ? String(vars[name]) : match) : text;
 }
-
 export type Translate = (key: StringKey, vars?: Record<string, string | number>) => string;
-
-/** The current language's text lookup; components re-render when the language changes. */
 export function useT(): Translate {
-  const lang = useLanguage();
-  return (key, vars) => translate(lang, key, vars);
+  const language = useLanguage();
+  return useCallback((key, vars) => translate(language, key, vars), [language]);
 }
-
-export function useLanguage(): Language {
-  return resolveLanguage(usePrefs().language);
-}
-
+export function useLanguage(): Language { return resolveLanguage(usePrefs().language); }
 export type { StringKey };
