@@ -37,5 +37,7 @@
   "desktop_updates": "अपडेट",
   "call_security_waiting": "एन्क्रिप्टेड मीडिया की प्रतीक्षा",
   "signin_methods_unavailable": "सभी साइन-इन तरीके जाँचे नहीं जा सके। फिर कोशिश करने के लिए विकल्प रीफ़्रेश करें।",
-  "desktop_local_test": "अलग स्थानीय परीक्षण"
+  "desktop_local_test": "अलग स्थानीय परीक्षण",
+  "desktop_setup_title": "साइन इन पूरा करें",
+  "desktop_setup_keys": "यहाँ अपने संदेश खोलने के लिए एक बार अपने फ़ोन या रिकवरी कुंजी का उपयोग करें।"
 }

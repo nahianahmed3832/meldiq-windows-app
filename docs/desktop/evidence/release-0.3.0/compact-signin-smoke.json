@@ -1,0 +1,14 @@
+{
+  "recordedAt": "2026-11-03T17:41:11.058Z",
+  "scope": "actual Chromium with synthetic account metadata, no user keys or live account mutation",
+  "passed": [
+    "native key restore opens with two simple choices and no automatic pairing request",
+    "phone instructions start only on request and retain the security fingerprint",
+    "recovery remains accessible without resetting the account identity",
+    "an existing encrypted backup keeps the standard email unlock flow"
+  ],
+  "counts": {
+    "passed": 4,
+    "failed": 0
+  }
+}

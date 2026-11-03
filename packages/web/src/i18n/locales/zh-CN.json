@@ -34,5 +34,7 @@
   "desktop_try_again": "重试",
   "desktop_share_your_screen": "共享屏幕",
   "desktop_cancel": "取消",
-  "desktop_updates": "更新"
+  "desktop_updates": "更新",
+  "desktop_setup_title": "完成登录",
+  "desktop_setup_keys": "使用手机或恢复密钥完成一次验证，即可在此打开消息。"
 }

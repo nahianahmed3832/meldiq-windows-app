@@ -93,6 +93,11 @@ export const FIXTURE_MOJO = {
     ],
   },
   gifts: { months: [1, 3, 12], noteMax: 280 },
+  plusTerms: [
+    { key: "monthly", months: 1, amountMinor: 499, interval: "month", billingFrequency: 1, currency: "USD", available: true },
+    { key: "quarterly", months: 3, amountMinor: 1299, interval: "month", billingFrequency: 3, currency: "USD", available: false },
+    { key: "yearly", months: 12, amountMinor: 4999, interval: "year", billingFrequency: 1, currency: "USD", available: false },
+  ],
   enforced: true,
   onSale: {
     mode: "test",

@@ -37,5 +37,7 @@
   "desktop_updates": "التحديثات",
   "call_security_waiting": "بانتظار الوسائط المشفرة",
   "signin_methods_unavailable": "تعذر التحقق من جميع طرق تسجيل الدخول. حدّث الخيارات للمحاولة مجددًا.",
-  "desktop_local_test": "اختبار محلي معزول"
+  "desktop_local_test": "اختبار محلي معزول",
+  "desktop_setup_title": "أكمل تسجيل الدخول",
+  "desktop_setup_keys": "استخدم هاتفك أو مفتاح الاسترداد مرة واحدة لفتح رسائلك هنا."
 }

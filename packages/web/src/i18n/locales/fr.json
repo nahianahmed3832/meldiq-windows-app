@@ -37,5 +37,7 @@
   "desktop_updates": "Mises à jour",
   "call_security_waiting": "En attente de médias chiffrés",
   "signin_methods_unavailable": "Impossible de vérifier toutes les méthodes de connexion. Actualisez les options pour réessayer.",
-  "desktop_local_test": "Test local isolé"
+  "desktop_local_test": "Test local isolé",
+  "desktop_setup_title": "Terminez la connexion",
+  "desktop_setup_keys": "Utilisez une fois votre téléphone ou votre clé de récupération pour ouvrir vos messages ici."
 }

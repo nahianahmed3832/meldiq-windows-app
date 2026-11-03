@@ -1,0 +1,49 @@
+{
+  "checkedAt": "2026-11-03T17:03:55.647Z",
+  "scope": "production PKCE start and server redirects to official provider only; no credentials, consent, account creation or session completion",
+  "buyerOrProviderApproval": false,
+  "results": [
+    {
+      "provider": "google",
+      "officialAuthorizationReached": true,
+      "chain": [
+        {
+          "host": "web.meldiq.app",
+          "path": "/v2/auth/social/authorize/:flow",
+          "status": 302
+        },
+        {
+          "host": "accounts.google.com",
+          "path": "/o/oauth2/v2/auth",
+          "officialProviderAuthorization": true,
+          "statePresent": true,
+          "clientIdPresent": true
+        }
+      ],
+      "expiresAt": 1793726031768
+    },
+    {
+      "provider": "discord",
+      "officialAuthorizationReached": true,
+      "chain": [
+        {
+          "host": "web.meldiq.app",
+          "path": "/v2/auth/social/authorize/:flow",
+          "status": 302
+        },
+        {
+          "host": "discord.com",
+          "path": "/api/oauth2/authorize",
+          "officialProviderAuthorization": true,
+          "statePresent": true,
+          "clientIdPresent": true
+        }
+      ],
+      "expiresAt": 1793726034284
+    }
+  ],
+  "counts": {
+    "passed": 2,
+    "failed": 0
+  }
+}

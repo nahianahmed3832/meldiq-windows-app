@@ -1,0 +1,22 @@
+{
+  "deployedAt": "2026-11-03T17:00:57.321936+00:00",
+  "sourceCommit": "6284cf958252a9eb6d3feace077ddb7e485f34da",
+  "identity": "66f8b58ba98fb5b80a1f5c8b0b83f1798a32e01c738c82c87db38f9f531a7051",
+  "webReleasePreserved": "/opt/meldiq-web/releases/0.5.0-beta-public-status-c60e2bf",
+  "apiImagePreserved": "sha256:9bb580a8be7a5f2823cd0b9a1ad95bed65291389321658d29124feebe321ba5c",
+  "databaseChanged": false,
+  "callbackDirectory": "/opt/meldiq-desktop/hosted/auth-66f8b58ba98fb5b8",
+  "nginxBeforeSha256": "b10e1efdc2fd41b050029897113bade67f120b23da43074e8b01eece99b2081f",
+  "nginxAfterSha256": "762ee4a3a53a8bb925ef4e968b0213b8e8e6f697c47334ded106b062a89457b5",
+  "nginxBackup": "/opt/meldiq-desktop/history/hosted-auth-20261103T170056Z.nginx.before",
+  "routes": {
+    "/social-auth-callback.js": "7c055c60a8557473217ea303b97ad9772e9b04ee28a0b4d21b8444132af39633",
+    "/discord/callback": "b6c59afee57eb5f9913737c8b050fd054887bb1d56e78e7ac06bd03152fc531d",
+    "/desktop-bridge.json": "50208d78350a7a160dec59a82df1499b6ca7da33e54c5eb11c97e342118e68bb",
+    "/desktop-discord-return.js": "b237cb4b3d322f97c42572abc4f700af82273a5ffe4cc4360d75dc6e5f352306",
+    "/desktop-bridge.js": "1c77684bd62fe1317ba0c7f8493673a8e59fecd30baffaf43e318098c8c43cfb",
+    "/desktop-bridge.html": "2242b98fd817199732a9630b8b64807e20f22cdc2ed1710a566fa5c2798d4a84",
+    "/discord/callback/": "b6c59afee57eb5f9913737c8b050fd054887bb1d56e78e7ac06bd03152fc531d"
+  },
+  "scope": "hosted return paths only; no provider-account approval, checkout creation, public sales activation or desktop update promotion"
+}

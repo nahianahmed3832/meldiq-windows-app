@@ -1,0 +1,93 @@
+{
+  "checkedAt": "2026-11-03T17:11:03.856Z",
+  "scope": "public shared sales availability, denied unauthorized checkout and unsigned webhook, stable feed preservation; no approved buyer transaction",
+  "boundaryChecks": [
+    {
+      "name": "unauthenticated checkout",
+      "status": 401,
+      "errorCode": "unauthorized"
+    },
+    {
+      "name": "unsigned webhook",
+      "status": 400,
+      "errorCode": "bad_signature"
+    }
+  ],
+  "onSale": {
+    "mode": "live",
+    "go": null,
+    "plus": {
+      "currency": "USD",
+      "amountMinor": 499
+    },
+    "spark": {
+      "currency": "USD",
+      "amountMinor": 99
+    },
+    "botsPlus": {
+      "currency": "USD",
+      "amountMinor": 399
+    },
+    "gifts": true
+  },
+  "plusTerms": [
+    {
+      "key": "monthly",
+      "months": 1,
+      "amountMinor": 499,
+      "interval": "month",
+      "billingFrequency": 1,
+      "currency": "USD",
+      "savingsMinor": 0,
+      "monthlyEquivalentMinor": 499,
+      "savingsPercent": 0,
+      "available": true
+    },
+    {
+      "key": "quarterly",
+      "months": 3,
+      "amountMinor": 1299,
+      "interval": "month",
+      "billingFrequency": 3,
+      "currency": "USD",
+      "savingsMinor": 198,
+      "monthlyEquivalentMinor": 433,
+      "savingsPercent": 13.23,
+      "available": false
+    },
+    {
+      "key": "yearly",
+      "months": 12,
+      "amountMinor": 4999,
+      "interval": "year",
+      "billingFrequency": 1,
+      "currency": "USD",
+      "savingsMinor": 989,
+      "monthlyEquivalentMinor": 417,
+      "savingsPercent": 16.52,
+      "available": false
+    }
+  ],
+  "sharedPlusOffer": {
+    "key": "plus",
+    "name": "Meldiq Plus",
+    "description": "",
+    "audience": "personal",
+    "interval": "month",
+    "billingFrequency": 1,
+    "term": "monthly",
+    "currency": "USD",
+    "amountMinor": 499,
+    "trialDays": 0,
+    "graceDays": 0,
+    "limits": {}
+  },
+  "stableUpdate": {
+    "version": "0.2.1",
+    "installerSha256": "25095025281bfbcc8d0f5b8443cd7103fafb78bd5f3d0136303b25c11f556d02",
+    "envelopeSha256": "33d025c45273b7f7b46f69b2c85a9073aba0b057b7d921a183894f2d85c07131",
+    "changed": false
+  },
+  "buyerApproval": false,
+  "successfulSignedWebhook": false
+}

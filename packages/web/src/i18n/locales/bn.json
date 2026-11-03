@@ -34,5 +34,7 @@
   "desktop_try_again": "আবার চেষ্টা করুন",
   "desktop_share_your_screen": "আপনার স্ক্রিন শেয়ার করুন",
   "desktop_cancel": "বাতিল",
-  "desktop_updates": "আপডেট"
+  "desktop_updates": "আপডেট",
+  "desktop_setup_title": "সাইন ইন সম্পূর্ণ করুন",
+  "desktop_setup_keys": "এখানে আপনার মেসেজ খুলতে একবার ফোন বা রিকভারি কী ব্যবহার করুন।"
 }

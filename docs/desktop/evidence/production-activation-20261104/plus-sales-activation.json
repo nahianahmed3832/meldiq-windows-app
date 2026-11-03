@@ -1,0 +1,73 @@
+{
+  "activatedAt": "2026-11-03T17:05:52.900560+00:00",
+  "sourceCommit": "962318883a1e554b028ef06f243fa02acf88f871",
+  "providerRegressionPassed": 149,
+  "apiImage": "griip-internal-messaging-api:0.76.1-pg-b9e6f005",
+  "apiImageId": "sha256:9bb580a8be7a5f2823cd0b9a1ad95bed65291389321658d29124feebe321ba5c",
+  "databaseMode": "supabase",
+  "backupDirectory": "/var/backups/meldiq/20261103T165505Z",
+  "envBeforeSha256": "ce1da5268b2827dc37cc1de5e60039c4c3f75e2f64d99573900fc441f52f299c",
+  "envAfterSha256": "6ea801c13ce4d5963d1ff19186514cba76a528247307b5737a9c6beff78e2bf5",
+  "monthlyPlanId": "P-49S40199EV0769032NLVBAQI",
+  "operatorResult": "Published Meldiq Plus monthly: 499 USD cents per 1 months; existing agreements preserved",
+  "onSale": {
+    "mode": "live",
+    "go": null,
+    "plus": {
+      "currency": "USD",
+      "amountMinor": 499
+    },
+    "spark": {
+      "currency": "USD",
+      "amountMinor": 99
+    },
+    "botsPlus": {
+      "currency": "USD",
+      "amountMinor": 399
+    },
+    "gifts": true
+  },
+  "plusTerms": [
+    {
+      "key": "monthly",
+      "months": 1,
+      "amountMinor": 499,
+      "interval": "month",
+      "billingFrequency": 1,
+      "currency": "USD",
+      "savingsMinor": 0,
+      "monthlyEquivalentMinor": 499,
+      "savingsPercent": 0,
+      "available": true
+    },
+    {
+      "key": "quarterly",
+      "months": 3,
+      "amountMinor": 1299,
+      "interval": "month",
+      "billingFrequency": 3,
+      "currency": "USD",
+      "savingsMinor": 198,
+      "monthlyEquivalentMinor": 433,
+      "savingsPercent": 13.23,
+      "available": false
+    },
+    {
+      "key": "yearly",
+      "months": 12,
+      "amountMinor": 4999,
+      "interval": "year",
+      "billingFrequency": 1,
+      "currency": "USD",
+      "savingsMinor": 989,
+      "monthlyEquivalentMinor": 417,
+      "savingsPercent": 16.52,
+      "available": false
+    }
+  ],
+  "scope": "shared web/Windows monthly purchase availability enabled; no buyer approval, charge, successful signed webhook or entitlement activation claimed",
+  "legacyProviderPlanChanged": false,
+  "schemaChanged": false,
+  "otherRuntimeSettingsPreserved": true,
+  "otherProductsPreserved": true
+}

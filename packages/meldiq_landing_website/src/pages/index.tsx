@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { Layout } from "../components/Layout";
-import { ActivityPreview } from "../components/ActivityPreview";
 import { LandingProductPreview } from "../components/LandingProductPreview";
+import { PlusSpotlight } from "../components/PlusSpotlight";
+import { CallPreview } from "../components/CallPreview";
 import { SITE } from "../lib/site";
 const questions = [
   [
@@ -46,15 +47,15 @@ export default function Home() {
     >
       <section className="ref-hero wrap">
         <div className="ref-orbit" aria-hidden="true" />
+        <Link className="hero-note" href="/community">
+          <span className="status-dot" aria-hidden="true" /> A little space for your people <span aria-hidden="true">↗</span>
+        </Link>
         <h1>
           Your people,
           <br />
           <em>your channels, one place to talk.</em>
         </h1>
-        <p>
-          Meldiq brings your friends and communities together to talk, call and share. The core experience is free. Mojo
-          Plus is optional.
-        </p>
+        <p>Meldiq brings your friends and communities together to talk, call and share. The core experience is free. Meldiq Plus is optional.</p>
         <Actions />
         <p className="ref-trust-note">
           <span className="ref-availability">
@@ -62,11 +63,16 @@ export default function Home() {
             <strong>Free to use</strong>
             <span>·</span> Web, Android & Windows
           </span>
-          <ActivityPreview />
         </p>
       </section>
       <section className="ref-main-preview wrap" aria-label="Meldiq community preview">
         <LandingProductPreview />
+        <div className="included-strip" aria-label="Included with free messaging">
+          <span>GOOD COMPANY. ALL IN ONE PLACE.</span>
+          <Link href="/features#communities">Communities & channels</Link>
+          <Link href="/features#messaging">Private conversations</Link>
+          <Link href="/features#calls">Voice, video & screen share</Link>
+        </div>
       </section>
       <section className="ref-feature-row wrap">
         <div className="ref-feature-copy">
@@ -76,6 +82,9 @@ export default function Home() {
             Discover a public community or start one for your own group. Keep conversations organized with text channels, forums and voice rooms, and make the
             space your own with roles and invitations.
           </p>
+          <Link className="inline-link" href="/community">
+            Explore communities <span aria-hidden="true">↗</span>
+          </Link>
         </div>
         <LandingProductPreview view="discover" />
       </section>
@@ -88,8 +97,44 @@ export default function Home() {
             Direct messages and private groups alongside your communities. Catch up with a friend, make plans with the group, and share the photos, files and
             little things that keep you connected.
           </p>
+          <Link className="inline-link" href="/features#messaging">
+            See messaging features <span aria-hidden="true">↗</span>
+          </Link>
         </div>
       </section>
+      <section className="ref-feature-row wrap">
+        <div className="ref-feature-copy">
+          <span className="ref-kicker">VOICE, VIDEO & SCREEN SHARING</span>
+          <h2>A conversation worth staying for.</h2>
+          <p>
+            Drop into a voice room, catch up face to face or share what’s on your screen. From quick questions to long evenings, there’s room for the whole
+            group.
+          </p>
+          <Link className="inline-link" href="/features#calls">
+            Find your way into a call <span aria-hidden="true">↗</span>
+          </Link>
+        </div>
+        <CallPreview />
+      </section>
+      <section className="home-explore wrap" aria-label="More ways to make Meldiq yours">
+        <Link href="/bots">
+          <span aria-hidden="true">⌘</span>
+          <div>
+            <h2>A little help from bots.</h2>
+            <p>Tools and add-ons for your community.</p>
+          </div>
+          <span aria-hidden="true">↗</span>
+        </Link>
+        <Link href="/security">
+          <span aria-hidden="true">◇</span>
+          <div>
+            <h2>Know what you’re sharing.</h2>
+            <p>Privacy and security, explained plainly.</p>
+          </div>
+          <span aria-hidden="true">↗</span>
+        </Link>
+      </section>
+      <PlusSpotlight />
       <section className="ref-join wrap">
         <div className="ref-join-inner">
           <h2>Come say hello.</h2>

@@ -135,10 +135,11 @@ interface AddDeviceProps {
  * docs/product/MELDIQ_AUTH_FLOW_AUDIT.md).
  */
 export function AddDeviceView(props: AddDeviceProps & { onSignOut: () => void }) {
+  const desktop = typeof window !== 'undefined' && Boolean(window.meldiqDesktop);
   // The key backup check: which attempt it answers, and whether a backup exists (null: the server couldn't say).
   const [status, setStatus] = useState<{ attempt: number; exists: boolean | null } | null>(null);
   const [attempt, setAttempt] = useState(0);
-  const [way, setWay] = useState<OtherWay>("phone");
+  const [way, setWay] = useState<OtherWay | null>(desktop ? null : "phone");
   const [others, setOthers] = useState(false);
   const { creds } = props;
   const t = useT();
@@ -158,7 +159,7 @@ export function AddDeviceView(props: AddDeviceProps & { onSignOut: () => void })
   const emailWay = backup === true && !others;
   return (
     <div className="auth-form">
-      <AuthHeading title={t("setup_title")} sub={t("setup_sub", { email: props.account.email })} />
+      <AuthHeading title={t(desktop ? "desktop_setup_title" : "setup_title")} sub={desktop ? props.account.email : t("setup_sub", { email: props.account.email })} />
       {checking ? (
         <p className="muted" role="status" style={{ margin: 0 }}>
           {t("setup_checking")}
@@ -174,7 +175,7 @@ export function AddDeviceView(props: AddDeviceProps & { onSignOut: () => void })
           )}
           {backup === false && (
             <p className="hint" style={{ margin: 0 }}>
-              {t("setup_no_backup")}
+              {t(desktop ? "desktop_setup_keys" : "setup_no_backup")}
             </p>
           )}
           {backup === null && (
@@ -185,15 +186,23 @@ export function AddDeviceView(props: AddDeviceProps & { onSignOut: () => void })
               </button>
             </div>
           )}
-          <div className="segmented auth-ways" role="tablist" aria-label={t("setup_ways")}>
+          {desktop && way === null ? (
+            <div style={{ display: 'grid', gap: 10 }}>
+              <button className="btn btn-primary btn-lg" onClick={() => setWay('phone')}><Smartphone size={16} /> {t('setup_way_phone')}</button>
+              <button className="btn btn-secondary btn-lg" onClick={() => setWay('recovery')}><KeyRound size={16} /> {t('setup_way_recovery')}</button>
+            </div>
+          ) : <>
+          {!desktop && <div className="segmented auth-ways" role="tablist" aria-label={t("setup_ways")}>
             <button role="tab" aria-selected={way === "phone"} onClick={() => setWay("phone")}>
               <Smartphone size={14} /> {t("setup_way_phone")}
             </button>
             <button role="tab" aria-selected={way === "recovery"} onClick={() => setWay("recovery")}>
               <KeyRound size={14} /> {t("setup_way_recovery")}
             </button>
-          </div>
+          </div>}
           {way === "phone" ? <ApproveFromDevice {...props} /> : <RecoveryKeyEntry {...props} />}
+          {desktop && <div className="auth-links"><LinkButton onClick={() => setWay(null)}>{t('common_back')}</LinkButton></div>}
+          </>}
           {backup === true && (
             <div className="auth-links">
               <LinkButton onClick={() => setOthers(false)}>{t("setup_back_to_email")}</LinkButton>
@@ -351,6 +360,7 @@ type Pairing = { k: "starting" } | { k: "waiting"; link: PendingLink; deviceFp: 
 
 function ApproveFromDevice(props: AddDeviceProps) {
   const [state, setState] = useState<Pairing>({ k: "starting" });
+  const [copied, setCopied] = useState(false);
   const gen = useRef(0);
   const { creds, account, deviceName, password, onEnrolled } = props;
   const t = useT();
@@ -412,6 +422,26 @@ function ApproveFromDevice(props: AddDeviceProps) {
   }, [state, creds, account, deviceName, password, onEnrolled]);
 
   const code = state.k === "waiting" ? `${state.link.code.slice(0, 5)} ${state.link.code.slice(5)}` : "";
+  if (typeof window !== 'undefined' && window.meldiqDesktop) return (
+    <div className="auth-form">
+      <p className="muted" style={{ margin: 0 }}>{t('phone_step_open')} · {t('phone_step_open_sub')}</p>
+      {state.k === 'waiting' ? <div className="code-box">
+        <span className="code" aria-label={`Link code ${state.link.code.split('').join(' ')}`}>{code}</span>
+        <button className="btn btn-secondary btn-sm" onClick={() => void navigator.clipboard.writeText(state.link.code).then(() => setCopied(true)).catch(() => setCopied(false))}>
+          {copied ? <Check size={14} /> : <Copy size={14} />} {t(copied ? 'common_copied' : 'common_copy')}
+        </button>
+      </div> : state.k === 'expired' || state.k === 'error' ? <div className="banner warn" role="alert">
+        <span className="grow">{state.k === 'error' ? state.message : t('phone_expired')}</span>
+        <button className="btn btn-secondary btn-sm" onClick={() => { setCopied(false); void begin(); }}><RefreshCw size={14} /> {t('phone_new_code')}</button>
+      </div> : <p role="status">{t(state.k === 'finishing' ? 'phone_finishing' : 'setup_checking')}</p>}
+      {state.k === 'waiting' && <div style={{ display: 'grid', gap: 6 }}>
+        <strong>{t('phone_step_check')}</strong>
+        <span className="muted">{t('phone_step_check_sub')}</span>
+        <span className="fingerprint" aria-label={t('phone_step_check')}>{state.deviceFp}</span>
+        <span className="faint" role="status">{t('phone_waiting')}</span>
+      </div>}
+    </div>
+  );
   return (
     <ol className="steps">
       <li>

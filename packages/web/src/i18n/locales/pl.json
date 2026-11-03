@@ -37,5 +37,7 @@
   "desktop_updates": "Aktualizacje",
   "call_security_waiting": "Oczekiwanie na zaszyfrowane multimedia",
   "signin_methods_unavailable": "Nie udało się sprawdzić wszystkich metod logowania. Odśwież opcje i spróbuj ponownie.",
-  "desktop_local_test": "Odizolowany test lokalny"
+  "desktop_local_test": "Odizolowany test lokalny",
+  "desktop_setup_title": "Dokończ logowanie",
+  "desktop_setup_keys": "Użyj raz telefonu lub klucza odzyskiwania, aby otworzyć tutaj swoje wiadomości."
 }

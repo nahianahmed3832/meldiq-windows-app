@@ -1,12 +1,13 @@
-param([Parameter(Mandatory=$true)][string]$CandidateDirectory)
+param([Parameter(Mandatory=$true)][string]$CandidateDirectory, [string]$CandidateInstaller)
 $ErrorActionPreference = 'Stop'
 if ($env:CI -ne 'true') { throw 'Run this destructive installation harness only on a disposable CI runner, never a user laptop' }
 $baseline = Get-Content -Raw docs/desktop/evidence/private-update-0.2.1/publication.json | ConvertFrom-Json
 $baselineFile = Join-Path $env:RUNNER_TEMP 'Meldiq-Setup-0.2.1-baseline.exe'
 Invoke-WebRequest -Uri $baseline.download -OutFile $baselineFile
 if ((Get-FileHash -Algorithm SHA256 $baselineFile).Hash.ToLowerInvariant() -cne $baseline.sha256 -or (Get-Item $baselineFile).Length -ne $baseline.bytes) { throw 'Published baseline integrity mismatch' }
-$candidate = Get-ChildItem -LiteralPath (Join-Path $CandidateDirectory 'release') -Filter '*UNSIGNED-DEV.exe' | Select-Object -First 1
-if (-not $candidate) { throw 'Development installer is missing from the qualified candidate artifact' }
+$candidate = if ($CandidateInstaller) { Get-Item -LiteralPath $CandidateInstaller } else { Get-ChildItem -LiteralPath (Join-Path $CandidateDirectory 'release') -Filter '*UNSIGNED-DEV.exe' | Select-Object -First 1 }
+if (-not $candidate) { throw 'Installer is missing from the qualified candidate artifact' }
+if ($candidate.Directory.FullName -cne (Resolve-Path (Join-Path $CandidateDirectory 'release')).Path) { throw 'Candidate installer must be inside its qualified release directory' }
 $checksumFile = Join-Path $CandidateDirectory 'release/checksums.sha256'
 $checksum = Get-Content $checksumFile | Where-Object { $_.EndsWith($candidate.Name) } | Select-Object -First 1
 if (-not $checksum -or -not $checksum.StartsWith((Get-FileHash -Algorithm SHA256 $candidate.FullName).Hash.ToLowerInvariant())) { throw 'Candidate artifact checksum mismatch' }

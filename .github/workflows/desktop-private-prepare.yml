@@ -17,6 +17,9 @@ jobs:
       - run: npm run lint
       - run: npm test
       - run: npm run test:web
+      - name: Install the browser for the compact sign-in regression
+        run: npx playwright install chromium
+      - run: npm run test:compact-signin
       - run: npm run verify:snapshot
       - name: Build public candidate and two isolated qualification installers
         run: node scripts/prepare-private-candidates.mjs

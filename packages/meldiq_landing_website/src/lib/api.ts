@@ -15,6 +15,8 @@ export const zOffer = z.object({
   description: z.string(),
   audience: z.enum(["personal", "organization"]),
   interval: z.enum(["month", "year"]),
+  billingFrequency: z.number().int().positive().optional(),
+  term: z.enum(["monthly", "quarterly", "yearly"]).nullable().optional(),
   currency: z.string(),
   amountMinor: z.number().int().nonnegative(),
   trialDays: z.number().int().nonnegative(),
@@ -248,6 +250,17 @@ const zSparkLevel = z.object({
   screen: z.array(z.string()),
 });
 const zPrice = z.object({ currency: z.string(), amountMinor: z.number() }).nullable();
+/** Published terms. A configured price alone never enables a purchase. */
+export const zPlusTerm = z.object({
+  key: z.enum(["monthly", "quarterly", "yearly"]),
+  months: z.number().int().positive(),
+  amountMinor: z.number().int().nonnegative(),
+  interval: z.enum(["month", "year"]),
+  billingFrequency: z.number().int().positive(),
+  currency: z.string(),
+  available: z.boolean().optional(),
+});
+export type PlusTerm = z.infer<typeof zPlusTerm>;
 export const zMojoCatalog = z.object({
   version: z.string(),
   plans: z.array(zPlanPerks),
@@ -255,6 +268,7 @@ export const zMojoCatalog = z.object({
   spark: z.object({ listPriceMinor: z.number(), interval: z.string(), maxPurchase: z.number(), levels: z.array(zSparkLevel) }),
   gifts: z.object({ months: z.array(z.number()) }),
   enforced: z.boolean().optional(),
+  plusTerms: z.array(zPlusTerm).optional(),
   onSale: z.object({ plus: zPrice.nullish(), spark: zPrice.optional(), gifts: z.boolean().optional() }).partial().optional(),
 });
 export type MojoCatalog = z.infer<typeof zMojoCatalog>;

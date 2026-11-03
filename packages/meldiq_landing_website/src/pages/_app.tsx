@@ -3,6 +3,7 @@ import Head from "next/head";
 import "../styles/site.css";
 import "../styles/marketing.css";
 import "../styles/reference-home.css";
+import "../styles/refresh.css";
 
 export default function MeldiqSite({ Component, pageProps }: AppProps) {
   return (
