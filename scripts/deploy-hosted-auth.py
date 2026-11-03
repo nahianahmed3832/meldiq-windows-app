@@ -10,6 +10,7 @@ import re
 import subprocess
 import sys
 import tempfile
+import time
 from datetime import datetime, timezone
 
 os.umask(0o077)
@@ -97,9 +98,17 @@ try:
     replace(after)
     command(['nginx', '-t'])
     command(['systemctl', 'reload', 'nginx'])
+    # systemctl reload returns before nginx's new workers necessarily accept a request.
+    # Keep the exact hash assertion, allowing a bounded overlap with draining workers.
     for route, name in routes.items():
-        actual = command(['curl', '--fail', '--silent', '--show-error', '--connect-timeout', '5', '--max-time', '15', '--resolve', 'web.meldiq.app:443:127.0.0.1', 'https://web.meldiq.app' + route])
-        assert digest(actual) == payload['files'][name]['sha256'], 'Served callback hash mismatch'
+        deadline = time.monotonic() + 15
+        while True:
+            actual = command(['curl', '--fail', '--silent', '--show-error', '--connect-timeout', '5', '--max-time', '15', '--resolve', 'web.meldiq.app:443:127.0.0.1', 'https://web.meldiq.app' + route])
+            if digest(actual) == payload['files'][name]['sha256']:
+                break
+            if time.monotonic() >= deadline:
+                raise RuntimeError('Served callback hash mismatch: ' + route + ' actual=' + digest(actual))
+            time.sleep(0.5)
     assert Path('/opt/meldiq-web/current').resolve() == web
     assert json.loads(command(['docker', 'inspect', 'griip-internal-messaging-api-1']))[0]['Image'] == container['Image']
 except Exception:
