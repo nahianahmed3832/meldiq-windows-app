@@ -25,7 +25,7 @@ export function Detail({ value }: { value: string }) {
 const RELATED = [
   { href: "/legal/terms", label: "Terms of Service" },
   { href: "/legal/privacy", label: "Privacy Policy" },
-  { href: "/legal/billing", label: "Mojo Plus terms" },
+  { href: "/legal/billing", label: "Meldiq Plus terms" },
   { href: "/legal/acceptable-use", label: "Acceptable use" },
   { href: "/legal/account-deletion", label: "Account deletion & your data" },
 ];

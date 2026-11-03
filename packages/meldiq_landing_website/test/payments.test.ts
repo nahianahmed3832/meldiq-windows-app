@@ -5,7 +5,7 @@ import { forgetPayment, paymentDetails, paymentUrl, pendingPayment, rememberPaym
 import { SessionStore } from "../src/lib/session";
 
 function setup({
-  amount = 399,
+  amount = 499,
   provider = "paypal",
   environment = "live",
   subscriptions = true,
@@ -39,12 +39,12 @@ function setup({
         reason: null,
         subscription: paid
           ? {
-              plan: { key: "plus", name: "Mojo Plus" },
+              plan: { key: "plus", name: "Meldiq Plus" },
               status: "active",
               standing: "entitled",
               interval: "month",
               currency: "USD",
-              amountMinor: 399,
+              amountMinor: 499,
               currentPeriodEnd: Date.now() + 86400000,
               trialEnd: null,
               cancelAtPeriodEnd: false,
@@ -72,7 +72,7 @@ function setup({
         confirmed: purchaseConfirmed,
         approved,
         currency: "USD",
-        amountMinor: 399,
+        amountMinor: 499,
         interval: "month",
         expiresAt: Date.now() + 100000,
       },
@@ -111,7 +111,7 @@ describe("PayPal website checkout", () => {
     expect(calls.find((c) => c.path === "/v2/billing/checkout")?.body).toEqual({ planKey: "plus", returnTo: "site" });
   });
   it("refuses changed pricing before starting any provider session", async () => {
-    const { session, calls, fetcher } = setup({ amount: 499 });
+    const { session, calls, fetcher } = setup({ amount: 399 });
     await expect(startPayment(FIXTURE_PLANS.plans[0]!, await paymentDetails(session), session, fetcher)).rejects.toMatchObject({ code: "offer_changed" });
     expect(calls.some((c) => c.path === "/v2/billing/checkout")).toBe(false);
   });
@@ -140,12 +140,12 @@ describe("PayPal website checkout", () => {
     }
   });
   it("does not treat approval or an unrelated active account state as a confirmed payment", async () => {
-    const pending = { accountId: "acc_test", checkoutId: "chk_test", provider: "paypal" as const, mode: "live" as const };
+    const pending = { amountMinor: 499, accountId: "acc_test", checkoutId: "chk_test", provider: "paypal" as const, mode: "live" as const };
     expect(await verifyPayment(setup({ paid: true }).session, pending)).toBe("pending");
     expect(await verifyPayment(setup({ approved: true }).session, pending)).toBe("pending");
   });
   it("distinguishes approved future billing from a paid and active subscription", async () => {
-    const pending = { accountId: "acc_test", checkoutId: "chk_test", provider: "paypal" as const, mode: "live" as const };
+    const pending = { amountMinor: 499, accountId: "acc_test", checkoutId: "chk_test", provider: "paypal" as const, mode: "live" as const };
     expect(await verifyPayment(setup({ approved: true, billingStartAt: Date.now() + 86400000 }).session, pending)).toBe("scheduled");
     expect(await verifyPayment(setup({ paid: true, approved: true, purchaseConfirmed: true }).session, pending)).toBe("confirmed");
   });

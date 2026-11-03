@@ -194,7 +194,7 @@ export const zReferral = z.object({
 export type Referral = z.infer<typeof zReferral>;
 export const zReferralClaimed = z.object({ inviteeEndsAt: z.number(), inviterDays: z.number() });
 
-/** The catalog before Mojo Plus is published (and from an API without billing routes yet): nothing on sale. */
+/** The catalog before Meldiq Plus is published (and from an API without billing routes yet): nothing on sale. */
 export const NOTHING_ON_SALE: PublicPlans = { available: false, mode: null, plans: [] };
 
 /** Whether [e] says the API has no billing routes (an API older than 0.52.0): treated as "not on sale yet", not a fault. */
@@ -223,7 +223,7 @@ export const endpoints = {
 };
 
 /**
- * Mojo Plus's perks and Meldiq Spark's levels (GET /v2/mojo/catalog, API 0.54.0; numbers operators may change in the
+ * Meldiq Plus's perks and Meldiq Spark's levels (GET /v2/mojo/catalog, API 0.54.0; numbers operators may change in the
  * console since 0.58.0). Only the fields the site shows are checked; anything else the API adds is ignored.
  */
 const zPlanPerks = z.object({
@@ -255,7 +255,7 @@ export const zMojoCatalog = z.object({
   spark: z.object({ listPriceMinor: z.number(), interval: z.string(), maxPurchase: z.number(), levels: z.array(zSparkLevel) }),
   gifts: z.object({ months: z.array(z.number()) }),
   enforced: z.boolean().optional(),
-  onSale: z.object({ spark: zPrice.optional(), gifts: z.boolean().optional() }).partial().optional(),
+  onSale: z.object({ plus: zPrice.nullish(), spark: zPrice.optional(), gifts: z.boolean().optional() }).partial().optional(),
 });
 export type MojoCatalog = z.infer<typeof zMojoCatalog>;
 export type PlanPerks = MojoCatalog["plans"][number];

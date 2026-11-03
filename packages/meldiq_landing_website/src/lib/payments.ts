@@ -100,6 +100,7 @@ export async function startPayment(offer: Offer, disclosed: PaymentDetails, sess
 }
 
 const zPendingPayment = z.object({
+  amountMinor: z.number().int().positive().optional(),
   approvalUrl: z.string().optional(),
   expiresAt: z.number().optional(),
   accountId: z.string(),
@@ -134,7 +135,7 @@ export async function verifyPayment(session: BillingSession, pending: PendingPay
   let scheduled = false;
   if (pending?.provider === "paypal") {
     const purchase = await session.authed(`/v2/billing/paypal/checkouts/${encodeURIComponent(pending.checkoutId)}`, zPayPalCheckout);
-    if (purchase.id !== pending.checkoutId || purchase.product !== "plus" || purchase.amountMinor !== 399 || purchase.interval !== "month") {
+    if (purchase.id !== pending.checkoutId || purchase.product !== "plus" || purchase.amountMinor !== (pending.amountMinor ?? 399) || purchase.interval !== "month") {
       throw new ApiError(409, "checkout_mismatch", "This payment could not be matched to your Plus subscription. Check billing before trying again.");
     }
     confirmed = purchase.confirmed;

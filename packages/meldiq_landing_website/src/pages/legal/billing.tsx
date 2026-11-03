@@ -10,11 +10,11 @@ export default function BillingTerms() {
   const catalog = useCatalog();
   return (
     <LegalPage
-      title="Mojo Plus: renewal, cancellation & refunds"
-      description="How Mojo Plus works: prices, automatic renewal, trials, cancelling, failed payments, refunds, and using one plan on every device."
+      title="Meldiq Plus: renewal, cancellation & refunds"
+      description="How Meldiq Plus works: prices, automatic renewal, trials, cancelling, failed payments, refunds, and using one plan on every device."
       intro={
         <p>
-          These terms apply when you subscribe to Mojo Plus for your account. They&apos;re part of the <Link href="/legal/terms">Terms of Service</Link>. Plans
+          These terms apply when you subscribe to Meldiq Plus for your account. They&apos;re part of the <Link href="/legal/terms">Terms of Service</Link>. Plans
           and prices are listed on the <Link href="/pricing">pricing page</Link>.
         </p>
       }
@@ -55,7 +55,7 @@ export default function BillingTerms() {
           body: (
             <>
               <p>
-                While free days are running, every Meldiq account gets a free period of Mojo Plus, counted from when the account was created (or from the day
+                While free days are running, every Meldiq account gets a free period of Meldiq Plus, counted from when the account was created (or from the day
                 free days started, for older accounts). No card is needed, and it ends by itself: nothing is charged and nothing renews.
               </p>
               <p>

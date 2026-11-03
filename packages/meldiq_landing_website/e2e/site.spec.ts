@@ -1,15 +1,16 @@
 import { expect, type Page, test } from "@playwright/test";
+import { WINDOWS_DOWNLOAD } from "../src/lib/windowsDownload";
 const API = "http://127.0.0.1:8199";
 const PUBLIC_PAGES = [
   ["/", /Your people,.*your channels.*[Oo]ne place to talk/],
   ["/features", /Everything you need.*to talk, together/],
-  ["/pricing", /Free messaging.*Optional Mojo/],
+  ["/pricing", /Free messaging.*Optional Meldiq/],
   ["/download", /Download Meldiq/],
   ["/faq", /Questions, answered/],
   ["/support", /How can we help/],
   ["/legal/terms", /Terms of Service/],
   ["/legal/privacy", /Privacy Policy/],
-  ["/legal/billing", /Mojo Plus: renewal, cancellation/],
+  ["/legal/billing", /Meldiq Plus: renewal, cancellation/],
   ["/legal/acceptable-use", /Acceptable Use Policy/],
   ["/legal/account-deletion", /Account deletion/],
 ] as const;
@@ -59,7 +60,7 @@ test.describe("redesigned public pages", () => {
     await page.getByRole("button", { name: "Open navigation", exact: true }).click();
     await page.getByRole("navigation", { name: "Main navigation" }).getByRole("link", { name: "Plus", exact: true }).click();
     await expect(page).toHaveURL(/pricing$/);
-    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Free messaging. Optional Mojo Plus.");
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Free messaging. Optional Meldiq Plus.");
     await expect(page.getByRole("button", { name: "Open navigation", exact: true })).toHaveAttribute("aria-expanded", "false");
   });
   test("FAQ combines search and category filters and resets empty results", async ({ page }) => {
@@ -82,7 +83,7 @@ test.describe("redesigned public pages", () => {
       "https://play.google.com/store/apps/details?id=com.meldiq.android",
     );
     await expect(page.getByRole("link", { name: "Open Meldiq in your browser" })).toHaveAttribute("href", "https://web.meldiq.app/");
-    await expect(page.getByRole("link", { name: "Download for Windows", exact: true })).toHaveAttribute("href", /\/downloads\/windows\/0\.2\.0\//);
+    await expect(page.getByRole("link", { name: "Download for Windows", exact: true })).toHaveAttribute("href", WINDOWS_DOWNLOAD.href);
     await expect(page.locator(".coming-card")).toHaveCount(2);
     await expect(page.locator(".coming-card a,.coming-card button")).toHaveCount(0);
   });
@@ -90,9 +91,9 @@ test.describe("redesigned public pages", () => {
     await page.route("**/v2/billing/plans", (r) => r.fulfill({ json: { available: false, mode: null, plans: [] } }));
     await page.goto("/pricing");
     await expect(page.getByRole("article", { name: "Mojo Go" })).toHaveCount(0);
-    await expect(page.getByRole("article", { name: "Mojo Plus" })).toContainText("$3.99");
-    await expect(page.getByRole("article", { name: "Mojo Plus" })).toContainText("Files up to 1,024 MB");
-    await expect(page.getByRole("button", { name: /Choose Mojo/ })).toHaveCount(0);
+    await expect(page.getByRole("article", { name: "Meldiq Plus" })).toContainText("$4.99");
+    await expect(page.getByRole("article", { name: "Meldiq Plus" })).toContainText("Files up to 1 GB");
+    await expect(page.getByRole("button", { name: /Choose Meldiq/ })).toHaveCount(0);
     await expect(page.locator(".plan-grid")).not.toContainText("$0.99");
   });
   test("current catalog benefits and one-time Sparks match the app", async ({ page }) => {
@@ -100,7 +101,7 @@ test.describe("redesigned public pages", () => {
     const comparison = page.getByRole("table");
     await expect(comparison).toContainText("8,000");
     await expect(comparison).toContainText("2,000");
-    await expect(comparison).toContainText("1,024 MB");
+    await expect(comparison).toContainText("1 GB");
     await expect(comparison).toContainText("2K (1440p) 60 fps");
     await expect(comparison.getByRole("row", { name: /Bots you can make/ })).toContainText("10");
     await expect(page.locator(".spark-levels")).toContainText("20 sticker slots");
@@ -139,7 +140,7 @@ test.describe("redesigned public pages", () => {
     );
     await page.goto("/pricing");
     await expect(page.locator(".notice")).toContainText("Check billing");
-    await expect(page.getByRole("article", { name: "Mojo Plus" })).toContainText("Check availability");
+    await expect(page.getByRole("article", { name: "Meldiq Plus" })).toContainText("Check availability");
   });
   test("legacy plans and stale limits cannot reopen purchases", async ({ page }) => {
     await page.route("**/v2/mojo/catalog", async (route) => {
@@ -150,9 +151,9 @@ test.describe("redesigned public pages", () => {
     });
     await page.goto("/pricing?plan=go");
     await expect(page.getByRole("article", { name: "Mojo Go" })).toHaveCount(0);
-    await expect(page.getByRole("article", { name: "Mojo Plus" })).toContainText("$3.99");
-    await expect(page.getByRole("article", { name: "Mojo Plus" })).toContainText("Files up to 1,024 MB");
-    await expect(page.getByRole("button", { name: /Choose Mojo/ })).toHaveCount(0);
+    await expect(page.getByRole("article", { name: "Meldiq Plus" })).toContainText("$4.99");
+    await expect(page.getByRole("article", { name: "Meldiq Plus" })).toContainText("Files up to 1 GB");
+    await expect(page.getByRole("button", { name: /Choose Meldiq/ })).toHaveCount(0);
     await expect(page.getByRole("table").locator("thead th")).toHaveCount(3);
   });
   test("console entitlement changes appear in the comparison", async ({ page }) => {
@@ -188,24 +189,24 @@ test.describe("existing checkout integration", () => {
   test("sends a signed-out visitor to sign in, then back to the plan", async ({ page }) => {
     const email = await account(page);
     await page.goto("/pricing");
-    await page.getByRole("button", { name: "Choose Mojo Plus" }).click();
+    await page.getByRole("button", { name: "Choose Meldiq Plus" }).click();
     await expect(page).toHaveURL(/\/login\?next=/);
     await page.getByLabel("Email").fill(email);
     await page.getByLabel("Password").fill("correct horse battery");
     await page.getByRole("button", { name: "Sign in" }).click();
-    await expect(page.getByRole("dialog", { name: "Get Mojo Plus" })).toBeVisible();
+    await expect(page.getByRole("dialog", { name: "Get Meldiq Plus" })).toBeVisible();
   });
 
   test("states every term before payment, needs agreement, then hands over to Stripe", async ({ page }) => {
     const email = await account(page);
     await signIn(page, email, "/pricing");
-    await page.getByRole("button", { name: "Choose Mojo Plus" }).click();
-    const dialog = page.getByRole("dialog", { name: "Get Mojo Plus" });
-    await expect(dialog).toContainText("$3.99 / month (USD)");
+    await page.getByRole("button", { name: "Choose Meldiq Plus" }).click();
+    const dialog = page.getByRole("dialog", { name: "Get Meldiq Plus" });
+    await expect(dialog).toContainText("$4.99 / month (USD)");
     await expect(dialog).toContainText("renews automatically");
     await expect(dialog).toContainText("No tax is added");
     // The account is in its 14-day trial: the first payment waits for its end.
-    await expect(dialog).toContainText("You're in a free Mojo Plus period until");
+    await expect(dialog).toContainText("You're in a free Meldiq Plus period until");
     await expect(dialog).toContainText("Cancel any time");
     await expect(dialog).toContainText("the plan stops until a payment succeeds");
     await expect(dialog).not.toContainText("free trial");
@@ -254,7 +255,7 @@ test.describe("existing account trials and referrals", () => {
   test("the account page shows the trial and the personal invite link", async ({ page }) => {
     const email = await account(page);
     await signIn(page, email);
-    await expect(page.getByText(/Your free Mojo Plus trial runs until/)).toBeVisible();
+    await expect(page.getByText(/Your free Meldiq Plus trial runs until/)).toBeVisible();
     await expect(page.getByText(/^1[34] days left$/)).toBeVisible();
     const link = page.getByLabel("Your invite link");
     await expect(link).toHaveValue(/^https:\/\/meldiq\.app\/signup\?ref=[A-Z0-9]+$/);
@@ -274,8 +275,8 @@ test.describe("existing account trials and referrals", () => {
     await page.getByRole("button", { name: "Create account" }).click();
     await page.getByLabel("Verification code").fill("123456");
     await page.getByRole("button", { name: "Verify and sign in" }).click();
-    await expect(page.getByText("your invite gave you and your friend 30 days of Mojo Plus")).toBeVisible();
-    await expect(page.getByText(/You joined through an invite: Mojo Plus is free until/)).toBeVisible();
+    await expect(page.getByText("your invite gave you and your friend 30 days of Meldiq Plus")).toBeVisible();
+    await expect(page.getByText(/You joined through an invite: Meldiq Plus is free until/)).toBeVisible();
   });
 });
 
@@ -350,8 +351,8 @@ test.describe("PayPal integration", () => {
   test("reviews PayPal, preserves the checkout, and verifies future billing after return", async ({ page }) => {
     const email = await account(page, { provider: "paypal" });
     await signIn(page, email, "/pricing");
-    await page.getByRole("button", { name: "Choose Mojo Plus" }).click();
-    const dialog = page.getByRole("dialog", { name: "Get Mojo Plus" });
+    await page.getByRole("button", { name: "Choose Meldiq Plus" }).click();
+    const dialog = page.getByRole("dialog", { name: "Get Meldiq Plus" });
     const pay = dialog.getByRole("button", { name: "Continue to PayPal" });
     await expect(pay).toBeDisabled();
     await expect(dialog).toContainText("Payment is handled securely by PayPal");
@@ -385,7 +386,7 @@ test.describe("billing page", () => {
     // The provider's confirmation reaches the server (the mock stands in for the verified webhook).
     await page.request.post(`${API}/__test/activate`, { data: { email, planKey: "plus" } });
     await expect(page.getByText("Your subscription is active")).toBeVisible({ timeout: 15_000 });
-    await expect(page.getByRole("definition").filter({ hasText: "Mojo Plus" })).toBeVisible();
+    await expect(page.getByRole("definition").filter({ hasText: "Meldiq Plus" })).toBeVisible();
     await expect(page.getByRole("cell", { name: "Paid" })).toBeVisible();
   });
 
@@ -394,6 +395,6 @@ test.describe("billing page", () => {
     await signIn(page, email);
     await page.goto("/account/billing?checkout=canceled");
     await expect(page.getByText("Checkout was closed. Check your subscription status below before trying again.")).toBeVisible();
-    await expect(page.getByRole("heading", { name: "Mojo Plus", exact: true, level: 2 })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Meldiq Plus", exact: true, level: 2 })).toBeVisible();
   });
 });

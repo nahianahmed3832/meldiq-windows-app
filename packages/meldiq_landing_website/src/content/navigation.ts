@@ -42,7 +42,7 @@ export const FOOTER: FooterColumn[] = [
     links: [
       { href: "/account", label: "Your account" },
       { href: "/account/billing", label: "Billing" },
-      { href: "/legal/billing#cancel", label: "Cancel Mojo Plus" },
+      { href: "/legal/billing#cancel", label: "Cancel Meldiq Plus" },
       { href: "/support", label: "Contact support" },
     ],
   },
@@ -51,11 +51,11 @@ export const FOOTER: FooterColumn[] = [
     links: [
       { href: "/legal/terms", label: "Terms of Service" },
       { href: "/legal/privacy", label: "Privacy Policy" },
-      { href: "/legal/billing", label: "Mojo Plus terms" },
+      { href: "/legal/billing", label: "Meldiq Plus terms" },
       { href: "/legal/acceptable-use", label: "Acceptable use" },
       { href: "/legal/account-deletion", label: "Account deletion & your data" },
     ],
   },
 ];
 
-export const FOOTER_NOTE = "Communities, direct messages and calls, encrypted on your devices.";
+export const FOOTER_NOTE = "Communities, direct messages and calls in one place.";

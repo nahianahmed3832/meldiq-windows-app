@@ -24,7 +24,7 @@ const FREE_INCLUDES = [
 ];
 
 /**
- * Meldiq's plans: Free, and Mojo Plus for a person's account. Prices on sale come from the API's catalog (the server
+ * Meldiq's plans: Free, and Meldiq Plus for a person's account. Prices on sale come from the API's catalog (the server
  * decides what is charged); until it has them, the owner-approved prices are shown as announced, without a buy button.
  */
 export default function Pricing() {
@@ -80,8 +80,8 @@ export default function Pricing() {
 
   return (
     <Layout
-      title="Mojo Plus"
-      description="Meldiq is free to use. Mojo Plus is $3.99/month with 1,024 MB uploads. Subscribe securely with PayPal; one subscription works on every device."
+      title="Meldiq Plus"
+      description="Meldiq is free to use. Meldiq Plus is $4.99/month with 1 GB uploads. Subscribe securely with PayPal; one subscription works on every device."
     >
       {load.state === "ready" && load.catalog.mode === "test" ? (
         <div className="test-banner" role="status">
@@ -92,17 +92,17 @@ export default function Pricing() {
         <div className="wrap">
           <TrialPill load={load} />
           <span className="eyebrow" style={{ display: "block" }}>
-            Mojo Plus
+            Meldiq Plus
           </span>
           <a href="/" className="breadcrumb">
-            Home / Mojo Plus
+            Home / Meldiq Plus
           </a>
-          <h1>Free messaging. Optional Mojo Plus.</h1>
+          <h1>Free messaging. Optional Meldiq Plus.</h1>
           <p>
             Optional subscriptions help cover server costs, ongoing maintenance and platform improvements so Meldiq can keep running smoothly. Your support
             helps us keep core messaging free for everyone.
           </p>
-          <p>Mojo Plus adds account extras for $3.99/month, including files up to 1,024 MB each, with one subscription across supported devices.</p>
+          <p>Meldiq Plus adds account extras for $4.99/month, including files up to 1 GB each, with one subscription across supported devices.</p>
           <CatalogStatus />
         </div>
       </section>
@@ -147,7 +147,7 @@ export default function Pricing() {
           ) : null}
           {announced ? (
             <p className="muted" style={{ marginTop: 20 }}>
-              Mojo Plus isn&apos;t on sale yet. When it is, its full terms are shown here and again before anyone is asked to pay.
+              Meldiq Plus isn&apos;t on sale yet. When it is, its full terms are shown here and again before anyone is asked to pay.
             </p>
           ) : null}
         </div>
@@ -160,7 +160,7 @@ export default function Pricing() {
               <span className="eyebrow">Community add-on</span>
               <h2 id="bots-plus-heading">Meldiq Bots+</h2>
               <p>
-                Premium bots for one community, {formatPrice(botsPlus.amountMinor, botsPlus.currency, botsPlus.interval)}. Separate from your personal Mojo Plus
+                Premium bots for one community, {formatPrice(botsPlus.amountMinor, botsPlus.currency, botsPlus.interval)}. Separate from your personal Meldiq Plus
                 plan and Spark boosting.
               </p>
             </div>
@@ -186,7 +186,7 @@ export default function Pricing() {
                   </>
                 ) : (
                   <>
-                    Free or <em>Mojo Plus.</em>
+                    Free or <em>Meldiq Plus.</em>
                   </>
                 )}
               </h2>
@@ -194,7 +194,7 @@ export default function Pricing() {
                 Core messaging is in Free.{" "}
                 {mojo.enforced === true
                   ? "These account benefits come from the current catalog."
-                  : "Mojo Plus is the updated $3.99/month plan with 1,024 MB uploads. Benefits below are a preview until the plan is available."}
+                  : "Meldiq Plus is the updated $4.99/month plan with 1 GB uploads. Benefits below are a preview until the plan is available."}
               </p>
             </div>
             <CompareTable mojo={mojo} />
@@ -265,21 +265,21 @@ export default function Pricing() {
       <section className="section alt">
         <div className="wrap grid cols-3">
           <div className="card">
-            <h3>Mojo Plus renewal and cancellation</h3>
+            <h3>Meldiq Plus renewal and cancellation</h3>
             <p className="muted">
-              Mojo Plus renews automatically every month. Cancel any time from your billing page; you keep the plan until the end of the period you paid for.{" "}
+              Meldiq Plus renews automatically every month. Cancel any time from your billing page; you keep the plan until the end of the period you paid for.{" "}
               <Link href="/legal/billing">Details</Link>
             </p>
           </div>
           <div className="card">
             <h3>One subscription, every device</h3>
             <p className="muted">
-              Mojo Plus belongs to your Meldiq account. Sign in on another device and it&apos;s already there. You never pay twice to switch.
+              Meldiq Plus belongs to your Meldiq account. Sign in on another device and it&apos;s already there. You never pay twice to switch.
             </p>
           </div>
           <div className="card">
             <h3>Nothing is taken away</h3>
-            <p className="muted">If Mojo Plus ends, your communities, messages and files stay. You&apos;re simply back on the free tier.</p>
+            <p className="muted">If Meldiq Plus ends, your communities, messages and files stay. You&apos;re simply back on the free tier.</p>
           </div>
         </div>
       </section>

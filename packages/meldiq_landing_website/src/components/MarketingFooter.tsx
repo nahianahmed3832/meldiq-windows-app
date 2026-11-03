@@ -14,15 +14,16 @@ export function MarketingFooter({ minimal = false }: { minimal?: boolean }) {
         <nav aria-label="Footer navigation">
           {[
             ["Features", "/features"],
-            ["Mojo Plus", "/pricing"],
+            ["Meldiq Plus", "/pricing"],
             ["Download", "/download"],
             ["FAQ", "/faq"],
             ["Support", "/support"],
+            ["Service status", "https://status.meldiq.app"],
             ["Your account", "/account"],
             ["Billing", "/account/billing"],
             ["Terms", "/legal/terms"],
             ["Privacy", "/legal/privacy"],
-            ["Mojo Plus terms", "/legal/billing"],
+            ["Meldiq Plus terms", "/legal/billing"],
             ["Acceptable use", "/legal/acceptable-use"],
             ["Account & data", "/legal/account-deletion"],
           ].map(([label, href]) => (
@@ -57,10 +58,11 @@ export function MarketingFooter({ minimal = false }: { minimal?: boolean }) {
         <div className={"footer-col"}>
           <h2>{"Explore"}</h2>
           <a href={"/features"}>{"Features"}</a>
-          <a href={"/pricing"}>{"Pricing & Mojo Plus"}</a>
+          <a href={"/pricing"}>{"Pricing & Meldiq Plus"}</a>
           <a href={"/download"}>{"Download"}</a>
           <a href={"/faq"}>{"FAQ"}</a>
           <a href={"/support"}>{"Support"}</a>
+          <a href="https://status.meldiq.app">Service status</a>
         </div>
         <div className={"footer-col"}>
           <h2>{"Your account"}</h2>
@@ -68,13 +70,13 @@ export function MarketingFooter({ minimal = false }: { minimal?: boolean }) {
           <a href={SITE.webAppUrl}>{"Sign in to Meldiq"}</a>
           <a href={"https://web.meldiq.app/"}>{"Open Meldiq"}</a>
           <a href={"/account/billing"}>{"Manage billing"}</a>
-          <a href={"/legal/billing#cancel"}>{"Cancel Mojo Plus"}</a>
+          <a href={"/legal/billing#cancel"}>{"Cancel Meldiq Plus"}</a>
         </div>
         <div className={"footer-col"}>
           <h2>{"The important stuff"}</h2>
           <a href={"/legal/terms"}>{"Terms of Service"}</a>
           <a href={"/legal/privacy"}>{"Privacy Policy"}</a>
-          <a href={"/legal/billing"}>{"Mojo Plus terms"}</a>
+          <a href={"/legal/billing"}>{"Meldiq Plus terms"}</a>
           <a href={"/legal/acceptable-use"}>{"Acceptable Use Policy"}</a>
           <a href={"/legal/account-deletion"}>{"Account deletion & your data"}</a>
         </div>

@@ -7,7 +7,7 @@ describe("approved subscription rollout", () => {
   it("never offers Go, old pricing, yearly billing, or organization plans for a new purchase", () => {
     const stale = [
       { ...plus, key: "go", amountMinor: 99 },
-      { ...plus, amountMinor: 499 },
+      { ...plus, amountMinor: 399 },
       { ...plus, interval: "year" as const },
       { ...plus, audience: "organization" as const },
       { ...plus, currency: "EUR" },
@@ -19,7 +19,7 @@ describe("approved subscription rollout", () => {
     const old = { ...FIXTURE_MOJO, plans: FIXTURE_MOJO.plans.map((p) => (p.key === "plus" ? { ...p, uploadBytes: 2_000_000_000 } : p)) };
     expect(subscriptionOffers([plus], old)).toEqual([]);
     expect(subscriptionOffers([plus], null)).toEqual([]);
-    expect(subscriptionPreview(old).plans.find((p) => p.key === "plus")?.uploadBytes).toBe(1_024_000_000);
+    expect(subscriptionPreview(old).plans.find((p) => p.key === "plus")?.uploadBytes).toBe(1_000_000_000);
     expect(subscriptionPreview(old).enforced).toBe(false);
     expect(old.plans.find((p) => p.key === "plus")?.uploadBytes).toBe(2_000_000_000);
   });

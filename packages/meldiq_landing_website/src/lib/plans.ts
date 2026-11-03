@@ -47,7 +47,7 @@ export function disclosures(o: Offer, firstSubscription = true, trialEndsAt: num
     "No tax is added: the price shown is what you pay.",
   ];
   if (trialEndsAt) {
-    lines.push(`You're in a free Mojo Plus period until ${formatDate(trialEndsAt)}: your first payment is taken then, not today.`);
+    lines.push(`You're in a free Meldiq Plus period until ${formatDate(trialEndsAt)}: your first payment is taken then, not today.`);
   } else if (o.trialDays > 0 && firstSubscription) {
     lines.push(
       `Your first subscription starts with a ${o.trialDays}-day free trial. If you don't cancel before it ends, the first payment of ${formatMoney(o.amountMinor, o.currency)} is taken then.`,
@@ -71,11 +71,11 @@ export function describeGrant(g: Grant): string {
     case "entitled":
       if (g.trial) {
         const until = formatDate(g.trial.endsAt);
-        if (g.trial.source === "signup") return `Your free ${g.plan?.name ?? "Mojo Plus"} trial runs until ${until}.`;
-        if (g.trial.source === "invite") return `You joined through an invite: ${g.plan?.name ?? "Mojo Plus"} is free until ${until}.`;
-        if (g.trial.source === "gift") return `${g.plan?.name ?? "Mojo Plus"} is yours until ${until}: a gift from a friend.`;
-        if (g.trial.source === "operator") return `${g.plan?.name ?? "Mojo Plus"} is free until ${until}, from the Meldiq team.`;
-        return `${g.plan?.name ?? "Mojo Plus"} is free until ${until}, thanks to friends you invited.`;
+        if (g.trial.source === "signup") return `Your free ${g.plan?.name ?? "Meldiq Plus"} trial runs until ${until}.`;
+        if (g.trial.source === "invite") return `You joined through an invite: ${g.plan?.name ?? "Meldiq Plus"} is free until ${until}.`;
+        if (g.trial.source === "gift") return `${g.plan?.name ?? "Meldiq Plus"} is yours until ${until}: a gift from a friend.`;
+        if (g.trial.source === "operator") return `${g.plan?.name ?? "Meldiq Plus"} is free until ${until}, from the Meldiq team.`;
+        return `${g.plan?.name ?? "Meldiq Plus"} is free until ${until}, thanks to friends you invited.`;
       }
       if (!g.accessUntil) return `${g.plan?.name ?? "Plan"} is active.`;
       return g.renews ? `${g.plan?.name} renews on ${formatDate(g.accessUntil)}.` : `${g.plan?.name} ends on ${formatDate(g.accessUntil)} and won't renew.`;

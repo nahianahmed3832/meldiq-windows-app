@@ -8,7 +8,7 @@ import { ANNOUNCED_PLANS } from "../lib/site";
 const DAY_MS = 86_400_000;
 
 /**
- * Mojo Plus on the marketing pages. Whether free days are on, and how many, comes from the price list (operators run
+ * Meldiq Plus on the marketing pages. Whether free days are on, and how many, comes from the price list (operators run
  * the program from the Platform Admin Console): nothing here promises a trial the server isn't giving.
  */
 interface LoadProps {
@@ -78,7 +78,7 @@ export function freeDaysBadge(load: CatalogLoad, key: string): string | null {
   return trial?.planKey === key && trial.days > 0 ? `${dayCount(trial.days)} free` : null;
 }
 
-/** The approved Mojo Plus plan and price (on sale, else as announced), for the home page. */
+/** The approved Meldiq Plus plan and price (on sale, else as announced), for the home page. */
 export function MojoTiers({ load }: LoadProps) {
   const tiers = ANNOUNCED_PLANS;
   const mojo = mojoOf(useMojoCatalog());
@@ -110,7 +110,7 @@ export function MojoTiers({ load }: LoadProps) {
   );
 }
 
-/** One Mojo Plus plan as the owner announced it, before it's on sale: its price and perks, and free days when it has them. */
+/** One Meldiq Plus plan as the owner announced it, before it's on sale: its price and perks, and free days when it has them. */
 export function AnnouncedPlanCard({ plan, load, perks }: { plan: (typeof ANNOUNCED_PLANS)[number]; load: CatalogLoad; perks: string[] }) {
   const badge = freeDaysBadge(load, plan.key);
   return (
@@ -188,7 +188,7 @@ export function DaysLeft({ endsAt, totalDays, now = Date.now() }: { endsAt: numb
   );
 }
 
-/** Mojo Plus in one band: what it is, its Plus plan and how free days work. The home and features pages show the same. */
+/** Meldiq Plus in one band: what it is, its Plus plan and how free days work. The home and features pages show the same. */
 export function MojoSection({ load }: LoadProps) {
   const trial = trialOf(load);
   return (
@@ -196,16 +196,16 @@ export function MojoSection({ load }: LoadProps) {
       <div className="wrap stack" style={{ gap: 32 }}>
         <div className="mojo-band">
           <div>
-            <span className="eyebrow">Mojo Plus</span>
+            <span className="eyebrow">Meldiq Plus</span>
             <h2 id="mojo-heading">Extras for your account, on every device.</h2>
             <p className="muted">
-              Everything you need to talk is free. Mojo Plus is optional at $3.99/month, with files up to 1,024 MB each. It belongs to your Meldiq account, so
+              Everything you need to talk is free. Meldiq Plus is optional at $4.99/month, with files up to 1 GB each. It belongs to your Meldiq account, so
               one subscription covers the web and your phone.
               {trial && trial.days > 0 ? ` Right now every new account gets ${dayCount(trial.days)} free, no card needed.` : ""}
             </p>
             <div className="hero-actions" style={{ marginTop: 18 }}>
               <Link href="/pricing" className="btn btn-primary">
-                See Mojo Plus
+                See Meldiq Plus
               </Link>
               {trial ? (
                 <Link href="/signup" className="btn btn-secondary">

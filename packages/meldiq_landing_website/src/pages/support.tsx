@@ -15,6 +15,7 @@ export default function Page() {
         <span className={"eyebrow"}>{"Support"}</span>
         <h1>How can we help?</h1>
         <p>{"Let’s get you pointed in the right direction."}</p>
+        <p><a href="https://status.meldiq.app">Check service health and active incidents →</a></p>
         <a className={"button secondary"} href={"/faq"}>
           {"Search all help topics"}
           <svg
@@ -89,7 +90,7 @@ export default function Page() {
               <path d={"m12 2 3 7 7 3-7 3-3 7-3-7-7-3 7-3Z"}></path>
             </svg>
           </span>
-          <h2>{"Mojo Plus & billing"}</h2>
+          <h2>{"Meldiq Plus & billing"}</h2>
           <p>{"Use the original billing page for existing subscriptions, invoices and cancellation."}</p>
           <a className={"button text-link"} href={"/account/billing"}>
             {"Open your billing account"}

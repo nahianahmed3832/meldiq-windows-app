@@ -15,11 +15,11 @@ export const SITE = {
 /** The Android app on Google Play (owner, 2026-10-28). */
 export const ANDROID_PLAY_URL = "https://play.google.com/store/apps/details?id=com.meldiq.android";
 
-/** The personal subscription approved on November 1, 2026. Spark remains separate community boosting. */
-export const MOJO = "Mojo Plus";
-/** The API defines the 1,024 MB file tier as 1,024 decimal MB. Match the live entitlement exactly. */
-export const PLUS_UPLOAD_BYTES = 1_024_000_000;
-export const ANNOUNCED_PLANS = [{ key: "plus", name: "Mojo Plus", amountMinor: 399, currency: "USD", interval: "month" }] as const;
+/** The personal subscription approved on November 2, 2026. Spark remains separate community boosting. */
+export const MOJO = "Meldiq Plus";
+/** The API caps individual files at one decimal gigabyte. */
+export const PLUS_UPLOAD_BYTES = 1_000_000_000;
+export const ANNOUNCED_PLANS = [{ key: "plus", name: "Meldiq Plus", amountMinor: 499, currency: "USD", interval: "month" }] as const;
 
 /** The operator's details for the legal pages. Unconfirmed ones stay visible placeholders. */
 export const OPERATOR = {

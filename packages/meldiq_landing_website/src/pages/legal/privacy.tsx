@@ -18,11 +18,11 @@ export default function Privacy() {
       sections={[
         {
           id: "encrypted",
-          title: "What we can't see",
+          title: "Messages, files and calls",
           body: (
             <p>
-              Message text, attachments, reactions, edits, read receipts and call media (with call encryption on, the default) are end-to-end encrypted on your
-              devices. Our servers store and relay only the encrypted form and can&apos;t read it. Your private keys never leave your devices.
+              Meldiq stores messages to deliver conversation history. Files are encrypted before upload. Current messages can include attachment keys that the
+              Meldiq server can read. Call media is end-to-end encrypted when call encryption is on. Check the call indicator in the app.
             </p>
           ),
         },
@@ -77,8 +77,8 @@ export default function Privacy() {
             <ul>
               <li>Hostinger: the server that runs Meldiq&apos;s API.</li>
               <li>MongoDB Atlas: part of Meldiq&apos;s database.</li>
-              <li>Amazon Web Services: encrypted file storage (Singapore region) and account emails.</li>
-              <li>Cloudflare: DNS for meldiq.app.</li>
+              <li>Amazon Web Services: encrypted file storage. Singapore is the active storage region. Copies are being staged in Frankfurt.</li>
+              <li>Cloudflare: DNS and delivery of the Meldiq websites.</li>
               <li>PayPal: payment authorization, subscriptions, receipts and payment verification for new website purchases.</li>
               <li>Stripe: billing records and the customer portal for earlier Stripe subscriptions, where applicable.</li>
               <li>
@@ -94,7 +94,7 @@ export default function Privacy() {
           body: (
             <ul>
               <li>Encrypted messages waiting for a device: until delivered, at most 7 days.</li>
-              <li>Encrypted file uploads: 7 days, or up to a year after you last asked to keep one in your history.</li>
+              <li>File uploads: the current service keeps attachments for conversation history. Deletion and account controls apply.</li>
               <li>Encrypted history you keep: until you delete it or your account.</li>
               <li>Call records: 90 days. Audit logs: 365 days.</li>
               <li>

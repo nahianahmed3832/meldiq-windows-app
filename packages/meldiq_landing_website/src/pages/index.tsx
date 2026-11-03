@@ -6,7 +6,7 @@ import { SITE } from "../lib/site";
 const questions = [
   [
     "Is Meldiq free?",
-    "Yes. Communities, channels, direct messages, private groups, voice and video calls, screen sharing and encrypted file sharing are part of the free experience. Mojo Plus is optional. Visit Pricing for current availability and details.",
+    "Yes. Communities, channels, direct messages, private groups, voice and video calls, screen sharing and encrypted file sharing are part of the free experience. Meldiq Plus is optional. Visit Pricing for current availability and details.",
   ],
   [
     "Which platforms are available?",
@@ -17,12 +17,12 @@ const questions = [
     "Yes. Create a public or invite-only community, organize it with categories and channels, and use roles and permissions to decide who can see and participate in each space.",
   ],
   [
-    "What does Mojo Plus add?",
-    "Mojo Plus adds optional account extras for $3.99/month, including files up to 1,024 MB each. The Pricing page explains availability, benefits and separate Spark community boosting. Every core messaging feature remains free; no paid plan is required to start talking.",
+    "What does Meldiq Plus add?",
+    "Meldiq Plus adds optional account extras for $4.99/month, including files up to 1 GB each. The Pricing page explains availability, benefits and separate Spark community boosting. Every core messaging feature remains free; no paid plan is required to start talking.",
   ],
   [
     "How private are my conversations?",
-    "Messages and attachments are encrypted on your devices before they’re sent. Call-media encryption is on by default. The server can still see account details, community memberships and routing metadata. Meldiq has not had an independent security audit. Read the Privacy Policy for the full explanation.",
+    "Files are encrypted before upload. Current messages can include attachment keys that the Meldiq server can read. Call-media encryption is on by default. The server can still see account details, community memberships and routing metadata. Meldiq has not had an independent security audit. Read the Privacy Policy for the full explanation.",
   ],
 ];
 function Actions() {
@@ -52,7 +52,7 @@ export default function Home() {
           <em>your channels, one place to talk.</em>
         </h1>
         <p>
-          Meldiq brings your friends and communities together to talk, call and share. Messages are encrypted on your devices. The core experience is free. Mojo
+          Meldiq brings your friends and communities together to talk, call and share. The core experience is free. Mojo
           Plus is optional.
         </p>
         <Actions />
@@ -93,7 +93,7 @@ export default function Home() {
       <section className="ref-join wrap">
         <div className="ref-join-inner">
           <h2>Come say hello.</h2>
-          <p>Open Meldiq, create your account and bring your people together. Core messaging is free; Mojo Plus is an optional extra.</p>
+          <p>Open Meldiq, create your account and bring your people together. Core messaging is free; Meldiq Plus is an optional extra.</p>
           <Actions />
           <span>Free to use · No card to start · Runs in your browser</span>
         </div>
