@@ -4,7 +4,7 @@
   "src/application/updates.ts": "Disable hosted shell updates; mirror existing call/upload/download holds to native updater.",
   "src/application/webPush.ts": "Use native notifications and disable web service-worker/FCM registration in desktop.",
   "src/auth/socialAuth.ts": "Uses the existing web PKCE receipt contract when the trusted same-origin browser handoff is available; retains legacy native callback compatibility until deployment.",
-  "src/ui/auth/SocialSignIn.tsx": "Avoid provider popup inside Electron when native browser sign-in is available.",
+  "src/ui/auth/SocialSignIn.tsx": "Completes a matching OS-sealed pending login after a renderer/app restart through the existing backend proof exchange, without changing account/session rules; supports explicit cancellation.",
   "test/support/apiCalls.ts": "Normalize source-relative test identifiers to slash separators on Windows; preserves delegated API contract coverage instead of skipping the test.",
   "src/store/db.ts": "Include OS-sealed session tokens in the existing persistent-key allowlist so session restoration survives a renderer restart; no account data migration.",
   "src/sync/legacyImport.ts": "Preserve the OS-sealed credential field during the existing one-time legacy data cleanup; cleanup must never erase the current account session.",

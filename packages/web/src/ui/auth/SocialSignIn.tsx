@@ -46,6 +46,7 @@ export function SocialSignIn({
   }, [activeStep, onStepChange]);
   const reset = () => {
     abort.current?.abort();
+    if (pending) void window.meldiqDesktop?.cancelSocial(pending.id);
     setPending(null);
     setBusy(null);
     setError(null);
@@ -84,6 +85,7 @@ export function SocialSignIn({
       setPending(null);
       if ("grant" in result) await onSignedIn?.(result.grant);
       else onLinked?.();
+      await window.meldiqDesktop?.finishSocial(receipt.id);
     } catch (e) {
       if (e instanceof ApiError && ["invite_required", "invalid_invite"].includes(e.code)) {
         setNeedsInvite(true);
@@ -96,6 +98,21 @@ export function SocialSignIn({
       setError(e instanceof ApiError && ["invite_required", "totp_required"].includes(e.code) ? null : socialError(e));
     }
   };
+  useEffect(() => {
+    const native = window.meldiqDesktop;
+    if (!native || mode !== 'login') return;
+    let active = true;
+    const resume = () => { void native.resumeSocial().then(async receipt => {
+      if (!active || !receipt) return;
+      setBusy(pendingProvider.current);
+      try { await finish(receipt, true); } finally { if (active) setBusy(null); }
+    }).catch(e => { if (active) setError(socialError(e)); }); };
+    resume();
+    const stop = native.onSocialReturn(resume);
+    return () => { active = false; stop(); };
+    // The recovered proof is leased once per renderer; later factors use the normal pending form.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [api, mode]);
   const begin = async (provider: SocialProvider) => {
     // Open synchronously so Safari can allow the user-initiated popup.
     const popup = window.meldiqDesktop ? null : window.open("about:blank", "_blank", "popup,width=500,height=700");

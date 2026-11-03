@@ -50,7 +50,7 @@ export async function startSocial(
     const abort = () => { void native.cancelSocial(started.id); };
     signal.addEventListener("abort", abort, { once: true });
     try {
-      const receipt = await native.socialAuthorize({ id: started.id, url: authorize.href, expiresAt: started.expiresAt });
+      const receipt = await native.socialAuthorize({ id: started.id, url: authorize.href, expiresAt: started.expiresAt, verifier, mode: options.mode ?? "login", browserHandoff });
       if (signal.aborted) throw new DOMException("Cancelled", "AbortError");
       return { ...receipt, verifier };
     } finally { signal.removeEventListener("abort", abort); }

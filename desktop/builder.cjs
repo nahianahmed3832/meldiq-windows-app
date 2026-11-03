@@ -12,7 +12,7 @@ module.exports = {
     signtoolOptions: { publisherName: process.env.MELDIQ_SIGNING_PUBLISHER },
     artifactName: 'Meldiq-Setup-${version}-${arch}.${ext}',
   },
-  nsis: { installerIcon: 'desktop/resources/icon.ico', uninstallerIcon: 'desktop/resources/icon.ico', installerHeaderIcon: 'desktop/resources/icon.ico', oneClick: false, perMachine: false, allowElevation: false, allowToChangeInstallationDirectory: true, createDesktopShortcut: true, createStartMenuShortcut: true, deleteAppDataOnUninstall: false, differentialPackage: true },
+  nsis: { include: 'desktop/resources/installer.nsh', installerIcon: 'desktop/resources/icon.ico', uninstallerIcon: 'desktop/resources/icon.ico', installerHeaderIcon: 'desktop/resources/icon.ico', oneClick: false, perMachine: false, allowElevation: false, allowToChangeInstallationDirectory: true, createDesktopShortcut: true, createStartMenuShortcut: true, deleteAppDataOnUninstall: false, differentialPackage: true },
   publish: [{ provider: 'generic', url: `https://updates.meldiq.app/windows/${process.env.BUILD_CHANNEL || 'stable'}/`, channel: process.env.BUILD_CHANNEL === 'beta' ? 'beta' : process.env.BUILD_CHANNEL === 'canary' ? 'canary' : 'latest' }],
   mac: { target: ['dmg'], category: 'public.app-category.social-networking', hardenedRuntime: true, extendInfo: { NSCameraUsageDescription: 'Meldiq uses your camera during video calls.', NSMicrophoneUsageDescription: 'Meldiq uses your microphone during calls.' } },
   linux: { target: ['AppImage', 'deb'], category: 'Network' },

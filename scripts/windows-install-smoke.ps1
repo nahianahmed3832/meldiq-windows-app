@@ -31,6 +31,13 @@ try {
     if ($launched.HasExited) { throw 'Installed application exited before opening its window' }
   } until ($launched.MainWindowHandle -ne 0 -or (Get-Date) -ge $deadline)
   if ($launched.MainWindowHandle -eq 0) { throw 'Installed application did not open its native window' }
+  # Dispatch through the actual registered Windows URI association, not an in-process synthetic event.
+  Start-Process 'meldiq://settings/about'
+  Start-Sleep -Seconds 3
+  $launched.Refresh()
+  if ($launched.HasExited -or $launched.MainWindowHandle -eq 0) { throw 'Protocol dispatch did not retain the running application window' }
+  $visibleMainWindows = @(Get-Process -Name Meldiq -ErrorAction SilentlyContinue | Where-Object { $_.MainWindowHandle -ne 0 })
+  if ($visibleMainWindows.Count -ne 1 -or $visibleMainWindows[0].Id -ne $launched.Id) { throw 'Protocol dispatch created duplicate main windows' }
   if ($RequirePrivateUpdates) {
     node scripts/inspect-private-installed.mjs (Join-Path $destination 'resources/app.asar')
     if ($LASTEXITCODE -ne 0) { throw 'Installed private updater configuration is invalid' }
@@ -46,6 +53,8 @@ if ($uninstall.ExitCode -ne 0) { throw 'Silent uninstall failed' }
 $deadline = (Get-Date).AddSeconds(30)
 while ((Test-Path $installedExecutable) -and (Get-Date) -lt $deadline) { Start-Sleep -Milliseconds 500 }
 if (Test-Path $installedExecutable) { throw 'Uninstall left the application executable behind' }
+$remainingHandler = Get-Item 'HKCU:\Software\Classes\meldiq\shell\open\command' -ErrorAction SilentlyContinue
+if ($remainingHandler -and $remainingHandler.GetValue('').Contains($installedExecutable)) { throw 'Uninstall left a dangling owned protocol registration' }
 $report = @{
   sourceCommit = $SourceCommit
   platform = 'Windows CI virtual machine'
@@ -57,7 +66,7 @@ $report = @{
   protocolCommandVerified = $true
   startMenuShortcutVerified = $true
   executionLevel = 'asInvoker'
-  passed = @('actual silent NSIS installation', 'installed native application window launch', 'actual silent uninstall', 'canonical embedded executable icon', 'quoted per-user protocol registration', 'Start Menu shortcut target', 'asInvoker executable manifest')
+  passed = @('actual silent NSIS installation', 'installed native application window launch', 'actual silent uninstall', 'canonical embedded executable icon', 'quoted per-user protocol registration', 'Start Menu shortcut target', 'asInvoker executable manifest', 'actual OS protocol dispatch reuses the running window', 'uninstall removes owned protocol registration')
   pending = @('versioned upgrade', 'signed update', 'physical hardware benchmarks', 'complete authenticated Windows feature acceptance')
 }
 New-Item -ItemType Directory -Force test-results | Out-Null

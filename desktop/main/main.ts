@@ -2,6 +2,7 @@ import { net, app, BrowserWindow, Menu, Tray, nativeImage, ipcMain, shell, dialo
 import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
+import { SocialFlowStore } from './social-flow';
 import { PermissionStore, mediaCapabilities } from './permissions';
 import { restoreWindow } from '../shared/window-state';
 import { BROWSER_BRIDGE_VERSION, checkoutReturn, discordAuthorization } from '../shared/browser-flows';
@@ -55,12 +56,13 @@ let updates: Updates;
 let sources: Electron.DesktopCapturerSource[] = [];
 let chooseCapture: ((id: string | null) => void) | null = null;
 const permissionStore = new PermissionStore(path.join(app.getPath('userData'), 'device-permissions.json'));
+let socialStore: SocialFlowStore;
 let browserHandoff = false;
 let protocolRegistered = false;
 let discord: { state: string; resolve: (result: { code: string; state: string; guildId: string | null }) => void; reject: (error: Error) => void; timer: ReturnType<typeof setTimeout> } | null = null;
 const notices = new Map<string, Notification>();
 const pendingNavigation: string[] = [];
-const social = new Map<string, { resolve: (r: { id: string; receipt: string }) => void; reject: (e: Error) => void; timer: ReturnType<typeof setTimeout> }>();
+const social = new Map<string, { persisted: boolean; resolve: (r: { id: string; receipt: string }) => void; reject: (e: Error) => void; timer: ReturnType<typeof setTimeout> }>();
 const busy = () => rendererBusy || downloads > 0 || capturePending || paymentWindow !== null;
 function state(): DesktopState {
   return { permissions: { ...permissionStore.value }, browserHandoff, protocolRegistered, systemLanguages: app.isReady() ? app.getPreferredSystemLanguages() : [], preferences: prefs.value, profile: performanceProfile(os.totalmem(), os.cpus().length, prefs.value), build, update: updates?.state ?? { status: 'disabled' }, busy: busy(), cacheBytes };
@@ -85,11 +87,23 @@ function deepLink(raw: string) {
     show(); return;
   }
   const pending = social.get(link.id);
-  if (!pending) return; // Unsolicited/replayed callbacks never establish sessions.
+  if (!pending) {
+    if (link.receipt && socialStore?.accept(link.id, link.receipt)) { main?.webContents.send('desktop:social-return'); show(); }
+    else if (link.error) socialStore?.clear(link.id);
+    return; // Only a matching OS-sealed, pending flow can resume after a restart.
+  }
+  if (link.receipt && !socialStore?.accept(link.id, link.receipt) && pending.persisted) return;
+  if (pending.persisted && link.receipt) socialStore.resume(); // Lease to the existing renderer until it completes or reloads.
   clearTimeout(pending.timer); social.delete(link.id);
+  if (link.error) socialStore?.clear(link.id);
   if (link.receipt) pending.resolve({ id: link.id, receipt: link.receipt });
   else pending.reject(new Error(link.error === 'cancelled' ? 'Sign-in cancelled.' : 'Provider verification failed.'));
   show();
+}
+function releaseSocialRenderer() {
+  socialStore?.releaseRenderer();
+  for (const pending of social.values()) { clearTimeout(pending.timer); pending.reject(new Error('The sign-in screen restarted. Complete browser authorization to resume.')); }
+  social.clear();
 }
 function trusted(event: Electron.IpcMainInvokeEvent, role: 'main' | 'picker' = 'main') {
   const target = role === 'main' ? main : picker;
@@ -153,17 +167,22 @@ function installIpc(ses: Electron.Session) {
   });
   handle('social', raw => {
     if (!raw || typeof raw !== 'object') throw new Error('Invalid sign-in flow');
-    const flow = raw as { id: string; url: string; expiresAt: number };
-    if (typeof flow.id !== 'string' || !/^[\w-]{43}$/.test(flow.id) || flow.url !== `${config.apiOrigin}/v2/auth/social/authorize/${flow.id}` || !Number.isFinite(flow.expiresAt) || flow.expiresAt <= Date.now() || flow.expiresAt > Date.now() + 15 * 60_000 || social.has(flow.id) || social.size >= 2) throw new Error('Invalid sign-in authorization');
+    const flow = raw as { id: string; url: string; expiresAt: number; verifier?: string; mode?: 'login' | 'link'; browserHandoff?: boolean };
+    if (typeof flow.id !== 'string' || !/^[\w-]{43}$/.test(flow.id) || flow.url !== `${config.apiOrigin}/v2/auth/social/authorize/${flow.id}` || !Number.isFinite(flow.expiresAt) || flow.expiresAt <= Date.now() || flow.expiresAt > Date.now() + 15 * 60_000 || social.has(flow.id) || social.size >= 1 || flow.verifier !== undefined && !/^[A-Za-z0-9_-]{43}$/.test(flow.verifier) || flow.mode !== undefined && !['login', 'link'].includes(flow.mode) || flow.browserHandoff !== undefined && typeof flow.browserHandoff !== 'boolean') throw new Error('Invalid sign-in authorization');
     if (app.isPackaged && !protocolRegistered) throw new Error('Windows could not register Meldiq callbacks. Reinstall Meldiq for your Windows account and try again.');
+    if (flow.browserHandoff && !browserHandoff) throw new Error('The browser handoff is not available. Start sign-in again.');
+    const persisted = flow.mode !== 'link' && Boolean(flow.verifier);
+    if (persisted) socialStore.begin({ id: flow.id, verifier: flow.verifier!, expiresAt: flow.expiresAt });
     return new Promise<{ id: string; receipt: string }>((resolve, reject) => {
-      const timer = setTimeout(() => { social.delete(flow.id); reject(new Error('Sign-in expired. Try again.')); }, flow.expiresAt - Date.now());
-      social.set(flow.id, { resolve, reject, timer });
-      const url = browserHandoff ? `${ORIGIN}/desktop-bridge.html#${new URLSearchParams({ kind: 'social', id: flow.id })}` : flow.url;
-      void external(url, false).catch(() => { clearTimeout(timer); social.delete(flow.id); reject(new Error('Unable to open your browser.')); });
+      const timer = setTimeout(() => { social.delete(flow.id); socialStore.clear(flow.id); reject(new Error('Sign-in expired. Try again.')); }, flow.expiresAt - Date.now());
+      social.set(flow.id, { persisted, resolve, reject, timer });
+      const url = flow.browserHandoff ? `${ORIGIN}/desktop-bridge.html#${new URLSearchParams({ kind: 'social', id: flow.id })}` : flow.url;
+      void external(url, false).catch(() => { clearTimeout(timer); social.delete(flow.id); socialStore.clear(flow.id); reject(new Error('Unable to open your browser.')); });
     });
   });
-  handle('cancel-social', id => { if (typeof id !== 'string') return; const pending = social.get(id); if (pending) { clearTimeout(pending.timer); pending.reject(new Error('Sign-in cancelled.')); social.delete(id); } });
+  handle('resume-social', () => socialStore.resume());
+  handle('finish-social', id => { if (typeof id === 'string') socialStore.clear(id); });
+  handle('cancel-social', id => { if (typeof id !== 'string') return; socialStore.clear(id); const pending = social.get(id); if (pending) { clearTimeout(pending.timer); pending.reject(new Error('Sign-in cancelled.')); social.delete(id); } });
   handle('discord', raw => {
     const flow = discordAuthorization(raw);
     if (!flow || discord) throw new Error('Invalid or already active Discord authorization.');
@@ -223,8 +242,8 @@ function secureWindow(win: BrowserWindow, isPicker = false) {
     event.preventDefault();
   });
   if (!isPicker) {
-    wc.on('did-start-navigation', (_e, _url, _inPlace, isMain) => { if (isMain && !_inPlace) { rendererBusy = true; emitState(); } });
-    wc.on('render-process-gone', () => { rendererBusy = true; emitState(); });
+    wc.on('did-start-navigation', (_e, _url, _inPlace, isMain) => { if (isMain && !_inPlace) { releaseSocialRenderer(); rendererBusy = true; emitState(); } });
+    wc.on('render-process-gone', () => { releaseSocialRenderer(); rendererBusy = true; emitState(); });
     wc.on('did-finish-load', () => { pendingNavigation.splice(0).forEach(href => navigate(href)); });
   }
 }
@@ -330,6 +349,10 @@ else {
   app.on('window-all-closed', () => { if (process.platform !== 'darwin') app.quit(); });
   void app.whenReady().then(async () => {
     app.setAppUserModelId('app.meldiq.desktop');
+    socialStore = new SocialFlowStore(path.join(app.getPath('userData'), 'pending-browser-login.sealed'), value => {
+      if (!safeStorage.isEncryptionAvailable() || process.platform === 'linux' && safeStorage.getSelectedStorageBackend() === 'basic_text') throw new Error('OS secure storage is unavailable.');
+      return safeStorage.encryptString(value).toString('base64');
+    }, value => safeStorage.decryptString(Buffer.from(value, 'base64')));
     const ses = session.fromPartition('persist:meldiq-desktop');
     await installProtocol(ses, path.join(appRoot, 'dist/renderer'), config);
     installIpc(ses); permissions(ses);
@@ -346,7 +369,7 @@ else {
     makeWindow(ses); menu();
     // eslint-disable-next-line no-unused-labels
     UPDATER_LAB: { void import('./update-lab').then(lab => lab.runUpdateLab({ app, main: main!, updates, control: config.updateLabControl })); }
-    if (app.isPackaged) protocolRegistered = app.isDefaultProtocolClient('meldiq') || app.setAsDefaultProtocolClient('meldiq');
+    if (app.isPackaged && !build.updateLab) protocolRegistered = app.isDefaultProtocolClient('meldiq') || app.setAsDefaultProtocolClient('meldiq');
     else if (!process.env.MELDIQ_TEST_USER_DATA && process.defaultApp && process.argv[1]) app.setAsDefaultProtocolClient('meldiq', process.execPath, [path.resolve(process.argv[1])]);
     // Discover the separately deployed, same-origin browser handoff. Old deployments retain the existing native social route.
     void net.fetch(`${ORIGIN}/desktop-bridge.json`, { redirect: 'error', signal: AbortSignal.timeout(5000), cache: 'no-store' }).then(async response => {

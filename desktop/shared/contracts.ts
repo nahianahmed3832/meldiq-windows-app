@@ -43,8 +43,11 @@ export interface DesktopBridge {
   sealSession(tokens: AccountTokens): Promise<string>;
   openSession(sealed: string): Promise<AccountTokens>;
   notify(notice: { title: string; body: string; tag: string; href: string | null; silent?: boolean }): Promise<void>;
-  socialAuthorize(flow: { id: string; url: string; expiresAt: number }): Promise<{ id: string; receipt: string }>;
+  socialAuthorize(flow: { id: string; url: string; expiresAt: number; verifier?: string; mode?: 'login' | 'link'; browserHandoff?: boolean }): Promise<{ id: string; receipt: string }>;
   cancelSocial(id: string): Promise<void>;
+  resumeSocial(): Promise<{ id: string; verifier: string; receipt: string } | null>;
+  finishSocial(id: string): Promise<void>;
+  onSocialReturn(callback: () => void): () => void;
   discordAuthorize(url: string): Promise<{ code: string; state: string; guildId: string | null }>;
   cancelDiscord(): Promise<void>;
   resetPermissions(): Promise<DesktopState>;

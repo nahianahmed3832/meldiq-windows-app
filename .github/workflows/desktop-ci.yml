@@ -37,6 +37,7 @@ jobs:
       - run: npm run test:security
       - run: npm run test:smoke
       - run: npm run test:readiness
+      - run: npm run test:auth-restart
       - name: Measure signed-out Windows VM resources
         run: npm run benchmark
       - name: Package standalone unsigned development installer

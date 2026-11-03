@@ -3,7 +3,7 @@
   "productName": "Meldiq",
   "version": "0.3.0-readiness.1",
   "private": true,
-  "description": "Meldiq Desktop — the existing Meldiq client packaged locally with native desktop integrations",
+  "description": "Meldiq Desktop \u2014 the existing Meldiq client packaged locally with native desktop integrations",
   "author": "MD.NAHIAN AHMED <254077813+nahianahmed3832@users.noreply.github.com>",
   "repository": {
     "type": "git",
@@ -44,7 +44,9 @@
     "icons:check": "node scripts/generate-windows-icon.mjs --check",
     "i18n:check": "node scripts/check-localization.mjs",
     "i18n:release": "node scripts/check-localization.mjs --strict",
-    "test:readiness": "node scripts/readiness-smoke.mjs"
+    "test:readiness": "node scripts/readiness-smoke.mjs",
+    "test:auth-restart": "node scripts/auth-restart-smoke.mjs",
+    "test:providers": "node scripts/provider-regression.mjs"
   },
   "dependencies": {
     "electron-updater": "6.8.11"
