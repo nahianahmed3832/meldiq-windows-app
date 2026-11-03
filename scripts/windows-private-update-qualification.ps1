@@ -70,4 +70,16 @@ if ($LASTEXITCODE -ne 0) { throw 'Public candidate download failed' }
 $publicInstaller = Join-Path $working $public.filename
 if ((Get-FileHash $publicInstaller -Algorithm SHA256).Hash.ToLowerInvariant() -ne $public.sha256) { throw 'Public installer hash mismatch' }
 & "$PSScriptRoot/windows-install-smoke.ps1" -InstallerPath $publicInstaller -SourceCommit $metadata.sourceCommit -RequirePrivateUpdates
+$baselineCandidate = Join-Path $working 'published-baseline-candidate'
+$baselineRelease = Join-Path $baselineCandidate 'release'
+New-Item -ItemType Directory -Force $baselineRelease | Out-Null
+$baselineInstaller = Join-Path $baselineRelease $public.filename
+Copy-Item -LiteralPath $publicInstaller -Destination $baselineInstaller
+($public.sha256 + '  ' + $public.filename) | Set-Content (Join-Path $baselineRelease 'checksums.sha256')
+& "$PSScriptRoot/windows-upgrade-smoke.ps1" -CandidateDirectory $baselineCandidate -CandidateInstaller $baselineInstaller
+$baselineResult = Get-Content test-results/windows-upgrade.json -Raw | ConvertFrom-Json
+if ($baselineResult.candidateSha256 -cne $public.sha256 -or $baselineResult.baselineVersion -cne '0.2.1' -or $baselineResult.passed.Count -lt 12) { throw 'Published baseline upgrade evidence does not match the public candidate' }
+$qualified = Get-Content test-results/private-update-qualification.json -Raw | ConvertFrom-Json
+$qualified | Add-Member -NotePropertyName publishedBaselineUpgrade -NotePropertyValue $baselineResult
+$qualified | ConvertTo-Json -Depth 20 | Set-Content -Encoding utf8 test-results/private-update-qualification.json
 Write-Output ('MELDIQ_PRIVATE_QUALIFIED=' + ((Get-Content test-results/private-update-qualification.json -Raw | ConvertFrom-Json) | ConvertTo-Json -Depth 10 -Compress))
