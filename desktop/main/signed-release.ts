@@ -82,7 +82,9 @@ export class SignedReleaseTrust {
     return value;
   }
   accept(raw: string): SignedRelease {
-    const verified = verifyReleaseEnvelope(raw, { ...this.config, baseUrl: this.baseUrl, channel: this.channel, checkpoint: this.checkpoint() });
+    let verified;
+    try { verified = verifyReleaseEnvelope(raw, { ...this.config, baseUrl: this.baseUrl, channel: this.channel, checkpoint: this.checkpoint() }); }
+    catch (error) { if (error instanceof Error) Object.assign(error, { code: 'MELDIQ_METADATA_AUTHENTICATION' }); throw error; }
     const file = this.config.checkpointFile;
     const all = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, 'utf8')) : {};
     all[this.channel] = { sequence: verified.release.sequence, digest: verified.digest };

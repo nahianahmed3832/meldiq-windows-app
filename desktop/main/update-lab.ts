@@ -46,7 +46,7 @@ export async function runUpdateLab({ app, main, updates, control }: { app: App; 
     const status = () => updates.state.status;
     if (control.scenario !== 'upgrade') await updates.action('check');
     if (control.scenario === 'bad-signature') {
-      if (status() !== 'error') throw new Error('Untrusted metadata was accepted');
+      if (status() !== 'error' || updates.failureKind !== 'manifest-authentication') throw new Error('Untrusted metadata rejection was not verified');
       save({ status: 'passed', rejectedBeforeDownload: true }); app.exit(0); return;
     }
     if (control.scenario !== 'upgrade') {
@@ -59,7 +59,7 @@ export async function runUpdateLab({ app, main, updates, control }: { app: App; 
       await new Promise(resolve => setTimeout(resolve, 100));
     }
     if (control.scenario === 'bad-hash') {
-      if (status() !== 'error') throw new Error('Corrupt artifact was accepted');
+      if (status() !== 'error' || updates.failureKind !== 'artifact-authentication') throw new Error('Corrupt artifact rejection was not verified');
       save({ status: 'passed', corruptArtifactRejected: true }); app.exit(0); return;
     }
     if (status() !== 'downloaded') throw new Error('Authenticated installer download failed');
@@ -70,7 +70,7 @@ export async function runUpdateLab({ app, main, updates, control }: { app: App; 
     await main.webContents.executeJavaScript('window.meldiqDesktop.setBusy(false)');
     app.quit();
   } catch {
-    save({ status: 'failed', message: 'Updater qualification failed; no credential-bearing diagnostics retained', updateState: updates.state.status });
+    save({ status: 'failed', message: 'Updater qualification failed; no credential-bearing diagnostics retained', updateState: updates.state.status, failureKind: updates.failureKind });
     app.exit(1);
   }
 }

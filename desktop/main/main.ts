@@ -35,7 +35,7 @@ app.setName('Meldiq');
 if (!app.isPackaged && process.env.MELDIQ_TEST_USER_DATA) app.setPath('userData', path.resolve(process.env.MELDIQ_TEST_USER_DATA));
 const prefs = new PreferenceStore(path.join(app.getPath('userData'), 'desktop-preferences.json'));
 // eslint-disable-next-line no-unused-labels
-UPDATER_LAB: { prefs.patch({ updateMode: config.updateLabControl.scenario === 'upgrade' ? 'automatic' : 'manual', closeToTray: false }); }
+UPDATER_LAB: { prefs.patch({ channel: 'canary', updateMode: config.updateLabControl.scenario === 'upgrade' ? 'automatic' : 'manual', closeToTray: false }); }
 if (!prefs.value.hardwareAcceleration) app.disableHardwareAcceleration();
 app.commandLine.appendSwitch('disk-cache-size', String(prefs.value.cacheMB * 1024 ** 2));
 const single = app.requestSingleInstanceLock();

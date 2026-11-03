@@ -41,7 +41,7 @@ foreach ($scenario in @('bad-signature', 'bad-hash', 'upgrade')) {
             Start-Sleep -Milliseconds 500
             if (Test-Path $report) {
                 try { $result = Get-Content $report -Raw | ConvertFrom-Json } catch { $result = $null }
-                if ($result -and $result.status -eq 'failed') { throw "Native updater rejected qualification: $scenario, state=$($result.updateState)" }
+                if ($result -and $result.status -eq 'failed') { throw "Native updater rejected qualification: $scenario, state=$($result.updateState), cause=$($result.failureKind)" }
                 if ($result -and $result.status -eq 'passed') { break }
             }
         } until ((Get-Date) -ge $deadline)

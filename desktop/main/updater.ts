@@ -14,6 +14,11 @@ export class Updates {
   private downloading = false;
   private verifying = false;
   private signedTrust: SignedReleaseTrust | null = null;
+  failureKind: 'manifest-authentication' | 'artifact-authentication' | 'network-or-other' | null = null;
+  private classifyFailure(error: unknown) {
+    const code = error && typeof error === 'object' && 'code' in error ? error.code : null;
+    return code === 'MELDIQ_METADATA_AUTHENTICATION' ? 'manifest-authentication' as const : (code === 'ERR_CHECKSUM_MISMATCH' || (error instanceof Error && /checksum|sha512/i.test(error.message))) ? 'artifact-authentication' as const : 'network-or-other' as const;
+  }
   constructor(private readonly build: BuildInfo, private readonly origin: string, approved: boolean,
     private readonly publisher: string | null, private readonly prefs: () => Preferences, private readonly busy: () => boolean, private readonly changed: () => void, private readonly releaseTrust?: ReleaseTrustConfig) {
     this.enabled = ['direct', 'private-direct'].includes(build.distribution) && approved && process.platform === 'win32';
@@ -37,12 +42,12 @@ export class Updates {
     autoUpdater.on('update-downloaded', info => {
       this.verifying = true;
       void this.verifyCandidate(info.downloadedFile).then(problem => {
-        if (problem) { this.verifiedFile = null; this.set({ status: 'error', message: problem }); return; }
+        if (problem) { this.failureKind = 'artifact-authentication'; this.verifiedFile = null; this.set({ status: 'error', message: problem }); return; }
         this.verifiedFile = info.downloadedFile;
         this.set({ status: 'downloaded', version: info.version, message: 'Ready to install when your calls and transfers finish.' });
       }).catch(() => { this.verifiedFile = null; this.set({ status: 'error', message: 'The update signature could not be verified.' }); }).finally(() => { this.verifying = false; });
     });
-    autoUpdater.on('error', () => this.set({ status: 'error', message: 'Update failed. Check your connection and try again.' }));
+    autoUpdater.on('error', error => { this.failureKind = this.classifyFailure(error); this.set({ status: 'error', message: 'Update failed. Check your connection and try again.' }); });
     this.configure();
     this.timer = setInterval(() => { if (this.prefs().updateMode !== 'manual') void this.check(); }, 6 * 60 * 60_000);
     this.timer.unref();
@@ -90,16 +95,18 @@ export class Updates {
   private async check() {
     if (this.checking || this.state.status === 'downloading' || this.state.status === 'downloaded') return;
     this.checking = true;
+    this.failureKind = null;
     try { await autoUpdater.checkForUpdates(); }
-    catch { this.set({ status: 'error', message: 'Update check failed. Try again later.' }); }
+    catch (error) { this.failureKind = this.classifyFailure(error); this.set({ status: 'error', message: 'Update check failed. Try again later.' }); }
     finally { this.checking = false; }
   }
   private async download() {
     if (!['available', 'error'].includes(this.state.status)) return;
     this.downloading = true;
+    this.failureKind = null;
     this.set({ status: 'downloading', percent: 0 });
     try { await autoUpdater.downloadUpdate(); }
-    catch { this.set({ status: 'error', message: 'Download failed. Check for updates to retry.' }); }
+    catch (error) { this.failureKind = this.classifyFailure(error); this.set({ status: 'error', message: 'Download failed. Check for updates to retry.' }); }
     finally { this.downloading = false; }
   }
   private set(state: UpdateState) { this.state = state; this.changed(); }

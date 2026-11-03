@@ -15,7 +15,7 @@ if (!line) throw new Error('Missing candidate build provenance');
 const input = JSON.parse(line.slice(line.indexOf('MELDIQ_PRIVATE_CANDIDATES=') + 'MELDIQ_PRIVATE_CANDIDATES='.length));
 const key = JSON.parse(await fs.readFile('config/update-key.json', 'utf8'));
 if (input.runId !== runId || input.sourceCommit !== run.headSha || input.keyId !== key.keyId) throw new Error('Candidate signing identity/source mismatch');
-if (gh(['diff', input.sourceCommit, 'HEAD', '--', 'desktop', 'config', 'package.json', 'package-lock.json', 'scripts/build.mjs', 'scripts/prepare-private-candidates.mjs']).trim()) throw new Error('Runtime source changed after preparation; rebuild candidates');
+if (execFileSync('git', ['diff', input.sourceCommit, 'HEAD', '--', 'desktop', 'config', 'package.json', 'package-lock.json', 'scripts/build.mjs', 'scripts/prepare-private-candidates.mjs'], { encoding: 'utf8' }).trim()) throw new Error('Runtime source changed after preparation; rebuild candidates');
 const draft = JSON.parse(gh(['api', 'repos/' + repo + '/releases'])).find(r => r.tag_name === 'windows-private-candidate-' + runId && r.draft);
 if (!draft) throw new Error('Missing isolated candidate draft');
 const working = await fs.mkdtemp(path.join(os.tmpdir(), 'meldiq-release-' + runId + '-'));
@@ -33,7 +33,11 @@ for (const item of input.artifacts) {
   if (!['production', 'lab-old', 'lab-new'].includes(item.role) || !/^Meldiq-[A-Za-z0-9._-]+\.exe$/.test(item.filename) || !/^[a-f0-9]{64}$/.test(item.sha256) || item.build.commit !== input.sourceCommit) throw new Error('Invalid artifact provenance');
   const asset = draft.assets.find(a => a.name === item.filename && a.state === 'uploaded');
   if (!asset) throw new Error('Candidate asset not uploaded');
-  const response = await fetch(asset.url, { redirect: 'manual', signal: AbortSignal.timeout(30000), headers: { authorization: 'Bearer ' + token, accept: 'application/octet-stream', 'x-github-api-version': '2022-11-28' } });
+  let response;
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try { response = await fetch(asset.url, { redirect: 'manual', signal: AbortSignal.timeout(30000), headers: { authorization: 'Bearer ' + token, accept: 'application/octet-stream', 'x-github-api-version': '2022-11-28' } }); break; }
+    catch { if (attempt === 2) throw new Error('Candidate download authorization is temporarily unavailable'); }
+  }
   const location = response.headers.get('location');
   if (response.status !== 302 || !location?.startsWith('https://')) throw new Error('Cannot obtain an authorized candidate download');
   const relative = item.version + '/' + item.sha256.slice(0, 16) + '/' + item.filename;
