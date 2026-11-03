@@ -23,13 +23,18 @@ async function account(page: Page, opts: { totp?: boolean; provider?: "paypal" |
   return email;
 }
 
+// Account/billing compatibility fixtures use the API double; interactive login is delegated to the app.
 async function signIn(page: Page, email: string, next = "") {
-  await page.goto(`/login${next ? `?next=${encodeURIComponent(next)}` : ""}`);
-  await page.getByLabel("Email").fill(email);
-  await page.getByLabel("Password").fill("correct horse battery");
-  await page.getByRole("button", { name: "Sign in" }).click();
-  // Signed in once the page has left the sign-in form (the session is saved before it navigates).
-  await page.waitForURL((u) => u.pathname !== "/login");
+  const response = await page.request.post(`${API}/v2/auth/login`, { data: { email, password: "correct horse battery" } });
+  expect(response.ok()).toBe(true);
+  const grant = await response.json();
+  await page.goto("/");
+  await page.evaluate((session) => sessionStorage.setItem("meldiq.site.session", JSON.stringify(session)), grant);
+  await page.goto(next.startsWith("/") && !next.startsWith("//") ? next : "/account");
+}
+
+async function appChooser(page: Page) {
+  await page.route("https://web.meldiq.app/**", (route) => route.fulfill({ contentType: "text/html", body: "<!doctype html><h1>Shared Meldiq sign-in</h1>" }));
 }
 
 test.describe("redesigned public pages", () => {
@@ -186,15 +191,12 @@ test.describe("redesigned public pages", () => {
 });
 
 test.describe("existing checkout integration", () => {
-  test("sends a signed-out visitor to sign in, then back to the plan", async ({ page }) => {
-    const email = await account(page);
+  test("sends a signed-out Plus buyer to the shared application sign-in", async ({ page }) => {
+    await appChooser(page);
     await page.goto("/pricing");
     await page.getByRole("button", { name: "Choose Meldiq Plus" }).click();
-    await expect(page).toHaveURL(/\/login\?next=/);
-    await page.getByLabel("Email").fill(email);
-    await page.getByLabel("Password").fill("correct horse battery");
-    await page.getByRole("button", { name: "Sign in" }).click();
-    await expect(page.getByRole("dialog", { name: "Get Meldiq Plus" })).toBeVisible();
+    await expect(page).toHaveURL("https://web.meldiq.app/settings/mojo");
+    await expect(page.getByRole("heading", { name: "Shared Meldiq sign-in" })).toBeVisible();
   });
 
   test("states every term before payment, needs agreement, then hands over to Stripe", async ({ page }) => {
@@ -313,27 +315,23 @@ test.describe("accounts", () => {
     await expect(page.getByText(email)).toBeVisible();
   });
 
-  test("shows the server's reasons for a refused sign-in, and asks for the two-step code", async ({ page }) => {
+  test("uses the shared chooser rather than a second password and MFA form", async ({ page }) => {
+    await appChooser(page);
+    const passwordSubmissions: string[] = [];
+    page.on("request", (request) => {
+      if (request.method() === "POST" && request.url().includes("/v2/auth/login")) passwordSubmissions.push(request.url());
+    });
     await page.goto("/login");
-    await page.getByLabel("Email").fill(unique("nobody"));
-    await page.getByLabel("Password").fill("wrong password!");
-    await page.getByRole("button", { name: "Sign in" }).click();
-    await expect(page.locator('.callout[role="alert"]')).toContainText("don't match an account");
-    const email = await account(page, { totp: true });
-    await page.getByLabel("Email").fill(email);
-    await page.getByLabel("Password").fill("correct horse battery");
-    await page.getByRole("button", { name: "Sign in" }).click();
-    await page.getByLabel("Two-step sign-in code").fill("654321");
-    await page.getByRole("button", { name: "Sign in" }).click();
-    await expect(page.getByRole("heading", { name: "Your account", level: 1 })).toBeVisible();
+    await expect(page).toHaveURL("https://web.meldiq.app/");
+    expect(passwordSubmissions).toEqual([]);
   });
 
-  test("keeps signed-out visitors away from account pages, and never follows an outside next", async ({ page }) => {
+  test("keeps billing intent and never follows an outside next", async ({ page }) => {
+    await appChooser(page);
     await page.goto("/account/billing");
-    await expect(page).toHaveURL(/\/login\?next=%2Faccount%2Fbilling/);
-    const email = await account(page);
-    await signIn(page, email, "https://evil.example/");
-    await expect(page).toHaveURL(/\/account$/);
+    await expect(page).toHaveURL("https://web.meldiq.app/settings/billing");
+    await page.goto("http://127.0.0.1:4199/login?next=https%3A%2F%2Fevil.example%2F");
+    await expect(page).toHaveURL("https://web.meldiq.app/");
   });
 
   test("resets a password with an emailed code", async ({ page }) => {
