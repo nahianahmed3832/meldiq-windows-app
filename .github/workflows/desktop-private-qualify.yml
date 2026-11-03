@@ -1,0 +1,27 @@
+name: Qualify private-key automatic Windows updates
+on:
+  workflow_dispatch:
+    inputs:
+      candidate_run:
+        description: Candidate preparation run with locally signed qualification feeds
+        required: true
+        type: string
+permissions:
+  contents: write
+jobs:
+  qualify:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - name: Exercise installed Windows updates over the actual HTTPS feed
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: ./scripts/windows-private-update-qualification.ps1 -CandidateRun '${{ inputs.candidate_run }}'
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        if: always()
+        with:
+          name: private-update-qualification
+          path: |
+            test-results/
+          retention-days: 30
