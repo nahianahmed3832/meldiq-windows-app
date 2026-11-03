@@ -1,6 +1,6 @@
 # Meldiq website (meldiq.app)
 
-Meldiq's public website: product pages, pricing for **Mojo Plus** ($3.99/month, with files up to 1,024 MB), sign-up and sign-in with the
+Meldiq's public website: product pages, pricing for **Meldiq Plus** ($4.99/month, with files up to 1 GB), sign-up and sign-in with the
 same Meldiq account every app uses, account and billing pages, support, and the legal pages. Live at
 **https://meldiq.app** since 2026-10-28.
 

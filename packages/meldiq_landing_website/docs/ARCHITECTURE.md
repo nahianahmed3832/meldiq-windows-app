@@ -5,7 +5,7 @@
 | Path | Rendered | What |
 |---|---|---|
 | `/`, `/features`, `/download`, `/faq`, `/support` | build time | Product pages. Claims checked against `meldiq_android/docs` (FEATURE_INVENTORY, SECURITY) |
-| `/pricing` | build time + browser | Free, Mojo Go, Mojo Plus. Plans on sale come from `GET /v2/billing/plans`; while it lists none, the owner-approved prices ($0.99 / $3.99 a month) show as "not on sale yet" (`src/lib/site.ts › ANNOUNCED_PLANS`) |
+| `/pricing` | Build and browser | Free and Meldiq Plus. New purchases require a matching live billing offer and upload entitlement. The monthly preview shows $4.99 and a 1 GB cap. |
 | `/signup`, `/verify-email`, `/login`, `/forgot-password` | browser | The account API (`/v2/auth/…`), the same accounts as every app |
 | `/account`, `/account/billing` | browser | `GET /v2/billing/entitlements`, `/v2/billing/account`, checkout, portal, sync |
 | `/legal/*` | build time | Terms, Privacy, Meldiq Mojo terms, Acceptable use, Account deletion. Drafts: not reviewed legal advice; unconfirmed details are visible placeholders |
@@ -37,7 +37,7 @@ keeps page script from being an exfiltration path.
 
 ## Buying Meldiq Mojo
 
-1. Pricing shows Free and Mojo Plus at $3.99 USD/month. The actual 1 GB tier is 1,024,000,000 bytes in the shared API. Retired plans, mismatched prices and upload limits cannot open checkout.
+1. Pricing shows Free and Meldiq Plus at $4.99 USD per month. The file cap is 1,000,000,000 bytes. Current benefits come from the API catalog. Historical agreements retain the terms recorded by the backend.
 2. The signed-in review dialog reads `/v2/billing/account`, `/v2/billing/entitlements` and `/v2/billing/paypal/config` before enabling agreement. It shows the actual provider, environment and first billing date, automatic renewal, cancellation, tax and failed-payment terms.
 3. After agreement, the site revalidates those terms and calls `POST /v2/billing/checkout { planKey: "plus", returnTo: "site" }`. The API owns the merchant, price, account and PayPal subscription. The site follows only an HTTPS PayPal approval address for the configured live or sandbox environment. Existing Stripe checkout support remains for the Stripe provider.
 4. Before navigating, the site retains the account id, internal checkout id, provider, mode, approval URL and expiry in sessionStorage. On `/account/billing?checkout=success`, it asks the authenticated `/v2/billing/paypal/checkouts/:id` endpoint to verify that account's checkout. A returned query, token, local flag or approval alone never grants access. Confirmed approval with a server-confirmed future billing date is displayed as scheduled, separately from a paid subscription. Without a retained checkout, `/v2/billing/sync` and the account summary remain authoritative.
