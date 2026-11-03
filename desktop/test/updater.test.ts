@@ -18,6 +18,15 @@ function setup() {
   active.push(updates!);
   return { updates: updates!, prefs };
 }
+it('distinguishes network failures from actual manifest and file authentication failures', () => {
+  const { updates } = setup();
+  sdk.handlers.get('error')!(new Error('Network request failed for a sha512 download'));
+  expect(updates.failureKind).toBe('network-or-other');
+  sdk.handlers.get('error')!(Object.assign(new Error('Untrusted signature'), { code: 'MELDIQ_METADATA_AUTHENTICATION' }));
+  expect(updates.failureKind).toBe('manifest-authentication');
+  sdk.handlers.get('error')!(Object.assign(new Error('File mismatch'), { code: 'ERR_CHECKSUM_MISMATCH' }));
+  expect(updates.failureKind).toBe('artifact-authentication');
+});
 it('rejects a channel switch while an installer signature is still being verified', async () => {
   let finish!: (problem: string | null) => void;
   vi.mocked(verifyWindowsSignature).mockReturnValue(new Promise(resolve => { finish = resolve; }));

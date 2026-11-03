@@ -17,7 +17,7 @@ export class Updates {
   failureKind: 'manifest-authentication' | 'artifact-authentication' | 'network-or-other' | null = null;
   private classifyFailure(error: unknown) {
     const code = error && typeof error === 'object' && 'code' in error ? error.code : null;
-    return code === 'MELDIQ_METADATA_AUTHENTICATION' ? 'manifest-authentication' as const : (code === 'ERR_CHECKSUM_MISMATCH' || (error instanceof Error && /checksum|sha512/i.test(error.message))) ? 'artifact-authentication' as const : 'network-or-other' as const;
+    return code === 'MELDIQ_METADATA_AUTHENTICATION' ? 'manifest-authentication' as const : code === 'ERR_CHECKSUM_MISMATCH' ? 'artifact-authentication' as const : 'network-or-other' as const;
   }
   constructor(private readonly build: BuildInfo, private readonly origin: string, approved: boolean,
     private readonly publisher: string | null, private readonly prefs: () => Preferences, private readonly busy: () => boolean, private readonly changed: () => void, private readonly releaseTrust?: ReleaseTrustConfig) {
