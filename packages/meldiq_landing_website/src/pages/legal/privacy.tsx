@@ -77,7 +77,7 @@ export default function Privacy() {
             <ul>
               <li>Hostinger: the server that runs Meldiq&apos;s API.</li>
               <li>Supabase: the PostgreSQL database used by Meldiq. MongoDB Atlas holds the prior database during recovery retention.</li>
-              <li>Amazon Web Services: encrypted file storage. Frankfurt, Germany, is the primary region for file storage. We retain historical copies in Singapore for recovery. Older Windows apps and uploads started before the move can temporarily send file data to Singapore before it is copied to Frankfurt.</li>
+              <li>Amazon Web Services: encrypted file storage. Frankfurt, Germany, is the primary region for file storage. We retain historical copies in Singapore for recovery. New uploads, including from older Windows apps, are stored in Frankfurt.</li>
               <li>Cloudflare: DNS, website delivery and authorized file delivery through its global network.</li>
               <li>PayPal: payment authorization, subscriptions, receipts and payment verification for new website purchases.</li>
               <li>Stripe: billing records and the customer portal for earlier Stripe subscriptions, where applicable.</li>
@@ -94,9 +94,9 @@ export default function Privacy() {
           body: (
             <ul>
               <li>Encrypted messages waiting for a device: until delivered, at most 7 days.</li>
-              <li>File uploads: the current service keeps attachments for conversation history. Deletion and account controls apply.</li>
+              <li>Completed file uploads are kept until you request deletion. When a disappearing-message timer ends, the message disappears but its file stays stored. Files you have not sent are accessible only to you.</li>
               <li>Encrypted history you keep: until you delete it or your account.</li>
-              <li>Call records: 90 days. Audit logs: 365 days.</li>
+              <li>The current retention settings for call records and audit logs are 36,500 days.</li>
               <li>
                 Billing records: as long as tax and accounting law requires: <Detail value={op.billingRecordRetention} />.
               </li>
