@@ -120,7 +120,8 @@ try:
     entries = lambda i: sorted(v for v in i['Config']['Env'] if not v.startswith('PAYPAL_PLUS_PLAN_ID='))
     assert entries(before) == entries(after), 'An unrelated environment setting changed'
     assert ('PAYPAL_PLUS_PLAN_ID=' + plan) in after['Config']['Env']
-    assert before['Mounts'] == after['Mounts'], 'Application data mount changed'
+    mounts = lambda i: sorted(i['Mounts'], key=lambda mount: mount['Destination'])
+    assert mounts(before) == mounts(after), 'Application data mount changed'
     for key in ['Memory', 'MemorySwap', 'NanoCpus', 'CpuQuota', 'CpuPeriod', 'PortBindings', 'ReadonlyRootfs']:
         assert before['HostConfig'][key] == after['HostConfig'][key], 'Runtime setting changed: ' + key
     # From this point customers may acquire the new agreement. Never revert to a configuration
