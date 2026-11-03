@@ -67,6 +67,14 @@ routes = {('/discord/callback' if n == 'desktop-discord-callback.html' else '/' 
 routes['/discord/callback/'] = 'desktop-discord-callback.html'
 blocks = ['  # Meldiq desktop browser handoff overlay; immutable assets, no account or API changes.']
 for route, name in sorted(routes.items()):
+    if route == '/discord/callback/':
+        blocks.append('''  location = /discord/callback/ {
+    access_log off;
+    add_header Cache-Control "no-store" always;
+    include /etc/nginx/snippets/meldiq-web-headers.conf;
+    return 307 /discord/callback$is_args$args;
+  }''')
+        continue
     content_type = 'application/json' if name.endswith('.json') else 'text/javascript' if name.endswith('.js') else 'text/html'
     blocks.append(f'''  location = {route} {{
     access_log off;
@@ -103,7 +111,7 @@ try:
     for route, name in routes.items():
         deadline = time.monotonic() + 15
         while True:
-            actual = command(['curl', '--fail', '--silent', '--show-error', '--connect-timeout', '5', '--max-time', '15', '--resolve', 'web.meldiq.app:443:127.0.0.1', 'https://web.meldiq.app' + route])
+            actual = command(['curl', '--fail', '--silent', '--show-error', '--location', '--connect-timeout', '5', '--max-time', '15', '--resolve', 'web.meldiq.app:443:127.0.0.1', 'https://web.meldiq.app' + route])
             if digest(actual) == payload['files'][name]['sha256']:
                 break
             if time.monotonic() >= deadline:

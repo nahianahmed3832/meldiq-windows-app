@@ -3,7 +3,7 @@ import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 const backend = process.env.ORBIT_SERVER_DIR;
 if (!backend || !path.isAbsolute(backend)) throw new Error('Point ORBIT_SERVER_DIR at the existing backend source checkout. Tests use local stand-ins only.');
-const files = ['billing_paypal.test.ts', 'billing_paypal_live.test.ts', 'paypal_capabilities.test.ts', 'paypal_sandbox_gift_lifecycle.test.ts', 'discord_import.test.ts', 'discord_mapping.test.ts', 'social_auth.test.ts'];
+const files = ['billing_paypal.test.ts', 'billing_paypal_live.test.ts', 'paypal_capabilities.test.ts', 'paypal_sandbox_gift_lifecycle.test.ts', 'billing_plus_terms.test.ts', 'billing_program.test.ts', 'billing_trial_default.test.ts', 'billing_trials.test.ts', 'billing_notifications.test.ts', 'standalone_commerce_paypal.test.ts', 'discord_import.test.ts', 'discord_mapping.test.ts', 'social_auth.test.ts'];
 for (const file of files) await fs.access(path.join(backend, 'test', file));
 await fs.mkdir('test-results', { recursive: true });
 const output = path.resolve('test-results/provider-regression.json');

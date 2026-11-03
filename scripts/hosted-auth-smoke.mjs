@@ -9,6 +9,7 @@ const files = {
   '/social-auth-callback.html': 'packages/web/public/social-auth-callback.html',
   '/social-auth-callback.js': 'packages/web/public/social-auth-callback.js',
   '/discord/callback': 'desktop/hosted/discord-callback.html',
+  '/discord/callback/': 'desktop/hosted/discord-callback.html',
   '/desktop-discord-return.js': 'desktop/hosted/desktop-discord-return.js',
 };
 const bodies = Object.fromEntries(await Promise.all(Object.entries(files).map(async ([url, file]) => [url, await fs.readFile(file, 'utf8')])));
@@ -31,7 +32,8 @@ async function scenario(name, pending, path, check) {
     });
     const page = await context.newPage();
     await page.goto(origin + path);
-    await check(page);
+    try { await check(page); }
+    catch (error) { console.error(JSON.stringify({ scenario: name, url: page.url(), text: await page.locator('body').innerText() })); throw error; }
     passed.push(name);
   } finally { await context.close(); }
 }
@@ -53,6 +55,7 @@ try {
   await scenario('expired social flow rejected', { ...social, expires: Date.now() - 1 }, `/desktop-bridge.html#kind=social-return&id=${id}&receipt=${receipt}`, failed);
   await scenario('duplicate social result rejected', social, `/desktop-bridge.html#kind=social-return&id=${id}&id=${id}&receipt=${receipt}`, failed);
   await scenario('Discord desktop return filters provider extras', discord, `/discord/callback?state=${state}&code=one-use-code&guild_id=123456789&permissions=8`, p => handoff(p, 'discord', { state, code: 'one-use-code', guild_id: '123456789' }));
+  await scenario('Discord trailing-slash callback preserves the one-use return', discord, `/discord/callback/?state=${state}&code=one-use-code`, p => handoff(p, 'discord', { state, code: 'one-use-code' }));
   await scenario('Discord denied consent returns cancellation', discord, `/discord/callback?state=${state}&error=access_denied`, p => handoff(p, 'discord', { state, error: 'access_denied' }));
   await scenario('mismatched Discord state rejected', discord, `/discord/callback?state=${'d'.repeat(43)}&code=one-use-code`, failed);
   await scenario('expired Discord state rejected', { ...discord, expires: Date.now() - 1 }, `/discord/callback?state=${state}&code=one-use-code`, failed);
