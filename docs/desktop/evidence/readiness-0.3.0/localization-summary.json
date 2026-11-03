@@ -1,132 +1,132 @@
 {
-  "recordedAt": "2026-11-03T14:55:34.419Z",
+  "recordedAt": "2026-11-03T15:59:53.521Z",
   "complete": false,
   "locales": [
     {
       "language": "en",
-      "keys": 602,
-      "translated": 602,
-      "missing": 0
+      "translated": 605,
+      "missing": 0,
+      "keys": 605
     },
     {
       "language": "bn",
-      "keys": 602,
-      "translated": 524,
-      "missing": 78
+      "translated": 527,
+      "missing": 78,
+      "keys": 605
     },
     {
       "language": "zh-CN",
-      "keys": 602,
-      "translated": 524,
-      "missing": 78
+      "translated": 527,
+      "missing": 78,
+      "keys": 605
     },
     {
       "language": "zh-TW",
-      "keys": 602,
-      "translated": 36,
-      "missing": 566
+      "translated": 39,
+      "missing": 566,
+      "keys": 605
     },
     {
       "language": "hi",
-      "keys": 602,
-      "translated": 36,
-      "missing": 566
+      "translated": 39,
+      "missing": 566,
+      "keys": 605
     },
     {
       "language": "ur",
-      "keys": 602,
-      "translated": 36,
-      "missing": 566
+      "translated": 39,
+      "missing": 566,
+      "keys": 605
     },
     {
       "language": "ar",
-      "keys": 602,
-      "translated": 36,
-      "missing": 566
+      "translated": 39,
+      "missing": 566,
+      "keys": 605
     },
     {
       "language": "id",
-      "keys": 602,
-      "translated": 36,
-      "missing": 566
+      "translated": 39,
+      "missing": 566,
+      "keys": 605
     },
     {
       "language": "ja",
-      "keys": 602,
-      "translated": 36,
-      "missing": 566
+      "translated": 39,
+      "missing": 566,
+      "keys": 605
     },
     {
       "language": "ko",
-      "keys": 602,
-      "translated": 36,
-      "missing": 566
+      "translated": 39,
+      "missing": 566,
+      "keys": 605
     },
     {
       "language": "vi",
-      "keys": 602,
-      "translated": 36,
-      "missing": 566
+      "translated": 39,
+      "missing": 566,
+      "keys": 605
     },
     {
       "language": "th",
-      "keys": 602,
-      "translated": 36,
-      "missing": 566
+      "translated": 39,
+      "missing": 566,
+      "keys": 605
     },
     {
       "language": "tr",
-      "keys": 602,
-      "translated": 36,
-      "missing": 566
+      "translated": 39,
+      "missing": 566,
+      "keys": 605
     },
     {
       "language": "es",
-      "keys": 602,
-      "translated": 36,
-      "missing": 566
+      "translated": 39,
+      "missing": 566,
+      "keys": 605
     },
     {
       "language": "fr",
-      "keys": 602,
-      "translated": 36,
-      "missing": 566
+      "translated": 39,
+      "missing": 566,
+      "keys": 605
     },
     {
       "language": "de",
-      "keys": 602,
-      "translated": 36,
-      "missing": 566
+      "translated": 39,
+      "missing": 566,
+      "keys": 605
     },
     {
       "language": "it",
-      "keys": 602,
-      "translated": 36,
-      "missing": 566
+      "translated": 39,
+      "missing": 566,
+      "keys": 605
     },
     {
       "language": "pt-BR",
-      "keys": 602,
-      "translated": 36,
-      "missing": 566
+      "translated": 39,
+      "missing": 566,
+      "keys": 605
     },
     {
       "language": "ru",
-      "keys": 602,
-      "translated": 36,
-      "missing": 566
+      "translated": 39,
+      "missing": 566,
+      "keys": 605
     },
     {
       "language": "nl",
-      "keys": 602,
-      "translated": 36,
-      "missing": 566
+      "translated": 39,
+      "missing": 566,
+      "keys": 605
     },
     {
       "language": "pl",
-      "keys": 602,
-      "translated": 36,
-      "missing": 566
+      "translated": 39,
+      "missing": 566,
+      "keys": 605
     }
   ],
   "hardcodedUiFindings": 2670,

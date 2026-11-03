@@ -1,0 +1,39 @@
+{
+  "recordedAt": "2026-11-03T16:11:52.096Z",
+  "build": {
+    "version": "0.3.0-readiness.2",
+    "commit": "0b73ccbbc36de6ac0b92e7d1d6041e642e639a1c",
+    "timestamp": "2026-11-03T16:10:19.967Z",
+    "channel": "stable",
+    "distribution": "development",
+    "updateLab": false
+  },
+  "platform": "darwin",
+  "arch": "arm64",
+  "bundle": "release/mac-arm64/Meldiq.app",
+  "metadata": {
+    "name": "Meldiq",
+    "displayName": "Meldiq",
+    "identifier": "app.meldiq.desktop",
+    "icon": "icon.icns"
+  },
+  "iconSha256": "adf3f4a8b531761773d88f586bab5457adad05ed36193dadbf187a5065d9243b",
+  "passed": [
+    "Meldiq bundle metadata",
+    "exact canonical packaged ICNS",
+    "deep strict code-signature validation"
+  ],
+  "signing": "local ad-hoc QA; no Developer ID signature or notarization",
+  "visual": {
+    "nativeMenuName": "Meldiq",
+    "normalPublicMetadataLoginOptions": [
+      "Google",
+      "Discord",
+      "email",
+      "passkey"
+    ],
+    "method": "native app accessibility and window screenshot after successful launch",
+    "providerApproval": "not submitted"
+  },
+  "priorPackagingDefect": "identity:null retained invalid inherited Electron signature after fuse edits; Apple silicon terminated startup; corrected to local ad-hoc signing"
+}
