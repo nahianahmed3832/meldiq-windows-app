@@ -1,9 +1,9 @@
 {
   "name": "meldiq-desktop",
   "productName": "Meldiq",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": true,
-  "description": "Meldiq Desktop \u2014 the existing Meldiq client packaged locally with native desktop integrations",
+  "description": "Meldiq Desktop — the existing Meldiq client packaged locally with native desktop integrations",
   "author": "MD.NAHIAN AHMED <254077813+nahianahmed3832@users.noreply.github.com>",
   "repository": {
     "type": "git",
