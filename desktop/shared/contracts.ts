@@ -15,7 +15,8 @@ export interface AccountTokens {
 }
 export interface BuildInfo {
   version: string; commit: string; timestamp: string; channel: Channel;
-  distribution: 'development' | 'direct' | 'store';
+  distribution: 'development' | 'direct' | 'private-direct' | 'store';
+  updateLab?: boolean;
 }
 export interface PerformanceProfile {
   mode: 'balanced' | 'economy'; ramGB: number; logicalCpus: number;

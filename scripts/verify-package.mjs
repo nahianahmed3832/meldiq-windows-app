@@ -8,6 +8,8 @@ assert(!/<script[^>]+src=["']https?:/.test(html), 'Application scripts must be p
 const main = await fs.readFile('dist/main/main.cjs', 'utf8');
 assert(main.includes('contextIsolation: true') && main.includes('nodeIntegration: false') && main.includes('sandbox: true'));
 assert(!main.includes('webSecurity: false'));
+const build = JSON.parse(await fs.readFile('dist/build-info.json', 'utf8'));
+if (!build.updateLab) assert(!main.includes('MELDIQ_UPDATE_LAB_CONTROL') && !main.includes('meldiq-update-qualification'), 'Updater qualification hooks must be absent from public binaries');
 for (const filename of ['dist/main/main.cjs', 'dist/main/preload.cjs', 'dist/main/payment-preload.cjs', ...files.filter(n => /\.(js|html|json)$/.test(n)).map(n => 'dist/renderer/' + n)]) {
   const text = await fs.readFile(filename, 'utf8');
   assert(!text.includes('MELDIQ_ACCEPTANCE_') && !text.includes('desktop-acceptance.env'), 'Acceptance configuration leaked into packaged code: ' + filename);

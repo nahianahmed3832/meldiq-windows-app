@@ -11,6 +11,18 @@ import type { BuildInfo, CaptureSource, DesktopState } from '../shared/contracts
 const appRoot = app.getAppPath();
 const build: BuildInfo = JSON.parse(fs.readFileSync(path.join(appRoot, 'dist/build-info.json'), 'utf8'));
 const config = JSON.parse(fs.readFileSync(path.join(appRoot, 'dist/runtime-config.json'), 'utf8'));
+// Entire qualification blocks are removed from public binaries by esbuild dropLabels.
+// eslint-disable-next-line no-unused-labels
+UPDATER_LAB: {
+  const controlPath = process.env.MELDIQ_UPDATE_LAB_CONTROL || path.join(app.getPath('appData'), 'Meldiq Update Lab', 'control-' + config.updateLabId + '.json');
+  const control = JSON.parse(fs.readFileSync(controlPath, 'utf8'));
+  if (!build.updateLab || !path.isAbsolute(control.profile) || !path.isAbsolute(control.report)) throw new Error('Invalid isolated updater lab configuration');
+  app.setName('Meldiq Update Lab');
+  app.setPath('userData', control.profile);
+  config.updateOrigin += '/' + control.scenario;
+  config.updateAppId = 'app.meldiq.desktop.update-lab';
+  config.updateLabControl = control;
+}
 const testApi = !app.isPackaged && process.env.MELDIQ_TEST_USER_DATA && process.env.MELDIQ_TEST_API_ORIGIN;
 if (testApi) {
   const url = new URL(testApi);
@@ -22,6 +34,8 @@ app.setName('Meldiq');
 // Tests use their own temporary profile; packaged builds never accept environment profile overrides.
 if (!app.isPackaged && process.env.MELDIQ_TEST_USER_DATA) app.setPath('userData', path.resolve(process.env.MELDIQ_TEST_USER_DATA));
 const prefs = new PreferenceStore(path.join(app.getPath('userData'), 'desktop-preferences.json'));
+// eslint-disable-next-line no-unused-labels
+UPDATER_LAB: { prefs.patch({ updateMode: config.updateLabControl.scenario === 'upgrade' ? 'automatic' : 'manual', closeToTray: false }); }
 if (!prefs.value.hardwareAcceleration) app.disableHardwareAcceleration();
 app.commandLine.appendSwitch('disk-cache-size', String(prefs.value.cacheMB * 1024 ** 2));
 const single = app.requestSingleInstanceLock();
@@ -266,9 +280,13 @@ else {
       // Electron's save dialog keeps the user in charge of every destination and overwrite.
       item.once('done', () => { downloads--; emitState(); });
     });
-    updates = new Updates(build, config.updateOrigin, config.releaseApproved && Boolean(config.publisherName), config.publisherName, () => prefs.value, busy, emitState);
+    const privateUpdates = build.distribution === 'private-direct' && config.privateUpdatesEnabled === true;
+    updates = new Updates(build, config.updateOrigin, privateUpdates || (config.releaseApproved && Boolean(config.publisherName)), config.publisherName, () => prefs.value, busy, emitState,
+      privateUpdates ? { keys: config.updateKeys, appId: config.updateAppId ?? 'app.meldiq.desktop', checkpointFile: path.join(app.getPath('userData'), 'update-trust.json') } : undefined);
     nativeUpdater.on('before-quit-for-update', () => { quitting = true; });
     makeWindow(ses); menu();
+    // eslint-disable-next-line no-unused-labels
+    UPDATER_LAB: { void import('./update-lab').then(lab => lab.runUpdateLab({ app, main: main!, updates, control: config.updateLabControl })); }
     if (app.isPackaged) app.setAsDefaultProtocolClient('meldiq');
     else if (process.defaultApp && process.argv[1]) app.setAsDefaultProtocolClient('meldiq', process.execPath, [path.resolve(process.argv[1])]);
     process.argv.filter(arg => arg.startsWith('meldiq://')).forEach(deepLink);

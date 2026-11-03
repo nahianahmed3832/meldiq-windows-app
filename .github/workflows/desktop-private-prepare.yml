@@ -1,0 +1,40 @@
+name: Prepare private-key Windows update candidates
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  prepare:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm test
+      - run: npm run test:web
+      - run: npm run verify:snapshot
+      - name: Build public candidate and two isolated qualification installers
+        run: node scripts/prepare-private-candidates.mjs
+      - name: Keep candidates in a draft release for controlled qualification
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $tag = "windows-private-candidate-$env:GITHUB_RUN_ID"
+          gh release create $tag --draft --target $env:GITHUB_SHA --title "Windows private-update candidates $env:GITHUB_RUN_ID" --notes "Qualification candidates. Private release key is never present in CI. Not yet linked from the website."
+          if ($LASTEXITCODE -ne 0) { throw 'Candidate draft creation failed' }
+          gh release upload $tag private-candidates/*.exe private-candidates/private-candidates.json
+          if ($LASTEXITCODE -ne 0) { throw 'Candidate upload failed' }
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        if: always()
+        with:
+          name: private-key-candidates
+          path: |
+            private-candidates/
+            test-results/
+          retention-days: 14

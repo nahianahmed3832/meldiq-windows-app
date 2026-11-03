@@ -1,5 +1,8 @@
 import { autoUpdater, NsisUpdater } from 'electron-updater';
 import { verifyWindowsSignature } from './signature';
+import { SignedReleaseTrust, type ReleaseTrustConfig } from './signed-release';
+import { SignedReleaseProvider } from './signed-provider';
+import path from 'node:path';
 import type { BuildInfo, Preferences, UpdateState } from '../shared/contracts';
 export class Updates {
   state: UpdateState = { status: 'disabled', message: 'Development build: automatic updates are disabled.' };
@@ -10,15 +13,20 @@ export class Updates {
   private installing = false;
   private downloading = false;
   private verifying = false;
+  private signedTrust: SignedReleaseTrust | null = null;
   constructor(private readonly build: BuildInfo, private readonly origin: string, approved: boolean,
-    private readonly publisher: string | null, private readonly prefs: () => Preferences, private readonly busy: () => boolean, private readonly changed: () => void) {
-    this.enabled = build.distribution === 'direct' && approved && process.platform === 'win32';
+    private readonly publisher: string | null, private readonly prefs: () => Preferences, private readonly busy: () => boolean, private readonly changed: () => void, private readonly releaseTrust?: ReleaseTrustConfig) {
+    this.enabled = ['direct', 'private-direct'].includes(build.distribution) && approved && process.platform === 'win32';
     if (!this.enabled) return;
     this.state = { status: 'idle' };
     autoUpdater.autoDownload = false;
     autoUpdater.autoInstallOnAppQuit = false;
     autoUpdater.allowDowngrade = false;
-    if (autoUpdater instanceof NsisUpdater) autoUpdater.verifyUpdateCodeSignature = verifyWindowsSignature;
+    autoUpdater.disableWebInstaller = true;
+    autoUpdater.disableDifferentialDownload = true;
+    if (build.distribution === 'private-direct' && !releaseTrust) throw new Error('Private updates require pinned release keys');
+    if (build.distribution === 'private-direct' && autoUpdater instanceof NsisUpdater) autoUpdater.installDirectory = path.dirname(process.execPath);
+    if (build.distribution === 'direct' && autoUpdater instanceof NsisUpdater) autoUpdater.verifyUpdateCodeSignature = verifyWindowsSignature;
     autoUpdater.on('checking-for-update', () => this.set({ status: 'checking' }));
     autoUpdater.on('update-available', info => {
       this.set({ status: 'available', version: info.version });
@@ -28,7 +36,7 @@ export class Updates {
     autoUpdater.on('download-progress', info => this.set({ status: 'downloading', percent: info.percent }));
     autoUpdater.on('update-downloaded', info => {
       this.verifying = true;
-      void verifyWindowsSignature(this.publisher ? [this.publisher] : [], info.downloadedFile).then(problem => {
+      void this.verifyCandidate(info.downloadedFile).then(problem => {
         if (problem) { this.verifiedFile = null; this.set({ status: 'error', message: problem }); return; }
         this.verifiedFile = info.downloadedFile;
         this.set({ status: 'downloaded', version: info.version, message: 'Ready to install when your calls and transfers finish.' });
@@ -46,13 +54,20 @@ export class Updates {
     const channel = this.prefs().channel;
     autoUpdater.allowPrerelease = channel !== 'stable';
     autoUpdater.channel = channel === 'stable' ? 'latest' : channel;
-    autoUpdater.setFeedURL({ provider: 'generic', url: `${this.origin}/windows/${channel}/`, channel: channel === 'stable' ? 'latest' : channel });
+    if (this.build.distribution === 'private-direct') {
+      this.signedTrust = new SignedReleaseTrust(this.releaseTrust!, this.origin, channel);
+      const provider = { provider: 'custom' as const, updateProvider: SignedReleaseProvider, trust: this.signedTrust };
+      autoUpdater.setFeedURL(provider);
+    } else autoUpdater.setFeedURL({ provider: 'generic', url: `${this.origin}/windows/${channel}/`, channel: channel === 'stable' ? 'latest' : channel });
     // Switching a channel invalidates a previously offered installer.
     this.verifiedFile = null;
     this.set({ status: 'idle' });
   }
   assertCanConfigure() {
     if (this.enabled && (this.checking || this.downloading || this.verifying || this.installing || this.state.status === 'downloading')) throw new Error('Finish the update check, download or verification before changing channels.');
+  }
+  private verifyCandidate(filename: string) {
+    return this.signedTrust ? this.signedTrust.verifyFile(filename) : verifyWindowsSignature(this.publisher ? [this.publisher] : [], filename);
   }
   async action(action: unknown) {
     if (!['check', 'download', 'install'].includes(String(action))) throw new Error('Invalid update action');
@@ -62,9 +77,9 @@ export class Updates {
     if (this.busy()) throw new Error('Finish your call, screen sharing and file transfers before restarting.');
     if (this.state.status !== 'downloaded' || !this.verifiedFile || this.installing) throw new Error('No verified update is ready');
     this.installing = true;
-    const problem = await verifyWindowsSignature(this.publisher ? [this.publisher] : [], this.verifiedFile);
+    const problem = await this.verifyCandidate(this.verifiedFile);
     if (problem || this.busy()) { this.installing = false; throw new Error(problem ?? 'A call or transfer started. Finish it before restarting.'); }
-    autoUpdater.quitAndInstall(false, true);
+    autoUpdater.quitAndInstall(this.build.distribution === 'private-direct', true);
   }
   installOnSafeExit(): boolean {
     if (!this.enabled || this.state.status !== 'downloaded' || this.prefs().updateMode !== 'automatic' || this.busy()) return false;

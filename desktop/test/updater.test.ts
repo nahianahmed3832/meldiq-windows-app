@@ -1,7 +1,7 @@
 import { afterEach, expect, it, vi } from 'vitest';
 import type { Preferences } from '../shared/contracts';
 const sdk = vi.hoisted(() => ({ handlers: new Map<string, (info: unknown) => void>(), checkForUpdates: vi.fn(), downloadUpdate: vi.fn(), quitAndInstall: vi.fn(), setFeedURL: vi.fn() }));
-vi.mock('electron-updater', () => ({ NsisUpdater: class {}, autoUpdater: { on: (event: string, handler: (info: unknown) => void) => sdk.handlers.set(event, handler), checkForUpdates: sdk.checkForUpdates, downloadUpdate: sdk.downloadUpdate, quitAndInstall: sdk.quitAndInstall, setFeedURL: sdk.setFeedURL } }));
+vi.mock('electron-updater', () => ({ Provider: class {}, NsisUpdater: class {}, autoUpdater: { on: (event: string, handler: (info: unknown) => void) => sdk.handlers.set(event, handler), checkForUpdates: sdk.checkForUpdates, downloadUpdate: sdk.downloadUpdate, quitAndInstall: sdk.quitAndInstall, setFeedURL: sdk.setFeedURL } }));
 vi.mock('../main/signature', () => ({ verifyWindowsSignature: vi.fn() }));
 import { verifyWindowsSignature } from '../main/signature';
 import { Updates } from '../main/updater';

@@ -8,14 +8,17 @@ execFileSync(process.execPath, ['scripts/validate-builder.mjs'], { cwd: root, st
 const pkg = JSON.parse(await fs.readFile(path.join(root, 'package.json'), 'utf8'));
 const channel = process.env.BUILD_CHANNEL ?? 'stable';
 const distribution = process.env.BUILD_DISTRIBUTION ?? 'development';
-if (!['stable', 'beta', 'canary'].includes(channel) || !['development', 'direct', 'store'].includes(distribution)) throw new Error('Invalid build channel/distribution');
+if (!['stable', 'beta', 'canary'].includes(channel) || !['development', 'direct', 'private-direct', 'store'].includes(distribution)) throw new Error('Invalid build channel/distribution');
 if (distribution === 'direct') execFileSync(process.execPath, ['scripts/release-preflight.mjs'], { cwd: root, stdio: 'inherit' });
+if (distribution === 'private-direct') execFileSync(process.execPath, ['scripts/private-release-preflight.mjs'], { cwd: root, stdio: 'inherit' });
+const updateLab = process.env.MELDIQ_UPDATE_LAB === '1';
+if (updateLab && (distribution !== 'private-direct' || !process.env.MELDIQ_UPDATE_LAB_ROOT?.startsWith('https://meldiq.app/desktop-updates/qualification/'))) throw new Error('Update lab requires its isolated HTTPS qualification feed');
 await fs.rm(path.join(root, 'dist'), { recursive: true, force: true });
 await fs.mkdir(path.join(root, 'dist/main'), { recursive: true });
 let commit = 'uncommitted';
 try { commit = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim(); } catch { /* initial checkout */ }
 const timestamp = process.env.SOURCE_DATE_EPOCH ? new Date(Number(process.env.SOURCE_DATE_EPOCH) * 1000).toISOString() : new Date().toISOString();
-const info = { version: pkg.version, commit, timestamp, channel, distribution };
+const info = { version: pkg.version, commit, timestamp, channel, distribution, updateLab };
 await fs.writeFile(path.join(root, 'dist/build-info.json'), JSON.stringify(info, null, 2));
 const config = JSON.parse(await fs.readFile(path.join(root, 'config/desktop.json'), 'utf8'));
 for (const origin of config.connectOrigins) {
@@ -24,9 +27,15 @@ for (const origin of config.connectOrigins) {
 }
 config.publisherName = distribution === 'direct' ? process.env.MELDIQ_SIGNING_PUBLISHER : null;
 config.releaseApproved = distribution === 'direct' && process.env.MELDIQ_RELEASE_APPROVED === '1';
+config.privateUpdatesEnabled = distribution === 'private-direct';
+if (config.privateUpdatesEnabled) {
+  const key = JSON.parse(await fs.readFile(path.join(root, 'config/update-key.json'), 'utf8'));
+  config.updateKeys = [{ keyId: key.keyId, publicKey: key.publicKey }];
+}
+if (updateLab) { config.updateOrigin = process.env.MELDIQ_UPDATE_LAB_ROOT; config.updateLabId = process.env.GITHUB_RUN_ID ?? 'local'; }
 await fs.writeFile(path.join(root, 'dist/runtime-config.json'), JSON.stringify(config, null, 2));
 await Promise.all([
-  esbuild({ entryPoints: [path.join(root, 'desktop/main/main.ts')], outfile: path.join(root, 'dist/main/main.cjs'), platform: 'node', target: 'node22', format: 'cjs', bundle: true, packages: 'external', sourcemap: false }),
+  esbuild({ entryPoints: [path.join(root, 'desktop/main/main.ts')], outfile: path.join(root, 'dist/main/main.cjs'), platform: 'node', target: 'node22', format: 'cjs', bundle: true, packages: 'external', sourcemap: false, dropLabels: updateLab ? [] : ['UPDATER_LAB'] }),
   esbuild({ entryPoints: [path.join(root, 'desktop/preload/index.ts')], outfile: path.join(root, 'dist/main/preload.cjs'), platform: 'node', target: 'node22', format: 'cjs', bundle: true, external: ['electron'], sourcemap: false }),
   esbuild({ entryPoints: [path.join(root, 'desktop/preload/payment.ts')], outfile: path.join(root, 'dist/main/payment-preload.cjs'), platform: 'node', target: 'node22', format: 'cjs', bundle: true, external: ['electron'], sourcemap: false }),
 ]);

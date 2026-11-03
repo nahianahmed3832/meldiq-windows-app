@@ -7,7 +7,7 @@
     "https://rtc.meldiq.app",
     "wss://rtc.meldiq.app"
   ],
-  "updateOrigin": "https://updates.meldiq.app",
+  "updateOrigin": "https://meldiq.app/desktop-updates",
   "publisherName": null,
   "releaseApproved": false
 }

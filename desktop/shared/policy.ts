@@ -3,7 +3,7 @@ export const ORIGIN = 'https://web.meldiq.app';
 export const DEFAULT_PREFERENCES: Preferences = {
   performance: 'auto', cacheMB: 256, hardwareAcceleration: true,
   closeToTray: true, startAtLogin: false, notifications: true,
-  updateMode: 'ask', channel: 'stable',
+  updateMode: 'automatic', channel: 'stable',
 };
 const options: Record<string, readonly unknown[]> = {
   performance: ['auto', 'balanced', 'economy'], cacheMB: [128, 256, 512],
