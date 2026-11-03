@@ -76,9 +76,9 @@ export default function Privacy() {
           body: (
             <ul>
               <li>Hostinger: the server that runs Meldiq&apos;s API.</li>
-              <li>MongoDB Atlas: part of Meldiq&apos;s database.</li>
-              <li>Amazon Web Services: encrypted file storage. Singapore is the active storage region. Copies are being staged in Frankfurt.</li>
-              <li>Cloudflare: DNS and delivery of the Meldiq websites.</li>
+              <li>Supabase: the PostgreSQL database used by Meldiq. MongoDB Atlas holds the prior database during recovery retention.</li>
+              <li>Amazon Web Services: encrypted file storage. Frankfurt, Germany, is the primary region for file storage. We retain historical copies in Singapore for recovery. Older Windows apps and uploads started before the move can temporarily send file data to Singapore before it is copied to Frankfurt.</li>
+              <li>Cloudflare: DNS, website delivery and authorized file delivery through its global network.</li>
               <li>PayPal: payment authorization, subscriptions, receipts and payment verification for new website purchases.</li>
               <li>Stripe: billing records and the customer portal for earlier Stripe subscriptions, where applicable.</li>
               <li>
