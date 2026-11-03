@@ -34,5 +34,8 @@
   "desktop_try_again": "Thử lại",
   "desktop_share_your_screen": "Chia sẻ màn hình",
   "desktop_cancel": "Hủy",
-  "desktop_updates": "Bản cập nhật"
+  "desktop_updates": "Bản cập nhật",
+  "call_security_waiting": "Đang chờ nội dung được mã hóa",
+  "signin_methods_unavailable": "Không thể kiểm tra tất cả cách đăng nhập. Hãy làm mới tùy chọn để thử lại.",
+  "desktop_local_test": "Thử nghiệm cục bộ độc lập"
 }

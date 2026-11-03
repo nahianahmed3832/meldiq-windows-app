@@ -34,5 +34,8 @@
   "desktop_try_again": "Tekrar dene",
   "desktop_share_your_screen": "Ekranınızı paylaşın",
   "desktop_cancel": "İptal",
-  "desktop_updates": "Güncellemeler"
+  "desktop_updates": "Güncellemeler",
+  "call_security_waiting": "Şifrelenmiş medya bekleniyor",
+  "signin_methods_unavailable": "Tüm giriş yöntemleri kontrol edilemedi. Yeniden denemek için seçenekleri yenileyin.",
+  "desktop_local_test": "Yalıtılmış yerel test"
 }

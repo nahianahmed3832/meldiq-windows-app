@@ -1,5 +1,8 @@
 name: Windows published-version upgrade qualification
 on:
+  push:
+    branches: [codex/windows-production-readiness-20261103]
+    paths: [.github/workflows/desktop-upgrade-check.yml, scripts/windows-upgrade-smoke.ps1]
   workflow_dispatch:
     inputs:
       candidate_run:
@@ -18,7 +21,7 @@ jobs:
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
-          CANDIDATE_RUN: ${{ inputs.candidate_run }}
+          CANDIDATE_RUN: ${{ inputs.candidate_run || '41659959939' }}
         run: |
           if ($env:CANDIDATE_RUN -notmatch '^[1-9][0-9]+$') { throw 'Invalid candidate run ID' }
           $run = gh run view $env:CANDIDATE_RUN --json conclusion,headSha | ConvertFrom-Json

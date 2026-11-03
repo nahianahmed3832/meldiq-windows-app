@@ -1,0 +1,23 @@
+{
+  "recordedAt": "2026-11-03T15:52:26.694Z",
+  "platform": "darwin",
+  "scope": "actual desktop public production metadata only; no credentials, authentication submission or provider authorization",
+  "passed": [
+    "Google sign-in offered by current live server",
+    "Discord sign-in offered by current live server",
+    "passkey option available for approved origin and platform WebAuthn",
+    "email option retained"
+  ],
+  "build": {
+    "version": "0.3.0-readiness.2",
+    "commit": "43c199fb3bb7ba03d887561ce3994f65d4aaadb4",
+    "timestamp": "2026-11-03T15:51:06.940Z",
+    "channel": "stable",
+    "distribution": "development",
+    "updateLab": false
+  },
+  "counts": {
+    "passed": 4,
+    "failed": 0
+  }
+}

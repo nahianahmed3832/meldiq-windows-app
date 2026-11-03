@@ -1,0 +1,16 @@
+{
+  "recordedAt": "2026-11-03T15:48:01.624Z",
+  "platform": "darwin",
+  "scope": "actual Electron with isolated metadata endpoints; no provider sign-in or account mutation",
+  "passed": [
+    "provider/metadata failures visible with retry",
+    "email sign-in remains available during metadata failure",
+    "Google and Discord options restored after retry",
+    "passkey option follows WebAuthn capability and approved RP origin",
+    "isolated test title identifies local QA"
+  ],
+  "counts": {
+    "passed": 5,
+    "failed": 0
+  }
+}

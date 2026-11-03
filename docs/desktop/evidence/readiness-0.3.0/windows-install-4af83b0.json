@@ -1,0 +1,35 @@
+{
+  "platform": "Windows CI virtual machine",
+  "signature": "Unsigned Windows installer; publisher certificate is not configured",
+  "osVersion": "Microsoft Windows NT 10.0.26100.0",
+  "installer": "Meldiq-Setup-0.3.0-readiness.1-x64-UNSIGNED-DEV.exe",
+  "executionLevel": "asInvoker",
+  "installerBytes": 124336058,
+  "sourceCommit": "4af83b0437190b2d115eb65d3a63fe583f3c88f0",
+  "protocolCommandVerified": true,
+  "pending": [
+    "versioned upgrade",
+    "signed update",
+    "physical hardware benchmarks",
+    "complete authenticated Windows feature acceptance"
+  ],
+  "branding": {
+    "executable": "Meldiq.exe",
+    "productName": "Meldiq",
+    "fileDescription": "Meldiq",
+    "version": "0.3.0.0",
+    "canonicalIconPixels": true
+  },
+  "passed": [
+    "actual silent NSIS installation",
+    "installed native application window launch",
+    "actual silent uninstall",
+    "canonical embedded executable icon",
+    "quoted per-user protocol registration",
+    "Start Menu shortcut target",
+    "asInvoker executable manifest",
+    "actual OS protocol dispatch reuses the running window",
+    "uninstall removes owned protocol registration"
+  ],
+  "startMenuShortcutVerified": true
+}

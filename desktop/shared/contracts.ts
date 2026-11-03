@@ -28,6 +28,7 @@ export interface UpdateState {
 }
 export interface DesktopState {
   permissions: Partial<Record<'microphone' | 'camera' | 'speakers', boolean>>;
+  isolatedTest: boolean;
   browserHandoff: boolean; protocolRegistered: boolean; systemLanguages: string[];
   preferences: Preferences; profile: PerformanceProfile; build: BuildInfo;
   update: UpdateState; busy: boolean; cacheBytes: number;

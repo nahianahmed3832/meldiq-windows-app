@@ -4,7 +4,7 @@
   "src/application/updates.ts": "Disable hosted shell updates; mirror existing call/upload/download holds to native updater.",
   "src/application/webPush.ts": "Use native notifications and disable web service-worker/FCM registration in desktop.",
   "src/auth/socialAuth.ts": "Uses the existing web PKCE receipt contract when the trusted same-origin browser handoff is available; retains legacy native callback compatibility until deployment.",
-  "src/ui/auth/SocialSignIn.tsx": "Completes a matching OS-sealed pending login after a renderer/app restart through the existing backend proof exchange, without changing account/session rules; supports explicit cancellation.",
+  "src/ui/auth/SocialSignIn.tsx": "Retries failed provider discovery and reports availability errors instead of silently hiding Google/Discord; preserves restart-safe native login proof exchange.",
   "test/support/apiCalls.ts": "Normalize source-relative test identifiers to slash separators on Windows; preserves delegated API contract coverage instead of skipping the test.",
   "src/store/db.ts": "Include OS-sealed session tokens in the existing persistent-key allowlist so session restoration survives a renderer restart; no account data migration.",
   "src/sync/legacyImport.ts": "Preserve the OS-sealed credential field during the existing one-time legacy data cleanup; cleanup must never erase the current account session.",
@@ -25,5 +25,16 @@
   "src/ui/mojo/MojoGifts.tsx": "Removes retired commercial plan label from legacy gifts; server retains ownership of gift rules.",
   "src/ui/mojo/MojoPlans.tsx": "Free/Plus remain the offered plans; retained legacy fields no longer display retired product branding.",
   "src/ui/mojo/MojoPage.tsx": "Uses neutral legacy-membership label for historical entitlements.",
-  "src/ui/mojo/SparkSection.tsx": "Explains current Plus Sparks without marketing retired plans."
+  "src/ui/mojo/SparkSection.tsx": "Explains current Plus Sparks without marketing retired plans.",
+  "src/call/types.ts": "Adds explicit quiet-media and waiting-for-media states, preserving separate call transport and encryption evidence.",
+  "src/call/rules.ts": "Media counters distinguish muted publications and Opus DTX from continuously expected video; silence no longer reports false reconnection.",
+  "src/call/security.ts": "Retains valid proof for the same registered remote track while muted; removals/errors/new unproven tracks still invalidate verification.",
+  "src/call/livekitSession.ts": "Samples actual unmuted remote publications to classify expected silence without resetting or bypassing the E2EE worker.",
+  "src/ui/call/callText.ts": "Names the waiting-for-remote-media state without misreporting key verification.",
+  "src/ui/call/CallStage.tsx": "Displays the localized waiting-for-media label, keeping actual encryption failures visible.",
+  "src/i18n/strings.ts": "Adds translated waiting-for-encrypted-media text; user message contents are unaffected.",
+  "test/call-rules.test.ts": "Regression coverage for remote mute/unmute, retained frame evidence, Opus DTX, and unchanged rejection of bad/new media.",
+  "src/ui/auth/AuthScreen.tsx": "Shows server/passkey metadata loading failures with refresh and online recovery while retaining central WebAuthn RP/origin checks.",
+  "src/call/frameAudit.ts": "Counts zero-length DTX frames separately so intentional silence neither proves a key nor creates false decryption failures.",
+  "test/call-keys.test.ts": "Includes empty DTX counts in the real frame-audit regression expectations."
 }

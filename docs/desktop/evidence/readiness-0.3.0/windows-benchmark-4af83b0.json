@@ -1,0 +1,50 @@
+{
+  "recordedAt": "2026-11-03T15:08:40.002Z",
+  "platform": "win32",
+  "release": "10.0.26100",
+  "architecture": "x64",
+  "ramGB": 15.994869232177734,
+  "logicalCpus": 4,
+  "cpu": "AMD EPYC 7763 64-Core Processor                ",
+  "scenario": "fresh-profile local shell / signed-out idle at 30 seconds",
+  "startup": {
+    "localShellMs": 1064,
+    "method": "spawn to visible desktop settings launcher; includes Playwright overhead; single warm filesystem run"
+  },
+  "processes": [
+    {
+      "type": "Browser",
+      "cpuPercent": 0,
+      "workingSetKB": 120348,
+      "privateKB": 79980
+    },
+    {
+      "type": "GPU",
+      "cpuPercent": 0,
+      "workingSetKB": 69392,
+      "privateKB": 18024
+    },
+    {
+      "type": "Utility",
+      "cpuPercent": 0,
+      "workingSetKB": 52444,
+      "privateKB": 12536
+    },
+    {
+      "type": "Tab",
+      "cpuPercent": 0,
+      "workingSetKB": 134328,
+      "privateKB": 56256
+    }
+  ],
+  "aggregateWorkingSetMB": 367.6875,
+  "unmeasured": [
+    "cold Windows launch",
+    "authenticated messaging",
+    "file handling",
+    "video calls",
+    "screen sharing",
+    "long-session stability"
+  ],
+  "publishableSystemRequirements": false
+}

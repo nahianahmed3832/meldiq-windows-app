@@ -34,5 +34,8 @@
   "desktop_try_again": "Erneut versuchen",
   "desktop_share_your_screen": "Bildschirm teilen",
   "desktop_cancel": "Abbrechen",
-  "desktop_updates": "Updates"
+  "desktop_updates": "Updates",
+  "call_security_waiting": "Warten auf verschlüsselte Medien",
+  "signin_methods_unavailable": "Nicht alle Anmeldemethoden konnten geprüft werden. Aktualisiere die Optionen und versuche es erneut.",
+  "desktop_local_test": "Isolierter lokaler Test"
 }

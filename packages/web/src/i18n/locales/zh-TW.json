@@ -34,5 +34,8 @@
   "desktop_try_again": "再試一次",
   "desktop_share_your_screen": "分享你的螢幕",
   "desktop_cancel": "取消",
-  "desktop_updates": "更新"
+  "desktop_updates": "更新",
+  "call_security_waiting": "等待加密媒體",
+  "signin_methods_unavailable": "無法檢查所有登入方式。請重新整理選項後再試。",
+  "desktop_local_test": "隔離本機測試"
 }

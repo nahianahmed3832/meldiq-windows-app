@@ -34,5 +34,8 @@
   "desktop_try_again": "Opnieuw proberen",
   "desktop_share_your_screen": "Je scherm delen",
   "desktop_cancel": "Annuleren",
-  "desktop_updates": "Updates"
+  "desktop_updates": "Updates",
+  "call_security_waiting": "Wachten op versleutelde media",
+  "signin_methods_unavailable": "Niet alle aanmeldmethoden konden worden gecontroleerd. Vernieuw de opties en probeer opnieuw.",
+  "desktop_local_test": "Geïsoleerde lokale test"
 }

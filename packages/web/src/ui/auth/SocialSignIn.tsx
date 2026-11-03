@@ -28,6 +28,9 @@ export function SocialSignIn({
   onLinked?: () => void;
   deviceProof?: () => Promise<{ deviceId: string; nonce: string; signature: string }>;
 }) {
+  const [configAttempt, retryConfig] = useState(0);
+  const [configLoading, setConfigLoading] = useState(true);
+  const [configFailed, setConfigFailed] = useState(false);
   const [providers, setProviders] = useState<SocialProvider[]>([]);
   const [busy, setBusy] = useState<SocialProvider | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -57,17 +60,26 @@ export function SocialSignIn({
   };
   useEffect(() => {
     let live = true;
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 10_000);
+    setConfigLoading(true);
     api
-      .json("GET", "/v2/auth/social/config", zSocialConfig, { auth: false })
+      .json("GET", "/v2/auth/social/config", zSocialConfig, { auth: false, signal: controller.signal })
       .then((c) => {
-        if (live) setProviders(c.providers);
+        if (live) { setProviders(c.providers); setConfigFailed(false); }
       })
-      .catch(() => undefined);
+      .catch(() => { if (live) setConfigFailed(true); })
+      .finally(() => { clearTimeout(timeout); if (live) setConfigLoading(false); });
     return () => {
-      live = false;
+      live = false; clearTimeout(timeout); controller.abort();
       abort.current?.abort();
     };
-  }, [api]);
+  }, [api, configAttempt]);
+  useEffect(() => {
+    const online = () => { if (configFailed && !busy) retryConfig(attempt => attempt + 1); };
+    window.addEventListener('online', online);
+    return () => window.removeEventListener('online', online);
+  }, [configFailed, busy]);
   const finish = async (receipt: SocialReceipt, initial = false) => {
     setError(null);
     try {
@@ -146,9 +158,11 @@ export function SocialSignIn({
     setBusy(pendingProvider.current);
     void finish(pending).finally(() => setBusy(null));
   };
-  if (!providers.length) return null;
+  if (!providers.length && !configLoading && !configFailed) return null;
   return (
     <div style={{ display: "grid", gap: 10 }} aria-label="Connected sign-in methods" aria-busy={!!busy}>
+      {configLoading && !providers.length && <p role="status">{t('common_checking')}</p>}
+      {configFailed && <div role="alert"><p>{t('signin_methods_unavailable')}</p><button className="btn btn-secondary" disabled={configLoading || !!busy} onClick={() => retryConfig(attempt => attempt + 1)}>{t('collection_refresh')}</button></div>}
       {activeStep && (
         <>
           {pending && (

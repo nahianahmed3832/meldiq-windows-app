@@ -27,6 +27,7 @@ UPDATER_LAB: {
   config.updateAppId = 'app.meldiq.desktop.update-lab';
   config.updateLabControl = control;
 }
+const isolatedProfile = !app.isPackaged && Boolean(process.env.MELDIQ_TEST_USER_DATA);
 const testApi = !app.isPackaged && process.env.MELDIQ_TEST_USER_DATA && process.env.MELDIQ_TEST_API_ORIGIN;
 if (testApi) {
   const url = new URL(testApi);
@@ -65,7 +66,7 @@ const pendingNavigation: string[] = [];
 const social = new Map<string, { persisted: boolean; resolve: (r: { id: string; receipt: string }) => void; reject: (e: Error) => void; timer: ReturnType<typeof setTimeout> }>();
 const busy = () => rendererBusy || downloads > 0 || capturePending || paymentWindow !== null;
 function state(): DesktopState {
-  return { permissions: { ...permissionStore.value }, browserHandoff, protocolRegistered, systemLanguages: app.isReady() ? app.getPreferredSystemLanguages() : [], preferences: prefs.value, profile: performanceProfile(os.totalmem(), os.cpus().length, prefs.value), build, update: updates?.state ?? { status: 'disabled' }, busy: busy(), cacheBytes };
+  return { isolatedTest: isolatedProfile, permissions: { ...permissionStore.value }, browserHandoff, protocolRegistered, systemLanguages: app.isReady() ? app.getPreferredSystemLanguages() : [], preferences: prefs.value, profile: performanceProfile(os.totalmem(), os.cpus().length, prefs.value), build, update: updates?.state ?? { status: 'disabled' }, busy: busy(), cacheBytes };
 }
 function emitState() { if (main && !main.isDestroyed()) main.webContents.send('desktop:state-changed', state()); }
 function show() { if (main?.isMinimized()) main.restore(); main?.show(); main?.focus(); }
@@ -302,8 +303,9 @@ function makeWindow(ses: Electron.Session) {
   const primary = screen.getPrimaryDisplay();
   const restored = restoreWindow(saved, [primary.workArea, ...screen.getAllDisplays().filter(d => d.id !== primary.id).map(d => d.workArea)]);
   const bounds = restored.bounds;
-  main = new BrowserWindow({ ...bounds, minWidth: Math.min(960, bounds.width), minHeight: Math.min(600, bounds.height), title: 'Meldiq', backgroundColor: '#1e1f22', show: false, icon: path.join(appRoot, process.platform === 'win32' ? 'desktop/resources/icon.ico' : 'desktop/resources/icon.png'), webPreferences: { session: ses, preload: path.join(appRoot, 'dist/main/preload.cjs'), contextIsolation: true, nodeIntegration: false, sandbox: true, webSecurity: true, webviewTag: false, spellcheck: true, backgroundThrottling: true } });
+  main = new BrowserWindow({ ...bounds, minWidth: Math.min(960, bounds.width), minHeight: Math.min(600, bounds.height), title: isolatedProfile ? 'Meldiq — isolated local QA' : 'Meldiq', backgroundColor: '#1e1f22', show: false, icon: path.join(appRoot, process.platform === 'win32' ? 'desktop/resources/icon.ico' : 'desktop/resources/icon.png'), webPreferences: { session: ses, preload: path.join(appRoot, 'dist/main/preload.cjs'), contextIsolation: true, nodeIntegration: false, sandbox: true, webSecurity: true, webviewTag: false, spellcheck: true, backgroundThrottling: true } });
   secureWindow(main);
+  if (isolatedProfile) main.on('page-title-updated', event => event.preventDefault());
   main.once('ready-to-show', () => { if (restored.maximized) main?.maximize(); show(); });
   main.on('close', event => {
     if (!quitting && prefs.value.closeToTray && tray) { event.preventDefault(); main?.hide(); return; }
@@ -349,6 +351,7 @@ else {
   app.on('window-all-closed', () => { if (process.platform !== 'darwin') app.quit(); });
   void app.whenReady().then(async () => {
     app.setAppUserModelId('app.meldiq.desktop');
+    if (process.platform === 'darwin') app.dock?.setIcon(path.join(appRoot, 'desktop/resources/icon.png'));
     socialStore = new SocialFlowStore(path.join(app.getPath('userData'), 'pending-browser-login.sealed'), value => {
       if (!safeStorage.isEncryptionAvailable() || process.platform === 'linux' && safeStorage.getSelectedStorageBackend() === 'basic_text') throw new Error('OS secure storage is unavailable.');
       return safeStorage.encryptString(value).toString('base64');

@@ -81,6 +81,8 @@ export interface TrackAudit {
   /** Dropped because they would have crossed unencrypted. */
   unencrypted: number;
   injected: number;
+  /** Zero-length DTX frames, neither proof nor decryption failure. */
+  empty?: number;
 }
 
 export const AUDIT_MESSAGE = "orbit.frameAudit";
@@ -100,7 +102,7 @@ export class AuditBook {
   private tracks = new Map<string, TrackAudit>();
 
   open(op: TrackAudit["op"], participantIdentity: string, trackId: string): TrackAudit {
-    const a: TrackAudit = { op, participantIdentity, trackId, frames: 0, verified: 0, unencrypted: 0, injected: 0 };
+    const a: TrackAudit = { op, participantIdentity, trackId, frames: 0, verified: 0, unencrypted: 0, injected: 0, empty: 0 };
     this.tracks.set(`${op}|${trackId}`, a);
     return a;
   }
@@ -119,6 +121,7 @@ export class AuditBook {
     if (v === "verified") a.verified++;
     else if (v === "unencrypted") a.unencrypted++;
     else if (v === "injected") a.injected++;
+    else if (v === "empty") a.empty = (a.empty ?? 0) + 1;
   }
 
   drain(): TrackAudit[] {
@@ -126,7 +129,7 @@ export class AuditBook {
     for (const a of this.tracks.values()) {
       if (a.frames === 0 && a.verified === 0 && a.unencrypted === 0 && a.injected === 0) continue;
       out.push({ ...a });
-      a.frames = a.verified = a.unencrypted = a.injected = 0;
+      a.frames = a.verified = a.unencrypted = a.injected = a.empty = 0;
     }
     return out;
   }

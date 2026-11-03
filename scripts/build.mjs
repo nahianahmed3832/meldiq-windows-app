@@ -5,6 +5,7 @@ import { build as viteBuild } from 'vite';
 import { build as esbuild } from 'esbuild';
 const root = path.resolve(import.meta.dirname, '..');
 execFileSync(process.execPath, ['scripts/validate-builder.mjs'], { cwd: root, stdio: 'inherit' });
+execFileSync(process.execPath, ['scripts/generate-macos-icon.mjs', '--check'], { cwd: root, stdio: 'inherit' });
 execFileSync(process.execPath, ['scripts/generate-windows-icon.mjs', '--check'], { cwd: root, stdio: 'inherit' });
 execFileSync(process.execPath, ['scripts/check-localization.mjs'], { cwd: root, stdio: 'inherit' });
 const pkg = JSON.parse(await fs.readFile(path.join(root, 'package.json'), 'utf8'));

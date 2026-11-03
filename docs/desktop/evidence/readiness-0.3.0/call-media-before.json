@@ -1,0 +1,133 @@
+{
+  "recordedAt": "2026-11-03T15:28:28.301Z",
+  "platform": "darwin",
+  "scope": "packaged Electron renderer/worker, real loopback LiveKit and native encrypted audio; no production connection, user media, provider credentials or account changes",
+  "active": {
+    "security": "encrypted",
+    "flow": "flowing",
+    "errors": [],
+    "samples": [
+      {
+        "flow": "waiting",
+        "security": "encrypted"
+      },
+      {
+        "flow": "flowing",
+        "security": "encrypted"
+      }
+    ],
+    "tracks": [
+      {
+        "key": "native-peer|28faa5d0-577c-415f-aae5-09eb36d5ac05",
+        "remote": true,
+        "muted": false,
+        "state": "proven"
+      }
+    ],
+    "participants": [
+      {
+        "micOn": true,
+        "isLocal": false
+      },
+      {
+        "micOn": false,
+        "isLocal": true
+      }
+    ]
+  },
+  "muted": {
+    "security": "verifying",
+    "flow": "stalled",
+    "errors": [],
+    "samples": [
+      {
+        "flow": "waiting",
+        "security": "encrypted"
+      },
+      {
+        "flow": "flowing",
+        "security": "encrypted"
+      },
+      {
+        "flow": "flowing",
+        "security": "verifying"
+      },
+      {
+        "flow": "flowing",
+        "security": "verifying"
+      },
+      {
+        "flow": "stalled",
+        "security": "verifying"
+      }
+    ],
+    "tracks": [
+      {
+        "key": "native-peer|28faa5d0-577c-415f-aae5-09eb36d5ac05",
+        "remote": true,
+        "muted": true,
+        "state": "proven"
+      }
+    ],
+    "participants": [
+      {
+        "micOn": false,
+        "isLocal": false
+      },
+      {
+        "micOn": false,
+        "isLocal": true
+      }
+    ]
+  },
+  "resumed": {
+    "security": "encrypted",
+    "flow": "flowing",
+    "errors": [],
+    "samples": [
+      {
+        "flow": "waiting",
+        "security": "encrypted"
+      },
+      {
+        "flow": "flowing",
+        "security": "encrypted"
+      },
+      {
+        "flow": "flowing",
+        "security": "verifying"
+      },
+      {
+        "flow": "flowing",
+        "security": "verifying"
+      },
+      {
+        "flow": "stalled",
+        "security": "verifying"
+      },
+      {
+        "flow": "flowing",
+        "security": "encrypted"
+      }
+    ],
+    "tracks": [
+      {
+        "key": "native-peer|28faa5d0-577c-415f-aae5-09eb36d5ac05",
+        "remote": true,
+        "muted": false,
+        "state": "proven"
+      }
+    ],
+    "participants": [
+      {
+        "micOn": true,
+        "isLocal": false
+      },
+      {
+        "micOn": false,
+        "isLocal": true
+      }
+    ]
+  },
+  "mutedFalseReconnect": true
+}

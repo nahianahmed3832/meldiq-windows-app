@@ -34,5 +34,8 @@
   "desktop_try_again": "फिर कोशिश करें",
   "desktop_share_your_screen": "अपनी स्क्रीन साझा करें",
   "desktop_cancel": "रद्द करें",
-  "desktop_updates": "अपडेट"
+  "desktop_updates": "अपडेट",
+  "call_security_waiting": "एन्क्रिप्टेड मीडिया की प्रतीक्षा",
+  "signin_methods_unavailable": "सभी साइन-इन तरीके जाँचे नहीं जा सके। फिर कोशिश करने के लिए विकल्प रीफ़्रेश करें।",
+  "desktop_local_test": "अलग स्थानीय परीक्षण"
 }

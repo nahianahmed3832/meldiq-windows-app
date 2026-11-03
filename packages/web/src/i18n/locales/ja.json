@@ -34,5 +34,8 @@
   "desktop_try_again": "もう一度試す",
   "desktop_share_your_screen": "画面を共有",
   "desktop_cancel": "キャンセル",
-  "desktop_updates": "アップデート"
+  "desktop_updates": "アップデート",
+  "call_security_waiting": "暗号化されたメディアを待機中",
+  "signin_methods_unavailable": "すべてのサインイン方法を確認できませんでした。選択肢を更新して再試行してください。",
+  "desktop_local_test": "隔離されたローカルテスト"
 }

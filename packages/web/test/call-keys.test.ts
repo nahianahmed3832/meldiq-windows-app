@@ -158,12 +158,12 @@ describe("frame audit", () => {
     book.record(a, "unencrypted");
     book.record(a, "empty");
     book.open("encode", "me.d0", "t2");
-    expect(book.drain()).toEqual([{ op: "decode", participantIdentity: "bob.d1", trackId: "t1", frames: 3, verified: 2, unencrypted: 1, injected: 0 }]);
+    expect(book.drain()).toEqual([{ op: "decode", participantIdentity: "bob.d1", trackId: "t1", frames: 3, verified: 2, unencrypted: 1, injected: 0, empty: 1 }]);
     expect(book.drain()).toEqual([]);
     book.rename("decode", "t1", "t9", "carol.d2");
     a.frames++;
     book.record(a, "injected");
-    expect(book.drain()).toEqual([{ op: "decode", participantIdentity: "carol.d2", trackId: "t9", frames: 1, verified: 0, unencrypted: 0, injected: 1 }]);
+    expect(book.drain()).toEqual([{ op: "decode", participantIdentity: "carol.d2", trackId: "t9", frames: 1, verified: 0, unencrypted: 0, injected: 1, empty: 0 }]);
     expect(isAuditMessage({ kind: "orbit.frameAudit", data: { tracks: [] } })).toBe(true);
     expect(isAuditMessage({ kind: "log", data: {} })).toBe(false);
     expect(isAuditMessage(null)).toBe(false);

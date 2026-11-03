@@ -34,5 +34,8 @@
   "desktop_try_again": "Intentar de nuevo",
   "desktop_share_your_screen": "Compartir tu pantalla",
   "desktop_cancel": "Cancelar",
-  "desktop_updates": "Actualizaciones"
+  "desktop_updates": "Actualizaciones",
+  "call_security_waiting": "Esperando contenido cifrado",
+  "signin_methods_unavailable": "No se pudieron comprobar todos los métodos de acceso. Actualiza las opciones para volver a intentarlo.",
+  "desktop_local_test": "Prueba local aislada"
 }

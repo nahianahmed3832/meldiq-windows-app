@@ -27,3 +27,15 @@
 ## Follow-up Windows CI
 
 Pending completion of run 41659959939. No Windows install/protocol acceptance is claimed until the actual checks pass.
+
+## Additional screenshot regressions — 0.3.0-readiness.2
+
+The reported “Reconnecting media…” / “Checking encryption…” state was reproduced using the packaged Electron media module/worker, a real loopback LiveKit server and native encrypted audio. Muting the remote participant changed a healthy call from encrypted/flowing to verifying/stalled. This was a state-classification bug: muted publications/Opus DTX were mistaken for failed incoming media, and verified evidence was discarded from the badge merely because a current track became muted. See [before](evidence/readiness-0.3.0/call-media-before.json) and [after](evidence/readiness-0.3.0/call-media-after.json).
+
+The fix separates expected silence from transport reconnection, retains authenticated evidence only for the same current registered remote track, and treats zero-length DTX frames as neither proof nor failure. A never-verified muted peer shows Waiting for encrypted media. New/unsubscribed/error/wrong-key tracks still require fresh valid evidence. The real-media regression passed active audio, mute/unmute, initially-muted join then unmute, and wrong-key rejection with zero unverified audio attached for playback. No encryption bypass or synthetic success badge was added.
+
+The later screenshots showed the macOS Electron development shell, whose Dock/bundle branding is separate from the Windows executable resource. macOS now gets the canonical Dock icon, an ICNS generated from the existing approved logo, and proper Meldiq bundle metadata. Automated windows are labeled as isolated local QA so local media mocks cannot be confused with the normal app.
+
+The email-only screenshot also matched the isolated media test backend, which deliberately had no account metadata. Production public metadata still offers Google, Discord and the approved passkey RP origin. Independently, the client did silently hide options on discovery failures. It now reports the error, supports Refresh/online recovery with bounded requests, and preserves email access. The [actual Electron availability/recovery test](evidence/readiness-0.3.0/auth-options-recovery.json) passed all 5 checks; the [read-only normal launch against production public metadata](evidence/readiness-0.3.0/public-signin-options.json) displayed Google, Discord, passkey and email. This verifies discovery/presentation, not a real provider account approval or physical passkey sign-in.
+
+Shared web tests after these changes: **928 passed, 2 skipped**. The locale catalog now has **605 keys**; existing missing-key counts and the release gate remain unchanged. Updated Windows artifact qualification and focused upgrade results are tracked below before any production claim.

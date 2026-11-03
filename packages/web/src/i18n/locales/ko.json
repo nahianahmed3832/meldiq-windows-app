@@ -34,5 +34,8 @@
   "desktop_try_again": "다시 시도",
   "desktop_share_your_screen": "화면 공유",
   "desktop_cancel": "취소",
-  "desktop_updates": "업데이트"
+  "desktop_updates": "업데이트",
+  "call_security_waiting": "암호화된 미디어 대기 중",
+  "signin_methods_unavailable": "모든 로그인 방법을 확인하지 못했습니다. 옵션을 새로고침하여 다시 시도하세요.",
+  "desktop_local_test": "격리된 로컬 테스트"
 }

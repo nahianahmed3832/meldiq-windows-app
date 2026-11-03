@@ -34,5 +34,8 @@
   "desktop_try_again": "Повторить",
   "desktop_share_your_screen": "Поделиться экраном",
   "desktop_cancel": "Отмена",
-  "desktop_updates": "Обновления"
+  "desktop_updates": "Обновления",
+  "call_security_waiting": "Ожидание зашифрованных медиа",
+  "signin_methods_unavailable": "Не удалось проверить все способы входа. Обновите варианты и повторите попытку.",
+  "desktop_local_test": "Изолированный локальный тест"
 }

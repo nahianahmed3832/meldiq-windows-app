@@ -34,5 +34,8 @@
   "desktop_try_again": "ลองอีกครั้ง",
   "desktop_share_your_screen": "แชร์หน้าจอของคุณ",
   "desktop_cancel": "ยกเลิก",
-  "desktop_updates": "การอัปเดต"
+  "desktop_updates": "การอัปเดต",
+  "call_security_waiting": "กำลังรอสื่อที่เข้ารหัส",
+  "signin_methods_unavailable": "ไม่สามารถตรวจสอบวิธีลงชื่อเข้าใช้ทั้งหมดได้ โปรดรีเฟรชตัวเลือกแล้วลองอีกครั้ง",
+  "desktop_local_test": "การทดสอบภายในที่แยกออกมา"
 }

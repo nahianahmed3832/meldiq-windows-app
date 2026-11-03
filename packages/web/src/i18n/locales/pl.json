@@ -34,5 +34,8 @@
   "desktop_try_again": "Spróbuj ponownie",
   "desktop_share_your_screen": "Udostępnij ekran",
   "desktop_cancel": "Anuluj",
-  "desktop_updates": "Aktualizacje"
+  "desktop_updates": "Aktualizacje",
+  "call_security_waiting": "Oczekiwanie na zaszyfrowane multimedia",
+  "signin_methods_unavailable": "Nie udało się sprawdzić wszystkich metod logowania. Odśwież opcje i spróbuj ponownie.",
+  "desktop_local_test": "Odizolowany test lokalny"
 }

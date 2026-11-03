@@ -63,6 +63,7 @@ function DesktopApp() {
         return () => { stopViewport(); stopRouting(); stopState(); stopSettings(); stopNavigation(); window.removeEventListener('keydown', key); };
     }, []);
     return <>
+    {desktop?.isolatedTest && <div className="desktop-qa-banner" role="status">{`Meldiq — ${t("desktop_local_test")}`}</div>}
     {error ? <main className="desktop-launch"><h1>{t("desktop_meldiq_could_not_start_2")}</h1><p>{error}</p><button className="btn" onClick={() => location.reload()}>{t("desktop_try_again")}</button></main>
             : ready ? <App /> : <div className="desktop-launch" role="status"><img src="/meldling-96.webp" width="64" height="64" alt=""/><p>{t("desktop_opening_meldiq")}</p></div>}
     <button className="desktop-settings-launch" onClick={() => setSettings(true)} title={t("desktop_desktop_settings_ctrl")} aria-label={t("desktop_desktop_settings")}>⚙</button>

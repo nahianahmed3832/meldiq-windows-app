@@ -21,3 +21,5 @@ html{font-family:"Segoe UI Variable","Segoe UI","Noto Sans Bengali","Noto Sans A
 html[dir=rtl] .desktop-dialog,html[dir=rtl] .capture-picker{text-align:start}
 
 .msg-text{unicode-bidi:plaintext;text-align:start}
+
+.desktop-qa-banner{position:fixed;inset:0 0 auto;z-index:10000;padding:8px 16px;background:#793600;color:#fff;font-size:13px;text-align:center;pointer-events:none}

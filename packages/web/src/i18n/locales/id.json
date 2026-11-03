@@ -34,5 +34,8 @@
   "desktop_try_again": "Coba lagi",
   "desktop_share_your_screen": "Bagikan layar Anda",
   "desktop_cancel": "Batal",
-  "desktop_updates": "Pembaruan"
+  "desktop_updates": "Pembaruan",
+  "call_security_waiting": "Menunggu media terenkripsi",
+  "signin_methods_unavailable": "Tidak dapat memeriksa semua metode masuk. Muat ulang opsi untuk mencoba lagi.",
+  "desktop_local_test": "Pengujian lokal terisolasi"
 }

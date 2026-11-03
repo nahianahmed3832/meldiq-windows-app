@@ -34,5 +34,8 @@
   "desktop_try_again": "Réessayer",
   "desktop_share_your_screen": "Partager votre écran",
   "desktop_cancel": "Annuler",
-  "desktop_updates": "Mises à jour"
+  "desktop_updates": "Mises à jour",
+  "call_security_waiting": "En attente de médias chiffrés",
+  "signin_methods_unavailable": "Impossible de vérifier toutes les méthodes de connexion. Actualisez les options pour réessayer.",
+  "desktop_local_test": "Test local isolé"
 }

@@ -74,7 +74,10 @@ export class MediaFlowMonitor {
   constructor(private readonly stallSamples = 2) {}
 
   /** [inboundBytes] is null when there is no remote track to measure yet. */
-  sample(inboundBytes: number | null): MediaFlow {
+  sample(inboundBytes: number | null, activity: 'continuous' | 'intermittent' | 'paused' = 'continuous'): MediaFlow {
+    // Muted publications and Opus DTX may deliberately send no RTP. Reconnection is
+    // signaled by the media transport, not inferred from expected audio silence.
+    if (activity === 'paused') { this.reset(); this.state = 'quiet'; return this.state; }
     if (inboundBytes === null) {
       this.reset();
       this.state = "waiting";
@@ -93,7 +96,7 @@ export class MediaFlowMonitor {
       this.state = "flowing";
     } else if (this.flowed) {
       this.quiet++;
-      if (this.quiet >= this.stallSamples) this.state = "stalled";
+      if (this.quiet >= this.stallSamples) this.state = activity === "intermittent" ? "quiet" : "stalled";
     } else {
       this.state = "waiting";
     }

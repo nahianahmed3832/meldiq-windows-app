@@ -34,5 +34,8 @@
   "desktop_try_again": "حاول مرة أخرى",
   "desktop_share_your_screen": "مشاركة شاشتك",
   "desktop_cancel": "إلغاء",
-  "desktop_updates": "التحديثات"
+  "desktop_updates": "التحديثات",
+  "call_security_waiting": "بانتظار الوسائط المشفرة",
+  "signin_methods_unavailable": "تعذر التحقق من جميع طرق تسجيل الدخول. حدّث الخيارات للمحاولة مجددًا.",
+  "desktop_local_test": "اختبار محلي معزول"
 }
