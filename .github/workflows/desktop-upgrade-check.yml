@@ -21,7 +21,7 @@ jobs:
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
-          CANDIDATE_RUN: ${{ inputs.candidate_run || '41659959939' }}
+          CANDIDATE_RUN: ${{ inputs.candidate_run || '41668977230' }}
         run: |
           if ($env:CANDIDATE_RUN -notmatch '^[1-9][0-9]+$') { throw 'Invalid candidate run ID' }
           $run = gh run view $env:CANDIDATE_RUN --json conclusion,headSha | ConvertFrom-Json
