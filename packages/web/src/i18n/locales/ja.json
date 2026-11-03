@@ -37,5 +37,7 @@
   "desktop_updates": "アップデート",
   "call_security_waiting": "暗号化されたメディアを待機中",
   "signin_methods_unavailable": "すべてのサインイン方法を確認できませんでした。選択肢を更新して再試行してください。",
-  "desktop_local_test": "隔離されたローカルテスト"
+  "desktop_local_test": "隔離されたローカルテスト",
+  "desktop_setup_title": "ログインを完了",
+  "desktop_setup_keys": "ここでメッセージを開くには、スマートフォンまたは復旧キーで一度確認してください。"
 }

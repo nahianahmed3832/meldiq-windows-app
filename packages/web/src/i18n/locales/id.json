@@ -37,5 +37,7 @@
   "desktop_updates": "Pembaruan",
   "call_security_waiting": "Menunggu media terenkripsi",
   "signin_methods_unavailable": "Tidak dapat memeriksa semua metode masuk. Muat ulang opsi untuk mencoba lagi.",
-  "desktop_local_test": "Pengujian lokal terisolasi"
+  "desktop_local_test": "Pengujian lokal terisolasi",
+  "desktop_setup_title": "Selesaikan masuk",
+  "desktop_setup_keys": "Gunakan ponsel atau kunci pemulihan sekali untuk membuka pesan Anda di sini."
 }

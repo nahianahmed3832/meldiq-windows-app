@@ -1,7 +1,7 @@
 {
   "name": "meldiq-desktop",
   "productName": "Meldiq",
-  "version": "0.3.0-readiness.2",
+  "version": "0.3.0",
   "private": true,
   "description": "Meldiq Desktop — the existing Meldiq client packaged locally with native desktop integrations",
   "author": "MD.NAHIAN AHMED <254077813+nahianahmed3832@users.noreply.github.com>",
@@ -48,7 +48,8 @@
     "test:auth-restart": "node scripts/auth-restart-smoke.mjs",
     "test:providers": "node scripts/provider-regression.mjs",
     "test:auth-options": "node scripts/auth-options-smoke.mjs",
-    "test:call-media": "node scripts/call-media-smoke.mjs --assert-fixed"
+    "test:call-media": "node scripts/call-media-smoke.mjs --assert-fixed",
+    "test:compact-signin": "node scripts/compact-signin-smoke.mjs"
   },
   "dependencies": {
     "electron-updater": "6.8.11"

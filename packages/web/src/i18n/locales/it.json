@@ -37,5 +37,7 @@
   "desktop_updates": "Aggiornamenti",
   "call_security_waiting": "In attesa dei contenuti crittografati",
   "signin_methods_unavailable": "Impossibile verificare tutti i metodi di accesso. Aggiorna le opzioni e riprova.",
-  "desktop_local_test": "Test locale isolato"
+  "desktop_local_test": "Test locale isolato",
+  "desktop_setup_title": "Completa l’accesso",
+  "desktop_setup_keys": "Usa il telefono o la chiave di recupero una volta per aprire qui i tuoi messaggi."
 }

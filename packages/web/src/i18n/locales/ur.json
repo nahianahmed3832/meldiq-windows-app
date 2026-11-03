@@ -37,5 +37,7 @@
   "desktop_updates": "اپ ڈیٹس",
   "call_security_waiting": "خفیہ کردہ میڈیا کا انتظار",
   "signin_methods_unavailable": "سائن ان کے تمام طریقے چیک نہیں ہو سکے۔ دوبارہ کوشش کے لیے اختیارات تازہ کریں۔",
-  "desktop_local_test": "الگ مقامی ٹیسٹ"
+  "desktop_local_test": "الگ مقامی ٹیسٹ",
+  "desktop_setup_title": "سائن ان مکمل کریں",
+  "desktop_setup_keys": "یہاں اپنے پیغامات کھولنے کے لیے ایک بار اپنا فون یا ریکوری کلید استعمال کریں۔"
 }

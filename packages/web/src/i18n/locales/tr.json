@@ -37,5 +37,7 @@
   "desktop_updates": "Güncellemeler",
   "call_security_waiting": "Şifrelenmiş medya bekleniyor",
   "signin_methods_unavailable": "Tüm giriş yöntemleri kontrol edilemedi. Yeniden denemek için seçenekleri yenileyin.",
-  "desktop_local_test": "Yalıtılmış yerel test"
+  "desktop_local_test": "Yalıtılmış yerel test",
+  "desktop_setup_title": "Giriş yapmayı tamamlayın",
+  "desktop_setup_keys": "Mesajlarınızı burada açmak için telefonunuzu veya kurtarma anahtarınızı bir kez kullanın."
 }

@@ -80,5 +80,7 @@
   "desktop_desktop_settings_ctrl": "Desktop settings (Ctrl+,)",
   "desktop_meldiq_update_ready": "Meldiq update ready",
   "desktop_available_device": "Available device (permission needed for name)",
-  "desktop_none_detected": "None detected"
+  "desktop_none_detected": "None detected",
+  "desktop_setup_title": "Finish signing in",
+  "desktop_setup_keys": "Use your phone or recovery key once to open your messages here."
 }

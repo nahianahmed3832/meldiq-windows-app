@@ -37,5 +37,7 @@
   "desktop_updates": "更新",
   "call_security_waiting": "等待加密媒體",
   "signin_methods_unavailable": "無法檢查所有登入方式。請重新整理選項後再試。",
-  "desktop_local_test": "隔離本機測試"
+  "desktop_local_test": "隔離本機測試",
+  "desktop_setup_title": "完成登入",
+  "desktop_setup_keys": "使用手機或復原金鑰完成一次驗證，即可在此開啟訊息。"
 }

@@ -15,7 +15,7 @@ if (!line) throw new Error('Missing candidate build provenance');
 const input = JSON.parse(line.slice(line.indexOf('MELDIQ_PRIVATE_CANDIDATES=') + 'MELDIQ_PRIVATE_CANDIDATES='.length));
 const key = JSON.parse(await fs.readFile('config/update-key.json', 'utf8'));
 if (input.runId !== runId || input.sourceCommit !== run.headSha || input.keyId !== key.keyId) throw new Error('Candidate signing identity/source mismatch');
-if (execFileSync('git', ['diff', input.sourceCommit, 'HEAD', '--', 'desktop', 'config', 'package.json', 'package-lock.json', 'scripts/build.mjs', 'scripts/prepare-private-candidates.mjs'], { encoding: 'utf8' }).trim()) throw new Error('Runtime source changed after preparation; rebuild candidates');
+if (execFileSync('git', ['diff', input.sourceCommit, 'HEAD', '--', 'desktop', 'packages/web', 'config', 'package.json', 'package-lock.json', 'scripts/build.mjs', 'scripts/prepare-private-candidates.mjs'], { encoding: 'utf8' }).trim()) throw new Error('Runtime source changed after preparation; rebuild candidates');
 const draft = JSON.parse(gh(['api', 'repos/' + repo + '/releases'])).find(r => r.tag_name === 'windows-private-candidate-' + runId && r.draft);
 if (!draft) throw new Error('Missing isolated candidate draft');
 const working = await fs.mkdtemp(path.join(os.tmpdir(), 'meldiq-release-' + runId + '-'));
