@@ -1,8 +1,8 @@
-param([Parameter(Mandatory=$true)][string]$CandidateDirectory, [string]$CandidateInstaller)
+param([Parameter(Mandatory=$true)][string]$CandidateDirectory, [string]$CandidateInstaller, [string]$BaselineReceipt = "docs/desktop/evidence/private-update-0.2.1/publication.json")
 $ErrorActionPreference = 'Stop'
 if ($env:CI -ne 'true') { throw 'Run this destructive installation harness only on a disposable CI runner, never a user laptop' }
-$baseline = Get-Content -Raw docs/desktop/evidence/private-update-0.2.1/publication.json | ConvertFrom-Json
-$baselineFile = Join-Path $env:RUNNER_TEMP 'Meldiq-Setup-0.2.1-baseline.exe'
+$baseline = Get-Content -Raw $BaselineReceipt | ConvertFrom-Json
+$baselineFile = Join-Path $env:RUNNER_TEMP ('Meldiq-Setup-' + $baseline.version + '-baseline.exe')
 Invoke-WebRequest -Uri $baseline.download -OutFile $baselineFile
 if ((Get-FileHash -Algorithm SHA256 $baselineFile).Hash.ToLowerInvariant() -cne $baseline.sha256 -or (Get-Item $baselineFile).Length -ne $baseline.bytes) { throw 'Published baseline integrity mismatch' }
 $candidate = if ($CandidateInstaller) { Get-Item -LiteralPath $CandidateInstaller } else { Get-ChildItem -LiteralPath (Join-Path $CandidateDirectory 'release') -Filter '*UNSIGNED-DEV.exe' | Select-Object -First 1 }
@@ -74,7 +74,7 @@ try {
   $reinstalled = Launch-Meldiq
   if ((Get-Content -Raw $fixture) -cne $fixtureValue) { throw 'Reinstall changed profile data' }
   Uninstall-Meldiq
-  $report = @{ recordedAt = (Get-Date).ToUniversalTime().ToString('o'); platform = 'Windows Server CI VM'; osVersion = [Environment]::OSVersion.VersionString; baselineVersion = $baseline.version; baselineSha256 = $baseline.sha256; candidate = $candidate.Name; candidateSha256 = (Get-FileHash -Algorithm SHA256 $candidate.FullName).Hash.ToLowerInvariant(); afterUpgrade = $afterUpgrade; afterReinstall = $afterReinstall; passed = @('actual published 0.2.1 baseline installation and launch', 'actual in-place NSIS upgrade', 'canonical executable icon after upgrade', 'quoted protocol registration after upgrade', 'correct Start Menu AppUserModelID and target', 'OS protocol dispatch after upgrade', 'profile fixture retained across upgrade', 'profile fixture retained across uninstall', 'actual reinstall and launch', 'branding and registration after reinstall', 'profile fixture retained across reinstall', 'final uninstall'); limitation = 'A run-owned profile file is not an authenticated session/message fixture; physical Windows 10/11, publisher signing, pinned taskbar icon-cache visuals and real provider acceptance remain pending.' }
+  $report = @{ recordedAt = (Get-Date).ToUniversalTime().ToString('o'); platform = 'Windows Server CI VM'; osVersion = [Environment]::OSVersion.VersionString; baselineVersion = $baseline.version; baselineSha256 = $baseline.sha256; candidate = $candidate.Name; candidateSha256 = (Get-FileHash -Algorithm SHA256 $candidate.FullName).Hash.ToLowerInvariant(); afterUpgrade = $afterUpgrade; afterReinstall = $afterReinstall; passed = @(('actual published ' + $baseline.version + ' baseline installation and launch'), 'actual in-place NSIS upgrade', 'canonical executable icon after upgrade', 'quoted protocol registration after upgrade', 'correct Start Menu AppUserModelID and target', 'OS protocol dispatch after upgrade', 'profile fixture retained across upgrade', 'profile fixture retained across uninstall', 'actual reinstall and launch', 'branding and registration after reinstall', 'profile fixture retained across reinstall', 'final uninstall'); limitation = 'A run-owned profile file is not an authenticated session/message fixture; physical Windows 10/11, publisher signing, pinned taskbar icon-cache visuals and real provider acceptance remain pending.' }
   New-Item -ItemType Directory -Force test-results | Out-Null
   $report | ConvertTo-Json -Depth 7 | Set-Content -Encoding utf8 test-results/windows-upgrade.json
   $report | ConvertTo-Json -Depth 7

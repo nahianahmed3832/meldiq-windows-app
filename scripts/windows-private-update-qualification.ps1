@@ -79,7 +79,11 @@ Copy-Item -LiteralPath $publicInstaller -Destination $baselineInstaller
 & "$PSScriptRoot/windows-upgrade-smoke.ps1" -CandidateDirectory $baselineCandidate -CandidateInstaller $baselineInstaller
 $baselineResult = Get-Content test-results/windows-upgrade.json -Raw | ConvertFrom-Json
 if ($baselineResult.candidateSha256 -cne $public.sha256 -or $baselineResult.baselineVersion -cne '0.2.1' -or $baselineResult.passed.Count -lt 12) { throw 'Published baseline upgrade evidence does not match the public candidate' }
+& "$PSScriptRoot/windows-upgrade-smoke.ps1" -CandidateDirectory $baselineCandidate -CandidateInstaller $baselineInstaller -BaselineReceipt 'docs/desktop/evidence/release-0.3.0/private-release-publication.json'
+$currentBaselineResult = Get-Content test-results/windows-upgrade.json -Raw | ConvertFrom-Json
+if ($currentBaselineResult.candidateSha256 -cne $public.sha256 -or $currentBaselineResult.baselineVersion -cne '0.3.0' -or $currentBaselineResult.passed.Count -lt 12) { throw 'Current production upgrade evidence does not match the public candidate' }
 $qualified = Get-Content test-results/private-update-qualification.json -Raw | ConvertFrom-Json
 $qualified | Add-Member -NotePropertyName publishedBaselineUpgrade -NotePropertyValue $baselineResult
+$qualified | Add-Member -NotePropertyName currentProductionUpgrade -NotePropertyValue $currentBaselineResult
 $qualified | ConvertTo-Json -Depth 20 | Set-Content -Encoding utf8 test-results/private-update-qualification.json
 Write-Output ('MELDIQ_PRIVATE_QUALIFIED=' + ((Get-Content test-results/private-update-qualification.json -Raw | ConvertFrom-Json) | ConvertTo-Json -Depth 10 -Compress))
