@@ -1,4 +1,4 @@
-import { AtSign, House } from "lucide-react";
+import { Icon } from "../icons/Icon";
 import { useOrbit } from "../../application/orbit";
 import { navigate, type Section } from "../../application/router";
 import { mentionCount, unreadPeopleCount } from "../selectors";
@@ -17,10 +17,10 @@ export function TabBar({ section, hidden }: { section: Section; hidden: boolean 
   const photoRev = useOrbit((s) => (s.me ? s.users[s.me.userId]?.photoRev : null));
   const online = useOrbit((s) => s.connection === "online");
   const tabs = [
-    { key: "home" as const, label: t("nav_home"), icon: <House size={21} />, count: 0 },
-    // The mascot is the messages entry here too (community-first brief §G).
-    { key: "dms" as const, label: t("nav_messages"), icon: <img className="tab-mascot" src="/meldling-96.webp" width={24} height={24} alt="" draggable={false} />, count: dms },
-    { key: "activity" as const, label: t("nav_activity"), icon: <AtSign size={21} />, count: mentions },
+    { key: "home" as const, label: t("nav_home"), icon: <Icon name="navigation.home" />, count: 0 },
+    // Semantic glyph shared with web and Android.
+    { key: "dms" as const, label: t("nav_messages"), icon: <Icon name="navigation.messages" />, count: dms },
+    { key: "activity" as const, label: t("nav_activity"), icon: <Icon name="navigation.activity" />, count: mentions },
     // You (as the Android app): your avatar, its dot your connection; your account, Saved and every setting.
     {
       key: "settings" as const,

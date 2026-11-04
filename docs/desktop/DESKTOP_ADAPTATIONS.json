@@ -37,5 +37,7 @@
   "src/ui/auth/AuthScreen.tsx": "Shows server/passkey metadata loading failures with refresh and online recovery while retaining central WebAuthn RP/origin checks.",
   "src/call/frameAudit.ts": "Counts zero-length DTX frames separately so intentional silence neither proves a key nor creates false decryption failures.",
   "test/call-keys.test.ts": "Includes empty DTX counts in the real frame-audit regression expectations.",
-  "src/ui/auth/DeviceSetupViews.tsx": "Native sign-in uses a compact method chooser and opt-in one-time encrypted key restore; preserves backend account binding, seed validation, recovery and phone SAS verification."
+  "src/ui/auth/DeviceSetupViews.tsx": "Native sign-in uses a compact method chooser and opt-in one-time encrypted key restore; preserves backend account binding, seed validation, recovery and phone SAS verification.",
+  "src/ui/components/SettingsIcon.tsx": "Universal semantic catalogue adapter for settings; existing Ember product art and rank medals preserved.",
+  "src/ui/shell/TabBar.tsx": "Universal home/messages/activity glyphs; existing routing, unread counts and account avatar preserved."
 }
