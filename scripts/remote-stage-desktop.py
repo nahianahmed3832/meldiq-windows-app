@@ -89,6 +89,7 @@ elif data["mode"] == "publish":
     if feed.exists():
         previous = json.loads(base64.b64decode(json.loads(feed.read_text())["payload"]))
         incoming = json.loads(base64.b64decode(json.loads(data["envelope"])["payload"]))
+        assert data["envelope"] == feed.read_text() or (previous["version"] == data["expectedPreviousVersion"] and previous["file"]["sha256"] == data["expectedPreviousSha256"]), "Production installer changed since qualification"
         assert incoming["sequence"] > previous["sequence"] or data["envelope"] == feed.read_text(), "Refuse metadata rollback"
         assert tuple(map(int, incoming["version"].split("."))) >= tuple(map(int, previous["version"].split("."))), "Refuse release downgrade"
         history = Path("/opt/meldiq-desktop/history")
