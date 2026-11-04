@@ -1,0 +1,56 @@
+{
+  "sourceCommit": "9f25c68b912aa8a02443ada60ab522cd540ce86c",
+  "artifacts": [
+    {
+      "role": "production",
+      "version": "0.3.1",
+      "filename": "Meldiq-Setup-0.3.1-x64.exe",
+      "size": 124336491,
+      "sha256": "064a96a69173b26ed2abb3f50470991d217a669895ebe59e98ae518a2cd7a17b",
+      "sha512": "9LJ3pME/Rzvg6FS6ZqQnxEmMKqz3UkAeFpuwxXNC7fnKmCNQEkA3cbvtu/l78hYYaU5yT/L6pngkrZDrVRqPVw==",
+      "build": {
+        "version": "0.3.1",
+        "commit": "9f25c68b912aa8a02443ada60ab522cd540ce86c",
+        "timestamp": "2026-11-04T16:32:39.818Z",
+        "channel": "stable",
+        "distribution": "private-direct",
+        "updateLab": false
+      },
+      "downloadUrl": "https://meldiq.app/downloads/windows/0.3.1/064a96a69173b26e/Meldiq-Setup-0.3.1-x64.exe"
+    },
+    {
+      "role": "lab-old",
+      "version": "0.3.1-canary.1",
+      "filename": "Meldiq-UpdateLab-0.3.1-canary.1-x64.exe",
+      "size": 124343324,
+      "sha256": "5e0aa397d538c656927d1c97a02494728de5a71d4103f57847eebecb006f9d67",
+      "sha512": "MMXi8pGi2ksFz6ZzAjTsNjhHsIoBpUnw3Xwyq6M24vnSqikxhF9NOpt8d+TPR0+IIzahyg49tE5DYDjBYliVww==",
+      "build": {
+        "version": "0.3.1-canary.1",
+        "commit": "9f25c68b912aa8a02443ada60ab522cd540ce86c",
+        "timestamp": "2026-11-04T16:33:43.139Z",
+        "channel": "canary",
+        "distribution": "private-direct",
+        "updateLab": true
+      },
+      "downloadUrl": "https://meldiq.app/downloads/windows/0.3.1-canary.1/5e0aa397d538c656/Meldiq-UpdateLab-0.3.1-canary.1-x64.exe"
+    },
+    {
+      "role": "lab-new",
+      "version": "0.3.1-canary.2",
+      "filename": "Meldiq-UpdateLab-0.3.1-canary.2-x64.exe",
+      "size": 124338013,
+      "sha256": "ad43a4a985dc2e31153c73c6d5eaee47068a505fe807294caf21ac36406edcbb",
+      "sha512": "a/aAuu8HXBSnrCQj58aWUanBORKCeyfmHfSV7ry6Ipoioepb3T3M4lKj9kzUyfhz4+2yLfTpzWeqnEJ0mLWPfw==",
+      "build": {
+        "version": "0.3.1-canary.2",
+        "commit": "9f25c68b912aa8a02443ada60ab522cd540ce86c",
+        "timestamp": "2026-11-04T16:34:39.056Z",
+        "channel": "canary",
+        "distribution": "private-direct",
+        "updateLab": true
+      },
+      "downloadUrl": "https://meldiq.app/downloads/windows/0.3.1-canary.2/ad43a4a985dc2e31/Meldiq-UpdateLab-0.3.1-canary.2-x64.exe"
+    }
+  ]
+}
