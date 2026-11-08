@@ -43,5 +43,10 @@
   "src/ui/billing/CheckoutPayment.tsx": "Shared payment method, billing consent and PayPal Express Checkout across all four product flows. Windows requires live provider configuration.",
   "src/ui/billing/BillingPage.tsx": "Desktop funding recovery links to the live PayPal account.",
   "e2e/paypal-checkout.spec.ts": "Checks the shared Express Checkout layout and the server-owned one-time gift flow.",
-  "src/styles/billing.css": "Shared payment panel and responsive order summary across the desktop purchase flows."
+  "src/styles/billing.css": "Shared payment panel and responsive order summary across the desktop purchase flows.",
+  "src/styles/embers.css": "Desktop follows the shared API for automatic account levels and weekly activity from accessible conversations.",
+  "src/sync/points.ts": "Desktop follows the shared API for automatic account levels and weekly activity from accessible conversations.",
+  "src/ui/leaderboards/LeaderboardsPage.tsx": "Desktop follows the shared API for automatic account levels and weekly activity from accessible conversations.",
+  "src/ui/points/PointsPage.tsx": "Desktop follows the shared API for automatic account levels and weekly activity from accessible conversations.",
+  "test/settings-parity.test.ts": "Desktop follows the shared API for automatic account levels and weekly activity from accessible conversations."
 }

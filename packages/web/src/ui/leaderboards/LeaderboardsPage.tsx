@@ -13,19 +13,19 @@ export const BOARD_INFO: Record<LeaderboardMetric, { label: string; description:
     label: "Level",
     description: "The next chapter starts with you. Meet Meldiq’s highest account levels.",
     unit: "level",
-    empty: "A new chapter is waiting. Spend earned Embers on your first level to join the board.",
+    empty: "Reach level 2 automatically by earning Embers.",
   },
   messages: {
     label: "Messages",
     description: "Keeping the conversation going, one message at a time.",
     unit: "messages",
-    empty: "No messages this week yet. Start a conversation in one of your community channels.",
+    empty: "No messages this week yet. Send a message in a DM, group or community channel.",
   },
   voice: {
     label: "Voice",
-    description: "Good company, great conversations. Recorded voice room time this week.",
+    description: "Time spent in calls and voice rooms this week.",
     unit: "minutes",
-    empty: "It’s quiet around the campfire. Spend a minute in a community voice room to get started.",
+    empty: "No voice time this week yet. Join a call or voice room to get started.",
   },
   embers: {
     label: "Embers",
@@ -63,7 +63,8 @@ export function LeaderboardsPage() {
   const self = useOrbit((s) => s.me?.userId);
   const [metric, setMetric] = useState<LeaderboardMetric>("level");
   const tabs = useRef<(HTMLButtonElement | null)[]>([]);
-  const loaded = useLoad(() => loadLeaderboard(engine, metric), [engine, metric]);
+  const levelRev = useOrbit((s) => (metric === "level" ? s.profilesRev : 0));
+  const loaded = useLoad(() => loadLeaderboard(engine, metric), [engine, metric, levelRev]);
   // useLoad retains the previous answer: never label one category's scores as another.
   const board = loaded.data?.metric === metric ? loaded.data : null;
   const info = BOARD_INFO[metric];
@@ -209,14 +210,16 @@ export function LeaderboardsPage() {
               <footer className="rankings-footnote">
                 <p>
                   {weekly
-                    ? "Only community channels you can view count here. Direct messages and private calls never count. Voice time uses retained participation records; overlapping devices count once."
+                    ? board.scope === "visible_communities"
+                      ? "Only community channels you can view count here."
+                      : "Includes DMs, groups and community channels you can access. Overlapping voice sessions count once."
                     : metric === "embers"
                       ? "Lifetime earnings count here. Spending Embers on levels never lowers this score."
                       : metric === "gifts"
                         ? "Only verified paid gifts count. Pending, refunded and disputed gifts are excluded; recipients and payment details stay private."
                         : metric === "invites"
                           ? "Only credited invitations count: a friend must stay for seven days, within the monthly reward limit."
-                          : "Account levels start ranking at level 2. Earn Embers through quests, visits and conversations, then spend them to level up."}
+                          : "Account levels advance automatically as you earn Embers. Ranking starts at level 2."}
                 </p>
                 <p>Top 100 · Equal scores share a rank · Updated {new Date(board.generatedAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</p>
               </footer>

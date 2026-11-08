@@ -1,8 +1,7 @@
-import { ArrowUpRight, Award, Flame, History, Map } from "lucide-react";
+import { Award, Flame, History, Map } from "lucide-react";
 import { useState } from "react";
-import { ApiError } from "../../api/client";
 import { useEngine, useOrbit } from "../../application/orbit";
-import { levelUp, points as loadPoints } from "../../sync/points";
+import { points as loadPoints } from "../../sync/points";
 import { EmberIcon } from "../components/EmberIcon";
 import { LevelRing } from "../people/LevelRing";
 import { useLoad } from "../workspace/useLoad";
@@ -11,35 +10,13 @@ import { PointsEarn } from "./PointsEarn";
 import { PointsQuests } from "./PointsQuests";
 import { levelProgress } from "./pointsWords";
 
-export function levelUpProblem(e: unknown): string {
-  if (!(e instanceof ApiError)) return "Couldn't level up. Try again.";
-  if (e.code !== "not_enough_points") return e.message;
-  const d = e.details as { cost?: unknown; balance?: unknown } | null | undefined;
-  return typeof d?.cost === "number" && typeof d.balance === "number" ? `The next level costs ${d.cost} Embers and you have ${d.balance}.` : e.message;
-}
-
 /** The internal points API stays compatible; the earned currency people see is Embers. */
 export function PointsPage() {
   const engine = useEngine();
   const offered = useOrbit((s) => s.server?.features.includes("points") ?? false);
-  const [version, setVersion] = useState(0);
-  const data = useLoad(() => (offered ? loadPoints(engine) : Promise.resolve(null)), [engine, offered, version]);
+  const profilesRev = useOrbit((s) => s.profilesRev);
+  const data = useLoad(() => (offered ? loadPoints(engine) : Promise.resolve(null)), [engine, offered, profilesRev]);
   const [tab, setTab] = useState<"quests" | "achievements" | "activity">("quests");
-  const [busy, setBusy] = useState(false);
-  const [problem, setProblem] = useState<string | null>(null);
-  const [reached, setReached] = useState<number | null>(null);
-  const buyLevel = async () => {
-    setBusy(true);
-    setProblem(null);
-    try {
-      setReached((await levelUp(engine)).level);
-    } catch (e) {
-      setProblem(levelUpProblem(e));
-    } finally {
-      setVersion((v) => v + 1);
-      setBusy(false);
-    }
-  };
   const p = data.data;
   return (
     <div className="points embers-page">
@@ -57,7 +34,7 @@ export function PointsPage() {
       {data.error && (
         <div className="banner danger" role="alert">
           {data.error}
-          <button className="btn btn-secondary btn-sm" onClick={() => setVersion((v) => v + 1)}>
+          <button className="btn btn-secondary btn-sm" onClick={data.reload}>
             Try again
           </button>
         </div>
@@ -93,29 +70,16 @@ export function PointsPage() {
             </section>
             <section className="embers-level" aria-label="Account level">
               <LevelRing level={p.level} size={68} progress={levelProgress(p.balance, p.nextLevelCost)} />
-              <div>
+              <div aria-live="polite">
                 <span className="ember-eyebrow">YOUR NEXT CHAPTER</span>
                 <h2>Level {p.level}</h2>
                 <p>
                   {Math.max(0, p.nextLevelCost - p.balance).toLocaleString()} Embers to level {p.level + 1}
                 </p>
+                <p>Your account levels up automatically when you earn enough Embers.</p>
               </div>
-              <button className="btn btn-secondary btn-sm" disabled={busy || p.balance < p.nextLevelCost} onClick={() => void buyLevel()}>
-                {busy ? "Levelling up…" : "Level up"}
-                <ArrowUpRight size={14} />
-              </button>
             </section>
           </div>
-          {problem && (
-            <div className="banner danger" role="alert">
-              {problem}
-            </div>
-          )}
-          {reached !== null && !problem && (
-            <div className="banner ok" role="status">
-              A brighter chapter. You're level {reached} now.
-            </div>
-          )}
           <div className="embers-tabs" role="tablist" aria-label="Embers sections">
             {(
               [
