@@ -69,6 +69,7 @@ test.skip(({ browserName }) => browserName !== "chromium", "Chromium desktop and
 test("branded review, official payment control, backend-only confirmation and refresh recovery", async ({ page }, info) => {
   const { purchase: p } = await checkout(page);
   await expect(page.getByRole("heading", { name: "Order summary" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Express checkout" })).toBeVisible();
   await expect(page.locator(".checkout-total")).toContainText("4.99");
   await expect(page.getByText("Sandbox", { exact: true })).toHaveCount(0);
   await expect(page.getByText("No real money is taken.", { exact: false })).toHaveCount(0);
@@ -120,6 +121,34 @@ test("live approval schedules renewal after existing free time without claiming 
   await expect(page.getByText("PayPal has confirmed your approval.", { exact: false })).toBeVisible();
 });
 
+test("a Plus gift uses the one-time express checkout and verifies the saved order", async ({ page }) => {
+  const { userId, purchase } = await checkout(page);
+  const p = { ...purchase, id: "gift_owned", product: "gift", providerRef: "GIFT-ORDER-OWNED", amountMinor: 1299, interval: "one_time" };
+  await page.route("**/v2/billing/paypal/checkouts", async (route) => {
+    expect(route.request().postDataJSON()).toMatchObject({ product: "gift", months: 3, recipientUserId: "gift-recipient" });
+    await route.fulfill({ json: p });
+  });
+  await page.route("**/v2/billing/paypal/checkouts/gift_owned/confirm", async (route) => {
+    expect(route.request().method()).toBe("POST");
+    await route.fulfill({ json: { ...p, status: "paid", confirmed: true } });
+  });
+  await page.evaluate((id) => {
+    sessionStorage.setItem(`meldiq.paypal.sandbox.${id}`, JSON.stringify({
+      draft: { product: "gift", months: 3, recipientUserId: "gift-recipient", note: "Enjoy Plus!" },
+      requestKey: crypto.randomUUID(), purchaseId: null, completed: false,
+    }));
+  }, userId);
+  await page.reload();
+  await expect(page.getByRole("heading", { name: "Express checkout" })).toBeVisible();
+  await expect(page.locator(".checkout-total")).toContainText("12.99");
+  await expect(page.getByText("Enjoy Plus!", { exact: false })).toBeVisible();
+  await expect(page.locator("paypal-button")).toHaveCount(0);
+  await page.getByRole("checkbox").check();
+  await expect(page.locator("paypal-button")).toHaveAttribute("type", "pay");
+  await page.locator("paypal-button").click();
+  await expect(page.getByRole("heading", { name: "A little more Meldiq Plus, gifted." })).toBeVisible();
+});
+
 for (const product of ["spark", "bots_plus"] as const) {
   test(`${product} is reviewed separately and only server-confirmed payment completes it`, async ({ page }, info) => {
     const { userId } = await checkout(page);
@@ -165,7 +194,8 @@ for (const product of ["spark", "bots_plus"] as const) {
       { kind: product, id: userId },
     );
     await page.reload();
-    await expect(page.locator(".meldiq-checkout")).toContainText(product === "spark" ? "1.98" : "3.99");
+    await expect(page.getByRole("heading", { name: "Express checkout" })).toBeVisible();
+    await expect(page.locator(".checkout-total")).toContainText(product === "spark" ? "1.98" : "3.99");
     await expect(page.getByText(/No Meldiq Plus subscription is required|purchased separately from Meldiq Plus/).first()).toBeVisible();
     await page.getByRole("checkbox").check();
     await expect(page.locator("paypal-button")).toBeVisible();

@@ -12,8 +12,8 @@
   "public/social-auth-callback.js": "Returns a desktop-initiated, matching social receipt to the browser handoff; preserves existing web BroadcastChannel/opener behavior.",
   "src/application/discordReturn.ts": "Routes only browser bridge-initiated state-bound Discord returns to Windows; existing web import stays unchanged.",
   "src/ui/community/DiscordImport.tsx": "Uses the native browser broker on desktop, supports cancellation, and completes the existing backend connection before preview/import.",
-  "src/ui/billing/CheckoutPage.tsx": "Native popup return/closure triggers server verification of the saved account-owned checkout only.",
-  "src/ui/billing/AddonCheckoutPage.tsx": "Uses the same server-owned purchase verification after native popup return/interruption.",
+  "src/ui/billing/CheckoutPage.tsx": "Shared PayPal checkout review for Plus subscriptions and gifts, with native return verification of the saved account-owned purchase.",
+  "src/ui/billing/AddonCheckoutPage.tsx": "Shared PayPal checkout review for Sparks and Bots+, with native return verification and review of the server-owned quote.",
   "src/application/prefs.ts": "Sets interface direction along with locale; existing per-install language persistence remains the source of truth.",
   "src/i18n/index.ts": "Central key-based bundled catalogs, English fallback and stable reactive translation hook.",
   "src/i18n/languages.ts": "Extensible 21-locale registry, Chinese script distinction, RTL metadata and Windows system-language preferences.",
@@ -39,5 +39,9 @@
   "test/call-keys.test.ts": "Includes empty DTX counts in the real frame-audit regression expectations.",
   "src/ui/auth/DeviceSetupViews.tsx": "Native sign-in uses a compact method chooser and opt-in one-time encrypted key restore; preserves backend account binding, seed validation, recovery and phone SAS verification.",
   "src/ui/components/SettingsIcon.tsx": "Universal semantic catalogue adapter for settings; existing Ember product art and rank medals preserved.",
-  "src/ui/shell/TabBar.tsx": "Universal home/messages/activity glyphs; existing routing, unread counts and account avatar preserved."
+  "src/ui/shell/TabBar.tsx": "Universal home/messages/activity glyphs; existing routing, unread counts and account avatar preserved.",
+  "src/ui/billing/CheckoutPayment.tsx": "Shared payment method, billing consent and PayPal Express Checkout across all four product flows. Windows requires live provider configuration.",
+  "src/ui/billing/BillingPage.tsx": "Desktop funding recovery links to the live PayPal account.",
+  "e2e/paypal-checkout.spec.ts": "Checks the shared Express Checkout layout and the server-owned one-time gift flow.",
+  "src/styles/billing.css": "Shared payment panel and responsive order summary across the desktop purchase flows."
 }

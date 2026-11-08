@@ -134,7 +134,7 @@ export function BillingPage() {
         <div className="banner danger" role="alert">
           <TriangleAlert size={18} aria-hidden="true" />
           <span>Your subscription needs attention. Update your funding method in PayPal, then refresh billing. Benefits follow the verified payment state and your plan’s recovery policy.</span>
-          <a href={billing?.mode === "live" ? "https://www.paypal.com/myaccount/autopay/" : "https://www.sandbox.paypal.com/myaccount/autopay/"} target="_blank" rel="noreferrer">
+          <a href={!window.meldiqDesktop && billing?.mode === "test" ? "https://www.sandbox.paypal.com/myaccount/autopay/" : "https://www.paypal.com/myaccount/autopay/"} target="_blank" rel="noreferrer">
             Open PayPal
           </a>
         </div>

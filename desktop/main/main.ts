@@ -206,7 +206,7 @@ function secureWindow(win: BrowserWindow, isPicker = false) {
   wc.on('will-attach-webview', event => event.preventDefault());
   const paymentUrl = (url: string) => {
     if (url === 'about:blank') return true;
-    try { const u = new URL(url); return u.protocol === 'https:' && !u.username && !u.password && !u.port && ['www.paypal.com', 'www.sandbox.paypal.com'].includes(u.hostname); } catch { return false; }
+    try { const u = new URL(url); return u.protocol === 'https:' && !u.username && !u.password && !u.port && u.hostname === 'www.paypal.com'; } catch { return false; }
   };
   wc.setWindowOpenHandler(({ url }) => {
     const checkout = !isPicker && /^\/settings\/(checkout|billing|mojo|spark)$/.test(new URL(wc.getURL()).pathname);

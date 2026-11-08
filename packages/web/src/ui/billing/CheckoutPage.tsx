@@ -1,6 +1,6 @@
 import { CHECKOUT_DRAFT_EVENT, restoreCheckout } from "./checkoutDraft";
 import { AddonCheckoutPage } from "./AddonCheckoutPage";
-import { ArrowLeft, ArrowRight, Check, CheckCircle2, CreditCard, Crown, Gift, LockKeyhole, RefreshCw, ShieldCheck, Sparkles } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, CheckCircle2, Crown, Gift, LockKeyhole, RefreshCw, ShieldCheck, Sparkles } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ApiError } from "../../api/client";
 import { type PayPalConfig, type PayPalPurchase, zPayPalCheckout, zPayPalConfig } from "../../api/paypalSchemas";
@@ -9,7 +9,7 @@ import { navigate } from "../../application/router";
 import { BrandMark } from "../components/BrandMark";
 import { money, size } from "../mojo/mojoFormat";
 import { readCheckout, writeCheckout, selectCheckout } from "./checkoutDraft";
-import { PayPalButton } from "./PayPalButton";
+import { CheckoutPayment } from "./CheckoutPayment";
 
 const billing = () => navigate({ section: "settings", settingsPage: "billing" });
 
@@ -40,7 +40,6 @@ function PlusCheckoutPage({ initial }: { initial: ReturnType<typeof readCheckout
   const savings = termOffer && !gift ? termOffer.savingsMinor : 0;
   const currency = purchase?.currency ?? price?.currency ?? "USD";
   const plus = catalog?.plans.find((p) => p.key === "plus");
-  const sandbox = config?.environment === "sandbox";
   const deferred = !gift && config?.billingStartAt != null && config.billingStartAt > Date.now();
   const startDate = config?.billingStartAt ? new Intl.DateTimeFormat(undefined, { dateStyle: "medium" }).format(config.billingStartAt) : null;
   const complete = purchase?.confirmed === true || (purchase?.approved === true && deferred);
@@ -78,9 +77,19 @@ function PlusCheckoutPage({ initial }: { initial: ReturnType<typeof readCheckout
   );
 
   useEffect(() => {
-    let disposed = false;
     writeCheckout(userId, savedRef.current);
     void engine.mojo.refresh();
+    const q = new URLSearchParams(location.search);
+    const canceled = q.get("checkout") === "canceled" || q.get("gift") === "canceled";
+    const returned = q.has("checkout") || q.has("gift") || q.has("token") || q.has("subscription_id");
+    if (returned) history.replaceState(history.state, "", location.pathname);
+    if (canceled) setMessage("You closed PayPal checkout. Check the purchase status before trying again.");
+    // Query parameters never identify a purchase or prove payment. Only the stored, account-owned ID is used.
+    if (savedRef.current.purchaseId) void verify(returned && !canceled);
+  }, [engine, userId, verify]);
+
+  useEffect(() => {
+    let disposed = false;
     void engine.api
       .json("GET", "/v2/billing/paypal/config", zPayPalConfig)
       .then((c) => {
@@ -89,33 +98,38 @@ function PlusCheckoutPage({ initial }: { initial: ReturnType<typeof readCheckout
       .catch((e: unknown) => {
         if (!disposed) setError(e instanceof ApiError && e.status === 404 ? "PayPal checkout is not available on this server yet." : e instanceof Error ? e.message : "Checkout could not load.");
       });
-    const q = new URLSearchParams(location.search);
-    const canceled = q.get("checkout") === "canceled" || q.get("gift") === "canceled";
-    const returned = q.has("checkout") || q.has("gift") || q.has("token") || q.has("subscription_id");
-    if (returned) history.replaceState(history.state, "", location.pathname);
-    if (canceled) setMessage("You closed PayPal checkout. Check the purchase status before trying again.");
-    // Query parameters never identify a purchase or prove payment. Only the stored, account-owned ID is used.
-    if (savedRef.current.purchaseId) void verify(returned && !canceled);
     return () => {
       disposed = true;
     };
-  }, [engine, userId, verify]);
+  }, [engine, attempt]);
 
-  useEffect(() => window.meldiqDesktop?.onCheckout(result => {
-    setMessage(result.kind === 'closed' || result.canceled ? 'PayPal checkout closed. Checking your saved purchase with Meldiq before any retry.' : 'Returned from PayPal. Verifying your saved purchase with Meldiq.');
-    void verify(result.kind === 'returned' && !result.canceled);
-  }), [verify]);
+  useEffect(
+    () =>
+      window.meldiqDesktop?.onCheckout((result) => {
+        setMessage(
+          result.kind === "closed" || result.canceled
+            ? "PayPal checkout closed. Checking your saved purchase with Meldiq before any retry."
+            : "Returned from PayPal. Verifying your saved purchase with Meldiq.",
+        );
+        void verify(result.kind === "returned" && !result.canceled);
+      }),
+    [verify],
+  );
 
   const create = async () => {
     setError(null);
     setMessage(null);
-    if (!accepted || !online || !price || currency !== "USD") throw new Error("Review the order and agree to the terms before paying.");
+    if (!accepted || !online || !price || currency !== "USD" || (gift && !catalog?.onSale.gifts)) throw new Error("Review the order and agree to the terms before paying.");
     const current = savedRef.current;
     const p = current.purchaseId
       ? await engine.api.json("GET", `/v2/billing/paypal/checkouts/${encodeURIComponent(current.purchaseId)}`, zPayPalCheckout)
       : await engine.api.json("POST", "/v2/billing/paypal/checkouts", zPayPalCheckout, { body: { ...current.draft, requestKey: current.requestKey } });
     if (p.product !== (gift ? "gift" : "plus")) throw new Error("This saved purchase is for another product. Review it in Billing before paying.");
-    remember({ ...current, purchaseId: p.id, completed: p.confirmed || p.approved === true });
+    remember({
+      ...current,
+      purchaseId: p.id,
+      completed: p.confirmed || p.approved === true,
+    });
     setPurchase(p);
     if (p.confirmed || p.approved) throw new Error("This purchase is already confirmed. Open Billing to view it.");
     if (p.amountMinor !== amount || p.currency !== currency) {
@@ -171,21 +185,9 @@ function PlusCheckoutPage({ initial }: { initial: ReturnType<typeof readCheckout
           </div>
           <div className="checkout-layout">
             <div className="checkout-payment">
-              <section className="checkout-card" aria-labelledby="checkout-payment-title">
-                <div className="checkout-card-heading">
-                  <span className="checkout-step">1</span>
-                  <h2 id="checkout-payment-title">Your payment</h2>
-                  {sandbox && <span className="checkout-sandbox">Sandbox</span>}
-                </div>
-                {config && (
-                  <p className="muted">
-                    {sandbox
-                      ? "This is a test purchase. No real money is taken."
-                      : deferred
-                        ? `Your existing Plus time stays available. Your first payment is ${startDate}.`
-                        : "Review your purchase before authorizing payment with PayPal."}
-                  </p>
-                )}
+              <section className="checkout-card" aria-labelledby="checkout-details-title">
+                <h2 id="checkout-details-title">Purchase details</h2>
+                {deferred && <p className="muted">Your existing Plus time stays available. Your first payment is {startDate}.</p>}
                 <div className="checkout-account">
                   <ShieldCheck size={21} aria-hidden="true" />
                   <div>
@@ -205,7 +207,10 @@ function PlusCheckoutPage({ initial }: { initial: ReturnType<typeof readCheckout
                           checked={selectedTerm === t.key}
                           onChange={() => {
                             setAccepted(false);
-                            selectCheckout(userId, { product: "plus", term: t.key });
+                            selectCheckout(userId, {
+                              product: "plus",
+                              term: t.key,
+                            });
                           }}
                         />
                         <span>
@@ -215,7 +220,8 @@ function PlusCheckoutPage({ initial }: { initial: ReturnType<typeof readCheckout
                           </small>
                           {t.savingsMinor > 0 && (
                             <small className="plus-term-saving">
-                              Save {money(t.savingsMinor, t.currency)} ({t.savingsPercent}%) vs monthly · about {money(t.monthlyEquivalentMinor, t.currency)}/month
+                              Save {money(t.savingsMinor, t.currency)} ({t.savingsPercent}%) vs monthly · about {money(t.monthlyEquivalentMinor, t.currency)}
+                              /month
                             </small>
                           )}
                           {!t.available && !(t.key === "monthly" && catalog.onSale.plus) && <small>Not available for purchase yet</small>}
@@ -225,39 +231,31 @@ function PlusCheckoutPage({ initial }: { initial: ReturnType<typeof readCheckout
                     {purchase && <small>A pending purchase keeps its billing interval. Review or cancel it in Billing before choosing another.</small>}
                   </fieldset>
                 )}
-                <h3>Payment method</h3>
-                <div className="checkout-method" role="radiogroup" aria-label="Payment method">
-                  <div role="radio" aria-checked="true" tabIndex={0}>
-                    <span className="checkout-radio" />
-                    <div>
-                      <strong>PayPal</strong>
-                      <small>Authorize securely with PayPal</small>
-                    </div>
-                    <CreditCard size={24} aria-hidden="true" />
-                  </div>
-                </div>
-                <p className="checkout-security">
-                  <LockKeyhole size={15} aria-hidden="true" />
-                  <span>PayPal securely handles payment authorization. Meldiq never sees your card number or security code.</span>
-                </p>
-                <label className="checkout-agreement">
-                  <input type="checkbox" checked={accepted} onChange={(e) => setAccepted(e.target.checked)} />
-                  <span>
-                    I agree to the{" "}
-                    <a href="https://meldiq.app/legal/terms" target="_blank" rel="noreferrer">
-                      Terms of Service
-                    </a>{" "}
-                    and{" "}
-                    <a href="https://meldiq.app/legal/billing" target="_blank" rel="noreferrer">
-                      subscription terms
-                    </a>
-                    , and have read the{" "}
-                    <a href="https://meldiq.app/legal/privacy" target="_blank" rel="noreferrer">
-                      Privacy Policy
-                    </a>
-                    .
-                  </span>
-                </label>
+              </section>
+              <CheckoutPayment
+                config={config}
+                accepted={accepted}
+                onAccept={setAccepted}
+                attempt={attempt}
+                unavailable={
+                  !online
+                    ? "You’re offline. Reconnect to continue."
+                    : catalog && (!price || (gift && !catalog.onSale.gifts))
+                      ? "This offer is unavailable for purchase."
+                      : !price
+                        ? "Loading purchase details…"
+                        : config && !config.subscriptions && !gift
+                          ? "Recurring PayPal payments are unavailable."
+                          : null
+                }
+                payment={{
+                  subscription: !gift,
+                  create,
+                  approve: () => verify(true),
+                  cancel: () => setMessage("You closed PayPal checkout. You can check the purchase status below."),
+                  fail: setError,
+                }}
+              >
                 {error && (
                   <div className="banner danger" role="alert">
                     {error}
@@ -267,33 +265,6 @@ function PlusCheckoutPage({ initial }: { initial: ReturnType<typeof readCheckout
                   <div className="banner info" role="status">
                     {message}
                   </div>
-                )}
-                {!online && (
-                  <p role="status" className="muted">
-                    You’re offline. Reconnect to continue.
-                  </p>
-                )}
-                {config && !config.subscriptions && !gift && (
-                  <p role="status" className="muted">
-                    Recurring PayPal payments are not available for this app yet.
-                  </p>
-                )}
-                {catalog && !price && (
-                  <p role="status" className="muted">
-                    This offer is not available for purchase yet.
-                  </p>
-                )}
-                {!accepted && <p className="checkout-hint">Agree to the terms to continue with PayPal.</p>}
-                {config && accepted && online && price && (gift || config.subscriptions) && (
-                  <PayPalButton
-                    key={attempt}
-                    config={config}
-                    subscription={!gift}
-                    create={create}
-                    approve={() => verify(true)}
-                    cancel={() => setMessage("You closed PayPal checkout. You can check the purchase status below.")}
-                    fail={setError}
-                  />
                 )}
                 {error && (
                   <button
@@ -312,7 +283,7 @@ function PlusCheckoutPage({ initial }: { initial: ReturnType<typeof readCheckout
                     {checking ? "Checking payment…" : "Check purchase status"}
                   </button>
                 )}
-              </section>
+              </CheckoutPayment>
               <div className="checkout-trust">
                 <ShieldCheck size={18} aria-hidden="true" />
                 <p>
@@ -324,32 +295,24 @@ function PlusCheckoutPage({ initial }: { initial: ReturnType<typeof readCheckout
             </div>
             <aside className="checkout-card checkout-summary" aria-labelledby="checkout-summary-title">
               <div className="checkout-card-heading">
-                <span className="checkout-step">2</span>
                 <h2 id="checkout-summary-title">Order summary</h2>
               </div>
-              <div className="checkout-plan-art">
-                <span>{gift ? <Gift size={30} aria-hidden="true" /> : <Crown size={30} aria-hidden="true" />}</span>
-                <Sparkles size={18} className="checkout-art-spark" aria-hidden="true" />
-                <span className="checkout-kicker">MELDIQ PLUS</span>
-                <h3>Plus{gift ? " Gift" : ""}</h3>
-                <p>{gift ? `${draft.months} month${draft.months === 1 ? "" : "s"} of more` : "More of what brings you together"}</p>
+              <div className="checkout-item">
+                <span className="checkout-item-icon">{gift ? <Gift size={22} aria-hidden="true" /> : <Crown size={22} aria-hidden="true" />}</span>
+                <div>
+                  <h3>Meldiq Plus{gift ? " gift" : ""}</h3>
+                  <p>{gift ? `${draft.months} month${draft.months === 1 ? "" : "s"}` : `Billed every ${cadence}`}</p>
+                </div>
+                <strong>{purchase || price ? money(amount, currency) : "—"}</strong>
               </div>
               <dl className="checkout-breakdown">
-                <div>
-                  <dt>{gift ? `Plus · ${draft.months} month${draft.months === 1 ? "" : "s"}` : `Plus · every ${cadence}`}</dt>
-                  <dd>{money(amount, currency)}</dd>
-                </div>
-                <div>
-                  <dt>Tax added</dt>
-                  <dd>{money(0, currency)}</dd>
-                </div>
                 <div className="checkout-total">
                   <dt>
                     {gift ? "Total" : "Total today"}
                     <small>{gift ? "One-time purchase" : deferred ? `First payment ${startDate}` : `Renews every ${cadence}`}</small>
                   </dt>
                   <dd>
-                    {money(deferred ? 0 : amount, currency)}
+                    {purchase || price ? money(deferred ? 0 : amount, currency) : "—"}
                     <small>{currency}</small>
                   </dd>
                 </div>
