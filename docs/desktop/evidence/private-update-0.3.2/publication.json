@@ -1,0 +1,8 @@
+{
+  "version": "0.3.2",
+  "download": "https://meldiq.app/downloads/windows/0.3.2/da658d8fcb2100f0/Meldiq-Setup-0.3.2-x64.exe",
+  "sha256": "da658d8fcb2100f0377c58f24756f5af46e687fd0056c54ce000d39195137616",
+  "bytes": 124341553,
+  "feed": "https://meldiq.app/desktop-updates/windows/stable/release.json",
+  "verification": "Authenticated against the pinned desktop release key"
+}
