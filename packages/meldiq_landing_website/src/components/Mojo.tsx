@@ -199,8 +199,8 @@ export function MojoSection({ load }: LoadProps) {
             <span className="eyebrow">Meldiq Plus</span>
             <h2 id="mojo-heading">Extras for your account, on every device.</h2>
             <p className="muted">
-              Everything you need to talk is free. Meldiq Plus is optional at $4.99/month, with files up to 1 GB each. It belongs to your Meldiq account, so
-              one subscription covers the web and your phone.
+              Everything you need to talk is free. Meldiq Plus is optional at $4.99/month, with files up to 1 GB each. It belongs to your Meldiq account, so one
+              subscription covers the web and your phone.
               {trial && trial.days > 0 ? ` Right now every new account gets ${dayCount(trial.days)} free, no card needed.` : ""}
             </p>
             <div className="hero-actions" style={{ marginTop: 18 }}>

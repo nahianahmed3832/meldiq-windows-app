@@ -4,7 +4,13 @@ import { billingPeriod, formatMoney } from "../lib/money";
 const labels = { monthly: "Monthly", quarterly: "Quarterly", yearly: "Yearly" } as const;
 
 export function BillingTerms({ mojo, offers, onChoose }: { mojo: MojoCatalog | null; offers: Offer[]; onChoose: (offer: Offer) => void }) {
-  if (!mojo?.plusTerms?.length) return null;
+  if (!mojo?.plusTerms?.length)
+    return (
+      <section className="catalog-placeholder" aria-labelledby="billing-terms-heading">
+        <h2 id="billing-terms-heading">Billing options</h2>
+        <p>Additional billing intervals are not published. Review the current offer above for its billing period.</p>
+      </section>
+    );
   return (
     <section className="billing-terms" aria-labelledby="billing-terms-heading">
       <div className="terms-heading">

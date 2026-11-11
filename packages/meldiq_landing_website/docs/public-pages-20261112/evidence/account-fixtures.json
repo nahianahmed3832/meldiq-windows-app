@@ -1,0 +1,66 @@
+[
+  {
+    "route": "/account",
+    "width": 375,
+    "theme": "dark",
+    "overflow": false,
+    "errors": [],
+    "heading": "Your account"
+  },
+  {
+    "route": "/account/billing",
+    "width": 375,
+    "theme": "dark",
+    "overflow": false,
+    "errors": [],
+    "heading": "Your billing"
+  },
+  {
+    "route": "/account",
+    "width": 375,
+    "theme": "light",
+    "overflow": false,
+    "errors": [],
+    "heading": "Your account"
+  },
+  {
+    "route": "/account/billing",
+    "width": 375,
+    "theme": "light",
+    "overflow": false,
+    "errors": [],
+    "heading": "Your billing"
+  },
+  {
+    "route": "/account",
+    "width": 1440,
+    "theme": "dark",
+    "overflow": false,
+    "errors": [],
+    "heading": "Your account"
+  },
+  {
+    "route": "/account/billing",
+    "width": 1440,
+    "theme": "dark",
+    "overflow": false,
+    "errors": [],
+    "heading": "Your billing"
+  },
+  {
+    "route": "/account",
+    "width": 1440,
+    "theme": "light",
+    "overflow": false,
+    "errors": [],
+    "heading": "Your account"
+  },
+  {
+    "route": "/account/billing",
+    "width": 1440,
+    "theme": "light",
+    "overflow": false,
+    "errors": [],
+    "heading": "Your billing"
+  }
+]

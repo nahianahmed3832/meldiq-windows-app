@@ -1,0 +1,101 @@
+[
+  {
+    "url": "https://web.meldiq.app/",
+    "status": 200,
+    "contentType": "text/html",
+    "bytes": "5873",
+    "destination": "https://web.meldiq.app/"
+  },
+  {
+    "url": "https://web.meldiq.app/settings/developer",
+    "status": 200,
+    "contentType": "text/html",
+    "bytes": "5873",
+    "destination": "https://web.meldiq.app/settings/developer"
+  },
+  {
+    "url": "https://web.meldiq.app/settings/creators",
+    "status": 200,
+    "contentType": "text/html",
+    "bytes": "5873",
+    "destination": "https://web.meldiq.app/settings/creators"
+  },
+  {
+    "url": "https://web.meldiq.app/workspace/overview",
+    "status": 200,
+    "contentType": "text/html",
+    "bytes": "5873",
+    "destination": "https://web.meldiq.app/workspace/overview"
+  },
+  {
+    "url": "https://web.meldiq.app/settings/account",
+    "status": 200,
+    "contentType": "text/html",
+    "bytes": "5873",
+    "destination": "https://web.meldiq.app/settings/account"
+  },
+  {
+    "url": "https://web.meldiq.app/settings/billing",
+    "status": 200,
+    "contentType": "text/html",
+    "bytes": "5873",
+    "destination": "https://web.meldiq.app/settings/billing"
+  },
+  {
+    "url": "https://web.meldiq.app/settings/mojo",
+    "status": 200,
+    "contentType": "text/html",
+    "bytes": "5873",
+    "destination": "https://web.meldiq.app/settings/mojo"
+  },
+  {
+    "url": "https://status.meldiq.app/",
+    "status": 200,
+    "contentType": "text/html; charset=utf-8",
+    "bytes": null,
+    "destination": "https://status.meldiq.app/"
+  },
+  {
+    "url": "https://play.google.com/store/apps/details?id=com.meldiq.android",
+    "status": 200,
+    "contentType": "text/html; charset=utf-8",
+    "bytes": "0",
+    "destination": "https://play.google.com/store/apps/details?id=com.meldiq.android"
+  },
+  {
+    "url": "https://web.meldiq.app/developers/meldiq-bot-sdk-preview.zip",
+    "status": 200,
+    "contentType": "application/zip",
+    "bytes": "246196",
+    "destination": "https://web.meldiq.app/developers/meldiq-bot-sdk-preview.zip"
+  },
+  {
+    "url": "https://web.meldiq.app/developers/bot-sdk/README.txt",
+    "status": 200,
+    "contentType": "text/plain",
+    "bytes": "23020",
+    "destination": "https://web.meldiq.app/developers/bot-sdk/README.txt"
+  },
+  {
+    "url": "https://meldiq.app/downloads/windows/0.3.3/fbfd5d377a17f296/Meldiq-Setup-0.3.3-x64.exe",
+    "status": 200,
+    "contentType": "application/octet-stream",
+    "bytes": "124335875",
+    "destination": "https://meldiq.app/downloads/windows/0.3.3/fbfd5d377a17f296/Meldiq-Setup-0.3.3-x64.exe"
+  },
+  {
+    "url": "https://meldiq.app/downloads/windows/0.3.3/fbfd5d377a17f296/checksums.sha256",
+    "status": 200,
+    "contentType": "text/plain",
+    "bytes": "93",
+    "destination": "https://meldiq.app/downloads/windows/0.3.3/fbfd5d377a17f296/checksums.sha256"
+  },
+  {
+    "url": "https://discord.com/download",
+    "error": "HTTP Error 403: Forbidden"
+  },
+  {
+    "url": "https://support.discord.com/hc/en-us/articles/360041033511-Server-Templates",
+    "error": "HTTP Error 403: Forbidden"
+  }
+]

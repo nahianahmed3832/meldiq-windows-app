@@ -15,7 +15,9 @@ export default function Page() {
         <span className={"eyebrow"}>{"Support"}</span>
         <h1>How can we help?</h1>
         <p>{"Let’s get you pointed in the right direction."}</p>
-        <p><a href="https://status.meldiq.app">Check service health and active incidents →</a></p>
+        <p>
+          <a href="https://status.meldiq.app">Check service health and active incidents →</a>
+        </p>
         <a className={"button secondary"} href={"/faq"}>
           {"Search all help topics"}
           <svg

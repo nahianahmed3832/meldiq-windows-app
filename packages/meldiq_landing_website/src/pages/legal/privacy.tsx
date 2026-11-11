@@ -77,7 +77,10 @@ export default function Privacy() {
             <ul>
               <li>Hostinger: the server that runs Meldiq&apos;s API.</li>
               <li>Supabase: the PostgreSQL database used by Meldiq. MongoDB Atlas holds the prior database during recovery retention.</li>
-              <li>Amazon Web Services: encrypted file storage. Frankfurt, Germany, is the primary region for file storage. We retain historical copies in Singapore for recovery. New uploads, including from older Windows apps, are stored in Frankfurt.</li>
+              <li>
+                Amazon Web Services: encrypted file storage. Frankfurt, Germany, is the primary region for file storage. We retain historical copies in
+                Singapore for recovery. New uploads, including from older Windows apps, are stored in Frankfurt.
+              </li>
               <li>Cloudflare: DNS, website delivery and authorized file delivery through its global network.</li>
               <li>PayPal: payment authorization, subscriptions, receipts and payment verification for new website purchases.</li>
               <li>Stripe: billing records and the customer portal for earlier Stripe subscriptions, where applicable.</li>
@@ -94,7 +97,10 @@ export default function Privacy() {
           body: (
             <ul>
               <li>Encrypted messages waiting for a device: until delivered, at most 7 days.</li>
-              <li>Completed file uploads are kept until you request deletion. When a disappearing-message timer ends, the message disappears but its file stays stored. Files you have not sent are accessible only to you.</li>
+              <li>
+                Completed file uploads are kept until you request deletion. When a disappearing-message timer ends, the message disappears but its file stays
+                stored. Files you have not sent are accessible only to you.
+              </li>
               <li>Encrypted history you keep: until you delete it or your account.</li>
               <li>The current retention settings for call records and audit logs are 36,500 days.</li>
               <li>
@@ -120,8 +126,9 @@ export default function Privacy() {
           title: "This website",
           body: (
             <p>
-              The public website uses optional Google Analytics only if you allow it. We measure public page visits and download clicks. You can change your choice in Analytics preferences. We keep analytics off account and billing pages. When you sign in here, your session is kept in this browser
-              tab only and ends when you close it or sign out. PayPal hosts new subscription payment pages under its own privacy policy. Earlier Stripe payment
+              The public website uses optional Google Analytics only if you allow it. We measure public page visits and download clicks. You can change your
+              choice in Analytics preferences. We keep analytics off account and billing pages. When you sign in here, your session is kept in this browser tab
+              only and ends when you close it or sign out. PayPal hosts new subscription payment pages under its own privacy policy. Earlier Stripe payment
               pages follow Stripe&apos;s privacy policy.
             </p>
           ),

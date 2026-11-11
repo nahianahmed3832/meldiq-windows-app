@@ -1,0 +1,265 @@
+{
+  "baseline": "live homepage before changes",
+  "candidate": "final integrated build",
+  "identical": true,
+  "links": [
+    [
+      "Skip to content",
+      "#main"
+    ],
+    [
+      "meldiq.",
+      "/"
+    ],
+    [
+      "Download",
+      "/download"
+    ],
+    [
+      "Developers",
+      "/developers"
+    ],
+    [
+      "Plus",
+      "/pricing"
+    ],
+    [
+      "Log in",
+      "https://web.meldiq.app"
+    ],
+    [
+      "Open Meldiq in your browser \u2192",
+      "https://web.meldiq.app/"
+    ],
+    [
+      "All downloads",
+      "/download"
+    ],
+    [
+      "Explore communities \u2197",
+      "/community"
+    ],
+    [
+      "Explore messaging \u2197",
+      "/features#messaging"
+    ],
+    [
+      "Open Meldiq in your browser \u2192",
+      "https://web.meldiq.app/"
+    ],
+    [
+      "All downloads",
+      "/download"
+    ],
+    [
+      "See Meldiq Plus",
+      "/pricing"
+    ],
+    [
+      "See available downloads",
+      "/download"
+    ],
+    [
+      "Explore Meldiq bots",
+      "/bots"
+    ],
+    [
+      "Learn about communities",
+      "/community"
+    ],
+    [
+      "Read the Privacy Policy",
+      "/legal/privacy"
+    ],
+    [
+      "More questions and answers \u2192",
+      "/faq"
+    ],
+    [
+      "meldiq.",
+      "/"
+    ],
+    [
+      "Open Meldiq \u2197",
+      "https://web.meldiq.app"
+    ],
+    [
+      "Features",
+      "/features"
+    ],
+    [
+      "Pricing",
+      "/pricing"
+    ],
+    [
+      "Download",
+      "/download"
+    ],
+    [
+      "Developers",
+      "/developers"
+    ],
+    [
+      "Bots",
+      "/bots"
+    ],
+    [
+      "Creator Program",
+      "/creators"
+    ],
+    [
+      "Partners",
+      "/partners"
+    ],
+    [
+      "Roadmap",
+      "/roadmap"
+    ],
+    [
+      "Brand kit",
+      "/brand"
+    ],
+    [
+      "Service status",
+      "https://status.meldiq.app"
+    ],
+    [
+      "Find your community",
+      "/community"
+    ],
+    [
+      "Gaming community chat",
+      "/gaming-community-chat"
+    ],
+    [
+      "Voice, video & screen sharing",
+      "/voice-video-screen-sharing"
+    ],
+    [
+      "Meldiq vs. Discord",
+      "/compare/discord"
+    ],
+    [
+      "Getting started",
+      "/tutorials"
+    ],
+    [
+      "Questions & answers",
+      "/faq"
+    ],
+    [
+      "Community guidelines",
+      "/legal/acceptable-use"
+    ],
+    [
+      "Your account",
+      "/account"
+    ],
+    [
+      "Billing",
+      "/account/billing"
+    ],
+    [
+      "Contact support",
+      "/support"
+    ],
+    [
+      "Terms of Service",
+      "/legal/terms"
+    ],
+    [
+      "Privacy Policy",
+      "/legal/privacy"
+    ],
+    [
+      "Meldiq Plus terms",
+      "/legal/billing"
+    ],
+    [
+      "Acceptable use",
+      "/legal/acceptable-use"
+    ],
+    [
+      "Account deletion & your data",
+      "/legal/account-deletion"
+    ],
+    [
+      "Security & encryption",
+      "/security"
+    ],
+    [
+      "Cancel Meldiq Plus",
+      "/legal/billing#cancel"
+    ],
+    [
+      "Back to top \u2191",
+      "#top"
+    ]
+  ],
+  "states": [
+    {
+      "width": 320,
+      "theme": "dark",
+      "firstFaqOpen": true,
+      "faqOpened": true,
+      "themeToggled": "marketing-site reference-home meldiq-refresh minimal-landing is-light",
+      "linksSha256": "38fb2bd9eda09d6cb9a4345f18a795a56db8543c54daf896e25da9a426c0694f"
+    },
+    {
+      "width": 320,
+      "theme": "light",
+      "firstFaqOpen": true,
+      "faqOpened": true,
+      "themeToggled": "marketing-site reference-home meldiq-refresh minimal-landing",
+      "linksSha256": "38fb2bd9eda09d6cb9a4345f18a795a56db8543c54daf896e25da9a426c0694f"
+    },
+    {
+      "width": 375,
+      "theme": "dark",
+      "firstFaqOpen": true,
+      "faqOpened": true,
+      "themeToggled": "marketing-site reference-home meldiq-refresh minimal-landing is-light",
+      "linksSha256": "38fb2bd9eda09d6cb9a4345f18a795a56db8543c54daf896e25da9a426c0694f"
+    },
+    {
+      "width": 375,
+      "theme": "light",
+      "firstFaqOpen": true,
+      "faqOpened": true,
+      "themeToggled": "marketing-site reference-home meldiq-refresh minimal-landing",
+      "linksSha256": "38fb2bd9eda09d6cb9a4345f18a795a56db8543c54daf896e25da9a426c0694f"
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "firstFaqOpen": true,
+      "faqOpened": true,
+      "themeToggled": "marketing-site reference-home meldiq-refresh minimal-landing is-light",
+      "linksSha256": "38fb2bd9eda09d6cb9a4345f18a795a56db8543c54daf896e25da9a426c0694f"
+    },
+    {
+      "width": 768,
+      "theme": "light",
+      "firstFaqOpen": true,
+      "faqOpened": true,
+      "themeToggled": "marketing-site reference-home meldiq-refresh minimal-landing",
+      "linksSha256": "38fb2bd9eda09d6cb9a4345f18a795a56db8543c54daf896e25da9a426c0694f"
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "firstFaqOpen": true,
+      "faqOpened": true,
+      "themeToggled": "marketing-site reference-home meldiq-refresh minimal-landing is-light",
+      "linksSha256": "38fb2bd9eda09d6cb9a4345f18a795a56db8543c54daf896e25da9a426c0694f"
+    },
+    {
+      "width": 1440,
+      "theme": "light",
+      "firstFaqOpen": true,
+      "faqOpened": true,
+      "themeToggled": "marketing-site reference-home meldiq-refresh minimal-landing",
+      "linksSha256": "38fb2bd9eda09d6cb9a4345f18a795a56db8543c54daf896e25da9a426c0694f"
+    }
+  ]
+}

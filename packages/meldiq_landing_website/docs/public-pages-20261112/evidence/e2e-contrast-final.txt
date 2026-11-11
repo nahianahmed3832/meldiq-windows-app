@@ -1,0 +1,58 @@
+
+> meldiq-site@0.1.0 e2e
+> playwright test --workers=2 --grep legal|FAQ|theme preference
+
+[WebServer] (node:31982) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:31990) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 33 tests using 2 workers
+
+(node:31998) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:31997) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   2 [desktop] › e2e/site.spec.ts:54:5 › redesigned public pages › /faq renders with metadata and fits the viewport (1.5s)
+  ✓   1 [desktop] › e2e/interior.spec.ts:107:3 › /legal/privacy has working on-page anchors, themes and a usable 320px layout (1.7s)
+  ✓   4 [desktop] › e2e/site.spec.ts:54:5 › redesigned public pages › /legal/privacy renders with metadata and fits the viewport (2.0s)
+  ✓   3 [desktop] › e2e/site.spec.ts:54:5 › redesigned public pages › /legal/terms renders with metadata and fits the viewport (2.2s)
+  ✓   5 [desktop] › e2e/site.spec.ts:54:5 › redesigned public pages › /legal/billing renders with metadata and fits the viewport (689ms)
+  ✓   6 [desktop] › e2e/site.spec.ts:54:5 › redesigned public pages › /legal/acceptable-use renders with metadata and fits the viewport (670ms)
+  ✓   7 [desktop] › e2e/site.spec.ts:54:5 › redesigned public pages › /legal/account-deletion renders with metadata and fits the viewport (615ms)
+  ✓   8 [desktop] › e2e/site.spec.ts:102:3 › redesigned public pages › FAQ combines search and category filters and resets empty results (1.1s)
+  ✓   9 [desktop] › e2e/site.spec.ts:164:3 › redesigned public pages › theme preference survives navigation across the website (895ms)
+  ✓  10 [desktop] › e2e/site.spec.ts:251:3 › redesigned public pages › legal drafts remain clearly marked (471ms)
+  ✓  11 [desktop] › e2e/site.spec.ts:298:3 › legal and business details from the admin console › the legal and support pages show what operators filled in, and placeholders for the rest (966ms)
+(node:32131) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:32132) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  13 [phone] › e2e/site.spec.ts:54:5 › redesigned public pages › /faq renders with metadata and fits the viewport (1.7s)
+  ✓  12 [phone] › e2e/interior.spec.ts:107:3 › /legal/privacy has working on-page anchors, themes and a usable 320px layout (1.9s)
+  ✓  14 [phone] › e2e/site.spec.ts:54:5 › redesigned public pages › /legal/terms renders with metadata and fits the viewport (633ms)
+  ✓  15 [phone] › e2e/site.spec.ts:54:5 › redesigned public pages › /legal/privacy renders with metadata and fits the viewport (673ms)
+  ✓  16 [phone] › e2e/site.spec.ts:54:5 › redesigned public pages › /legal/billing renders with metadata and fits the viewport (821ms)
+  ✓  17 [phone] › e2e/site.spec.ts:54:5 › redesigned public pages › /legal/acceptable-use renders with metadata and fits the viewport (791ms)
+  ✓  18 [phone] › e2e/site.spec.ts:54:5 › redesigned public pages › /legal/account-deletion renders with metadata and fits the viewport (780ms)
+  ✓  19 [phone] › e2e/site.spec.ts:102:3 › redesigned public pages › FAQ combines search and category filters and resets empty results (1.4s)
+  ✓  20 [phone] › e2e/site.spec.ts:164:3 › redesigned public pages › theme preference survives navigation across the website (1.2s)
+  ✓  21 [phone] › e2e/site.spec.ts:251:3 › redesigned public pages › legal drafts remain clearly marked (462ms)
+  ✓  22 [phone] › e2e/site.spec.ts:298:3 › legal and business details from the admin console › the legal and support pages show what operators filled in, and placeholders for the rest (1.1s)
+(node:32215) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:32216) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  23 [webkit] › e2e/interior.spec.ts:107:3 › /legal/privacy has working on-page anchors, themes and a usable 320px layout (4.7s)
+  ✓  24 [webkit] › e2e/site.spec.ts:54:5 › redesigned public pages › /faq renders with metadata and fits the viewport (4.6s)
+  ✓  25 [webkit] › e2e/site.spec.ts:54:5 › redesigned public pages › /legal/privacy renders with metadata and fits the viewport (2.7s)
+  ✓  26 [webkit] › e2e/site.spec.ts:54:5 › redesigned public pages › /legal/terms renders with metadata and fits the viewport (2.5s)
+  ✓  28 [webkit] › e2e/site.spec.ts:54:5 › redesigned public pages › /legal/acceptable-use renders with metadata and fits the viewport (1.8s)
+  ✓  27 [webkit] › e2e/site.spec.ts:54:5 › redesigned public pages › /legal/billing renders with metadata and fits the viewport (1.8s)
+  ✓  29 [webkit] › e2e/site.spec.ts:54:5 › redesigned public pages › /legal/account-deletion renders with metadata and fits the viewport (3.5s)
+  ✓  30 [webkit] › e2e/site.spec.ts:102:3 › redesigned public pages › FAQ combines search and category filters and resets empty results (4.2s)
+  ✓  32 [webkit] › e2e/site.spec.ts:251:3 › redesigned public pages › legal drafts remain clearly marked (2.1s)
+  ✓  31 [webkit] › e2e/site.spec.ts:164:3 › redesigned public pages › theme preference survives navigation across the website (4.1s)
+  ✓  33 [webkit] › e2e/site.spec.ts:298:3 › legal and business details from the admin console › the legal and support pages show what operators filled in, and placeholders for the rest (3.2s)
+
+  33 passed (40.8s)

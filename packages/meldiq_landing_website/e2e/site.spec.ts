@@ -10,7 +10,7 @@ const PUBLIC_PAGES = [
   ["/compare/discord", /try Meldiq or stay on Discord/],
   ["/features", /Everything you need.*to talk, together/],
   ["/pricing", /Free messaging.*Optional Meldiq/],
-  ["/download", /Meldiq for.*your desktop/],
+  ["/download", /Meldiq, wherever you are/],
   ["/faq", /Questions, answered/],
   ["/support", /How can we help/],
   ["/community", /Bring your people together/],
@@ -18,7 +18,7 @@ const PUBLIC_PAGES = [
   ["/security", /Privacy, explained plainly/],
   ["/roadmap", /More places to connect/],
   ["/bots", /Make room for your bots/],
-  ["/developers", /Build bots on Meldiq/],
+  ["/developers", /Build a little help.*For your people/],
   ["/brand", /A familiar face for your space/],
   ["/legal/terms", /Terms of Service/],
   ["/legal/privacy", /Privacy Policy/],
@@ -69,8 +69,8 @@ test.describe("redesigned public pages", () => {
   });
   test("shows one combined online count that rotates every three minutes", async ({ page }) => {
     const start = new Date("2026-11-08T09:00:00Z");
-    await page.clock.install({ time: start });
-    await page.clock.pauseAt(new Date(start.getTime() + 1));
+    await page.clock.install({ time: new Date(start.getTime() - 60_000) });
+    await page.clock.pauseAt(start);
     let online = 1;
     await page.route("**/v2/site/presence", (route) => route.fulfill({ json: { online } }));
     await page.goto("/");
@@ -123,12 +123,12 @@ test.describe("redesigned public pages", () => {
     await expect(page.locator(".coming-card")).toHaveCount(2);
     await expect(page.locator(".coming-card a,.coming-card button")).toHaveCount(0);
   });
-  test("closed sales show the approved Plus preview without Go or purchase buttons", async ({ page }) => {
+  test("closed sales show unavailability without a guessed purchase price", async ({ page }) => {
     await page.route("**/v2/billing/plans", (r) => r.fulfill({ json: { available: false, mode: null, plans: [] } }));
     await page.goto("/pricing");
     await expect(page.getByRole("article", { name: "Mojo Go" })).toHaveCount(0);
-    await expect(page.getByRole("article", { name: "Meldiq Plus" })).toContainText("$4.99");
-    await expect(page.getByRole("article", { name: "Meldiq Plus" })).toContainText("Files up to 1 GB");
+    await expect(page.getByRole("article", { name: "Meldiq Plus" })).toContainText("currently unavailable to purchase here");
+    await expect(page.getByRole("article", { name: "Meldiq Plus" })).not.toContainText("$4.99");
     await expect(page.getByRole("button", { name: /Choose Meldiq/ })).toHaveCount(0);
     await expect(page.locator(".plan-grid")).not.toContainText("$0.99");
   });
@@ -213,8 +213,9 @@ test.describe("redesigned public pages", () => {
       r.fulfill({ status: 503, json: { error: { code: "unavailable", message: "Billing temporarily unavailable" } } }),
     );
     await page.goto("/pricing");
-    await expect(page.locator(".notice")).toContainText("Check billing");
-    await expect(page.getByRole("article", { name: "Meldiq Plus" })).toContainText("Check availability");
+    await expect(page.locator("main").getByRole("alert")).toContainText("couldn’t confirm the current offer");
+    await expect(page.getByRole("button", { name: "Retry loading plans" })).toBeVisible();
+    await expect(page.locator(".plan-grid")).not.toContainText("not on sale");
   });
   test("legacy plans and stale limits cannot reopen purchases", async ({ page }) => {
     await page.route("**/v2/mojo/catalog", async (route) => {
@@ -225,8 +226,8 @@ test.describe("redesigned public pages", () => {
     });
     await page.goto("/pricing?plan=go");
     await expect(page.getByRole("article", { name: "Mojo Go" })).toHaveCount(0);
-    await expect(page.getByRole("article", { name: "Meldiq Plus" })).toContainText("$4.99");
-    await expect(page.getByRole("article", { name: "Meldiq Plus" })).toContainText("Files up to 1 GB");
+    await expect(page.getByRole("article", { name: "Meldiq Plus" })).toContainText("currently unavailable to purchase here");
+    await expect(page.getByRole("article", { name: "Meldiq Plus" })).not.toContainText("$4.99");
     await expect(page.getByRole("button", { name: /Choose Meldiq/ })).toHaveCount(0);
     await expect(page.getByRole("table").locator("thead th")).toHaveCount(3);
   });

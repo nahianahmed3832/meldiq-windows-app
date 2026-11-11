@@ -6,14 +6,14 @@ import { FreeDaysSteps, TrialPill, tierPerks } from "../components/Mojo";
 import { CompareTable, SparkLevels } from "../components/MojoCompare";
 import { CheckoutDialog, PlanCard } from "../components/Plans";
 import { ApiError, type Offer, zEntitlements } from "../lib/api";
-import { mojoOf, useCatalog, useMojoCatalog } from "../lib/catalog";
+import { useCatalog, useMojoCatalog } from "../lib/catalog";
 import { subscriptionOffers } from "../lib/subscription";
 import { browserSession } from "../lib/session";
-import { PreviewPlanCard } from "../components/PreviewPlanCard";
-import { CatalogStatus } from "../components/MarketingStatus";
+import { pricingState } from "../lib/pricingState";
+
 import { FinalCta } from "../components/MarketingArt";
-import { SITE, ANNOUNCED_PLANS } from "../lib/site";
-import { formatMoney, formatPrice } from "../lib/money";
+import { SITE } from "../lib/site";
+import { formatPrice } from "../lib/money";
 import { BillingTerms } from "../components/BillingTerms";
 
 const FREE_INCLUDES = [
@@ -21,7 +21,7 @@ const FREE_INCLUDES = [
   "Direct messages and private groups",
   "Voice and video calls, voice channels, screen sharing",
   "Encrypted file sharing",
-  "Android and the web, with one account",
+  "Windows, Android and the web, with one account",
 ];
 
 /**
@@ -32,7 +32,9 @@ export default function Pricing() {
   const router = useRouter();
   const load = useCatalog();
   const mojoLoad = useMojoCatalog();
-  const mojo = mojoOf(mojoLoad);
+  const rawMojo = mojoLoad.state === "ready" ? mojoLoad.mojo : null;
+  const mojo = rawMojo ? { ...rawMojo, plans: rawMojo.plans.filter((p) => p.key === "free" || p.key === "plus") } : null;
+  const state = pricingState(load, mojoLoad);
   const [chosen, setChosen] = useState<{ offer: Offer; first: boolean } | null>(null);
   const [chooseError, setChooseError] = useState<string | null>(null);
 
@@ -41,9 +43,9 @@ export default function Pricing() {
     [load, mojoLoad],
   );
   const shown = offers;
-  const announced = shown.length === 0;
+
   const monthly = shown.find((offer) => !offer.term || offer.term === "monthly");
-  const monthlyPlus = monthly ?? ANNOUNCED_PLANS[0];
+
   const mainOffer = monthly ?? shown[0];
   const botsPlus =
     load.state === "ready" && load.catalog.available
@@ -88,14 +90,14 @@ export default function Pricing() {
   return (
     <Layout
       title="Meldiq Plus"
-      description="Meldiq is free to use. Meldiq Plus is $4.99/month with 1 GB uploads. Subscribe securely with PayPal; one subscription works on every device."
+      description="Compare Free and Meldiq Plus, review current billing options, and explore separate community Bots+, Sparks and gifts. Prices and availability come from the current catalog."
     >
       {load.state === "ready" && load.catalog.mode === "test" ? (
         <div className="test-banner" role="status">
           Test payments only. No real money is charged.
         </div>
       ) : null}
-      <section className="page-hero legacy-hero pricing-hero">
+      <section className="interior-hero pricing-intro">
         <div className="wrap">
           <TrialPill load={load} />
           <span className="eyebrow" style={{ display: "block" }}>
@@ -112,23 +114,12 @@ export default function Pricing() {
             Your everyday conversations stay free. Plus adds more room for files, longer messages and account extras, while helping support Meldiq’s servers and
             ongoing development.
           </p>
-          <div className="plus-hero-rate">
-            <div>
-              <strong>{formatMoney(monthlyPlus.amountMinor, monthlyPlus.currency)}</strong> <span>/month</span>
-            </div>
-            <span>Files up to 1 GB each · One subscription across supported devices</span>
-          </div>
-          <div className="ref-actions">
-            <a className="button primary" href="#plans">
-              See Meldiq Plus plans <span aria-hidden="true">→</span>
-            </a>
-            {mojo?.onSale?.gifts ? (
-              <a className="button secondary" href="#gift-heading">
-                How gifting works
-              </a>
-            ) : null}
-          </div>
-          <CatalogStatus />
+          <nav className="section-links" aria-label="Pricing sections">
+            <a href="#plans">Personal plans</a>
+            <a href="#billing-terms-heading">Billing options</a>
+            <a href="#compare-heading">Compare benefits</a>
+            <a href="#community-extras">Community &amp; gifts</a>
+          </nav>
         </div>
       </section>
 
@@ -140,7 +131,8 @@ export default function Pricing() {
             </div>
           ) : null}
 
-          <div className="plan-grid" aria-live="polite" aria-busy={load.state === "loading"}>
+          <h2 className="visually-hidden">Personal plans</h2>
+          <div className="plan-grid" aria-live="polite" aria-busy={state === "loading"}>
             <article className="plan" aria-labelledby="plan-free">
               <span className="plan-label">THE EVERYDAY ESSENTIALS</span>
               <h3 id="plan-free" style={{ margin: 0 }}>
@@ -160,29 +152,106 @@ export default function Pricing() {
                 </a>
               </div>
             </article>
-            {mainOffer ? <PlanCard offer={mainOffer} featured onChoose={choose} perks={tierPerks(mojo, mainOffer.key)} /> : null}
-            {announced ? ["plus"].map((key) => <PreviewPlanCard key={key} planKey={key} load={load} mojo={mojo} />) : null}
+            {state === "ready" && mainOffer ? (
+              <PlanCard offer={mainOffer} featured onChoose={choose} perks={tierPerks(mojo, mainOffer.key)} />
+            ) : (
+              <article className="plan featured pending-plan" aria-labelledby="plus-state-heading">
+                <span className="plan-label">OPTIONAL ACCOUNT EXTRAS</span>
+                <h3 id="plus-state-heading">Meldiq Plus</h3>
+                {state === "loading" ? (
+                  <>
+                    <p className="catalog-state" role="status">
+                      Checking current plans…
+                    </p>
+                    <div className="plan-placeholder" aria-hidden="true">
+                      <span />
+                      <span />
+                      <span />
+                      <span />
+                    </div>
+                    <p>Loading prices, benefits and purchase availability.</p>
+                  </>
+                ) : state === "error" ? (
+                  <>
+                    <p className="catalog-state" role="alert">
+                      We couldn’t confirm the current offer.
+                    </p>
+                    <p>Prices or benefits could not be loaded. Try again before choosing a plan.</p>
+                    <button className="button secondary" type="button" onClick={() => window.location.reload()}>
+                      Retry loading plans
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <p className="catalog-state">Plus is currently unavailable to purchase here.</p>
+                    <p>
+                      The current catalog does not offer a supported subscription for this website. Your existing subscription can still be managed in Billing.
+                    </p>
+                    <a className="button secondary" href="/account/billing">
+                      Manage existing billing
+                    </a>
+                  </>
+                )}
+              </article>
+            )}
           </div>
-
-          {load.state === "error" ? (
-            <div className="callout danger" role="alert" style={{ marginTop: 20 }}>
-              <p>{load.message} The free tier is always available.</p>
-            </div>
-          ) : null}
-          {announced ? (
-            <p className="muted" style={{ marginTop: 20 }}>
-              Meldiq Plus isn&apos;t on sale yet. When it is, its full terms are shown here and again before anyone is asked to pay.
-            </p>
-          ) : null}
         </div>
       </section>
 
       <section className="section terms-section">
         <div className="wrap">
-          <BillingTerms mojo={mojo} offers={shown} onChoose={choose} />
+          {state === "ready" || state === "unavailable" ? (
+            <BillingTerms mojo={mojo} offers={shown} onChoose={choose} />
+          ) : (
+            <div className="catalog-placeholder" id="billing-terms-heading">
+              <h2>Billing options</h2>
+              <p>{state === "loading" ? "Checking billing intervals…" : "Billing intervals could not be confirmed."}</p>
+            </div>
+          )}
         </div>
       </section>
 
+      {mojo ? (
+        <section className="section" style={{ paddingTop: 0 }} aria-labelledby="compare-heading">
+          <div className="wrap">
+            <div className="section-head">
+              <span className="eyebrow">Compare</span>
+              <h2 id="compare-heading">
+                {mojo.enforced === true ? (
+                  <>
+                    Your account. <em>Your extras.</em>
+                  </>
+                ) : (
+                  <>
+                    Free or <em>Meldiq Plus.</em>
+                  </>
+                )}
+              </h2>
+              <p>
+                Core messaging is in Free.{" "}
+                {mojo.enforced === true
+                  ? "These account benefits come from the current catalog."
+                  : "The catalog describes these benefits as a preview; enforcement is not confirmed."}
+              </p>
+            </div>
+            <CompareTable mojo={mojo} />
+          </div>
+        </section>
+      ) : null}
+
+      {!mojo ? (
+        <section className="interior-section wrap" id="compare-heading">
+          <h2>Compare account benefits</h2>
+          <p>
+            {state === "loading" ? "Loading the current comparison…" : "The benefits catalog could not be loaded. No limits or paid extras can be confirmed."}
+          </p>
+        </section>
+      ) : null}
+      <div className="wrap extras-heading" id="community-extras">
+        <span className="ref-kicker">Beyond your personal plan</span>
+        <h2>A little extra, for others.</h2>
+        <p>Community subscriptions, Sparks and gifts are separate from personal Plus. Review each product’s terms in Meldiq.</p>
+      </div>
       {botsPlus ? (
         <section className="section alt" aria-labelledby="bots-plus-heading">
           <div className="wrap split">
@@ -205,34 +274,6 @@ export default function Pricing() {
       ) : null}
 
       {mojo ? (
-        <section className="section" style={{ paddingTop: 0 }} aria-labelledby="compare-heading">
-          <div className="wrap">
-            <div className="section-head">
-              <span className="eyebrow">Compare</span>
-              <h2 id="compare-heading">
-                {mojo.enforced === true ? (
-                  <>
-                    Your account. <em>Your extras.</em>
-                  </>
-                ) : (
-                  <>
-                    Free or <em>Meldiq Plus.</em>
-                  </>
-                )}
-              </h2>
-              <p>
-                Core messaging is in Free.{" "}
-                {mojo.enforced === true
-                  ? "These account benefits come from the current catalog."
-                  : "Meldiq Plus is the updated $4.99/month plan with 1 GB uploads. Benefits below are a preview until the plan is available."}
-              </p>
-            </div>
-            <CompareTable mojo={mojo} />
-          </div>
-        </section>
-      ) : null}
-
-      {mojo ? (
         <section className="section alt" aria-labelledby="spark-heading">
           <div className="wrap">
             <div className="section-head">
@@ -248,6 +289,9 @@ export default function Pricing() {
               {mojo.onSale?.spark ? "See current price below" : "Sparks are not on sale yet"}
             </p>
             <SparkLevels mojo={mojo} />
+            <a className="inline-link" href={SITE.webAppUrl}>
+              Manage Sparks in Meldiq →
+            </a>
           </div>
         </section>
       ) : null}
@@ -267,12 +311,19 @@ export default function Pricing() {
                 months. It&apos;s paid once and never renews, and your friend starts it whenever they choose.
               </p>
             </div>
-            <ul className="checklist">
-              <li>Paid once: nothing renews</li>
-              <li>Your friend chooses when it starts</li>
-              <li>It follows on after any free days they already have</li>
-              {mojo.onSale?.gifts ? null : <li>Gift purchases are not available yet</li>}
-            </ul>
+            <div>
+              <ul className="checklist">
+                <li>Paid once: nothing renews</li>
+                <li>Your friend chooses when it starts</li>
+                <li>It follows on after any free days they already have</li>
+                {mojo.onSale?.gifts ? null : <li>Gift purchases are not available yet</li>}
+              </ul>
+              {mojo.onSale?.gifts ? (
+                <a className="inline-link" href={SITE.webAppUrl}>
+                  Review gifts in Meldiq →
+                </a>
+              ) : null}
+            </div>
           </div>
         </section>
       ) : null}

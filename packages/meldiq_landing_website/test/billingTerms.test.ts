@@ -32,6 +32,8 @@ describe("published billing terms", () => {
   it("supports older catalogs without billing terms", () => {
     const { plusTerms: _terms, ...legacy } = FIXTURE_MOJO;
     const html = renderToStaticMarkup(createElement(BillingTerms, { mojo: zMojoCatalog.parse(legacy), offers: [], onChoose }));
-    expect(html).toBe("");
+    expect(html).toContain("Billing options");
+    expect(html).toContain("intervals are not published");
+    expect(html).not.toContain("$");
   });
 });

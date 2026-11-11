@@ -1,0 +1,72 @@
+[
+  {
+    "route": "/",
+    "before": {
+      "initialAssetCount": 12,
+      "bytes": 754033,
+      "gzipBytes": 210458
+    },
+    "candidate": {
+      "initialAssetCount": 12,
+      "bytes": 777333,
+      "gzipBytes": 213479
+    },
+    "gzipDelta": 3021
+  },
+  {
+    "route": "/developers",
+    "before": {
+      "initialAssetCount": 11,
+      "bytes": 744784,
+      "gzipBytes": 207318
+    },
+    "candidate": {
+      "initialAssetCount": 11,
+      "bytes": 772081,
+      "gzipBytes": 211589
+    },
+    "gzipDelta": 4271
+  },
+  {
+    "route": "/download",
+    "before": {
+      "initialAssetCount": 13,
+      "bytes": 753363,
+      "gzipBytes": 210042
+    },
+    "candidate": {
+      "initialAssetCount": 11,
+      "bytes": 773175,
+      "gzipBytes": 211716
+    },
+    "gzipDelta": 1674
+  },
+  {
+    "route": "/features",
+    "before": {
+      "initialAssetCount": 11,
+      "bytes": 744439,
+      "gzipBytes": 207465
+    },
+    "candidate": {
+      "initialAssetCount": 12,
+      "bytes": 775438,
+      "gzipBytes": 212539
+    },
+    "gzipDelta": 5074
+  },
+  {
+    "route": "/pricing",
+    "before": {
+      "initialAssetCount": 14,
+      "bytes": 781217,
+      "gzipBytes": 220277
+    },
+    "candidate": {
+      "initialAssetCount": 13,
+      "bytes": 801453,
+      "gzipBytes": 221889
+    },
+    "gzipDelta": 1612
+  }
+]

@@ -1,0 +1,40 @@
+{
+  "preparedAt": "2026-11-11T18:13:38.771751+00:00",
+  "releaseId": "site-20261112-public-pages-6a4cbee84f",
+  "nextBuildId": "TwM8anwvzj4naoXPoslGh",
+  "contentManifestSha256": "6a4cbee84f80b23af40553baf53ddf3a03f62b627df71c9b089750b7a57b8521",
+  "archive": "site-20261112-public-pages-6a4cbee84f.tgz",
+  "archiveSha256": "14ba6f55c54a787e95f0de99cf573322eb2d3a469019068e61bd5b874b585f5c",
+  "archiveBytes": 1994671,
+  "status": "validated-candidate-awaiting-aws-access",
+  "repository": "https://github.com/nahianahmed3832/meldiq-windows-app",
+  "branch": "codex/public-pages-redesign-20261112",
+  "websiteMirrorBase": "4f1e16cec8d5db19af7525e7aab1e4a351db6726",
+  "preservedSourceCommit": "a51599686769a8fb60d0b2bb20ecf858e04f4b98",
+  "taskCommit": null,
+  "githubPushVerified": false,
+  "deployment": {
+    "performed": false,
+    "deploymentId": null,
+    "deployedRevision": null,
+    "previousProductionArtifact": null,
+    "rollbackPerformed": false,
+    "blocker": "Expired AWS griipbuddy session; current origin and rollback target require authenticated SSM inspection"
+  },
+  "validatedRoutes": 31,
+  "homepageComparison": {
+    "images": 20,
+    "changedPixels": 0
+  },
+  "checks": {
+    "typecheck": "pass",
+    "lint": "pass",
+    "format": "pass",
+    "build": "pass",
+    "unitPassed": 65,
+    "browserPassed": 222,
+    "browserSkipped": 9,
+    "browserSkippedReason": "Optional GA4 stream not configured",
+    "finalContrastBrowserPassed": 33
+  }
+}

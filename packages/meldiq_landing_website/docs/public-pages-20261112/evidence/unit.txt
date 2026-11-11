@@ -1,0 +1,41 @@
+
+> meldiq-site@0.1.0 test:coverage
+> vitest run --coverage
+
+
+ RUN  v4.1.12 /Volumes/code_files/meldiq_public_pages_20261112/packages/meldiq_landing_website
+      Coverage enabled with v8
+
+
+ Test Files  12 passed (12)
+      Tests  65 passed (65)
+   Start at  01:53:11
+   Duration  2.24s (transform 742ms, setup 0ms, import 2.00s, tests 1.40s, environment 1ms)
+
+ % Coverage report from v8
+-------------------|---------|----------|---------|---------|-------------------
+File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
+-------------------|---------|----------|---------|---------|-------------------
+All files          |    66.6 |    67.75 |   61.02 |   67.12 |
+ analytics.ts      |       0 |        0 |       0 |       0 | 3-113
+ api.ts            |   81.94 |    84.61 |      50 |   84.12 | ...82-283,307-309
+ catalog.ts        |       0 |        0 |       0 |       0 | 12-81
+ details.ts        |      50 |    63.63 |   44.44 |   44.44 | 89-101
+ device.ts         |   88.88 |    92.59 |      80 |   83.33 | 58-59
+ money.ts          |    91.3 |    76.47 |   88.88 |   95.23 | 19
+ payments.ts       |   94.23 |    88.57 |     100 |      94 | 50,59,168
+ plans.ts          |     100 |    86.79 |     100 |     100 | 75-81,84
+ referral.ts       |   19.04 |    33.33 |   33.33 |   21.05 | 23-59
+ seo.ts            |       0 |        0 |       0 |       0 | 1-12
+ session.ts        |   83.33 |    79.16 |   84.61 |   88.67 | 138-147
+ site.ts           |     100 |    83.33 |     100 |     100 | 46
+ subscription.ts   |      95 |    87.09 |     100 |   93.75 | 28
+ validation.ts     |     100 |     90.9 |     100 |     100 | 31
+-------------------|---------|----------|---------|---------|-------------------
+
+=============================== Coverage summary ===============================
+Statements   : 66.6% ( 343/515 )
+Branches     : 67.75% ( 332/490 )
+Functions    : 61.02% ( 83/136 )
+Lines        : 67.12% ( 290/432 )
+================================================================================

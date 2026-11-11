@@ -26,8 +26,8 @@ export default function AccountHome() {
         <div className="callout success" role="status">
           <p>
             Welcome to Meldiq! Your account is ready
-            {router.query.invited ? `, and your invite gave you and your friend ${trial ? dayCount(trial.referralDays) : "free days"} of Meldiq Plus` : ""}. Open
-            the app to start a community or join one.
+            {router.query.invited ? `, and your invite gave you and your friend ${trial ? dayCount(trial.referralDays) : "free days"} of Meldiq Plus` : ""}.
+            Open the app to start a community or join one.
           </p>
         </div>
       ) : null}

@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { LandingProductPreview } from "../components/LandingProductPreview";
+import { CallPreview } from "../components/CallPreview";
 import { Layout } from "../components/Layout";
 
 const sections = [
@@ -69,70 +71,103 @@ const sections = [
   },
 ];
 export default function Features() {
+  const links = ["/community", "/download", "/voice-video-screen-sharing", "/legal/privacy", "/security", "/legal/acceptable-use"];
+  const labels = [
+    "Explore communities",
+    "Find your app",
+    "Explore calls and screen sharing",
+    "Read the Privacy Policy",
+    "Account security guide",
+    "Community standards",
+  ];
   return (
     <Layout
       title="Community Channels, Group Messaging & Calls"
       description="Explore Meldiq communities, channels, group messages, voice and video calls, screen sharing and account security."
     >
-      <section className="plain-page-heading wrap">
-        <Link className="breadcrumb" href="/">
-          Home / Features
-        </Link>
+      <section className="interior-hero feature-intro wrap">
+        <span className="ref-kicker">Made for being together</span>
         <h1>
           Everything you need
           <br />
-          to talk, together.
+          <em>to talk, together.</em>
         </h1>
-        <p>Communities, messages and calls in one place. Every core messaging feature is free.</p>
+        <p>From the everyday group chat to a whole community. Messages, channels and calls belong in the same place.</p>
         <a className="button primary" href="/signup">
-          Find your people <span aria-hidden="true">→</span>
+          Create a free account <span aria-hidden="true">→</span>
         </a>
+        <nav className="section-links" aria-label="Explore features">
+          {sections.map((s) => (
+            <a key={s.id} href={`#${s.id}`}>
+              {s.title}
+            </a>
+          ))}
+        </nav>
       </section>
-      <div className="plain-features wrap">
-        {sections.map((section) => (
-          <section className="plain-feature-row" id={section.id} key={section.id}>
-            <div>
+      <div className="feature-stories wrap">
+        {sections.slice(0, 3).map((section, i) => (
+          <section className={`feature-story feature-story-${i}`} id={section.id} key={section.id}>
+            <div className="feature-story-copy">
+              <span className="ref-kicker">
+                0{i + 1} / {i === 0 ? "Find your people" : i === 1 ? "Keep in touch" : "Be there"}
+              </span>
               <h2>{section.title}</h2>
               <p>{section.text}</p>
-              {section.id === "privacy" ? (
-                <Link className="inline-link" href="/legal/privacy">
-                  Read the Privacy Policy →
-                </Link>
-              ) : section.id === "moderation" ? (
-                <Link className="inline-link" href="/legal/acceptable-use">
-                  Community standards →
-                </Link>
-              ) : section.id === "calls" ? (
-                <Link className="inline-link" href="/voice-video-screen-sharing">
-                  Voice, video and screen sharing →
-                </Link>
-              ) : section.id === "communities" ? (
-                <Link className="inline-link" href="/gaming-community-chat">
-                  Set up a gaming community →
-                </Link>
-              ) : null}
+              <ul className="checklist">
+                {section.items.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+              <Link className="inline-link" href={links[i]!}>
+                {labels[i]} →
+              </Link>
             </div>
-            <ul>
-              {section.items.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
+            <div className="feature-visual">{i === 2 ? <CallPreview /> : <LandingProductPreview view={i === 0 ? "community" : "messages"} />}</div>
           </section>
         ))}
       </div>
-      <section className="plain-page-end wrap">
-        <h2>Ready when you are.</h2>
-        <p>
-          Create a free account or find the right app for your device. <Link href="/pricing">Explore optional Meldiq Plus benefits and community add-ons.</Link>
-        </p>
-        <div className="button-row">
-          <a className="button primary" href="/signup">
-            Create a Free Account
-          </a>
-          <Link className="button secondary" href="/download">
-            Get Meldiq
+      <section className="interior-section wrap">
+        <div className="section-intro">
+          <span className="ref-kicker">Know your space</span>
+          <h2>
+            More control.
+            <br />
+            <em>Clear boundaries.</em>
+          </h2>
+          <p>Tools to protect your account and look after your community, with the privacy limits explained.</p>
+        </div>
+        <div className="trust-sections">
+          {sections.slice(3).map((section, i) => (
+            <section id={section.id} key={section.id}>
+              <h3>{section.title}</h3>
+              <p>{section.text}</p>
+              <ul className="checklist">
+                {section.items.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+              <Link className="inline-link" href={links[i + 3]!}>
+                {labels[i + 3]} →
+              </Link>
+            </section>
+          ))}
+        </div>
+      </section>
+      <section className="interior-end wrap">
+        <div>
+          <span className="ref-kicker">Start with the essentials</span>
+          <h2>Your conversations stay free.</h2>
+          <p>
+            Use the web, Windows or Android. Optional Plus and community add-ons have separate limits and benefits. Calling and screen-sharing options depend on
+            your device and browser.
+          </p>
+          <Link className="inline-link" href="/pricing">
+            Compare Free, Plus and community add-ons →
           </Link>
         </div>
+        <a className="button primary" href="/signup">
+          Create a free account →
+        </a>
       </section>
     </Layout>
   );

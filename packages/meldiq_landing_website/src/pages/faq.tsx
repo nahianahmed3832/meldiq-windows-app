@@ -110,7 +110,10 @@ export default function Faq() {
           <aside>
             <h2>Need a little help?</h2>
             <img src="/meldling-128.png" width={100} height={100} alt="Meldling is here to help" loading="lazy" />
-            <p>Setting up a group? Read the <Link href="/tutorials">getting started guide</Link> or learn how to <Link href="/voice-video-screen-sharing">share your screen</Link>.</p>
+            <p>
+              Setting up a group? Read the <Link href="/tutorials">getting started guide</Link> or learn how to{" "}
+              <Link href="/voice-video-screen-sharing">share your screen</Link>.
+            </p>
             <p>Start with Support for account, billing and community help.</p>
             <Link href="/support" className="button secondary">
               Find support →

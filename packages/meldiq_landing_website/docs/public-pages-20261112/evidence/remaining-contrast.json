@@ -1,0 +1,341 @@
+{
+  "legal": [
+    {
+      "route": "/legal/terms",
+      "identical": true,
+      "characters": 2935
+    },
+    {
+      "route": "/legal/privacy",
+      "identical": true,
+      "characters": 5067
+    },
+    {
+      "route": "/legal/billing",
+      "identical": false,
+      "characters": 3972
+    },
+    {
+      "route": "/legal/acceptable-use",
+      "identical": true,
+      "characters": 1798
+    },
+    {
+      "route": "/legal/account-deletion",
+      "identical": true,
+      "characters": 2132
+    }
+  ],
+  "keyboard": [
+    {
+      "route": "/legal/terms",
+      "theme": "dark",
+      "firstFocus": "Skip to content",
+      "focusOutline": "solid"
+    },
+    {
+      "route": "/legal/privacy",
+      "theme": "dark",
+      "firstFocus": "Skip to content",
+      "focusOutline": "solid"
+    },
+    {
+      "route": "/legal/billing",
+      "theme": "dark",
+      "firstFocus": "Skip to content",
+      "focusOutline": "solid"
+    },
+    {
+      "route": "/legal/acceptable-use",
+      "theme": "dark",
+      "firstFocus": "Skip to content",
+      "focusOutline": "solid"
+    },
+    {
+      "route": "/legal/account-deletion",
+      "theme": "dark",
+      "firstFocus": "Skip to content",
+      "focusOutline": "solid"
+    },
+    {
+      "route": "/faq",
+      "theme": "dark",
+      "firstFocus": "Skip to content",
+      "focusOutline": "solid"
+    },
+    {
+      "route": "/roadmap",
+      "theme": "dark",
+      "firstFocus": "Skip to content",
+      "focusOutline": "solid"
+    },
+    {
+      "route": "/brand",
+      "theme": "dark",
+      "firstFocus": "Skip to content",
+      "focusOutline": "solid"
+    },
+    {
+      "route": "/creators",
+      "theme": "dark",
+      "firstFocus": "Skip to content",
+      "focusOutline": "solid"
+    },
+    {
+      "route": "/partners",
+      "theme": "dark",
+      "firstFocus": "Skip to content",
+      "focusOutline": "solid"
+    },
+    {
+      "route": "/tutorials",
+      "theme": "dark",
+      "firstFocus": "Skip to content",
+      "focusOutline": "solid"
+    },
+    {
+      "route": "/security",
+      "theme": "dark",
+      "firstFocus": "Skip to content",
+      "focusOutline": "solid"
+    },
+    {
+      "route": "/voice-video-screen-sharing",
+      "theme": "dark",
+      "firstFocus": "Skip to content",
+      "focusOutline": "solid"
+    },
+    {
+      "route": "/es/chat-para-comunidades-gaming",
+      "theme": "dark",
+      "firstFocus": "Saltar al contenido",
+      "focusOutline": "solid"
+    },
+    {
+      "route": "/legal/terms",
+      "theme": "light",
+      "firstFocus": "Skip to content",
+      "focusOutline": "solid"
+    },
+    {
+      "route": "/legal/privacy",
+      "theme": "light",
+      "firstFocus": "Skip to content",
+      "focusOutline": "solid"
+    },
+    {
+      "route": "/legal/billing",
+      "theme": "light",
+      "firstFocus": "Skip to content",
+      "focusOutline": "solid"
+    },
+    {
+      "route": "/legal/acceptable-use",
+      "theme": "light",
+      "firstFocus": "Skip to content",
+      "focusOutline": "solid"
+    },
+    {
+      "route": "/legal/account-deletion",
+      "theme": "light",
+      "firstFocus": "Skip to content",
+      "focusOutline": "solid"
+    },
+    {
+      "route": "/faq",
+      "theme": "light",
+      "firstFocus": "Skip to content",
+      "focusOutline": "solid"
+    },
+    {
+      "route": "/roadmap",
+      "theme": "light",
+      "firstFocus": "Skip to content",
+      "focusOutline": "solid"
+    },
+    {
+      "route": "/brand",
+      "theme": "light",
+      "firstFocus": "Skip to content",
+      "focusOutline": "solid"
+    },
+    {
+      "route": "/creators",
+      "theme": "light",
+      "firstFocus": "Skip to content",
+      "focusOutline": "solid"
+    },
+    {
+      "route": "/partners",
+      "theme": "light",
+      "firstFocus": "Skip to content",
+      "focusOutline": "solid"
+    },
+    {
+      "route": "/tutorials",
+      "theme": "light",
+      "firstFocus": "Skip to content",
+      "focusOutline": "solid"
+    },
+    {
+      "route": "/security",
+      "theme": "light",
+      "firstFocus": "Skip to content",
+      "focusOutline": "solid"
+    },
+    {
+      "route": "/voice-video-screen-sharing",
+      "theme": "light",
+      "firstFocus": "Skip to content",
+      "focusOutline": "solid"
+    },
+    {
+      "route": "/es/chat-para-comunidades-gaming",
+      "theme": "light",
+      "firstFocus": "Saltar al contenido",
+      "focusOutline": "solid"
+    }
+  ],
+  "contrast": [
+    {
+      "route": "/legal/terms",
+      "theme": "dark",
+      "issues": []
+    },
+    {
+      "route": "/legal/privacy",
+      "theme": "dark",
+      "issues": []
+    },
+    {
+      "route": "/legal/billing",
+      "theme": "dark",
+      "issues": []
+    },
+    {
+      "route": "/legal/acceptable-use",
+      "theme": "dark",
+      "issues": []
+    },
+    {
+      "route": "/legal/account-deletion",
+      "theme": "dark",
+      "issues": []
+    },
+    {
+      "route": "/faq",
+      "theme": "dark",
+      "issues": []
+    },
+    {
+      "route": "/roadmap",
+      "theme": "dark",
+      "issues": []
+    },
+    {
+      "route": "/brand",
+      "theme": "dark",
+      "issues": []
+    },
+    {
+      "route": "/creators",
+      "theme": "dark",
+      "issues": []
+    },
+    {
+      "route": "/partners",
+      "theme": "dark",
+      "issues": []
+    },
+    {
+      "route": "/tutorials",
+      "theme": "dark",
+      "issues": []
+    },
+    {
+      "route": "/security",
+      "theme": "dark",
+      "issues": []
+    },
+    {
+      "route": "/voice-video-screen-sharing",
+      "theme": "dark",
+      "issues": []
+    },
+    {
+      "route": "/es/chat-para-comunidades-gaming",
+      "theme": "dark",
+      "issues": []
+    },
+    {
+      "route": "/legal/terms",
+      "theme": "light",
+      "issues": []
+    },
+    {
+      "route": "/legal/privacy",
+      "theme": "light",
+      "issues": []
+    },
+    {
+      "route": "/legal/billing",
+      "theme": "light",
+      "issues": []
+    },
+    {
+      "route": "/legal/acceptable-use",
+      "theme": "light",
+      "issues": []
+    },
+    {
+      "route": "/legal/account-deletion",
+      "theme": "light",
+      "issues": []
+    },
+    {
+      "route": "/faq",
+      "theme": "light",
+      "issues": []
+    },
+    {
+      "route": "/roadmap",
+      "theme": "light",
+      "issues": []
+    },
+    {
+      "route": "/brand",
+      "theme": "light",
+      "issues": []
+    },
+    {
+      "route": "/creators",
+      "theme": "light",
+      "issues": []
+    },
+    {
+      "route": "/partners",
+      "theme": "light",
+      "issues": []
+    },
+    {
+      "route": "/tutorials",
+      "theme": "light",
+      "issues": []
+    },
+    {
+      "route": "/security",
+      "theme": "light",
+      "issues": []
+    },
+    {
+      "route": "/voice-video-screen-sharing",
+      "theme": "light",
+      "issues": []
+    },
+    {
+      "route": "/es/chat-para-comunidades-gaming",
+      "theme": "light",
+      "issues": []
+    }
+  ]
+}

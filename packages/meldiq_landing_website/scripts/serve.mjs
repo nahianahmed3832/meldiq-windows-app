@@ -12,8 +12,7 @@ import { gzipSync } from "node:zlib";
 const root = path.resolve(process.argv[2] ?? "out");
 const port = Number(process.argv[3] ?? 4190);
 const canonicalPaths = new Set(
-  [...fs.readFileSync(path.join(root, "sitemap.xml"), "utf8").matchAll(/<loc>([^<]+)<\/loc>/g)]
-    .map(([, url]) => new URL(url).pathname),
+  [...fs.readFileSync(path.join(root, "sitemap.xml"), "utf8").matchAll(/<loc>([^<]+)<\/loc>/g)].map(([, url]) => new URL(url).pathname),
 );
 const upstream = new URL(process.env.MELDIQ_API_UPSTREAM ?? "http://127.0.0.1:8080");
 

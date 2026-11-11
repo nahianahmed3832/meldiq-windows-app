@@ -21,8 +21,8 @@ export default function AccountDeletion() {
               </p>
               <ul>
                 <li>
-                  If a subscription on your account still renews, cancel it first from <a href="/account/billing">Billing</a>. Deleting an account
-                  doesn&apos;t stop a payment provider charging it, so the app asks you to cancel before it deletes anything.
+                  If a subscription on your account still renews, cancel it first from <a href="/account/billing">Billing</a>. Deleting an account doesn&apos;t
+                  stop a payment provider charging it, so the app asks you to cancel before it deletes anything.
                 </li>
                 <li>If you&apos;re the only owner of a community, make someone else an owner or delete the community first.</li>
               </ul>

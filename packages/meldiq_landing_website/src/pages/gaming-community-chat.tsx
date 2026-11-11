@@ -34,7 +34,11 @@ export default function GamingCommunityChat() {
         },
       ]}
     >
-      <p className="wrap"><a className="inline-link" href="/es/chat-para-comunidades-gaming" hrefLang="es" lang="es">Leer en español</a></p>
+      <p className="wrap">
+        <a className="inline-link" href="/es/chat-para-comunidades-gaming" hrefLang="es" lang="es">
+          Leer en español
+        </a>
+      </p>
     </GuidePage>
   );
 }

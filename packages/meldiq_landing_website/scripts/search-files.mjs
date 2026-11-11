@@ -12,7 +12,11 @@ for (const file of readdirSync(out, { recursive: true, withFileTypes: true })) {
   const page = readFileSync(fullPath, "utf8");
   if (/<meta name="robots" content="[^"]*\bnoindex\b/.test(page)) continue;
 
-  const path = "/" + relative(out, fullPath).replace(/\.html$/, "").replace(/^index$/, "");
+  const path =
+    "/" +
+    relative(out, fullPath)
+      .replace(/\.html$/, "")
+      .replace(/^index$/, "");
   const expected = new URL(path, origin).href;
   if (canonical(page) !== expected) {
     throw new Error(`Expected canonical ${expected} in ${path}`);
@@ -20,9 +24,18 @@ for (const file of readdirSync(out, { recursive: true, withFileTypes: true })) {
   urls.push(expected);
 }
 
-const xmlEscape = (value) => value.replace(/[&<>"']/g, (character) => ({
-  "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&apos;",
-})[character]);
+const xmlEscape = (value) =>
+  value.replace(
+    /[&<>"']/g,
+    (character) =>
+      ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&apos;",
+      })[character],
+  );
 const sitemap = [
   '<?xml version="1.0" encoding="UTF-8"?>',
   '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',

@@ -1,0 +1,514 @@
+[
+  {
+    "route": "/developers",
+    "width": 320,
+    "theme": "dark",
+    "errors": [],
+    "overflow": false,
+    "elements": [
+      {
+        "tag": "CODE",
+        "class": "",
+        "right": 372.765625
+      }
+    ]
+  },
+  {
+    "route": "/download",
+    "width": 320,
+    "theme": "dark",
+    "errors": [],
+    "overflow": false,
+    "elements": []
+  },
+  {
+    "route": "/features",
+    "width": 320,
+    "theme": "dark",
+    "errors": [],
+    "overflow": false,
+    "elements": []
+  },
+  {
+    "route": "/pricing",
+    "width": 320,
+    "theme": "dark",
+    "errors": [],
+    "overflow": false,
+    "elements": [
+      {
+        "tag": "TABLE",
+        "class": "compare",
+        "right": 641
+      },
+      {
+        "tag": "CAPTION",
+        "class": "",
+        "right": 641
+      },
+      {
+        "tag": "THEAD",
+        "class": "",
+        "right": 641
+      },
+      {
+        "tag": "TR",
+        "class": "",
+        "right": 641
+      },
+      {
+        "tag": "TH",
+        "class": "",
+        "right": 433.328125
+      },
+      {
+        "tag": "TH",
+        "class": "",
+        "right": 641
+      },
+      {
+        "tag": "TBODY",
+        "class": "",
+        "right": 641
+      },
+      {
+        "tag": "TR",
+        "class": "",
+        "right": 641
+      },
+      {
+        "tag": "TD",
+        "class": "",
+        "right": 433.328125
+      },
+      {
+        "tag": "TD",
+        "class": "",
+        "right": 641
+      },
+      {
+        "tag": "TR",
+        "class": "",
+        "right": 641
+      },
+      {
+        "tag": "TD",
+        "class": "",
+        "right": 433.328125
+      }
+    ]
+  },
+  {
+    "route": "/developers",
+    "width": 320,
+    "theme": "light",
+    "errors": [],
+    "overflow": false,
+    "elements": [
+      {
+        "tag": "CODE",
+        "class": "",
+        "right": 372.765625
+      }
+    ]
+  },
+  {
+    "route": "/download",
+    "width": 320,
+    "theme": "light",
+    "errors": [],
+    "overflow": false,
+    "elements": []
+  },
+  {
+    "route": "/features",
+    "width": 320,
+    "theme": "light",
+    "errors": [],
+    "overflow": false,
+    "elements": []
+  },
+  {
+    "route": "/pricing",
+    "width": 320,
+    "theme": "light",
+    "errors": [],
+    "overflow": false,
+    "elements": [
+      {
+        "tag": "TABLE",
+        "class": "compare",
+        "right": 641
+      },
+      {
+        "tag": "CAPTION",
+        "class": "",
+        "right": 641
+      },
+      {
+        "tag": "THEAD",
+        "class": "",
+        "right": 641
+      },
+      {
+        "tag": "TR",
+        "class": "",
+        "right": 641
+      },
+      {
+        "tag": "TH",
+        "class": "",
+        "right": 433.328125
+      },
+      {
+        "tag": "TH",
+        "class": "",
+        "right": 641
+      },
+      {
+        "tag": "TBODY",
+        "class": "",
+        "right": 641
+      },
+      {
+        "tag": "TR",
+        "class": "",
+        "right": 641
+      },
+      {
+        "tag": "TD",
+        "class": "",
+        "right": 433.328125
+      },
+      {
+        "tag": "TD",
+        "class": "",
+        "right": 641
+      },
+      {
+        "tag": "TR",
+        "class": "",
+        "right": 641
+      },
+      {
+        "tag": "TD",
+        "class": "",
+        "right": 433.328125
+      }
+    ]
+  },
+  {
+    "route": "/developers",
+    "width": 375,
+    "theme": "dark",
+    "errors": [],
+    "overflow": false,
+    "elements": []
+  },
+  {
+    "route": "/download",
+    "width": 375,
+    "theme": "dark",
+    "errors": [],
+    "overflow": false,
+    "elements": []
+  },
+  {
+    "route": "/features",
+    "width": 375,
+    "theme": "dark",
+    "errors": [],
+    "overflow": false,
+    "elements": []
+  },
+  {
+    "route": "/pricing",
+    "width": 375,
+    "theme": "dark",
+    "errors": [],
+    "overflow": false,
+    "elements": [
+      {
+        "tag": "TABLE",
+        "class": "compare",
+        "right": 641
+      },
+      {
+        "tag": "CAPTION",
+        "class": "",
+        "right": 641
+      },
+      {
+        "tag": "THEAD",
+        "class": "",
+        "right": 641
+      },
+      {
+        "tag": "TR",
+        "class": "",
+        "right": 641
+      },
+      {
+        "tag": "TH",
+        "class": "",
+        "right": 433.328125
+      },
+      {
+        "tag": "TH",
+        "class": "",
+        "right": 641
+      },
+      {
+        "tag": "TBODY",
+        "class": "",
+        "right": 641
+      },
+      {
+        "tag": "TR",
+        "class": "",
+        "right": 641
+      },
+      {
+        "tag": "TD",
+        "class": "",
+        "right": 433.328125
+      },
+      {
+        "tag": "TD",
+        "class": "",
+        "right": 641
+      },
+      {
+        "tag": "TR",
+        "class": "",
+        "right": 641
+      },
+      {
+        "tag": "TD",
+        "class": "",
+        "right": 433.328125
+      }
+    ]
+  },
+  {
+    "route": "/developers",
+    "width": 375,
+    "theme": "light",
+    "errors": [],
+    "overflow": false,
+    "elements": []
+  },
+  {
+    "route": "/download",
+    "width": 375,
+    "theme": "light",
+    "errors": [],
+    "overflow": false,
+    "elements": []
+  },
+  {
+    "route": "/features",
+    "width": 375,
+    "theme": "light",
+    "errors": [],
+    "overflow": false,
+    "elements": []
+  },
+  {
+    "route": "/pricing",
+    "width": 375,
+    "theme": "light",
+    "errors": [],
+    "overflow": false,
+    "elements": [
+      {
+        "tag": "TABLE",
+        "class": "compare",
+        "right": 641
+      },
+      {
+        "tag": "CAPTION",
+        "class": "",
+        "right": 641
+      },
+      {
+        "tag": "THEAD",
+        "class": "",
+        "right": 641
+      },
+      {
+        "tag": "TR",
+        "class": "",
+        "right": 641
+      },
+      {
+        "tag": "TH",
+        "class": "",
+        "right": 433.328125
+      },
+      {
+        "tag": "TH",
+        "class": "",
+        "right": 641
+      },
+      {
+        "tag": "TBODY",
+        "class": "",
+        "right": 641
+      },
+      {
+        "tag": "TR",
+        "class": "",
+        "right": 641
+      },
+      {
+        "tag": "TD",
+        "class": "",
+        "right": 433.328125
+      },
+      {
+        "tag": "TD",
+        "class": "",
+        "right": 641
+      },
+      {
+        "tag": "TR",
+        "class": "",
+        "right": 641
+      },
+      {
+        "tag": "TD",
+        "class": "",
+        "right": 433.328125
+      }
+    ]
+  },
+  {
+    "route": "/developers",
+    "width": 768,
+    "theme": "dark",
+    "errors": [],
+    "overflow": false,
+    "elements": []
+  },
+  {
+    "route": "/download",
+    "width": 768,
+    "theme": "dark",
+    "errors": [],
+    "overflow": false,
+    "elements": []
+  },
+  {
+    "route": "/features",
+    "width": 768,
+    "theme": "dark",
+    "errors": [],
+    "overflow": false,
+    "elements": []
+  },
+  {
+    "route": "/pricing",
+    "width": 768,
+    "theme": "dark",
+    "errors": [],
+    "overflow": false,
+    "elements": []
+  },
+  {
+    "route": "/developers",
+    "width": 768,
+    "theme": "light",
+    "errors": [],
+    "overflow": false,
+    "elements": []
+  },
+  {
+    "route": "/download",
+    "width": 768,
+    "theme": "light",
+    "errors": [],
+    "overflow": false,
+    "elements": []
+  },
+  {
+    "route": "/features",
+    "width": 768,
+    "theme": "light",
+    "errors": [],
+    "overflow": false,
+    "elements": []
+  },
+  {
+    "route": "/pricing",
+    "width": 768,
+    "theme": "light",
+    "errors": [],
+    "overflow": false,
+    "elements": []
+  },
+  {
+    "route": "/developers",
+    "width": 1440,
+    "theme": "dark",
+    "errors": [],
+    "overflow": false,
+    "elements": []
+  },
+  {
+    "route": "/download",
+    "width": 1440,
+    "theme": "dark",
+    "errors": [],
+    "overflow": false,
+    "elements": []
+  },
+  {
+    "route": "/features",
+    "width": 1440,
+    "theme": "dark",
+    "errors": [],
+    "overflow": false,
+    "elements": []
+  },
+  {
+    "route": "/pricing",
+    "width": 1440,
+    "theme": "dark",
+    "errors": [],
+    "overflow": false,
+    "elements": []
+  },
+  {
+    "route": "/developers",
+    "width": 1440,
+    "theme": "light",
+    "errors": [],
+    "overflow": false,
+    "elements": []
+  },
+  {
+    "route": "/download",
+    "width": 1440,
+    "theme": "light",
+    "errors": [],
+    "overflow": false,
+    "elements": []
+  },
+  {
+    "route": "/features",
+    "width": 1440,
+    "theme": "light",
+    "errors": [],
+    "overflow": false,
+    "elements": []
+  },
+  {
+    "route": "/pricing",
+    "width": 1440,
+    "theme": "light",
+    "errors": [],
+    "overflow": false,
+    "elements": []
+  }
+]

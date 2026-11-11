@@ -37,7 +37,8 @@ export default function Terms() {
           title: "Your content",
           body: (
             <p>
-              What you send stays yours. You give Meldiq only the permission it needs to store, relay and deliver it to the people you send it to. You&apos;re responsible for what you share and must have the right to share it.
+              What you send stays yours. You give Meldiq only the permission it needs to store, relay and deliver it to the people you send it to. You&apos;re
+              responsible for what you share and must have the right to share it.
             </p>
           ),
         },

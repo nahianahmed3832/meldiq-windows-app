@@ -173,7 +173,10 @@ export function Layout({ title, description, children, noindex, landing = false 
     }
   };
   return (
-    <div className={`marketing-site reference-home meldiq-refresh${landing ? " minimal-landing" : ""}${light ? " is-light" : ""}`} id="top">
+    <div
+      className={`marketing-site reference-home meldiq-refresh${landing ? " minimal-landing" : ""}${pathname !== "/" ? " interior-site" : ""}${light ? " is-light" : ""}`}
+      id="top"
+    >
       <Seo title={title} description={description} noindex={noindex} />
       <a className="skip-link" href="#main">
         {spanish ? "Saltar al contenido" : "Skip to content"}

@@ -1,0 +1,165 @@
+{
+  "legal": [
+    {
+      "route": "/legal/terms",
+      "identical": true,
+      "characters": 2935
+    },
+    {
+      "route": "/legal/privacy",
+      "identical": true,
+      "characters": 5067
+    },
+    {
+      "route": "/legal/billing",
+      "identical": true,
+      "characters": 4117
+    },
+    {
+      "route": "/legal/acceptable-use",
+      "identical": true,
+      "characters": 1798
+    },
+    {
+      "route": "/legal/account-deletion",
+      "identical": true,
+      "characters": 2132
+    }
+  ],
+  "keyboard": [
+    {
+      "route": "/developers",
+      "theme": "dark",
+      "firstFocus": "Skip to content",
+      "focusOutline": "solid"
+    },
+    {
+      "route": "/download",
+      "theme": "dark",
+      "firstFocus": "Skip to content",
+      "focusOutline": "solid"
+    },
+    {
+      "route": "/features",
+      "theme": "dark",
+      "firstFocus": "Skip to content",
+      "focusOutline": "solid"
+    },
+    {
+      "route": "/pricing",
+      "theme": "dark",
+      "firstFocus": "Skip to content",
+      "focusOutline": "solid"
+    },
+    {
+      "route": "/signup",
+      "theme": "dark",
+      "firstFocus": "Skip to content",
+      "focusOutline": "solid"
+    },
+    {
+      "route": "/support",
+      "theme": "dark",
+      "firstFocus": "Skip to content",
+      "focusOutline": "solid"
+    },
+    {
+      "route": "/developers",
+      "theme": "light",
+      "firstFocus": "Skip to content",
+      "focusOutline": "solid"
+    },
+    {
+      "route": "/download",
+      "theme": "light",
+      "firstFocus": "Skip to content",
+      "focusOutline": "solid"
+    },
+    {
+      "route": "/features",
+      "theme": "light",
+      "firstFocus": "Skip to content",
+      "focusOutline": "solid"
+    },
+    {
+      "route": "/pricing",
+      "theme": "light",
+      "firstFocus": "Skip to content",
+      "focusOutline": "solid"
+    },
+    {
+      "route": "/signup",
+      "theme": "light",
+      "firstFocus": "Skip to content",
+      "focusOutline": "solid"
+    },
+    {
+      "route": "/support",
+      "theme": "light",
+      "firstFocus": "Skip to content",
+      "focusOutline": "solid"
+    }
+  ],
+  "contrast": [
+    {
+      "route": "/developers",
+      "theme": "dark",
+      "issues": []
+    },
+    {
+      "route": "/download",
+      "theme": "dark",
+      "issues": []
+    },
+    {
+      "route": "/features",
+      "theme": "dark",
+      "issues": []
+    },
+    {
+      "route": "/pricing",
+      "theme": "dark",
+      "issues": []
+    },
+    {
+      "route": "/signup",
+      "theme": "dark",
+      "issues": []
+    },
+    {
+      "route": "/support",
+      "theme": "dark",
+      "issues": []
+    },
+    {
+      "route": "/developers",
+      "theme": "light",
+      "issues": []
+    },
+    {
+      "route": "/download",
+      "theme": "light",
+      "issues": []
+    },
+    {
+      "route": "/features",
+      "theme": "light",
+      "issues": []
+    },
+    {
+      "route": "/pricing",
+      "theme": "light",
+      "issues": []
+    },
+    {
+      "route": "/signup",
+      "theme": "light",
+      "issues": []
+    },
+    {
+      "route": "/support",
+      "theme": "light",
+      "issues": []
+    }
+  ]
+}

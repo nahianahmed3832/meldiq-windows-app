@@ -5,6 +5,7 @@ test.use({ javaScriptEnabled: false });
 const origin = "https://meldiq.app";
 
 test("every sitemap page is rendered, linked, and self-canonical", async ({ page, request }) => {
+  test.setTimeout(90_000); // This test visits every public route; per-page tests retain their normal timeout.
   const sitemap = await request.get("/sitemap.xml");
   expect(sitemap.ok()).toBeTruthy();
   expect(sitemap.headers()["content-type"]).toContain("xml");
@@ -35,10 +36,17 @@ test("every sitemap page is rendered, linked, and self-canonical", async ({ page
 test("language alternates, robots, structured data and redirects work without JavaScript", async ({ page, request }) => {
   const en = "/gaming-community-chat";
   const es = "/es/chat-para-comunidades-gaming";
-  for (const [path, lang] of [[en, "en"], [es, "es"]] as const) {
+  for (const [path, lang] of [
+    [en, "en"],
+    [es, "es"],
+  ] as const) {
     await page.goto(path);
     await expect(page.locator("html")).toHaveAttribute("lang", lang);
-    for (const [language, alternate] of [["en", en], ["es", es], ["x-default", en]]) {
+    for (const [language, alternate] of [
+      ["en", en],
+      ["es", es],
+      ["x-default", en],
+    ]) {
       await expect(page.locator(`link[rel=alternate][hreflang=${language}]`)).toHaveAttribute("href", origin + alternate);
     }
   }

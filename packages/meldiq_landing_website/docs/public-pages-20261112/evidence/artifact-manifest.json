@@ -1,0 +1,596 @@
+{
+  "preparedAt": "2026-11-11T18:13:38.771751+00:00",
+  "releaseId": "site-20261112-public-pages-6a4cbee84f",
+  "nextBuildId": "TwM8anwvzj4naoXPoslGh",
+  "contentManifestSha256": "6a4cbee84f80b23af40553baf53ddf3a03f62b627df71c9b089750b7a57b8521",
+  "archive": "site-20261112-public-pages-6a4cbee84f.tgz",
+  "archiveSha256": "14ba6f55c54a787e95f0de99cf573322eb2d3a469019068e61bd5b874b585f5c",
+  "archiveBytes": 1994671,
+  "files": [
+    {
+      "path": "0e6028dfb3a18a5c4e73cc2fd70396a3.txt",
+      "bytes": 33,
+      "sha256": "e764957962019d1020e92bacb491e1192388f1b3b182c83ba7cc66057509d60a"
+    },
+    {
+      "path": "404.html",
+      "bytes": 6496,
+      "sha256": "f701722801811a73f73fa981d0c1d0b058a7b9f437ca30da39920ad1f68ea9d8"
+    },
+    {
+      "path": "_next/static/TwM8anwvzj4naoXPoslGh/_buildManifest.js",
+      "bytes": 3422,
+      "sha256": "43bee1bdd2b077a362c2e3eac54c8e55cf07cc249e403ec455e29c798d2dd79e"
+    },
+    {
+      "path": "_next/static/TwM8anwvzj4naoXPoslGh/_ssgManifest.js",
+      "bytes": 77,
+      "sha256": "6f5b4aa00d2f8d6aed9935b471806bf7acef464d0c1d390260e5fe27f800c67e"
+    },
+    {
+      "path": "_next/static/chunks/156-67cec9add0d28468.js",
+      "bytes": 9379,
+      "sha256": "a4572355327edc58f6ebffc0c5fff5314b8a0bca13e65fc56a6f6e939b61be87"
+    },
+    {
+      "path": "_next/static/chunks/249-f059c21f34a9cf54.js",
+      "bytes": 21990,
+      "sha256": "9e55e7cce6a9d32251dd23d1c7f93488e79b0beca183aa2cf8262737550e4205"
+    },
+    {
+      "path": "_next/static/chunks/396-1571b41d864f151b.js",
+      "bytes": 62625,
+      "sha256": "3d67b93e285b36e9dda44e12757220b38a4cfa2c2ba803a7cb347c968c1a945a"
+    },
+    {
+      "path": "_next/static/chunks/849-cb83f2849c1cc01a.js",
+      "bytes": 5143,
+      "sha256": "41e80ede62ff41f9022aa81f571359ae10043b3c02ddefd605a92c9b419cdcb1"
+    },
+    {
+      "path": "_next/static/chunks/95-a30fb712e4218a3e.js",
+      "bytes": 13278,
+      "sha256": "2b32b763f23d7b34e1c54e0d15a374c3ee89b4dae00109835d26b3b570734e19"
+    },
+    {
+      "path": "_next/static/chunks/framework-4e9a80b12bc21554.js",
+      "bytes": 218908,
+      "sha256": "f1c4e908c72d43235ca19f16d1e9a4cca642b4d1ef959f10034e743f28e1edf3"
+    },
+    {
+      "path": "_next/static/chunks/main-783c6edefce454a1.js",
+      "bytes": 139267,
+      "sha256": "cfe8292b1e57b5bbff2110552acac15a0afba9be20808f21f4ca228a32d88be2"
+    },
+    {
+      "path": "_next/static/chunks/pages/404-7f90bb11dd8674e2.js",
+      "bytes": 1111,
+      "sha256": "671fe431af36f3cf12a145075b2173ad01822cb4ab55a0f26d7413d4c37abffc"
+    },
+    {
+      "path": "_next/static/chunks/pages/_app-64880473b8ef6a58.js",
+      "bytes": 1077,
+      "sha256": "a0972af5804542588c632aab75317e7ef759f1a3d9999d6340f19c4cd846ff31"
+    },
+    {
+      "path": "_next/static/chunks/pages/_error-2a967499d80cc2f9.js",
+      "bytes": 218,
+      "sha256": "023d60e189f203011e7af7e8069132709df3660cf41ebd12e7852b69bb5addfd"
+    },
+    {
+      "path": "_next/static/chunks/pages/account/billing-a0a6f20093aadca0.js",
+      "bytes": 15084,
+      "sha256": "84b4433e1d56a941a6685d19bb77ec5e14cfa0f1c87e874f9b881d1a10709dfa"
+    },
+    {
+      "path": "_next/static/chunks/pages/account-b3efa15fcf1ee495.js",
+      "bytes": 10478,
+      "sha256": "992ed7f041db8b0ac19c7b917663b57f684d463dc70e3c3da4e199be881321b6"
+    },
+    {
+      "path": "_next/static/chunks/pages/bots-4814bc75b5052116.js",
+      "bytes": 8511,
+      "sha256": "42e9128f1128a12968d5198044e625cccc71be1639bd65ebc3970935ee378799"
+    },
+    {
+      "path": "_next/static/chunks/pages/brand-095e227ec7b9b4aa.js",
+      "bytes": 5411,
+      "sha256": "9ff9c2a07cc5db5d7d62d63835070d590799b337cc2cb038968a0726f0677565"
+    },
+    {
+      "path": "_next/static/chunks/pages/community-d40d710967a0b0b2.js",
+      "bytes": 5111,
+      "sha256": "4cc18906c17932a28d11a9c6576dc5a450a3f2ce0ddf271323f70b195b953f3c"
+    },
+    {
+      "path": "_next/static/chunks/pages/compare/discord-e5ccc1eccaac8752.js",
+      "bytes": 5563,
+      "sha256": "e4b8a6d343e77c468804f63e43664b8d4ffd5d0d43bac69fa0760a39667439c4"
+    },
+    {
+      "path": "_next/static/chunks/pages/creators-cc7d0ac82834c123.js",
+      "bytes": 3447,
+      "sha256": "bbc1ea82c4beebf4f39834bb4d8ea89e25f4c630ba2e189fc70463751a1861b3"
+    },
+    {
+      "path": "_next/static/chunks/pages/developers-8ddc3c6895196f59.js",
+      "bytes": 8964,
+      "sha256": "70453fb631799b5145d616fb3ff996f65baecc64ee4607be7761bf52bda5b257"
+    },
+    {
+      "path": "_next/static/chunks/pages/download-7c125c0c028f565d.js",
+      "bytes": 10058,
+      "sha256": "0500c3f087d58dcec83ffb211614a0690334932fd40f8f9e339a82deb349b607"
+    },
+    {
+      "path": "_next/static/chunks/pages/es/chat-para-comunidades-gaming-c00b5f23b5f5ce07.js",
+      "bytes": 5632,
+      "sha256": "b659e4370d67f20e1aac8ad54bbbd160e8b3b77e3a9bf314a580303181f1ad40"
+    },
+    {
+      "path": "_next/static/chunks/pages/faq-62f06b3d65da4607.js",
+      "bytes": 22251,
+      "sha256": "e070c95294de986f55e7d3e648088fb6772217ecc3fc87ebf82796503a8a7854"
+    },
+    {
+      "path": "_next/static/chunks/pages/features-3eabc6c3651b7d60.js",
+      "bytes": 7178,
+      "sha256": "c10495df8cc6296d66f83aa98140098c48af5e98fc50fcaadcccefe45bd4b9e8"
+    },
+    {
+      "path": "_next/static/chunks/pages/forgot-password-9fe2d3029dff82c2.js",
+      "bytes": 4653,
+      "sha256": "7721da362f3ad3cf624ea8928173a0fa3b7248ef22ab09d1925cf44f47a4b375"
+    },
+    {
+      "path": "_next/static/chunks/pages/gaming-community-chat-2ad881f7f12bc43d.js",
+      "bytes": 5540,
+      "sha256": "24d72e720fda31d50bea8bfe1d7d61ce5a82805911a8772be9db71465cb5278a"
+    },
+    {
+      "path": "_next/static/chunks/pages/index-799829b2abf0c572.js",
+      "bytes": 9073,
+      "sha256": "eb8ab7d5013adbc51ecc4fa53b283e482685214cd44d8c3efecbc10610eaaa7f"
+    },
+    {
+      "path": "_next/static/chunks/pages/legal/acceptable-use-ddfd157c23f46595.js",
+      "bytes": 6495,
+      "sha256": "a4a80f29369c3f1aa4e5dd06d157b49b62c0884bd9cdc7d4f9d1ee68dcae69bc"
+    },
+    {
+      "path": "_next/static/chunks/pages/legal/account-deletion-744a7f5fab6651c2.js",
+      "bytes": 7044,
+      "sha256": "4c7504368462c7ec236b1c56dedf091207d70bf1ab1daf27e8afcba5043aefb3"
+    },
+    {
+      "path": "_next/static/chunks/pages/legal/billing-5195c3f34daf0a60.js",
+      "bytes": 9200,
+      "sha256": "7be436257bf37785229997fe5f1c1b01e07f3bbd92bb1dfe39af86753bf7a806"
+    },
+    {
+      "path": "_next/static/chunks/pages/legal/privacy-a18af039bb4be35d.js",
+      "bytes": 10415,
+      "sha256": "a09d83aee13fe2b8ddf5ace1add743a08ec01f075499d6a1195194566ec91cfa"
+    },
+    {
+      "path": "_next/static/chunks/pages/legal/terms-234f799e50d72dc0.js",
+      "bytes": 7844,
+      "sha256": "56ff92986e17c64ba6336f006bf5e33daea67be4c40d29343b44706a43a46849"
+    },
+    {
+      "path": "_next/static/chunks/pages/login-eb150f0d4b9e1def.js",
+      "bytes": 1223,
+      "sha256": "223edbd64cc62218ca57f0172c3bd12b807b4cc23e262b9f09a61d7b4fbddbfc"
+    },
+    {
+      "path": "_next/static/chunks/pages/partners-1de4197f728d1833.js",
+      "bytes": 2895,
+      "sha256": "1cb5ac57c86d42bfa27787a935c7d3d23342b91c9a1800421fda19929ef2a07f"
+    },
+    {
+      "path": "_next/static/chunks/pages/pricing-8a6b41c17526e121.js",
+      "bytes": 15679,
+      "sha256": "f26512d23403de9bf2df41803739c9d12d5063b5be8e2ea137d058efc23fff10"
+    },
+    {
+      "path": "_next/static/chunks/pages/roadmap-0ab512f8d9e99eec.js",
+      "bytes": 5047,
+      "sha256": "09884a5557cbfb2b5cef7b12f4a3c6771f30ef2216a51df3b827aff697a7b384"
+    },
+    {
+      "path": "_next/static/chunks/pages/security-e33073c42edf2512.js",
+      "bytes": 5404,
+      "sha256": "d8d775e524112a250efb6361b6cb147464befb37a221b9c3c2df5f02dc6f4bd0"
+    },
+    {
+      "path": "_next/static/chunks/pages/signup-c8c4ab3098b1b61c.js",
+      "bytes": 5809,
+      "sha256": "6fd9136055780811a213b47b8882120051b3127e4ccaecf3e255b70737ae5ea8"
+    },
+    {
+      "path": "_next/static/chunks/pages/support-e7919941e360d143.js",
+      "bytes": 12923,
+      "sha256": "4ff2beee37a1b52ae5038919a6df3202c6ddca7b4a7590a58578a1018f80a97e"
+    },
+    {
+      "path": "_next/static/chunks/pages/tutorials-845097b049a99b14.js",
+      "bytes": 5450,
+      "sha256": "270cb27d5b98e5580023ee0864ab66f9b0e8dd83789fe3f1fe2f74f8fed01c17"
+    },
+    {
+      "path": "_next/static/chunks/pages/verify-email-2b76efc001db98e9.js",
+      "bytes": 5704,
+      "sha256": "797bcee1dd1509767d8062f69271f1d326dbbf027abbe8aba30b79b93545215b"
+    },
+    {
+      "path": "_next/static/chunks/pages/voice-video-screen-sharing-8bd2c00557e1e5a0.js",
+      "bytes": 5321,
+      "sha256": "aac6d61eb9223cf7f6001fd67f0e5588f182ed668cedffe5333b2e7dfca02ae6"
+    },
+    {
+      "path": "_next/static/chunks/polyfills-42372ed130431b0a.js",
+      "bytes": 112594,
+      "sha256": "0973c1d64c88adc8e3c950410cb58b288f72118d5965b78049438deb8f2f9683"
+    },
+    {
+      "path": "_next/static/chunks/webpack-8497fbbedd21184c.js",
+      "bytes": 1425,
+      "sha256": "cc36934b59f58e4dd7250af6a10f3b13090d4c337ff493754e74baa59a73ac7e"
+    },
+    {
+      "path": "_next/static/css/c5a91f6b9fadcaa2.css",
+      "bytes": 201732,
+      "sha256": "7a13660e791c7cb850acbacba392bfdf6032380296eadb0af0b12773ee85c61c"
+    },
+    {
+      "path": "account/billing.html",
+      "bytes": 6607,
+      "sha256": "63d052fd2677c8bc5bf6641932bff86fd3ce1bd9b40ada58cfdf093cfcbd4a9a"
+    },
+    {
+      "path": "account.html",
+      "bytes": 7166,
+      "sha256": "51ade98cecb2041cf629f5d7a21c0210b191f3d5818d00847304cd7efd93161d"
+    },
+    {
+      "path": "assets/PlusJakartaSans.ttf",
+      "bytes": 176288,
+      "sha256": "89b3fb38aa0d275d7a731d0d817a4f1622b316b4d7fbdedcf02ee9099ff68bc8"
+    },
+    {
+      "path": "assets/favicon-dark-32.png",
+      "bytes": 847,
+      "sha256": "af90fcef9f4e21c483794d177c390ceeef011202d20c61f01897a69ee1d23f0c"
+    },
+    {
+      "path": "assets/google-play-badge.png",
+      "bytes": 4904,
+      "sha256": "f72611e2df8e88204009fd896d05d5e8e83c77009c63943bbffa169559934849"
+    },
+    {
+      "path": "assets/meldling-128.png",
+      "bytes": 5334,
+      "sha256": "c1b895935d640f5bcfdd4e081f5adbd43555de26441f11c82db6af5e33841d00"
+    },
+    {
+      "path": "assets/meldling-512.png",
+      "bytes": 21709,
+      "sha256": "4192668160e3bf3165e85359c8cc1f04948f92720e8a66ea53168f587965f8da"
+    },
+    {
+      "path": "bots.html",
+      "bytes": 9607,
+      "sha256": "5d5458cc2f3c34af4a26e9e734cb0c24740466c4fa2a0f7efd44bfc501ebf2d2"
+    },
+    {
+      "path": "brand.html",
+      "bytes": 9628,
+      "sha256": "293fcb33278227caed30034ca60947d8186b99225ceb0cd0821989a7bd3d1bda"
+    },
+    {
+      "path": "community.html",
+      "bytes": 11401,
+      "sha256": "4802092a7733d00d60e33b1b9d4408ffeda5388925376a07337b5b5052ac27ed"
+    },
+    {
+      "path": "compare/discord.html",
+      "bytes": 10902,
+      "sha256": "84e3ff4eee7d434a14b8a28cc32f111f722de7aa47a6bb28acfc44a3be0da387"
+    },
+    {
+      "path": "creators.html",
+      "bytes": 9004,
+      "sha256": "148b2e2cc0e17465c40943a89c14a6a4aa50a08402346a4d29b7a05aa7a4ce15"
+    },
+    {
+      "path": "developers.html",
+      "bytes": 13124,
+      "sha256": "5253fd55113e5ebd2fd3cb917f25206fdabcdd92cbc065f0eb5c0194125cb30a"
+    },
+    {
+      "path": "download.html",
+      "bytes": 12427,
+      "sha256": "57a6bf392b8809c95e169b5de68af0136a173eb4f785c5b30f83e63352a4bb7c"
+    },
+    {
+      "path": "es/chat-para-comunidades-gaming.html",
+      "bytes": 10797,
+      "sha256": "0c17b81936c5862113babdec85265a6ba45768039bd21e04bb6ffb2afce7b98a"
+    },
+    {
+      "path": "faq.html",
+      "bytes": 23056,
+      "sha256": "d198c9181b6f5b404bf4d90b520143f62bdd46290dbdde851a1b64f4223bf29b"
+    },
+    {
+      "path": "favicon-dark-16.png",
+      "bytes": 415,
+      "sha256": "902ba273eb3569205a1dfee35de1a51f9a4a7306f772c327a2d61f9abd1231d4"
+    },
+    {
+      "path": "favicon-dark-192.png",
+      "bytes": 5273,
+      "sha256": "850473405296b24ad32ab1651ef7af40bc5cb97e9e6ab8a6e8671265f4965d1d"
+    },
+    {
+      "path": "favicon-dark-32.png",
+      "bytes": 847,
+      "sha256": "af90fcef9f4e21c483794d177c390ceeef011202d20c61f01897a69ee1d23f0c"
+    },
+    {
+      "path": "favicon-light-16.png",
+      "bytes": 609,
+      "sha256": "0bf9f73a747cf8b530287d522438803ed7417f0a6035a6eb850c3d3d024cc245"
+    },
+    {
+      "path": "favicon-light-192.png",
+      "bytes": 7406,
+      "sha256": "e45342e0b06848e2509332fddb25fe8048892b52d78a9e3e737f949af2e04747"
+    },
+    {
+      "path": "favicon-light-32.png",
+      "bytes": 1261,
+      "sha256": "4acb7f43113d820f46e09aebd32822fb92ad2c65d15591e7a965d22fd1157997"
+    },
+    {
+      "path": "features.html",
+      "bytes": 16879,
+      "sha256": "ef326d52716f61da51ca3b334328f533e20abb3f8f815faeccaf936f7dd408e1"
+    },
+    {
+      "path": "fonts/Inter-LICENSE.txt",
+      "bytes": 4380,
+      "sha256": "262481e844521b326f5ecd053e59b98c8b2da78c8ee1bdbb6e8174305e54935a"
+    },
+    {
+      "path": "fonts/InterLatin.woff2",
+      "bytes": 170504,
+      "sha256": "62070c4e29aecba38c3d4029d5652721cfdc7b4abd3679cb053f58e4ac0a1c79"
+    },
+    {
+      "path": "fonts/InterVariable.woff2",
+      "bytes": 352240,
+      "sha256": "693b77d4f32ee9b8bfc995589b5fad5e99adf2832738661f5402f9978429a8e3"
+    },
+    {
+      "path": "fonts/OFL.txt",
+      "bytes": 4402,
+      "sha256": "995c7199cab65954f545996326755daee7b63cc6b42b06c13da1f9502ab08a99"
+    },
+    {
+      "path": "fonts/PlusJakartaSans.ttf",
+      "bytes": 176288,
+      "sha256": "89b3fb38aa0d275d7a731d0d817a4f1622b316b4d7fbdedcf02ee9099ff68bc8"
+    },
+    {
+      "path": "fonts/PlusJakartaSans.woff2",
+      "bytes": 60636,
+      "sha256": "7c59703703f40fb5ff0d634b2a15c9d72dab6377841bd273eb4c8ce9a02f0143"
+    },
+    {
+      "path": "fonts/funnel-display/OFL.txt",
+      "bytes": 4382,
+      "sha256": "a32303f6ea3542927121212a9e4f3fe3548741e6d448d9dc6f29e97cf50102e6"
+    },
+    {
+      "path": "fonts/funnel-display/latin.woff2",
+      "bytes": 17712,
+      "sha256": "96468ae7727580c804f679aa5d29c75389e605fb2e41ae6a067ad86e5e9a86a9"
+    },
+    {
+      "path": "fonts/poppins/OFL.txt",
+      "bytes": 4385,
+      "sha256": "6be04893d770899a015649c7aa3b582f871b272f8747a92b78b17c3e5c8b2573"
+    },
+    {
+      "path": "fonts/poppins/Poppins-Bold-Latin.woff2",
+      "bytes": 10848,
+      "sha256": "563af6791e8190bd3b8c7ca0db5fbf75973e76b60ffa365928575eba4efb3e5e"
+    },
+    {
+      "path": "fonts/poppins/Poppins-Bold.ttf",
+      "bytes": 155996,
+      "sha256": "983676516167748b74de6f4771fb384c664fd913acb8b471122ecacf5da5ea6c"
+    },
+    {
+      "path": "fonts/poppins/Poppins-Bold.woff2",
+      "bytes": 51024,
+      "sha256": "8cb425dd6e6315b7512b680abaaba07bbfcab0e235ae035e9ddde71a656cfb8d"
+    },
+    {
+      "path": "fonts/poppins/Poppins-Medium-Latin.woff2",
+      "bytes": 10764,
+      "sha256": "5009be71c8a1f09c4a3e121b1a75a06f1302e9ecc77e4828bfa7f5fd3462fbb4"
+    },
+    {
+      "path": "fonts/poppins/Poppins-Medium.ttf",
+      "bytes": 158576,
+      "sha256": "90373e7d838d32468438fc3e152dca0bdb12edcab99ea639f158790b1ba1fd05"
+    },
+    {
+      "path": "fonts/poppins/Poppins-Medium.woff2",
+      "bytes": 50792,
+      "sha256": "714086076f14eb0c0f49c5c6cc789e71cf580f38f5db6d6ddb10e389e2964a29"
+    },
+    {
+      "path": "fonts/poppins/Poppins-Regular-Latin.woff2",
+      "bytes": 11052,
+      "sha256": "1158a48e93c5e14de8b21006f14d2bbd14b4132348b083debad80cb4b144a34a"
+    },
+    {
+      "path": "fonts/poppins/Poppins-Regular.ttf",
+      "bytes": 160316,
+      "sha256": "7e65201e9b79159e2300267cc885e16c8dcef2424cdfa09a29bfb0980a94a7ba"
+    },
+    {
+      "path": "fonts/poppins/Poppins-Regular.woff2",
+      "bytes": 51564,
+      "sha256": "4e0089bafe3d8e98638031d515bf6f7782d7429897888d885a6b7a6c24a9f5da"
+    },
+    {
+      "path": "fonts/poppins/Poppins-SemiBold-Latin.woff2",
+      "bytes": 11116,
+      "sha256": "38dcef0162b7967837b8976194d937a74a3a445392b12747b47e7965e6895847"
+    },
+    {
+      "path": "fonts/poppins/Poppins-SemiBold.ttf",
+      "bytes": 157312,
+      "sha256": "d3bf1bdaf0550e83da9ac0b1d1d9fe6db086835a83aa28578e609a394b9a0286"
+    },
+    {
+      "path": "fonts/poppins/Poppins-SemiBold.woff2",
+      "bytes": 51500,
+      "sha256": "9757d1991bdbe8a4fc58ef4e1a6180cb36045e402003a3013024522622a8df2a"
+    },
+    {
+      "path": "forgot-password.html",
+      "bytes": 6480,
+      "sha256": "2c099fe1409dd2fe803d2f4f1d223941f195887d23473bc76a255d134199a417"
+    },
+    {
+      "path": "gaming-community-chat.html",
+      "bytes": 10667,
+      "sha256": "fad16ada94cd67f49f552a7dabbb5d135b97fc9522b0637444a9e7638017aa6f"
+    },
+    {
+      "path": "index.html",
+      "bytes": 16886,
+      "sha256": "8dabd075aa7c41f1bd8f4c6124d494a2fa1ddd9181996df629c755c0dd3a52c0"
+    },
+    {
+      "path": "legal/acceptable-use.html",
+      "bytes": 10045,
+      "sha256": "4c78f7616589c244628dfb4389e61cba268298a1cead2649e2612b77195f03ae"
+    },
+    {
+      "path": "legal/account-deletion.html",
+      "bytes": 10507,
+      "sha256": "74121398f07c0ee765b45b10529aa9055cb9fd50bb3e9e01b66aebc36543cb19"
+    },
+    {
+      "path": "legal/billing.html",
+      "bytes": 13022,
+      "sha256": "a9b03fc35343f282538b02bcc19a2a764850fed727009cb46490a807625b5be3"
+    },
+    {
+      "path": "legal/privacy.html",
+      "bytes": 14193,
+      "sha256": "ac7effe9d7a28bb43ed8f4cb2f0d0a97860d5955ac9cac5b34177afc4a09c146"
+    },
+    {
+      "path": "legal/terms.html",
+      "bytes": 11773,
+      "sha256": "40c099c1db2d7e1a2447cac3f6e146d9a129ef64befd2eaf010c9ba19c030c6e"
+    },
+    {
+      "path": "login.html",
+      "bytes": 6250,
+      "sha256": "a21847d8f31e19b741350be6128dd704451c03e963db09ed753b88b4a1589e25"
+    },
+    {
+      "path": "meldiq-og.png",
+      "bytes": 260669,
+      "sha256": "d8c49b16c3d4d5ecaaa3fa3e181aeeff6856fd6a097627b40aceb0439d98c5b9"
+    },
+    {
+      "path": "meldling-128.png",
+      "bytes": 5334,
+      "sha256": "c1b895935d640f5bcfdd4e081f5adbd43555de26441f11c82db6af5e33841d00"
+    },
+    {
+      "path": "meldling-180.png",
+      "bytes": 7505,
+      "sha256": "154e02eba3c3d319c1f4f8a338fbe79fb3b7cb7c2c136d4ecd7f616387376973"
+    },
+    {
+      "path": "meldling-256.png",
+      "bytes": 10580,
+      "sha256": "ecb2ea0cc72ab1625523436a83fa5ece13f061bdeae1f1889010d503372c1c73"
+    },
+    {
+      "path": "meldling-512.png",
+      "bytes": 21709,
+      "sha256": "4192668160e3bf3165e85359c8cc1f04948f92720e8a66ea53168f587965f8da"
+    },
+    {
+      "path": "partners.html",
+      "bytes": 8579,
+      "sha256": "bcfbf5907c162716aeca3b6b369b01b01492def0bbaa37c13ea54e3e2280c92e"
+    },
+    {
+      "path": "paypal-wordmark.svg",
+      "bytes": 2291,
+      "sha256": "f766ba6d9471acc787c0808b8c30f38494d12b287ccfb2ff610fd617cfa2a432"
+    },
+    {
+      "path": "pricing.html",
+      "bytes": 11426,
+      "sha256": "2fcf919fab2e9df922732272d8cfdffe49b85413c70b25e5f15a46c9bad805a5"
+    },
+    {
+      "path": "roadmap.html",
+      "bytes": 10166,
+      "sha256": "dc7b5bc9df02b509153fd4ca8daa38a1ba7af067ec5a5ce76a01554fd23233a7"
+    },
+    {
+      "path": "robots.txt",
+      "bytes": 69,
+      "sha256": "16694be9a585b8d2483d6beb19c1b61f72c71a4a50916fc9b7b18dc903f5127f"
+    },
+    {
+      "path": "security.html",
+      "bytes": 10755,
+      "sha256": "3908715ac70d78e75061d1211568ed0237c4cb5ffc7805b4aaf3a3de41020066"
+    },
+    {
+      "path": "signup.html",
+      "bytes": 7195,
+      "sha256": "6434d7a6a239e0f511eff23bed6f471e92732b303d585ec141201aaa0a690253"
+    },
+    {
+      "path": "sitemap.xml",
+      "bytes": 1439,
+      "sha256": "f19a3de9ec0afb9aad2ade19cf1c8d93f296a47ea9d784bff5bee3f189eabc8b"
+    },
+    {
+      "path": "support.html",
+      "bytes": 13236,
+      "sha256": "96411083f62b3b2dfbb11b52102309307b8c0cd414abd5c81e9b106b9af75c10"
+    },
+    {
+      "path": "tutorials.html",
+      "bytes": 11115,
+      "sha256": "fc7734d2c97576628f6e969c2c8fedaada88643a6324cd3d6f128a77c5701cb2"
+    },
+    {
+      "path": "verify-email.html",
+      "bytes": 7019,
+      "sha256": "94ecf4b249d93d222ff05f00015d00fb28d4015e47d0fd4500afb3298fc6d1f6"
+    },
+    {
+      "path": "voice-video-screen-sharing.html",
+      "bytes": 10618,
+      "sha256": "4b2ea8f6dfb764f4d94ee6b8e8316bbea7a3b340a81135e8c59a4dedcdeb9a7d"
+    }
+  ]
+}

@@ -17,11 +17,16 @@ test("opt-in sends sanitized public views and explicit download clicks", async (
   await page.getByRole("button", { name: "Allow analytics" }).click();
   await expect.poll(() => loaded.length).toBe(1);
 
-  const commands = () => page.evaluate(() => {
-    return (window.dataLayer ?? []).map((item) => Array.from(item as IArguments));
-  });
+  const commands = () =>
+    page.evaluate(() => {
+      return (window.dataLayer ?? []).map((item) => Array.from(item as IArguments));
+    });
   const entry = await commands();
-  expect(entry).toContainEqual(["config", id, expect.objectContaining({ page_location: "https://meldiq.app/download", page_referrer: "https://www.google.com/" })]);
+  expect(entry).toContainEqual([
+    "config",
+    id,
+    expect.objectContaining({ page_location: "https://meldiq.app/download", page_referrer: "https://www.google.com/" }),
+  ]);
   expect(JSON.stringify(entry)).not.toMatch(/sensitive-fixture|example\.test|email=/);
   await page.getByRole("link", { name: "Get it on Google Play" }).evaluate((link) => link.addEventListener("click", (event) => event.preventDefault()));
   await page.getByRole("link", { name: "Get it on Google Play" }).click();

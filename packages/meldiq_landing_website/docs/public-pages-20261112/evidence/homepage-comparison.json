@@ -1,0 +1,142 @@
+[
+  {
+    "file": "home-1440-dark-faq.png",
+    "width": 1440,
+    "height": 4319,
+    "candidateHeight": 4319,
+    "changedPixels": 0
+  },
+  {
+    "file": "home-1440-dark.png",
+    "width": 1440,
+    "height": 4319,
+    "candidateHeight": 4319,
+    "changedPixels": 0
+  },
+  {
+    "file": "home-1440-light-faq.png",
+    "width": 1440,
+    "height": 4319,
+    "candidateHeight": 4319,
+    "changedPixels": 0
+  },
+  {
+    "file": "home-1440-light.png",
+    "width": 1440,
+    "height": 4319,
+    "candidateHeight": 4319,
+    "changedPixels": 0
+  },
+  {
+    "file": "home-320-dark-faq.png",
+    "width": 320,
+    "height": 4934,
+    "candidateHeight": 4934,
+    "changedPixels": 0
+  },
+  {
+    "file": "home-320-dark-menu.png",
+    "width": 320,
+    "height": 900,
+    "candidateHeight": 900,
+    "changedPixels": 0
+  },
+  {
+    "file": "home-320-dark.png",
+    "width": 320,
+    "height": 4958,
+    "candidateHeight": 4958,
+    "changedPixels": 0
+  },
+  {
+    "file": "home-320-light-faq.png",
+    "width": 320,
+    "height": 4934,
+    "candidateHeight": 4934,
+    "changedPixels": 0
+  },
+  {
+    "file": "home-320-light-menu.png",
+    "width": 320,
+    "height": 900,
+    "candidateHeight": 900,
+    "changedPixels": 0
+  },
+  {
+    "file": "home-320-light.png",
+    "width": 320,
+    "height": 4958,
+    "candidateHeight": 4958,
+    "changedPixels": 0
+  },
+  {
+    "file": "home-375-dark-faq.png",
+    "width": 375,
+    "height": 4651,
+    "candidateHeight": 4651,
+    "changedPixels": 0
+  },
+  {
+    "file": "home-375-dark-menu.png",
+    "width": 375,
+    "height": 900,
+    "candidateHeight": 900,
+    "changedPixels": 0
+  },
+  {
+    "file": "home-375-dark.png",
+    "width": 375,
+    "height": 4676,
+    "candidateHeight": 4676,
+    "changedPixels": 0
+  },
+  {
+    "file": "home-375-light-faq.png",
+    "width": 375,
+    "height": 4651,
+    "candidateHeight": 4651,
+    "changedPixels": 0
+  },
+  {
+    "file": "home-375-light-menu.png",
+    "width": 375,
+    "height": 900,
+    "candidateHeight": 900,
+    "changedPixels": 0
+  },
+  {
+    "file": "home-375-light.png",
+    "width": 375,
+    "height": 4676,
+    "candidateHeight": 4676,
+    "changedPixels": 0
+  },
+  {
+    "file": "home-768-dark-faq.png",
+    "width": 768,
+    "height": 4004,
+    "candidateHeight": 4004,
+    "changedPixels": 0
+  },
+  {
+    "file": "home-768-dark.png",
+    "width": 768,
+    "height": 4004,
+    "candidateHeight": 4004,
+    "changedPixels": 0
+  },
+  {
+    "file": "home-768-light-faq.png",
+    "width": 768,
+    "height": 4004,
+    "candidateHeight": 4004,
+    "changedPixels": 0
+  },
+  {
+    "file": "home-768-light.png",
+    "width": 768,
+    "height": 4004,
+    "candidateHeight": 4004,
+    "changedPixels": 0
+  }
+]

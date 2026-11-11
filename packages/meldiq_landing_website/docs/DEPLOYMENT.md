@@ -1,5 +1,8 @@
 # Deployment
 
+> Current release work: [public-page redesign, 12 November 2026](public-pages-20261112/README.md).
+> The Hostinger/Cloudflare instructions below are historical. Meldiq now uses the existing AWS Frankfurt origin and CloudFront delivery path. Do not run the legacy script with its default host. Verify the current AWS origin, website symlink and rollback target before a release; the redesign report records the exact access and deployment status.
+
 ## Where it runs
 
 | | |
