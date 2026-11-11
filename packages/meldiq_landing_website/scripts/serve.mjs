@@ -7,14 +7,19 @@
 import fs from "node:fs";
 import http from "node:http";
 import path from "node:path";
+import { gzipSync } from "node:zlib";
 
 const root = path.resolve(process.argv[2] ?? "out");
 const port = Number(process.argv[3] ?? 4190);
+const canonicalPaths = new Set(
+  [...fs.readFileSync(path.join(root, "sitemap.xml"), "utf8").matchAll(/<loc>([^<]+)<\/loc>/g)]
+    .map(([, url]) => new URL(url).pathname),
+);
 const upstream = new URL(process.env.MELDIQ_API_UPSTREAM ?? "http://127.0.0.1:8080");
 
 export const SECURITY_HEADERS = {
   "content-security-policy":
-    "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'",
+    "default-src 'self'; script-src 'self' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com; font-src 'self'; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'",
   "x-content-type-options": "nosniff",
   "referrer-policy": "strict-origin-when-cross-origin",
   "cross-origin-opener-policy": "same-origin",
@@ -28,6 +33,7 @@ const TYPES = {
   ".png": "image/png",
   ".json": "application/json",
   ".ttf": "font/ttf",
+  ".woff2": "font/woff2",
   ".txt": "text/plain",
   ".xml": "application/xml",
   ".svg": "image/svg+xml",
@@ -62,12 +68,29 @@ http
       req.pipe(proxied);
       return;
     }
+    const canonical = url.pathname === "/index.html" ? "/" : url.pathname.replace(/(?:\.html|\/)$/, "");
+    if (canonical !== url.pathname && canonicalPaths.has(canonical)) {
+      res.writeHead(308, { location: canonical + url.search });
+      res.end();
+      return;
+    }
     const file = resolveFile(url.pathname);
     const status = file ? 200 : 404;
     const body = fs.readFileSync(file ?? path.join(root, "404.html"));
     const type = file ? (TYPES[path.extname(file)] ?? "application/octet-stream") : TYPES[".html"];
     const cache = url.pathname.startsWith("/_next/static/") ? "public, max-age=31536000, immutable" : "no-cache";
-    res.writeHead(status, { ...SECURITY_HEADERS, "content-type": type, "cache-control": cache });
-    res.end(body);
+    const compressible = /^(text\/|application\/(json|xml))/.test(type);
+    const gzip = compressible && /\bgzip\b/.test(req.headers["accept-encoding"] ?? "");
+    res.writeHead(status, {
+      ...SECURITY_HEADERS,
+      ...(status === 404 || /^\/(?:account|login|signup|verify-email|forgot-password|404)(?:[./]|$)/.test(url.pathname)
+        ? { "content-security-policy": SECURITY_HEADERS["content-security-policy"].replace(/ https:\/\/[^ ;]+/g, "") }
+        : {}),
+      "content-type": type,
+      "cache-control": cache,
+      ...(compressible ? { vary: "Accept-Encoding" } : {}),
+      ...(gzip ? { "content-encoding": "gzip" } : {}),
+    });
+    res.end(gzip ? gzipSync(body) : body);
   })
   .listen(port, "127.0.0.1", () => console.log(`Meldiq site on http://127.0.0.1:${port} (API ${upstream.origin})`));

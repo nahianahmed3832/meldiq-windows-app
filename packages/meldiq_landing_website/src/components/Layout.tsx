@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { type ReactNode, useEffect, useRef, useState } from "react";
 import { SITE } from "../lib/site";
+import { gamingAlternates, isSpanishPage } from "../lib/seo";
 import { useSignedIn } from "./useAccount";
 import { CloseIcon, MenuIcon } from "./Icons";
 import { HEADER_LINKS as NAV } from "../content/navigation";
@@ -16,27 +17,49 @@ interface LayoutProps {
   landing?: boolean;
 }
 function Seo({ title, description, noindex }: Omit<LayoutProps, "children">) {
-  const { asPath } = useRouter();
-  const path = asPath.split(/[?#]/)[0] ?? "/";
-  const full = title === SITE.name ? "Meldiq — Your people, your channels, one place to talk." : `${title} · ${SITE.name}`;
+  const { pathname } = useRouter();
+  const canonical = new URL(pathname, SITE.url).href;
+  const spanish = isSpanishPage(pathname);
+  const full = pathname === "/" ? title : `${title} | Meldiq`;
+  const image = new URL("/meldiq-og.png", SITE.url).href;
+  const alternates = gamingAlternates(pathname);
+  const website = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: SITE.name,
+    url: new URL("/", SITE.url).href,
+    description,
+  };
   return (
     <Head>
       <title>{full}</title>
       <meta name="description" content={description} />
-      <link rel="canonical" href={`${SITE.url}${path === "/" ? "" : path}`} />
-      <meta property="og:title" content={full} />
-      <meta property="og:description" content={description} />
-      <meta property="og:url" content={`${SITE.url}${path}`} />
-      <meta property="og:image" content={`${SITE.url}/meldiq-og.png`} key="og:image" />
-      <meta property="og:image:alt" content="Meldiq. Your people, your channels, one place to talk." />
-      <meta name="twitter:title" content={full} />
-      <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content={`${SITE.url}/meldiq-og.png`} />
-      {noindex ? <meta name="robots" content="noindex" /> : null}
+      {noindex ? (
+        <meta name="robots" content="noindex, nofollow" />
+      ) : (
+        <>
+          <link rel="canonical" href={canonical} />
+          <meta property="og:type" content="website" />
+          <meta property="og:site_name" content={SITE.name} />
+          <meta property="og:locale" content={spanish ? "es_ES" : "en_US"} />
+          <meta property="og:title" content={full} />
+          <meta property="og:description" content={description} />
+          <meta property="og:url" content={canonical} />
+          <meta property="og:image" content={image} />
+          <meta property="og:image:width" content="1200" />
+          <meta property="og:image:height" content="630" />
+          <meta property="og:image:alt" content="Meldiq" />
+          <meta name="twitter:card" content="summary_large_image" />
+        </>
+      )}
+      {alternates.map(([language, path]) => (
+        <link key={language} rel="alternate" hrefLang={language} href={new URL(path, SITE.url).href} />
+      ))}
+      {pathname === "/" ? <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(website).replace(/</g, "\\u003c") }} /> : null}
     </Head>
   );
 }
-function Header({ light, toggleTheme }: { light: boolean; toggleTheme?: () => void }) {
+function Header({ light, toggleTheme }: { light: boolean; toggleTheme: () => void }) {
   const { pathname } = useRouter();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -69,7 +92,7 @@ function Header({ light, toggleTheme }: { light: boolean; toggleTheme?: () => vo
     };
   }, [open]);
   return (
-    <header className={`site-header${scrolled ? " scrolled" : ""}`}>
+    <header lang="en" className={`site-header${scrolled ? " scrolled" : ""}`}>
       <div className="wrap header-inner">
         <Link href="/" className="brand" aria-label="Meldiq home">
           <img src="/meldling-128.png" alt="" width={34} height={34} />
@@ -77,6 +100,18 @@ function Header({ light, toggleTheme }: { light: boolean; toggleTheme?: () => vo
             meldiq<span className="brand-dot">.</span>
           </span>
         </Link>
+        <button type="button" className="theme-switch" onClick={toggleTheme} aria-label={light ? "Switch to dark mode" : "Switch to light mode"}>
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+            {light ? (
+              <path d="M20 15.5A8 8 0 0 1 8.5 4 8 8 0 1 0 20 15.5Z" />
+            ) : (
+              <>
+                <circle cx="12" cy="12" r="4" />
+                <path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5" />
+              </>
+            )}
+          </svg>
+        </button>
         <button
           ref={button}
           className="menu-button"
@@ -93,7 +128,7 @@ function Header({ light, toggleTheme }: { light: boolean; toggleTheme?: () => vo
         </button>
         <nav ref={nav} id="navigation" className={open ? "is-open" : ""} aria-label="Main navigation">
           <div className="nav-links">
-            {["/download", "/features", "/developers", "/pricing"]
+            {["/download", "/developers", "/pricing"]
               .map((href) => NAV.find((n) => n.href === href)!)
               .map((n) => (
                 <Link key={n.href} href={n.href} aria-current={pathname === n.href ? "page" : undefined}>
@@ -102,27 +137,13 @@ function Header({ light, toggleTheme }: { light: boolean; toggleTheme?: () => vo
               ))}
           </div>
           <div className="nav-actions">
-            {toggleTheme ? (
-              <button type="button" className="theme-switch" onClick={toggleTheme} aria-label={light ? "Switch to dark mode" : "Switch to light mode"}>
-                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
-                  {light ? (
-                    <path d="M20 15.5A8 8 0 0 1 8.5 4 8 8 0 1 0 20 15.5Z" />
-                  ) : (
-                    <>
-                      <circle cx="12" cy="12" r="4" />
-                      <path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5" />
-                    </>
-                  )}
-                </svg>
-              </button>
-            ) : null}
             {signedIn ? (
-              <Link className="sign-in" href="/account">
+              <a className="sign-in" href="/account">
                 Account
-              </Link>
+              </a>
             ) : (
               <a className="sign-in" href={SITE.webAppUrl}>
-                Sign in
+                {pathname === "/" ? "Log in" : "Open Meldiq"}
               </a>
             )}
           </div>
@@ -132,6 +153,8 @@ function Header({ light, toggleTheme }: { light: boolean; toggleTheme?: () => vo
   );
 }
 export function Layout({ title, description, children, noindex, landing = false }: LayoutProps) {
+  const { pathname } = useRouter();
+  const spanish = isSpanishPage(pathname);
   const [light, setLight] = useState(false);
   useEffect(() => {
     try {
@@ -150,24 +173,16 @@ export function Layout({ title, description, children, noindex, landing = false 
     }
   };
   return (
-    <div
-      className={`marketing-site reference-home meldiq-refresh${landing ? " minimal-landing" : ""}${light ? " is-light" : ""}`}
-      id="top"
-      itemScope
-      itemType="https://schema.org/WebSite"
-    >
-      <meta itemProp="name" content="Meldiq" />
-      <meta itemProp="url" content={SITE.url} />
-      <meta itemProp="description" content={description} />
+    <div className={`marketing-site reference-home meldiq-refresh${landing ? " minimal-landing" : ""}${light ? " is-light" : ""}`} id="top">
       <Seo title={title} description={description} noindex={noindex} />
       <a className="skip-link" href="#main">
-        Skip to content
+        {spanish ? "Saltar al contenido" : "Skip to content"}
       </a>
       <Header light={light} toggleTheme={toggleTheme} />
       <main id="main" tabIndex={-1}>
         {children}
       </main>
-      <MarketingFooter />
+      <MarketingFooter analyticsPath={noindex ? undefined : pathname} />
     </div>
   );
 }

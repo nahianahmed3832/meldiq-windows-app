@@ -1,9 +1,9 @@
-import { paymentDetails, rememberPayment, startPayment, type PaymentDetails } from "../lib/payments";
+import { paymentDetails, rememberPayment, requireLiveSitePayment, startPayment, type PaymentDetails } from "../lib/payments";
 import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
 import { ApiError, type Offer } from "../lib/api";
 
-import { formatMoney, monthlyEquivalent } from "../lib/money";
+import { billingPeriod, formatDate, formatMoney } from "../lib/money";
 import { describeLimits, disclosures } from "../lib/plans";
 import { browserSession } from "../lib/session";
 
@@ -19,11 +19,14 @@ interface PlanCardProps {
 
 export function PlanCard({ offer, featured, onChoose, action, perks }: PlanCardProps) {
   const limits = perks && perks.length > 0 ? perks : describeLimits(offer.limits);
+  const id = useId();
+  const period = billingPeriod(offer.interval, offer.billingFrequency);
   return (
-    <article className={`plan${featured ? " featured" : ""}`} aria-labelledby={`plan-${offer.key}`}>
+    <article className={`plan${featured ? " featured" : ""}`} aria-labelledby={id}>
       <div className="row" style={{ justifyContent: "flex-start" }}>
-        <h3 id={`plan-${offer.key}`} style={{ margin: 0 }}>
+        <h3 id={id} style={{ margin: 0 }}>
           {offer.name}
+          {offer.term && offer.term !== "monthly" ? ` · ${offer.term}` : ""}
         </h3>
         {offer.trialDays > 0 ? <span className="badge accent">{offer.trialDays}-day free trial</span> : null}
       </div>
@@ -34,12 +37,10 @@ export function PlanCard({ offer, featured, onChoose, action, perks }: PlanCardP
       ) : null}
       <div>
         <div className="price">
-          {formatMoney(offer.amountMinor, offer.currency)} <small>/ {offer.interval}</small>
+          {formatMoney(offer.amountMinor, offer.currency)} <small>/ {period}</small>
         </div>
         <div className="muted" style={{ fontSize: "0.88rem" }}>
-          {offer.currency.toUpperCase()}, billed {offer.interval === "month" ? "monthly" : "yearly"}, renews automatically
-          {offer.interval === "year" ? ` (about ${formatMoney(monthlyEquivalent(offer.amountMinor, "year"), offer.currency)} a month)` : ""}. No tax is added:
-          the price shown is what you pay.
+          {offer.currency.toUpperCase()}, billed every {period}. The subscription renews automatically. No tax is added.
         </div>
       </div>
       {limits.length > 0 ? (
@@ -79,7 +80,7 @@ export function CheckoutDialog({ offer, firstSubscription = true, onClose }: Che
   const [agreed, setAgreed] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const first = useRef<HTMLButtonElement>(null);
+  const dialog = useRef<HTMLDialogElement>(null);
   const [payment, setPayment] = useState<PaymentDetails | null>(null);
   const [retry, setRetry] = useState(0);
   useEffect(() => {
@@ -89,6 +90,7 @@ export function CheckoutDialog({ offer, firstSubscription = true, onClose }: Che
     setAgreed(false);
     paymentDetails(browserSession())
       .then((details) => {
+        requireLiveSitePayment(details.mode, window.location.hostname);
         if (live) setPayment(details);
       })
       .catch((e: unknown) => {
@@ -100,20 +102,16 @@ export function CheckoutDialog({ offer, firstSubscription = true, onClose }: Che
   }, [retry]);
 
   useEffect(() => {
-    first.current?.focus();
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && !busy && onClose();
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [busy, onClose]);
+    const element = dialog.current;
+    element?.showModal();
+    return () => element?.close();
+  }, []);
 
   async function start() {
+    if (!payment || !agreed || busy) return;
     setBusy(true);
     setError(null);
     try {
-      if (!payment) {
-        setBusy(false);
-        return;
-      }
       // Refuse checkout when this tab cannot retain the reference needed to verify the return.
       const accountId = browserSession().current()?.account.id;
       if (!accountId) throw new ApiError(401, "unauthorized", "Sign in again before subscribing.");
@@ -124,6 +122,8 @@ export function CheckoutDialog({ offer, firstSubscription = true, onClose }: Che
         accountId,
         checkoutId: started.checkoutId,
         amountMinor: offer.amountMinor,
+        interval: offer.interval,
+        billingFrequency: offer.billingFrequency,
         provider: started.provider,
         mode: started.mode,
         approvalUrl: started.url,
@@ -136,65 +136,110 @@ export function CheckoutDialog({ offer, firstSubscription = true, onClose }: Che
     }
   }
 
+  const paypal = payment?.provider === "paypal";
+  const providerName = paypal ? "PayPal" : "Stripe";
+  const price = formatMoney(offer.amountMinor, offer.currency);
+  const deferred = payment && (payment.billingStartAt || (firstSubscription && offer.trialDays > 0));
+
   return (
-    <div className="dialog-backdrop" role="presentation" onClick={(e) => e.target === e.currentTarget && !busy && onClose()}>
-      <div className="dialog" role="dialog" aria-modal="true" aria-labelledby={titleId}>
-        <h2 id={titleId} style={{ fontSize: "1.5rem" }}>
-          Get {offer.name}
-        </h2>
-        {payment?.mode === "test" ? (
-          <p className="callout info" role="status">
-            Test payment · No real money is charged.
-          </p>
-        ) : null}
-        <ul className="checklist plain" aria-label="Terms of this subscription">
-          {disclosures(offer, firstSubscription, payment?.billingStartAt ?? null).map((d) => (
-            <li key={d}>{d}</li>
-          ))}
-        </ul>
-        <p className="muted" style={{ fontSize: "0.9rem", marginTop: 16 }}>
-          {payment
-            ? `Payment is handled securely by ${payment.provider === "paypal" ? "PayPal" : "Stripe"} on its own page.`
-            : "Loading secure payment details…"}{" "}
-          Meldiq never sees or stores your card details. See{" "}
-          <Link href="/legal/billing" target="_blank">
-            Meldiq Plus terms
-          </Link>
-          .
-        </p>
-        <label className="check" style={{ marginTop: 8 }}>
-          <input type="checkbox" disabled={!payment || busy} checked={agreed} onChange={(e) => setAgreed(e.target.checked)} />
-          <span>
-            I agree to the{" "}
-            <Link href="/legal/terms" target="_blank">
-              Terms of Service
-            </Link>{" "}
-            and the{" "}
-            <Link href="/legal/billing" target="_blank">
-              subscription terms
-            </Link>
-            , including automatic renewal until I cancel.
-          </span>
-        </label>
-        {error ? (
-          <div className="callout danger" role="alert" style={{ marginTop: 16 }}>
-            <p>{error}</p>
-            {!payment ? (
-              <button type="button" className="btn btn-secondary" onClick={() => setRetry((n) => n + 1)}>
-                Retry payment details
-              </button>
-            ) : null}
-          </div>
-        ) : null}
-        <div className="dialog-actions">
-          <button ref={first} type="button" className="btn btn-ghost" onClick={onClose} disabled={busy}>
-            Cancel
-          </button>
-          <button type="button" className="btn btn-primary" onClick={start} disabled={!agreed || busy || !payment}>
-            {busy ? "Opening secure checkout…" : payment?.provider === "paypal" ? "Continue to PayPal" : "Continue to payment"}
-          </button>
+    <dialog
+      ref={dialog}
+      className="dialog subscription-checkout"
+      aria-labelledby={titleId}
+      onClick={(event) => {
+        if (event.target === event.currentTarget && !busy) onClose();
+      }}
+      onCancel={(event) => {
+        event.preventDefault();
+        if (!busy) onClose();
+      }}
+    >
+      <header className="subscription-checkout-header">
+        <div>
+          <p className="muted">Secure checkout</p>
+          <h2 id={titleId}>Get {offer.name}</h2>
         </div>
+        <button type="button" className="btn btn-ghost" onClick={onClose} disabled={busy}>
+          Cancel
+        </button>
+      </header>
+      <div className="subscription-checkout-grid">
+        <section className="subscription-summary" aria-label="Order summary">
+          <h3>Order summary</h3>
+          <dl>
+            <div>
+              <dt>{offer.name}</dt>
+              <dd>
+                {price} / {billingPeriod(offer.interval, offer.billingFrequency)}
+              </dd>
+            </div>
+            <div className="subscription-summary-total">
+              <dt>Due today</dt>
+              <dd>{payment ? `${offer.currency.toUpperCase()} ${deferred ? formatMoney(0, offer.currency) : price}` : "—"}</dd>
+            </div>
+          </dl>
+          {payment?.billingStartAt ? <p className="muted">First payment on {formatDate(payment.billingStartAt)}.</p> : null}
+        </section>
+        <form
+          className="subscription-payment"
+          onSubmit={(event) => {
+            event.preventDefault();
+            void start();
+          }}
+        >
+          <h3>Payment method</h3>
+          {payment ? (
+            <>
+              <div className="subscription-method">
+                <strong>{providerName}</strong>
+                {paypal ? <img src="/paypal-wordmark.svg" alt="" width="63" height="23" /> : null}
+              </div>
+              <p className="muted">Payment is handled securely by {providerName} on its own page.</p>
+            </>
+          ) : !error ? (
+            <p className="muted" role="status">
+              Loading secure payment details…
+            </p>
+          ) : null}
+          {payment?.mode === "test" ? (
+            <p className="callout info" role="status">
+              Test payment · No real money is charged.
+            </p>
+          ) : null}
+          <ul className="checklist plain" aria-label="Terms of this subscription">
+            {disclosures(offer, firstSubscription, payment?.billingStartAt ?? null).map((d) => (
+              <li key={d}>{d}</li>
+            ))}
+          </ul>
+          <label className="check">
+            <input type="checkbox" disabled={!payment || busy} checked={agreed} onChange={(e) => setAgreed(e.target.checked)} />
+            <span>
+              I agree to the{" "}
+              <Link href="/legal/terms" target="_blank">
+                Terms of Service
+              </Link>{" "}
+              and the{" "}
+              <Link href="/legal/billing" target="_blank">
+                subscription terms
+              </Link>
+              , including automatic renewal until I cancel.
+            </span>
+          </label>
+          {error ? (
+            <div className="callout danger" role="alert">
+              <p>{error}</p>
+              {!payment ? (
+                <button type="button" className="btn btn-secondary" onClick={() => setRetry((n) => n + 1)}>
+                  Retry payment details
+                </button>
+              ) : null}
+            </div>
+          ) : null}
+          <button type="submit" className={`btn btn-block ${paypal ? "btn-paypal" : "btn-primary"}`} disabled={!agreed || busy || !payment}>
+            {busy ? "Opening secure checkout…" : paypal ? "Continue to PayPal" : "Continue to payment"}
+          </button>
+        </form>
       </div>
-    </div>
+    </dialog>
   );
 }

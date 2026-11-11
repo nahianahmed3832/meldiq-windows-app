@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { ApiError, endpoints, request, zPublicPlans, type Offer } from "../src/lib/api";
 import { formatBytes, formatDate, formatMoney, formatPrice, minorDigits, monthlyEquivalent } from "../src/lib/money";
 import { describeGrant, describeLimits, disclosures, intervalsFor, limitName, offersFor, statusLabel } from "../src/lib/plans";
-import { rememberSignup, takeSignupPassword } from "../src/lib/pendingSignup";
+import { rememberSignup, takeSignup } from "../src/lib/pendingSignup";
 import { isPending, OPERATOR, PENDING, pendingDetails } from "../src/lib/site";
 import { check, emailSchema, nameSchema, passwordSchema, safeNext } from "../src/lib/validation";
 
@@ -145,10 +145,12 @@ describe("validation", () => {
 
   it("hands the sign-up password to the next step once, for the same address only", () => {
     rememberSignup("A@x.test", "secret-pass-1");
-    expect(takeSignupPassword("b@x.test")).toBeNull();
+    expect(takeSignup("b@x.test")).toBeNull();
     rememberSignup("A@x.test", "secret-pass-1");
-    expect(takeSignupPassword("a@x.test")).toBe("secret-pass-1");
-    expect(takeSignupPassword("a@x.test")).toBeNull();
+    expect(takeSignup("a@x.test")).toEqual({ email: "A@x.test", password: "secret-pass-1" });
+    expect(takeSignup("a@x.test")).toBeNull();
+    rememberSignup("next@x.test", "another-secret");
+    expect(takeSignup()).toEqual({ email: "next@x.test", password: "another-secret" });
   });
 });
 

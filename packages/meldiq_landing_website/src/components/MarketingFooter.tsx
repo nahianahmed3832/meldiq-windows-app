@@ -1,8 +1,9 @@
+import { AnalyticsChoice } from "./AnalyticsChoice";
 import { FOOTER, FOOTER_NOTE } from "../content/navigation";
 
-export function MarketingFooter({ minimal = false }: { minimal?: boolean }) {
+export function MarketingFooter({ minimal = false, analyticsPath }: { minimal?: boolean; analyticsPath?: string }) {
   return (
-    <footer className={`site-footer${minimal ? " compact-footer" : ""}`}>
+    <footer lang="en" className={`site-footer${minimal ? " compact-footer" : ""}`}>
       <div className="wrap footer-grid">
         <div className="footer-brand">
           <a className="brand" href="/" aria-label="Meldiq home">
@@ -30,7 +31,13 @@ export function MarketingFooter({ minimal = false }: { minimal?: boolean }) {
       <div className="wrap footer-bottom">
         <span>© 2026 GRIIPBUDDY LLC.</span>
         <span>Core messaging is free. Your people are welcome.</span>
-        <a href="#top">Back to top ↑</a>
+        <div className="footer-controls">
+          {analyticsPath ? <AnalyticsChoice path={analyticsPath} /> : null}
+          <a href="#top">Back to top ↑</a>
+        </div>
+      </div>
+      <div className="footer-wordmark wrap" aria-hidden="true">
+        <span>Meldiq</span>
       </div>
     </footer>
   );

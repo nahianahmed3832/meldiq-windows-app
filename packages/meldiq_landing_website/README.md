@@ -1,7 +1,7 @@
 # Meldiq website (meldiq.app)
 
 Meldiq's public website: product pages, pricing for **Meldiq Plus** ($4.99/month, with files up to 1 GB), sign-up and sign-in with the
-same Meldiq account every app uses, account and billing pages, support, and the legal pages. Live at
+same Meldiq account every app uses, account and billing pages, support, community and developer guides, bots, security, roadmap, brand assets, and the legal pages. Live at
 **https://meldiq.app** since 2026-10-28.
 
 - Next.js 16 (Pages Router) static export, React 19, TypeScript, zod. No server of its own and no third-party script:
@@ -47,3 +47,10 @@ See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) (rollback: `bash deploy/rollback.sh
 - [Testing](docs/TESTING.md): what is tested and the latest results
 - [Launch blockers](docs/LAUNCH_BLOCKERS.md): details and decisions still needed
 - Billing on the server: `meldiq_android/docs/BILLING.md` › Meldiq Mojo and PayPal
+
+## Website refresh (2026-11-04)
+
+Shared responsive marketing layout and persistent light/dark mode across the site. Billing terms are read from
+`/v2/mojo/catalog`: a configured quarterly or yearly price is shown as unavailable unless the server explicitly enables it.
+The website checkout continues to sell only the approved monthly Plus offer; other available terms are reviewed in the app.
+New guide routes: `/community`, `/tutorials`, `/bots`, `/developers`, `/security`, `/roadmap`, `/brand`.

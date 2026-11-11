@@ -1,11 +1,16 @@
 import { expect, type Page, test } from "@playwright/test";
+import { getActivityPreview } from "../src/lib/activityPreview";
 import { WINDOWS_DOWNLOAD } from "../src/lib/windowsDownload";
 const API = "http://127.0.0.1:8199";
 const PUBLIC_PAGES = [
-  ["/", /Your people,.*your channels.*[Oo]ne place to talk/],
+  ["/", /Your group chat,.*with space to hang out/],
+  ["/gaming-community-chat", /Give your gaming group/],
+  ["/es/chat-para-comunidades-gaming", /Un lugar para reunir/],
+  ["/voice-video-screen-sharing", /Talk it through/],
+  ["/compare/discord", /try Meldiq or stay on Discord/],
   ["/features", /Everything you need.*to talk, together/],
   ["/pricing", /Free messaging.*Optional Meldiq/],
-  ["/download", /Download Meldiq/],
+  ["/download", /Meldiq for.*your desktop/],
   ["/faq", /Questions, answered/],
   ["/support", /How can we help/],
   ["/community", /Bring your people together/],
@@ -13,7 +18,7 @@ const PUBLIC_PAGES = [
   ["/security", /Privacy, explained plainly/],
   ["/roadmap", /More places to connect/],
   ["/bots", /Make room for your bots/],
-  ["/developers", /Useful tools.*Clear boundaries/],
+  ["/developers", /Build bots on Meldiq/],
   ["/brand", /A familiar face for your space/],
   ["/legal/terms", /Terms of Service/],
   ["/legal/privacy", /Privacy Policy/],
@@ -60,7 +65,26 @@ test.describe("redesigned public pages", () => {
   test("keeps security headers and avoids executable inline scripts", async ({ page }) => {
     const response = await page.goto("/");
     expect(response?.headers()["content-security-policy"]).toContain("script-src 'self'");
-    await expect(page.locator("script:not([src]):not([type='application/json'])")).toHaveCount(0);
+    await expect(page.locator("script:not([src]):not([type='application/json']):not([type='application/ld+json'])")).toHaveCount(0);
+  });
+  test("shows one combined online count that rotates every three minutes", async ({ page }) => {
+    const start = new Date("2026-11-08T09:00:00Z");
+    await page.clock.install({ time: start });
+    await page.clock.pauseAt(new Date(start.getTime() + 1));
+    let online = 1;
+    await page.route("**/v2/site/presence", (route) => route.fulfill({ json: { online } }));
+    await page.goto("/");
+
+    const counter = page.getByText(/^\d+ people online now$/);
+    const offset = getActivityPreview(start.getTime());
+    await expect(counter).toHaveText(`${online + offset} people online now`);
+    await expect(page.locator(".ref-trust-note")).not.toContainText(/simulated|total/i);
+
+    online = 2;
+    await page.clock.fastForward(30_000);
+    await expect(counter).toHaveText(`${online + offset} people online now`);
+    await page.clock.fastForward(150_000);
+    await expect(counter).toHaveText(`${online + getActivityPreview(start.getTime() + 180_000)} people online now`);
   });
   test("mobile navigation opens, closes with Escape, and follows links", async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 812 });
@@ -348,7 +372,8 @@ test.describe("accounts", () => {
     await page.getByLabel("Password", { exact: true }).fill("correct horse battery");
     await page.getByRole("checkbox").check();
     await page.getByRole("button", { name: "Create account" }).click();
-    await expect(page).toHaveURL(/\/verify-email/);
+    await expect(page).toHaveURL(/\/verify-email$/);
+    await expect(page.getByLabel("Email")).toHaveValue(email);
     // The password went with us in memory: only the code is asked for.
     await expect(page.getByLabel("Password")).toHaveCount(0);
     await page.getByLabel("Verification code").fill("000000");
@@ -358,6 +383,14 @@ test.describe("accounts", () => {
     await page.getByRole("button", { name: "Verify and sign in" }).click();
     await expect(page.getByRole("heading", { name: "Your account", level: 1 })).toBeVisible();
     await expect(page.getByText(email)).toBeVisible();
+  });
+
+  test("preserves the address from older verification links and clears it from the URL", async ({ page }) => {
+    const email = unique("legacy-verify");
+    await page.goto(`/verify-email?email=${encodeURIComponent(email)}`);
+    await expect(page).toHaveURL(/\/verify-email$/);
+    await expect(page.getByLabel("Email")).toHaveValue(email);
+    await expect(page.getByLabel("Password")).toBeVisible();
   });
 
   test("uses the shared chooser rather than a second password and MFA form", async ({ page }) => {
@@ -399,6 +432,11 @@ test.describe("PayPal integration", () => {
     const pay = dialog.getByRole("button", { name: "Continue to PayPal" });
     await expect(pay).toBeDisabled();
     await expect(dialog).toContainText("Payment is handled securely by PayPal");
+    const summary = dialog.getByRole("region", { name: "Order summary" });
+    await expect(summary).toContainText("$4.99 / month");
+    await expect(summary).toContainText("USD $0.00");
+    await expect(summary).toContainText("First payment on");
+    expect(await dialog.evaluate((element) => element.scrollWidth <= element.clientWidth)).toBe(true);
     await dialog.getByRole("checkbox").check();
     await page.route("https://www.sandbox.paypal.com/**", (r) => r.fulfill({ contentType: "text/html", body: "<h1>Mock PayPal approval</h1>" }));
     await pay.click();

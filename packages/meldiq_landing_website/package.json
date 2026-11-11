@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dev": "next dev --hostname 127.0.0.1 --port 5190",
-    "build": "tsc --noEmit && rm -rf out && next build",
+    "build": "tsc --noEmit && rm -rf out && next build --webpack && node scripts/search-files.mjs",
     "start": "node scripts/serve.mjs out 4190",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",

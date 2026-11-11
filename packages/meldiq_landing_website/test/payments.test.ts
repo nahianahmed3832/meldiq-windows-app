@@ -1,7 +1,16 @@
 import { describe, expect, it } from "vitest";
 import { FIXTURE_MOJO, FIXTURE_PLANS } from "../e2e/fixtures.mjs";
-import { type Fetcher } from "../src/lib/api";
-import { forgetPayment, paymentDetails, paymentUrl, pendingPayment, rememberPayment, startPayment, verifyPayment } from "../src/lib/payments";
+import { type Fetcher, type Offer } from "../src/lib/api";
+import {
+  forgetPayment,
+  paymentDetails,
+  paymentUrl,
+  pendingPayment,
+  rememberPayment,
+  requireLiveSitePayment,
+  startPayment,
+  verifyPayment,
+} from "../src/lib/payments";
 import { SessionStore } from "../src/lib/session";
 
 function setup({
@@ -13,7 +22,22 @@ function setup({
   paid = false,
   approved = false,
   purchaseConfirmed = false,
+  cadence = "monthly" as "monthly" | "quarterly" | "yearly",
 } = {}) {
+  const terms = FIXTURE_MOJO.plusTerms ?? [];
+  const term = terms.find((option) => option.key === cadence);
+  if (!term) throw new Error("Expected a configured billing term in the fixture");
+  const offer: Offer =
+    cadence === "monthly"
+      ? { ...FIXTURE_PLANS.plans[0]!, amountMinor: amount }
+      : {
+          ...FIXTURE_PLANS.plans[0]!,
+          amountMinor: term.amountMinor,
+          interval: term.interval,
+          billingFrequency: term.billingFrequency,
+          term: cadence,
+        };
+  const mojo = { ...FIXTURE_MOJO, plusTerms: terms.map((option) => (option.key === cadence ? { ...option, available: true } : option)) };
   const storage = new Map<string, string>();
   const kv = {
     getItem: (k: string) => storage.get(k) ?? null,
@@ -30,8 +54,8 @@ function setup({
     calls.push({ path, body });
     const mode = environment === "live" ? "live" : "test";
     const replies: Record<string, unknown> = {
-      "/v2/billing/plans": { ...FIXTURE_PLANS, mode, plans: FIXTURE_PLANS.plans.map((p) => ({ ...p, amountMinor: amount })) },
-      "/v2/mojo/catalog": FIXTURE_MOJO,
+      "/v2/billing/plans": { ...FIXTURE_PLANS, mode, plans: [offer] },
+      "/v2/mojo/catalog": mojo,
       "/v2/billing/account": {
         provider,
         available: true,
@@ -72,8 +96,9 @@ function setup({
         confirmed: purchaseConfirmed,
         approved,
         currency: "USD",
-        amountMinor: 499,
-        interval: "month",
+        amountMinor: offer.amountMinor,
+        interval: offer.interval,
+        billingFrequency: offer.billingFrequency,
         expiresAt: Date.now() + 100000,
       },
       "/v2/billing/checkout": {
@@ -93,7 +118,7 @@ function setup({
     session: { id: "s" },
     account: { id: "acc_test", email: "test@example.test", name: "Test", createdAt: 1 },
   });
-  return { session, fetcher, calls, kv };
+  return { session, fetcher, calls, kv, offer };
 }
 
 describe("PayPal website checkout", () => {
@@ -110,6 +135,22 @@ describe("PayPal website checkout", () => {
     expect(result.url).toMatch(/^https:\/\/www.paypal.com\//);
     expect(calls.find((c) => c.path === "/v2/billing/checkout")?.body).toEqual({ planKey: "plus", returnTo: "site" });
   });
+  it.each(["quarterly", "yearly"] as const)("sends the selected %s cadence and verifies the matching receipt", async (cadence) => {
+    const { offer, session, calls, fetcher } = setup({ cadence, paid: true, purchaseConfirmed: true });
+    await startPayment(offer, await paymentDetails(session), session, fetcher);
+    expect(calls.find((c) => c.path === "/v2/billing/checkout")?.body).toEqual({ planKey: "plus", term: cadence, returnTo: "site" });
+    const pending = {
+      checkoutId: "chk_test",
+      accountId: "acc_test",
+      provider: "paypal" as const,
+      mode: "live" as const,
+      amountMinor: offer.amountMinor,
+      interval: offer.interval,
+      billingFrequency: offer.billingFrequency,
+    };
+    expect(await verifyPayment(session, pending)).toBe("confirmed");
+    await expect(verifyPayment(session, { ...pending, interval: "month", billingFrequency: 1 })).rejects.toMatchObject({ code: "checkout_mismatch" });
+  });
   it("refuses changed pricing before starting any provider session", async () => {
     const { session, calls, fetcher } = setup({ amount: 399 });
     await expect(startPayment(FIXTURE_PLANS.plans[0]!, await paymentDetails(session), session, fetcher)).rejects.toMatchObject({ code: "offer_changed" });
@@ -124,6 +165,12 @@ describe("PayPal website checkout", () => {
   });
   it("does not offer a PayPal flow unless recurring payments are enabled", async () => {
     await expect(paymentDetails(setup({ subscriptions: false }).session)).rejects.toMatchObject({ code: "billing_unavailable" });
+  });
+  it("refuses sandbox checkout on the public website", () => {
+    expect(() => requireLiveSitePayment("test", "meldiq.app")).toThrow("Live payment is unavailable");
+    expect(() => requireLiveSitePayment("test", "www.meldiq.app")).toThrow("Live payment is unavailable");
+    expect(() => requireLiveSitePayment("live", "meldiq.app")).not.toThrow();
+    expect(() => requireLiveSitePayment("test", "localhost")).not.toThrow();
   });
   it("keeps live and sandbox redirects separate and rejects spoofed or credential-bearing addresses", () => {
     expect(paymentUrl("https://www.sandbox.paypal.com/checkout", { provider: "paypal", mode: "test" })).toContain("sandbox.paypal.com");

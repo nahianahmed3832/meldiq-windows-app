@@ -8,9 +8,10 @@ export function rememberSignup(email: string, password: string): void {
   pending = { email, password };
 }
 
-/** The password for [email] if it was just used to sign up in this page; once only. */
-export function takeSignupPassword(email: string): string | null {
-  const p = pending && pending.email.toLowerCase() === email.toLowerCase() ? pending.password : null;
+/** Consume the one-time handoff. An older verification link can supply an expected address. */
+export function takeSignup(expectedEmail?: string): typeof pending {
+  const signup = pending;
   pending = null;
-  return p;
+  if (expectedEmail && signup?.email.toLowerCase() !== expectedEmail.toLowerCase()) return null;
+  return signup;
 }

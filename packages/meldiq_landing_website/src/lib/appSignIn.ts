@@ -4,7 +4,7 @@ import { SITE } from "./site";
 export function appSignInDestination(next: string | string[] | undefined): string {
   let path = "/";
   if (typeof next === "string") {
-    if (next === "/pricing" || next === "/pricing?plan=plus") path = "/settings/mojo";
+    if (next === "/pricing" || /^\/pricing\?plan=plus(?:&term=(?:quarterly|yearly))?$/.test(next)) path = "/settings/mojo";
     else if (next === "/account/billing") path = "/settings/billing";
     else if (next === "/account") path = "/settings/account";
   }

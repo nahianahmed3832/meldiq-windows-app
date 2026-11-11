@@ -1,4 +1,4 @@
-import { forgetPayment, pendingPayment, paymentUrl, verifyPayment, zPayPalCanceled, type PendingPayment } from "../../lib/payments";
+import { forgetPayment, pendingPayment, paymentUrl, requireLiveSitePayment, verifyPayment, zPayPalCanceled, type PendingPayment } from "../../lib/payments";
 import { useMojoCatalog } from "../../lib/catalog";
 import { subscriptionOffers } from "../../lib/subscription";
 import Link from "next/link";
@@ -8,7 +8,7 @@ import { AccountShell, LoadingCard } from "../../components/AccountShell";
 import { CheckoutDialog, PlanCard } from "../../components/Plans";
 import { useAuthedData, useRequireSession } from "../../components/useAccount";
 import { ApiError, billingNotDeployed, type Offer, zOwnerBilling, zPortal } from "../../lib/api";
-import { formatDate, formatMoney, formatPrice } from "../../lib/money";
+import { billingPeriod, formatDate, formatMoney } from "../../lib/money";
 import { statusLabel } from "../../lib/plans";
 import { browserSession } from "../../lib/session";
 
@@ -86,6 +86,7 @@ export default function Billing() {
   function resumePayment() {
     if (!pending?.approvalUrl) return;
     try {
+      requireLiveSitePayment(pending.mode, window.location.hostname);
       window.location.assign(paymentUrl(pending.approvalUrl, pending));
     } catch (e) {
       setPortalError(e instanceof ApiError ? e.message : "Checkout could not be resumed. Check your payment status.");
@@ -183,7 +184,7 @@ export default function Billing() {
         <div className="callout info">
           <p>You have an unfinished PayPal checkout. Resume it or check its status before starting another payment.</p>
           <div className="row">
-            <button type="button" className="btn btn-primary" onClick={resumePayment}>
+            <button type="button" className="btn btn-paypal" onClick={resumePayment}>
               Resume PayPal checkout
             </button>
             <button
@@ -236,7 +237,9 @@ export default function Billing() {
                   <dt>Plan</dt>
                   <dd>{sub.plan.name}</dd>
                   <dt>Price</dt>
-                  <dd>{formatPrice(sub.amountMinor, sub.currency, sub.interval)}</dd>
+                  <dd>
+                    {formatMoney(sub.amountMinor, sub.currency)} / {billingPeriod(sub.interval, sub.billingFrequency)}
+                  </dd>
                   {sub.trialEnd && sub.status === "trialing" ? (
                     <>
                       <dt>Trial ends</dt>
@@ -332,7 +335,7 @@ export default function Billing() {
               ) : (
                 <div className="plan-grid">
                   {offers.map((o) => (
-                    <PlanCard key={o.key} offer={o} onChoose={setChosen} />
+                    <PlanCard key={o.term ?? o.key} offer={o} onChoose={setChosen} />
                   ))}
                 </div>
               )}

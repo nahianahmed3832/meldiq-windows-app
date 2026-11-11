@@ -37,6 +37,8 @@ export const FOOTER: FooterColumn[] = [
       { href: "/download", label: "Download" },
       { href: "/developers", label: "Developers" },
       { href: "/bots", label: "Bots" },
+      { href: "/creators", label: "Creator Program" },
+      { href: "/partners", label: "Partners" },
       { href: "/roadmap", label: "Roadmap" },
       { href: "/brand", label: "Brand kit" },
       { href: "https://status.meldiq.app", label: "Service status" },
@@ -46,6 +48,9 @@ export const FOOTER: FooterColumn[] = [
     title: "Community",
     links: [
       { href: "/community", label: "Find your community" },
+      { href: "/gaming-community-chat", label: "Gaming community chat" },
+      { href: "/voice-video-screen-sharing", label: "Voice, video & screen sharing" },
+      { href: "/compare/discord", label: "Meldiq vs. Discord" },
       { href: "/tutorials", label: "Getting started" },
       { href: "/faq", label: "Questions & answers" },
       { href: "/legal/acceptable-use", label: "Community guidelines" },

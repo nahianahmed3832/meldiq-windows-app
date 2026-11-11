@@ -25,6 +25,10 @@ export type Interval = "month" | "year";
 export const intervalLabel = (i: Interval): string => (i === "month" ? "month" : "year");
 export const intervalAdverb = (i: Interval): string => (i === "month" ? "monthly" : "yearly");
 
+export function billingPeriod(interval: Interval, frequency = 1): string {
+  return frequency === 1 ? interval : `${frequency} ${interval}s`;
+}
+
 /** "$5.00 / month" */
 export function formatPrice(amountMinor: number, currency: string, interval: Interval, locale?: string): string {
   return `${formatMoney(amountMinor, currency, locale)} / ${intervalLabel(interval)}`;

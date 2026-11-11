@@ -1,6 +1,8 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { Layout } from "./Layout";
+import { isSpanishPage } from "../lib/seo";
 import { SITE } from "../lib/site";
 
 export interface GuideSection {
@@ -26,11 +28,12 @@ export function GuidePage({
   sections: GuideSection[];
   children?: ReactNode;
 }) {
+  const spanish = isSpanishPage(useRouter().pathname);
   return (
     <Layout title={title} description={description}>
       <section className="guide-hero wrap">
         <Link href="/" className="breadcrumb">
-          Home / {title}
+          {spanish ? "Inicio" : "Home"} / {title}
         </Link>
         <span className="ref-kicker">{eyebrow}</span>
         <h1>{heading}</h1>
@@ -63,11 +66,11 @@ export function GuidePage({
       <section className="guide-end wrap">
         <img src="/meldling-128.png" width={56} height={56} alt="" loading="lazy" />
         <div>
-          <h2>Make yourself at home.</h2>
-          <p>Your next conversation is only a tab away.</p>
+          <h2>{spanish ? "Reúne a tu grupo." : "Make yourself at home."}</h2>
+          <p>{spanish ? "Abre Meldiq en tu navegador." : "Your next conversation is only a tab away."}</p>
         </div>
         <a className="button primary" href={SITE.webAppUrl}>
-          Open Meldiq <span aria-hidden="true">↗</span>
+          {spanish ? "Abrir Meldiq" : "Open Meldiq"} <span aria-hidden="true">↗</span>
         </a>
       </section>
     </Layout>

@@ -71,8 +71,8 @@ const sections = [
 export default function Features() {
   return (
     <Layout
-      title="Features"
-      description="Explore Meldiq communities, channels, encrypted messages, voice and video calls, screen sharing and account security."
+      title="Community Channels, Group Messaging & Calls"
+      description="Explore Meldiq communities, channels, group messages, voice and video calls, screen sharing and account security."
     >
       <section className="plain-page-heading wrap">
         <Link className="breadcrumb" href="/">
@@ -84,9 +84,9 @@ export default function Features() {
           to talk, together.
         </h1>
         <p>Communities, messages and calls in one place. Every core messaging feature is free.</p>
-        <Link className="button primary" href="/signup">
+        <a className="button primary" href="/signup">
           Find your people <span aria-hidden="true">→</span>
-        </Link>
+        </a>
       </section>
       <div className="plain-features wrap">
         {sections.map((section) => (
@@ -101,6 +101,14 @@ export default function Features() {
               ) : section.id === "moderation" ? (
                 <Link className="inline-link" href="/legal/acceptable-use">
                   Community standards →
+                </Link>
+              ) : section.id === "calls" ? (
+                <Link className="inline-link" href="/voice-video-screen-sharing">
+                  Voice, video and screen sharing →
+                </Link>
+              ) : section.id === "communities" ? (
+                <Link className="inline-link" href="/gaming-community-chat">
+                  Set up a gaming community →
                 </Link>
               ) : null}
             </div>
@@ -118,9 +126,9 @@ export default function Features() {
           Create a free account or find the right app for your device. <Link href="/pricing">Explore optional Meldiq Plus benefits and community add-ons.</Link>
         </p>
         <div className="button-row">
-          <Link className="button primary" href="/signup">
+          <a className="button primary" href="/signup">
             Create a Free Account
-          </Link>
+          </a>
           <Link className="button secondary" href="/download">
             Get Meldiq
           </Link>

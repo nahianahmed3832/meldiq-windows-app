@@ -14,8 +14,8 @@ EXPECTED_CURRENT="${MELDIQ_EXPECTED_SITE_CURRENT:-}"
 cd "$(dirname "$0")/.."
 [ -f out/index.html ] || { echo "out/index.html is missing: run npm run build first" >&2; exit 1; }
 if grep -rlq "To be confirmed: Android" out; then echo "out/ still has the Android placeholder" >&2; exit 1; fi
-# The CSP allows no inline script: refuse a build that has one.
-if grep -rhoE '<script[^>]*>' out --include='*.html' | grep -v 'src=' | grep -vq 'application/json'; then echo "out/ has an inline script" >&2; exit 1; fi
+# The CSP allows no inline executable script. JSON and JSON-LD data blocks are inert.
+if grep -rhoE '<script[^>]*>' out --include='*.html' | grep -v 'src=' | grep -vqE 'type="application/(ld\+)?json"'; then echo "out/ has an inline script" >&2; exit 1; fi
 
 hash="$(find out -type f -print0 | sort -z | xargs -0 shasum -a 256 | shasum -a 256 | cut -c1-10)"
 release="site-$(date -u +%Y%m%dT%H%M%SZ)-${hash}"

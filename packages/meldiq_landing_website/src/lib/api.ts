@@ -42,6 +42,7 @@ const zSubscriptionView = z.object({
   status: z.string(),
   standing: z.string(),
   interval: z.enum(["month", "year"]),
+  billingFrequency: z.number().int().positive().optional(),
   currency: z.string(),
   amountMinor: z.number(),
   currentPeriodEnd: z.number().nullable(),

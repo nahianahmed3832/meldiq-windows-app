@@ -1472,3 +1472,150 @@ table.compare thead th {
   font-size: 0.88rem;
   padding: 8px 16px;
 }
+
+/* Subscription checkout */
+.subscription-checkout {
+  width: min(860px, calc(100% - 24px));
+  max-width: none;
+  max-height: calc(100dvh - 24px);
+  margin: auto;
+  border: 1px solid var(--border);
+  padding: 0;
+  color: var(--text);
+}
+
+.subscription-checkout::backdrop {
+  background: rgb(8 16 14 / 60%);
+}
+
+.subscription-checkout-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.subscription-checkout-header p,
+.subscription-checkout-header h2 {
+  margin: 0;
+}
+
+.subscription-checkout-header p {
+  font-size: 0.82rem;
+}
+
+.subscription-checkout-header h2 {
+  font-size: clamp(1.25rem, 3vw, 1.65rem);
+}
+
+.subscription-checkout-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  grid-template-areas: "payment summary";
+}
+
+.subscription-summary,
+.subscription-payment {
+  padding: 20px 24px;
+}
+
+.subscription-payment {
+  grid-area: payment;
+  display: grid;
+  gap: 14px;
+}
+
+.subscription-summary {
+  grid-area: summary;
+  background: var(--bg-alt);
+  border-inline-start: 1px solid var(--border);
+}
+
+.subscription-checkout h3,
+.subscription-checkout dl,
+.subscription-checkout p,
+.subscription-checkout .checklist {
+  margin: 0;
+}
+
+.subscription-summary dl {
+  margin-top: 12px;
+}
+
+.subscription-summary dl > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.subscription-summary dd {
+  margin: 0;
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
+
+.subscription-summary-total {
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+  margin-top: 12px;
+  font-weight: 750;
+}
+
+.subscription-summary p {
+  margin-top: 8px;
+}
+
+.subscription-method {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  min-height: 50px;
+  padding: 10px 12px;
+  border: 1px solid var(--accent);
+  border-radius: var(--r-sm);
+  background: var(--accent-soft);
+}
+
+.subscription-method img {
+  display: block;
+  background: #fff;
+  padding: 3px 5px 0;
+  border-radius: 4px;
+}
+
+.subscription-checkout .checklist,
+.subscription-checkout .muted {
+  font-size: 0.87rem;
+}
+
+.btn-paypal {
+  color: #111;
+  background: #ffc439;
+  border-color: #ffc439;
+}
+
+.btn-paypal:hover:not(:disabled) {
+  background: #f5b82f;
+  border-color: #f5b82f;
+}
+
+@media (max-width: 640px) {
+  .subscription-checkout-grid {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "summary" "payment";
+  }
+
+  .subscription-checkout-header,
+  .subscription-summary,
+  .subscription-payment {
+    padding: 16px;
+  }
+
+  .subscription-summary {
+    border-inline-start: 0;
+    border-bottom: 1px solid var(--border);
+  }
+}

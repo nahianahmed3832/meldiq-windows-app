@@ -3,7 +3,7 @@ import { GuidePage } from "../components/GuidePage";
 export default function Tutorials() {
   return (
     <GuidePage
-      title="Getting started"
+      title="Getting Started with Meldiq Communities & Chat"
       eyebrow="YOUR FIRST FEW MINUTES"
       heading="Less setup. More conversation."
       description="A short guide to finding your way around Meldiq, from your first account to your own community."
@@ -29,7 +29,7 @@ export default function Tutorials() {
         {
           title: "Talk it through",
           text: "Join a voice channel or start a call. Allow microphone or camera access when you choose to use them. Check the call encryption indicator, and select a screen or window when sharing.",
-          href: "/features#calls",
+          href: "/voice-video-screen-sharing",
           label: "Calls and screen sharing",
         },
         {

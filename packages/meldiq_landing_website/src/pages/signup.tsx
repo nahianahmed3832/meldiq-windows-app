@@ -49,7 +49,7 @@ export default function SignUp() {
       await endpoints.register({ name: values.name.trim(), email: values.email.trim(), password: values.password });
       // The password goes with the code (whoever verifies chose it): held in memory for the next step only.
       rememberSignup(values.email.trim(), values.password);
-      void router.push(`/verify-email?email=${encodeURIComponent(values.email.trim())}`);
+      void router.push("/verify-email");
     } catch (err) {
       setBusy(false);
       if (err instanceof ApiError && err.code === "email_taken") setErrors({ email: err.message });

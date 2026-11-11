@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { type FormEvent, useEffect, useState } from "react";
+import { type FormEvent, useEffect, useRef, useState } from "react";
 import { Field, FormError } from "../components/Field";
 import { Layout } from "../components/Layout";
 import { ApiError, endpoints } from "../lib/api";
-import { takeSignupPassword } from "../lib/pendingSignup";
+import { takeSignup } from "../lib/pendingSignup";
 import { claimPendingRef } from "../lib/referral";
 import { browserSession } from "../lib/session";
 import { check, codeSchema, emailSchema, type FieldErrors, passwordSchema } from "../lib/validation";
@@ -21,13 +21,16 @@ export default function VerifyEmail() {
   const [notice, setNotice] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
+  const initialized = useRef(false);
   useEffect(() => {
-    if (!router.isReady) return;
-    const email = typeof router.query.email === "string" ? router.query.email : "";
-    const password = email ? takeSignupPassword(email) : null;
-    setValues((v) => ({ ...v, email, password: password ?? "" }));
-    setKnownPassword(!!password);
-  }, [router.isReady, router.query.email]);
+    if (!router.isReady || initialized.current) return;
+    initialized.current = true;
+    const previousEmail = typeof router.query.email === "string" ? router.query.email : undefined;
+    const signup = takeSignup(previousEmail);
+    setValues((current) => ({ ...current, email: signup?.email ?? previousEmail ?? "", password: signup?.password ?? "" }));
+    setKnownPassword(!!signup);
+    if (previousEmail !== undefined) void router.replace("/verify-email", undefined, { shallow: true });
+  }, [router]);
 
   const set = (k: Key) => (e: { target: { value: string } }) => setValues((v) => ({ ...v, [k]: e.target.value }));
 

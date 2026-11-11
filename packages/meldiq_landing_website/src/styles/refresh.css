@@ -1,17 +1,23 @@
+@font-face {
+  font-family: Funnel Display;
+  src: url("/fonts/funnel-display/latin.woff2") format("woff2");
+  font-weight: 300 800;
+  font-display: swap;
+}
 /* Meldiq marketing: one visual system across product, help, account and legal pages. */
 body {
-  background: #101214;
+  background: #101012;
 }
 body:has(.marketing-site.is-light) {
   background: #fafbf9;
 }
 .marketing-site.meldiq-refresh {
-  --bg: #101214;
-  --surface: #181b1e;
-  --surface-2: #202529;
-  --text: #f4f6f5;
-  --muted: #a2adab;
-  --line: #2b3332;
+  --bg: #101012;
+  --surface: #18181c;
+  --surface-2: #222226;
+  --text: #fff;
+  --muted: #b9b8bb;
+  --line: #2b2b30;
   --cyan: #8dece0;
   --accent: #8dece0;
   --accent-hover: #b4fff3;
@@ -20,14 +26,16 @@ body:has(.marketing-site.is-light) {
   --text-muted: var(--muted);
   --border: var(--line);
   --border-strong: #455450;
-  --bg-alt: #141819;
+  --bg-alt: #141417;
+  --display-font: "Funnel Display", Poppins, system-ui, sans-serif;
   --warning: #f0c98d;
   --warning-soft: #30291e;
   --danger: #ffb4ab;
   --danger-soft: #362021;
   color-scheme: dark;
+  overflow-clip-margin: 22px;
   font-size: 14px;
-  background: radial-gradient(ellipse 600px 460px at 100% 0, #24463d42, transparent 85%), var(--bg);
+  background: var(--bg);
 }
 .marketing-site.meldiq-refresh.is-light {
   --bg: #fafbf9;
@@ -48,15 +56,16 @@ body:has(.marketing-site.is-light) {
   --danger: #a92c2c;
   --danger-soft: #ffeded;
   color-scheme: light;
-  background: radial-gradient(ellipse 650px 500px at 100% 0, #bee6d34d, transparent 85%), var(--bg);
+  background: var(--bg);
 }
 .marketing-site.meldiq-refresh .wrap {
-  max-width: 1120px;
+  max-width: 1112px;
 }
 .marketing-site.meldiq-refresh h1,
 .marketing-site.meldiq-refresh h2,
 .marketing-site.meldiq-refresh h3 {
-  letter-spacing: -0.045em;
+  font-family: var(--display-font);
+  letter-spacing: -0.04em;
 }
 .marketing-site.meldiq-refresh h1 {
   line-height: 1.12;
@@ -70,39 +79,97 @@ body:has(.marketing-site.is-light) {
   color: var(--muted);
 }
 .marketing-site.meldiq-refresh .site-header {
-  height: 90px;
-  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  position: sticky;
+  top: 0;
+  height: 86px;
+  padding-top: 14px;
+  background: transparent;
+  border: 0;
+  backdrop-filter: none;
+  box-shadow: none;
 }
 .marketing-site.meldiq-refresh .header-inner {
-  height: 100%;
+  position: relative;
+  height: 62px;
+  width: min(1152px, calc(100% - 80px));
+  max-width: none;
+  padding: 0 10px 0 14px;
+  border: 1px solid transparent;
+  border-radius: 14px;
+}
+.marketing-site.meldiq-refresh .site-header.scrolled {
+  border: 0;
+}
+.marketing-site.meldiq-refresh .site-header.scrolled .header-inner {
+  border-color: var(--line);
+  background: color-mix(in srgb, var(--bg) 85%, transparent);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 10px 24px #0002;
+}
+.marketing-site.meldiq-refresh .brand {
+  gap: 8px;
+  font: 700 18px/1 var(--display-font);
+  letter-spacing: -0.02em;
+}
+.marketing-site.meldiq-refresh .brand img {
+  width: 32px;
+  height: 32px;
+  border-radius: 11px;
+  background: var(--accent-soft);
+  box-shadow: 0 5px 14px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+.marketing-site.meldiq-refresh .site-header .brand {
+  margin-right: auto;
+}
+.marketing-site.meldiq-refresh #navigation {
+  flex: 0 0 auto;
+  margin-left: 5px;
 }
 .marketing-site.meldiq-refresh .nav-links {
-  gap: 28px;
+  gap: 2px;
+  position: absolute;
+  left: 49%;
+  transform: translateX(-50%);
 }
 .marketing-site.meldiq-refresh .nav-links a {
-  font-size: 12px;
+  padding: 8px 14px;
+  border-radius: 11px;
+  font-size: 14px;
   font-weight: 500;
   color: var(--muted);
 }
 .marketing-site.meldiq-refresh .nav-links a:hover,
 .marketing-site.meldiq-refresh .nav-links a[aria-current="page"] {
   color: var(--text);
+  background: var(--surface-2);
+}
+.marketing-site.meldiq-refresh .nav-links a[aria-current="page"]::after {
+  content: none;
 }
 .marketing-site.meldiq-refresh .nav-actions {
-  gap: 20px;
+  min-width: 0;
 }
-.marketing-site.meldiq-refresh .sign-in {
-  border-radius: 9px;
-  background: #8dece0;
-  color: #102322;
-  padding: 10px 20px;
-  font-size: 12px;
+.marketing-site.meldiq-refresh .nav-actions .sign-in {
+  border-radius: 12px;
+  background: var(--accent);
+  color: var(--on-accent);
+  padding: 10px 22px;
+  min-height: 44px;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 7px 18px color-mix(in srgb, var(--accent) 22%, transparent);
+}
+.marketing-site.meldiq-refresh .nav-actions .sign-in:hover {
+  background: var(--accent-hover);
+  color: var(--on-accent);
 }
 .marketing-site.meldiq-refresh .brand-dot {
   color: var(--cyan);
 }
 .marketing-site.meldiq-refresh .theme-switch {
-  color: var(--muted);
+  color: var(--text);
+  border-color: transparent;
+  border-radius: 12px;
 }
 .marketing-site.meldiq-refresh .button,
 .marketing-site.meldiq-refresh .btn {
@@ -151,45 +218,123 @@ body:has(.marketing-site.is-light) {
   font-size: 10px;
   letter-spacing: 0.14em;
   font-weight: 600;
+  text-transform: uppercase;
 }
 .marketing-site.meldiq-refresh .ref-hero {
   min-height: 0;
-  padding-top: 58px;
-  padding-bottom: 64px;
+  padding-block: 72px 62px;
 }
 .marketing-site.meldiq-refresh .ref-hero h1 {
-  font-size: clamp(42px, 4.75vw, 68px);
-  max-width: 950px;
-  letter-spacing: -0.055em;
+  font-size: clamp(42px, 5vw, 68px);
+  max-width: 800px;
+  letter-spacing: -0.045em;
+  line-height: 1.02;
+}
+.marketing-site.meldiq-refresh .ref-hero h1 em {
+  color: var(--accent);
+}
+.ref-hero h1 em span {
+  white-space: nowrap;
 }
 .marketing-site.meldiq-refresh .ref-hero > p:not(.ref-trust-note) {
-  max-width: 590px;
-  font-size: 15px;
-  line-height: 1.9;
-  margin-top: 25px;
-}
-.marketing-site.meldiq-refresh .hero-note {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  font-size: 10px;
-  color: var(--muted);
-  margin-bottom: 26px;
-  padding: 7px 12px;
-  border: 1px solid var(--line);
-  background: color-mix(in srgb, var(--surface) 65%, transparent);
-  border-radius: 30px;
+  max-width: 550px;
+  font-size: 18px;
+  line-height: 1.6;
+  margin-block: 23px 34px;
 }
 .marketing-site.meldiq-refresh .ref-orbit {
-  top: -230px;
-  opacity: 0.4;
-  background: repeating-radial-gradient(circle at 100% 40%, transparent 0 74px, #80c5ab24 75px 76px, transparent 77px 120px);
+  inset: -86px calc((100% - 100vw) / 2) auto auto;
+  width: min(620px, 100vw);
+  height: 500px;
+  opacity: 1;
+  background:
+    repeating-radial-gradient(
+      circle at calc(100% - 22px) 142px,
+      transparent 0 47px,
+      color-mix(in srgb, var(--accent) 16%, transparent) 48px,
+      transparent 49px 56px
+    ),
+    radial-gradient(ellipse at 84% 4%, color-mix(in srgb, var(--accent) 19%, transparent), transparent 72%);
+  mask-image: radial-gradient(ellipse at right top, black 26%, transparent 72%);
+}
+.marketing-site.meldiq-refresh .ref-actions {
+  gap: 10px;
+}
+.marketing-site.meldiq-refresh .ref-actions .button {
+  min-height: 44px;
+  border-radius: 12px;
+  padding: 9px 22px;
+  font-size: 14px;
+  gap: 9px;
+}
+.marketing-site.meldiq-refresh .ref-actions .button.primary {
+  background: var(--accent);
+  color: var(--on-accent);
+  border-color: var(--accent);
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--accent) 22%, transparent);
+}
+.marketing-site.meldiq-refresh .ref-actions .button.primary:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+  color: var(--on-accent);
+}
+.marketing-site.meldiq-refresh .ref-actions .button.secondary {
+  background: color-mix(in srgb, var(--text) 4%, transparent);
+  border-color: color-mix(in srgb, var(--text) 17%, transparent);
+}
+.marketing-site.meldiq-refresh .ref-hero > .ref-trust-note {
+  margin-top: 21px;
+  font-size: 13px;
+}
+.marketing-site.meldiq-refresh .ref-trust-note .status-dot {
+  width: 9px;
+  height: 9px;
+  background: #38c986;
+}
+.marketing-site.meldiq-refresh .ref-trust-note strong {
+  font-weight: 600;
 }
 .marketing-site.meldiq-refresh .ref-main-preview {
-  margin-bottom: 100px;
+  margin-bottom: 136px;
+  position: relative;
+}
+.ref-main-preview::before {
+  content: "";
+  position: absolute;
+  inset: 18% -4% -88px;
+  z-index: -1;
+  background: radial-gradient(ellipse at bottom, color-mix(in srgb, var(--accent) 12%, transparent), transparent 70%);
 }
 .marketing-site.meldiq-refresh .ref-product-community .ref-client {
-  aspect-ratio: 1.88;
+  aspect-ratio: 1.526;
+}
+.marketing-site.meldiq-refresh .ref-client-body {
+  height: 100%;
+}
+.marketing-site.meldiq-refresh .ref-product-community .ref-client-body {
+  grid-template-columns: 4.7% 19% minmax(0, 1fr) 20%;
+}
+.marketing-site.meldiq-refresh .ref-client-main {
+  background: #222328;
+}
+.marketing-site.meldiq-refresh .ref-client-sidebar,
+.marketing-site.meldiq-refresh .ref-client-members {
+  background: #1a1b20;
+}
+.marketing-site.meldiq-refresh .ref-client-sidebar .ref-invite-illustration {
+  justify-content: center;
+  background: #24433d;
+  color: #b4fff3;
+  font-weight: 600;
+}
+.marketing-site.meldiq-refresh .ref-product-community .ref-client-toolbar {
+  height: 4cqw;
+}
+.marketing-site.meldiq-refresh .ref-product-community .ref-conversation {
+  padding-top: 2.2cqw;
+}
+.marketing-site.meldiq-refresh .ref-product-community .ref-conversation-intro h3 {
+  font-size: 1.65cqw;
 }
 .marketing-site.meldiq-refresh .ref-client {
   border-color: #3c4b45;
@@ -224,16 +369,24 @@ body:has(.marketing-site.is-light) {
   color: var(--cyan);
 }
 .marketing-site.meldiq-refresh .ref-feature-row {
-  gap: 75px;
-  margin-bottom: 125px;
+  gap: 60px;
+  margin-bottom: 68px;
+}
+.marketing-site.meldiq-refresh .ref-feature-copy {
+  max-width: 495px;
 }
 .marketing-site.meldiq-refresh .ref-feature-copy h2 {
-  font-size: clamp(32px, 3vw, 44px);
-  letter-spacing: -0.045em;
+  font-size: clamp(32px, 3.4vw, 46.4px);
+  line-height: 1.06;
+  letter-spacing: -0.04em;
 }
 .marketing-site.meldiq-refresh .ref-feature-copy p {
-  font-size: 13px;
-  line-height: 1.95;
+  font-size: 16px;
+  line-height: 1.65;
+  margin-top: 18px;
+}
+.marketing-site.meldiq-refresh .ref-feature-copy .inline-link {
+  margin-top: 14px;
 }
 .call-preview {
   margin: 0;
@@ -449,23 +602,67 @@ body:has(.marketing-site.is-light) {
   width: 100%;
   justify-content: center;
 }
+.marketing-site.meldiq-refresh .ref-join {
+  padding-block: 0 96px;
+}
 .marketing-site.meldiq-refresh .ref-join-inner {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  padding-block: 58px;
+  max-width: 736px;
+  border-radius: 24px;
+  padding-block: 67px 56px;
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--accent) 10%, transparent) 1px, transparent 1px) center / 112px 112px,
+    linear-gradient(color-mix(in srgb, var(--accent) 10%, transparent) 1px, transparent 1px) center / 112px 112px,
+    radial-gradient(ellipse at top, color-mix(in srgb, var(--accent) 20%, var(--surface)), var(--surface) 70%);
+}
+.ref-join-logo {
+  display: block;
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 25px;
+  border-radius: 22px;
+  background: var(--accent-soft);
+  box-shadow: 0 8px 22px color-mix(in srgb, var(--accent) 22%, transparent);
 }
 .marketing-site.meldiq-refresh .ref-join h2 {
-  font-size: 46px;
+  font-size: 49.6px;
+  line-height: 1.08;
+}
+.marketing-site.meldiq-refresh .ref-join p {
+  font-size: 15px;
+  line-height: 1.7;
+}
+.marketing-site.meldiq-refresh .ref-join-inner > span {
+  font-size: 12px;
 }
 .marketing-site.meldiq-refresh .ref-faq {
-  max-width: 850px;
+  max-width: 728px;
+  padding-bottom: 105px;
+}
+.marketing-site.meldiq-refresh .ref-faq h2 {
+  font-size: 46.4px;
+  line-height: 1.06;
+}
+.marketing-site.meldiq-refresh .ref-faq details:first-of-type {
+  border-top: 1px solid var(--line);
 }
 .marketing-site.meldiq-refresh .ref-faq summary {
-  font-size: 13px;
+  font-size: 15px;
+  font-weight: 600;
+  padding-block: 16px;
+}
+.marketing-site.meldiq-refresh .ref-faq summary > span {
+  width: 32px;
+  height: 32px;
 }
 .marketing-site.meldiq-refresh .ref-faq details p {
-  font-size: 12px;
+  font-size: 14px;
+  line-height: 1.75;
+}
+.marketing-site.meldiq-refresh .ref-faq details p a,
+.marketing-site.meldiq-refresh .ref-more-help {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 /* Shared interior pages. */
 .marketing-site.meldiq-refresh .page-hero,
@@ -912,35 +1109,63 @@ body:has(.marketing-site.is-light) {
   background: var(--surface);
   border-color: var(--line);
 }
+.marketing-site.meldiq-refresh .site-footer {
+  border: 0;
+  padding-top: 0;
+  overflow: hidden;
+}
 .marketing-site.meldiq-refresh .footer-grid {
-  gap: 38px;
+  border-top: 1px solid var(--line);
+  padding-top: 65px;
+  grid-template-columns: 1.86fr repeat(3, 1fr);
+  gap: 20px;
 }
 .marketing-site.meldiq-refresh .footer-brand p {
-  max-width: 220px;
+  max-width: 245px;
+  font-size: 14px;
+  line-height: 1.62;
+  margin-top: 18px;
 }
 .marketing-site.meldiq-refresh .footer-col h2 {
-  font-size: 10px;
+  font: 600 12px/1.3 var(--font);
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--text);
+  color: var(--muted);
 }
 .marketing-site.meldiq-refresh .footer-col a {
-  font-size: 11px;
+  font-size: 14px;
+  margin-bottom: 10px;
 }
 .marketing-site.meldiq-refresh .footer-app-link {
   display: inline-flex;
-  gap: 15px;
+  gap: 12px;
   color: var(--cyan);
-  font-size: 11px;
-  margin-top: 21px;
+  font-size: 13px;
+  margin-top: 17px;
+}
+.marketing-site.meldiq-refresh .footer-bottom {
+  font-size: 12px;
+  padding-block: 20px;
 }
 .marketing-site.meldiq-refresh .footer-bottom > span:nth-child(2) {
   display: inline;
+  letter-spacing: normal;
+  max-width: none;
+}
+.footer-wordmark {
+  container-type: inline-size;
+  color: color-mix(in srgb, var(--accent) 15%, var(--bg));
+  text-align: center;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.footer-wordmark span {
+  display: block;
+  font: 800 29cqw/0.83 var(--display-font);
+  letter-spacing: -0.05em;
+  margin-bottom: -0.14em;
 }
 @media (max-width: 1050px) {
-  .marketing-site.meldiq-refresh .nav-links {
-    gap: 17px;
-  }
   .marketing-site.meldiq-refresh .ref-feature-row {
     gap: 40px;
   }
@@ -959,39 +1184,74 @@ body:has(.marketing-site.is-light) {
   }
 }
 @media (max-width: 760px) {
-  .marketing-site.meldiq-refresh .site-header {
-    height: 78px;
+  .marketing-site.meldiq-refresh {
+    margin-inline: 0;
+    border-inline: 0;
+  }
+  .marketing-site.meldiq-refresh::before,
+  .marketing-site.meldiq-refresh::after {
+    display: none;
+  }
+  .marketing-site.meldiq-refresh .wrap {
+    width: calc(100% - 40px);
+  }
+  .marketing-site.meldiq-refresh .header-inner {
+    width: calc(100% - 32px);
+    padding-inline: 9px;
+  }
+  .marketing-site.meldiq-refresh .menu-button {
+    margin-left: 0;
+    border-color: transparent;
   }
   .marketing-site.meldiq-refresh #navigation {
+    top: calc(100% + 6px);
+    margin: 0;
     background: var(--surface);
     border: 1px solid var(--line);
     border-radius: 12px;
-    padding: 22px;
+    padding: 14px;
+    gap: 8px;
   }
   .marketing-site.meldiq-refresh #navigation .nav-links {
-    gap: 17px;
+    position: static;
+    transform: none;
   }
   .marketing-site.meldiq-refresh #navigation .nav-links a {
     font-size: 14px;
+    padding: 10px;
   }
   .marketing-site.meldiq-refresh #navigation .nav-actions {
     border-color: var(--line);
+    justify-content: stretch;
+  }
+  .marketing-site.meldiq-refresh .nav-actions .sign-in {
+    width: 100%;
   }
   .marketing-site.meldiq-refresh .ref-hero {
-    padding-top: 36px;
-    padding-bottom: 47px;
+    padding-block: 44px 47px;
+  }
+  .marketing-site.meldiq-refresh .ref-orbit {
+    inset: -86px -20px auto auto;
+    width: 100vw;
+    max-width: none;
+    height: 420px;
+    background:
+      repeating-radial-gradient(circle at 95% 136px, transparent 0 45px, color-mix(in srgb, var(--accent) 18%, transparent) 46px, transparent 47px 55px),
+      radial-gradient(ellipse at 86% 7%, color-mix(in srgb, var(--accent) 21%, transparent), transparent 76%);
+    mask-image: radial-gradient(ellipse at right top, black 38%, transparent 83%);
   }
   .marketing-site.meldiq-refresh .ref-hero h1 {
-    font-size: clamp(36px, 7vw, 52px);
+    font-size: clamp(36px, 9.4vw, 52px);
   }
   .marketing-site.meldiq-refresh .ref-hero > p:not(.ref-trust-note) {
-    font-size: 13px;
+    font-size: 16px;
+    margin-block: 22px 29px;
   }
   .marketing-site.meldiq-refresh .ref-main-preview {
-    margin-bottom: 65px;
+    margin-bottom: 78px;
   }
-  .marketing-site.meldiq-refresh .ref-product-community .ref-client {
-    aspect-ratio: 1.5;
+  .ref-main-preview::before {
+    inset: 12% 0 -60px;
   }
   .marketing-site.meldiq-refresh .included-strip {
     display: grid;
@@ -1081,6 +1341,7 @@ body:has(.marketing-site.is-light) {
     grid-template-columns: 1fr;
   }
   .marketing-site.meldiq-refresh .footer-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 35px 20px;
   }
   .marketing-site.meldiq-refresh .footer-col:last-child {
@@ -1098,25 +1359,11 @@ body:has(.marketing-site.is-light) {
   }
 }
 @media (max-width: 440px) {
-  .marketing-site.meldiq-refresh {
-    margin-inline: 8px;
+  .marketing-site.meldiq-refresh .ref-actions .button {
+    padding-inline: 12px;
   }
-  .marketing-site.meldiq-refresh .wrap {
-    width: calc(100% - 34px);
-  }
-  .marketing-site.meldiq-refresh .hero-note {
-    font-size: 9px;
-    padding-inline: 10px;
-  }
-  .marketing-site.meldiq-refresh .ref-hero h1 {
-    font-size: 36px;
-    letter-spacing: -0.05em;
-  }
-  .marketing-site.meldiq-refresh .ref-hero h1 em {
-    display: inline;
-  }
-  .marketing-site.meldiq-refresh .ref-trust-note {
-    font-size: 10px;
+  .marketing-site.meldiq-refresh .ref-join .ref-actions .button {
+    white-space: normal;
   }
   .marketing-site.meldiq-refresh .ref-feature-copy h2 {
     font-size: 32px;
@@ -1132,7 +1379,7 @@ body:has(.marketing-site.is-light) {
     height: 56px;
   }
   .marketing-site.meldiq-refresh .footer-col a {
-    font-size: 10px;
+    font-size: 13px;
   }
   .marketing-site.meldiq-refresh .ref-join-inner {
     padding-inline: 20px;
@@ -1145,5 +1392,348 @@ body:has(.marketing-site.is-light) {
     scroll-behavior: auto !important;
     animation: none !important;
     transition: none !important;
+  }
+}
+
+.analytics-choice {
+  max-width: 76rem;
+  margin: 0 auto;
+  padding: 0.75rem 1rem;
+  color: var(--text);
+}
+
+.analytics-choice button {
+  border: 1px solid currentColor;
+  border-radius: 0.4rem;
+  background: transparent;
+  color: inherit;
+  padding: 0.45rem 0.75rem;
+  cursor: pointer;
+}
+
+.analytics-banner {
+  position: fixed;
+  z-index: 100;
+  inset: auto 1rem 1rem;
+  max-width: 36rem;
+  margin-inline: auto;
+  padding: 0.85rem 1rem;
+  border: 1px solid #5c6473;
+  border-radius: 0.65rem;
+  background: #191d27;
+  color: #f5f7ff;
+  box-shadow: 0 0.4rem 1.5rem #0004;
+}
+
+.analytics-banner p {
+  margin: 0 0 0.6rem;
+}
+
+.analytics-banner a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+.analytics-banner div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* Download and developer pages share the marketing type and spacing. */
+.marketing-site.meldiq-refresh:has(.download-hero) {
+  background:
+    radial-gradient(ellipse at calc(100% - 30px) 190px, color-mix(in srgb, var(--accent) 15%, transparent), transparent 66%) top right / min(660px, 100%) 640px
+      no-repeat,
+    var(--bg);
+}
+.marketing-site.meldiq-refresh .download-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 0.96fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 56px;
+  padding-block: 62px 74px;
+}
+.marketing-site.meldiq-refresh .download-hero h1 {
+  font-size: clamp(44px, 5vw, 68px);
+  line-height: 1.02;
+}
+.marketing-site.meldiq-refresh .download-hero > div > p:not(.fine-print),
+.marketing-site.meldiq-refresh .developer-hero p {
+  font-size: 17px;
+  line-height: 1.65;
+  margin-block: 23px 30px;
+}
+.marketing-site.meldiq-refresh .download-hero .fine-print {
+  margin-top: 20px;
+}
+.marketing-site.meldiq-refresh .download-hero .ref-client {
+  aspect-ratio: 16 / 9;
+}
+.download-section {
+  padding-bottom: 62px;
+}
+.marketing-site.meldiq-refresh .download-section h2 {
+  font-size: 36px;
+  margin-bottom: 22px;
+}
+.download-platforms {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 14px;
+}
+.marketing-site.meldiq-refresh .download-platforms > article {
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+}
+.marketing-site.meldiq-refresh .download-platforms h3 {
+  font-size: 21px;
+  margin: 0 0 8px;
+}
+.marketing-site.meldiq-refresh .download-platforms p {
+  line-height: 1.65;
+  font-size: 14px;
+}
+.marketing-site.meldiq-refresh .download-platforms .play-badge {
+  margin-top: 10px;
+}
+.developer-hero {
+  padding-block: 35px 30px;
+}
+.marketing-site.meldiq-refresh .developer-hero h1 {
+  font-size: clamp(42px, 5vw, 58px);
+  line-height: 1.02;
+}
+.marketing-site.meldiq-refresh .developer-hero p {
+  max-width: 630px;
+  margin-bottom: 20px;
+}
+.developer-links {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.marketing-site.meldiq-refresh .developer-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 6px 14px;
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  background: var(--surface);
+  font-size: 13px;
+  font-weight: 600;
+}
+.marketing-site.meldiq-refresh .developer-links a:hover {
+  border-color: var(--accent);
+}
+.developer-docs {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(180px, 235px);
+  gap: clamp(28px, 5vw, 72px);
+  padding-bottom: 85px;
+}
+.developer-article {
+  padding-left: 24px;
+}
+.developer-article section {
+  scroll-margin-top: 106px;
+}
+.developer-article section + section {
+  margin-top: 34px;
+}
+.marketing-site.meldiq-refresh .developer-article h2 {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 10px;
+  margin-bottom: 14px;
+  font-size: 28px;
+}
+.marketing-site.meldiq-refresh .developer-article p {
+  font-size: 16px;
+}
+.developer-article ol {
+  list-style: none;
+  padding: 0;
+  counter-reset: developer-step;
+}
+.developer-article li {
+  counter-increment: developer-step;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 14px;
+  padding: 18px;
+  margin-bottom: 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--muted);
+}
+.developer-article li::before {
+  content: counter(developer-step);
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  grid-row: span 2;
+  border-radius: 8px;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-weight: 600;
+}
+.developer-article li strong {
+  color: var(--text);
+}
+.developer-toc {
+  position: sticky;
+  top: 100px;
+  align-self: start;
+}
+.marketing-site.meldiq-refresh .developer-toc ul {
+  list-style: none;
+  border-left: 1px solid var(--line);
+  padding-left: 14px;
+  margin: 0;
+}
+.marketing-site.meldiq-refresh .developer-toc a {
+  display: block;
+  padding: 4px 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+.marketing-site.meldiq-refresh .developer-toc a:hover {
+  color: var(--accent);
+}
+.marketing-site.meldiq-refresh:has(.pricing-hero) {
+  background:
+    radial-gradient(ellipse at 83% 0, color-mix(in srgb, var(--accent) 15%, transparent), transparent 66%) top / 100% 850px no-repeat,
+    var(--bg);
+}
+.marketing-site.meldiq-refresh .pricing-hero {
+  background: radial-gradient(ellipse at 0 100%, color-mix(in srgb, var(--accent) 10%, transparent), transparent 36%);
+  padding-block: 58px 65px;
+}
+.marketing-site.meldiq-refresh .pricing-plans {
+  scroll-margin-top: 8px;
+}
+.marketing-site.meldiq-refresh .pricing-hero .wrap {
+  max-width: 680px;
+}
+.marketing-site.meldiq-refresh .pricing-hero h1 {
+  font-size: clamp(42px, 6vw, 74px);
+  line-height: 1.02;
+}
+.marketing-site.meldiq-refresh .pricing-hero p {
+  font-size: 17px;
+  line-height: 1.65;
+}
+.plus-hero-rate {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-block: 26px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.plus-hero-rate > div {
+  padding: 12px 16px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: linear-gradient(130deg, var(--accent-soft), var(--surface-2));
+  color: var(--text);
+}
+.plus-hero-rate strong {
+  font: 750 36px/1.2 var(--display-font);
+  letter-spacing: -0.04em;
+}
+@media (max-width: 760px) {
+  .marketing-site.meldiq-refresh .download-hero {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding-block: 42px 58px;
+  }
+  .download-platforms {
+    grid-template-columns: 1fr;
+  }
+  .developer-docs {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .developer-article {
+    padding-left: 0;
+  }
+  .developer-toc {
+    grid-row: 1;
+    position: static;
+  }
+  .marketing-site.meldiq-refresh .pricing-hero {
+    padding-block: 36px 48px;
+  }
+}
+
+.footer-controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px 18px;
+}
+.analytics-choice {
+  padding: 0;
+  margin: 0;
+}
+.analytics-choice .analytics-settings {
+  border: 0;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.analytics-banner {
+  inset: auto 1rem max(1rem, env(safe-area-inset-bottom));
+  padding: 1.1rem 1.25rem;
+  border-color: var(--border-strong);
+  border-radius: 16px;
+  background: var(--surface);
+  color: var(--text);
+  text-align: left;
+  font-size: 14px;
+}
+.marketing-site.meldiq-refresh .analytics-banner h2 {
+  margin-bottom: 7px;
+  font-size: 23px;
+}
+.analytics-banner button {
+  min-height: 42px;
+  border-color: var(--border-strong);
+  padding-inline: 14px;
+}
+.analytics-banner button:last-child {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--on-accent);
+}
+.program-hero {
+  padding-block: clamp(52px, 8vw, 105px);
+}
+.marketing-site.meldiq-refresh .program-hero h1 {
+  max-width: 790px;
+  font-size: clamp(42px, 6vw, 76px);
+  line-height: 1.03;
+}
+.marketing-site.meldiq-refresh .program-hero p {
+  max-width: 590px;
+  margin-block: 23px 28px;
+  font-size: 17px;
+}
+.program-steps {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+@media (max-width: 760px) {
+  .program-steps {
+    grid-template-columns: 1fr;
+  }
+  .footer-controls {
+    justify-content: flex-start;
   }
 }

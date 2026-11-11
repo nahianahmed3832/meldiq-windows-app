@@ -2,42 +2,47 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { appFor, browserHints, detectPlatform, type Platform } from "../lib/device";
 import { SITE } from "../lib/site";
+import { WINDOWS_DOWNLOAD } from "../lib/windowsDownload";
 
-interface AppButtonsProps {
-  /** "hero": light buttons on the teal hero; "page": on a light surface. */
-  tone?: "hero" | "page";
-}
+const webApp = new URL(SITE.webAppUrl).href;
 
-/**
- * "Open Meldiq on the web" (always first, on the left), then the app for the visitor's device: the Play Store on
- * Android, "coming soon" where the app isn't out yet, and all downloads where Meldiq has no app (Linux, unknown). The
- * build renders the neutral "Get the app"; the browser swaps in its own suggestion once loaded.
- */
-export function AppButtons({ tone = "page" }: AppButtonsProps) {
+export function AppButtons({ downloadPage = false }: { downloadPage?: boolean }) {
   const [platform, setPlatform] = useState<Platform | null>(null);
   useEffect(() => setPlatform(detectPlatform(browserHints())), []);
   const app = platform ? appFor(platform) : null;
-  const primary = tone === "hero" ? "btn btn-light" : "btn btn-primary";
-  const secondary = tone === "hero" ? "btn btn-outline-light" : "btn btn-secondary";
+  const nativeApp = app?.href ? app : null;
 
   return (
-    <div className="hero-actions" data-platform={platform ?? "pending"}>
-      <a href={SITE.webAppUrl} className={primary}>
-        Open Meldiq on the web
-      </a>
-      {app?.href ? (
-        <a href={app.href} className={secondary} rel="noopener">
-          {app.action}
+    <div data-platform={platform ?? "pending"}>
+      <div className="ref-actions">
+        <a className={`button ${downloadPage && nativeApp ? "secondary" : "primary"}`} href={webApp}>
+          Open Meldiq in your browser {!downloadPage && <span aria-hidden="true">→</span>}
         </a>
-      ) : app ? (
-        <span className={`${secondary} coming-soon`} role="status" aria-disabled="true">
-          {app.action}
-        </span>
-      ) : (
-        <Link href="/download" className={secondary}>
-          {platform === null ? "Get the app" : "All downloads"}
-        </Link>
-      )}
+        {nativeApp?.href ? (
+          <a
+            className={`button ${downloadPage ? "primary" : "secondary"}`}
+            href={nativeApp.href}
+            download={platform === "windows" ? WINDOWS_DOWNLOAD.filename : undefined}
+          >
+            {downloadPage ? `Get Meldiq for ${nativeApp.name}` : nativeApp.action}
+          </a>
+        ) : (
+          !downloadPage && (
+            <Link className="button secondary" href="/download">
+              All downloads
+            </Link>
+          )
+        )}
+      </div>
+      {downloadPage && platform ? (
+        <p className="fine-print">
+          {nativeApp
+            ? `Recommended for this device: Meldiq for ${nativeApp.name}.`
+            : app
+              ? `Use Meldiq in your browser on ${app.name}.`
+              : "Use Meldiq in your browser on this device."}
+        </p>
+      ) : null}
     </div>
   );
 }

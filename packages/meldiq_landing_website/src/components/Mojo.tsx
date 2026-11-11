@@ -139,9 +139,9 @@ export function AnnouncedPlanCard({ plan, load, perks }: { plan: (typeof ANNOUNC
       <div className="plan-foot">
         {badge ? (
           <>
-            <Link href="/signup" className="btn btn-primary btn-block">
+            <a href="/signup" className="btn btn-primary btn-block">
               Start free
-            </Link>
+            </a>
             <p className="muted" style={{ margin: "10px 0 0", fontSize: "0.85rem", textAlign: "center" }}>
               No card needed. Paying for it opens once it&apos;s on sale.
             </p>
@@ -208,9 +208,9 @@ export function MojoSection({ load }: LoadProps) {
                 See Meldiq Plus
               </Link>
               {trial ? (
-                <Link href="/signup" className="btn btn-secondary">
+                <a href="/signup" className="btn btn-secondary">
                   Start free
-                </Link>
+                </a>
               ) : null}
             </div>
           </div>

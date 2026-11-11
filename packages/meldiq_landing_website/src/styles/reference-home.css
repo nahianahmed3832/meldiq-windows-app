@@ -1,27 +1,31 @@
 /* The public homepage follows a quiet, single-column product introduction. */
 @font-face {
   font-family: Poppins;
-  src: url("/fonts/poppins/Poppins-Regular.woff2") format("woff2");
+  src: url("/fonts/poppins/Poppins-Regular-Latin.woff2") format("woff2");
   font-weight: 400;
   font-display: swap;
+  unicode-range: U+0000-00FF, U+0100-017F, U+02B0-02FF, U+0300-036F, U+2000-206F, U+20A0-20CF, U+2100-214F, U+2190-21FF, U+2300-23FF, U+25A0-27FF, U+FEFF, U+FFFD;
 }
 @font-face {
   font-family: Poppins;
-  src: url("/fonts/poppins/Poppins-Medium.woff2") format("woff2");
+  src: url("/fonts/poppins/Poppins-Medium-Latin.woff2") format("woff2");
   font-weight: 500;
   font-display: swap;
+  unicode-range: U+0000-00FF, U+0100-017F, U+02B0-02FF, U+0300-036F, U+2000-206F, U+20A0-20CF, U+2100-214F, U+2190-21FF, U+2300-23FF, U+25A0-27FF, U+FEFF, U+FFFD;
 }
 @font-face {
   font-family: Poppins;
-  src: url("/fonts/poppins/Poppins-SemiBold.woff2") format("woff2");
+  src: url("/fonts/poppins/Poppins-SemiBold-Latin.woff2") format("woff2");
   font-weight: 600;
   font-display: swap;
+  unicode-range: U+0000-00FF, U+0100-017F, U+02B0-02FF, U+0300-036F, U+2000-206F, U+20A0-20CF, U+2100-214F, U+2190-21FF, U+2300-23FF, U+25A0-27FF, U+FEFF, U+FFFD;
 }
 @font-face {
   font-family: Poppins;
-  src: url("/fonts/poppins/Poppins-Bold.woff2") format("woff2");
+  src: url("/fonts/poppins/Poppins-Bold-Latin.woff2") format("woff2");
   font-weight: 700 900;
   font-display: swap;
+  unicode-range: U+0000-00FF, U+0100-017F, U+02B0-02FF, U+0300-036F, U+2000-206F, U+20A0-20CF, U+2100-214F, U+2190-21FF, U+2300-23FF, U+25A0-27FF, U+FEFF, U+FFFD;
 }
 .marketing-site.reference-home {
   --bg: #101012;
@@ -1065,37 +1069,8 @@
   }
 }
 
-/* Simulated activity is labelled until a real public presence source exists. */
-.marketing-site.reference-home .ref-hero > .ref-trust-note {
-  flex-wrap: wrap;
-  gap: 10px 14px;
-}
 .reference-home .ref-availability {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-}
-.reference-home .ref-activity-preview {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 5px;
-  border-left: 1px solid var(--line);
-  padding-left: 14px;
-}
-.reference-home .ref-activity-preview strong {
-  display: inline-block;
-  min-width: 4ch;
-  text-align: right;
-  font-variant-numeric: tabular-nums;
-}
-@media (max-width: 440px) {
-  .reference-home .ref-activity-preview {
-    flex-basis: 100%;
-    border-left: 0;
-    padding-left: 14px;
-  }
-  .reference-home .ref-activity-preview strong {
-    text-align: left;
-    min-width: 0;
-  }
 }

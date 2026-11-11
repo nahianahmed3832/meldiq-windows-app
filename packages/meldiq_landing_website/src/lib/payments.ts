@@ -20,7 +20,8 @@ export const zPayPalCheckout = z.object({
   approved: z.boolean().optional(),
   currency: z.literal("USD"),
   amountMinor: z.number().int().nonnegative(),
-  interval: z.enum(["month", "one_time"]),
+  interval: z.enum(["month", "year", "one_time"]),
+  billingFrequency: z.number().int().positive().optional(),
   expiresAt: z.number(),
 });
 export const zPayPalCanceled = z.object({ confirmed: z.boolean(), accessUntil: z.number().nullable(), status: z.string() });
@@ -31,6 +32,13 @@ export interface PaymentDetails {
   billingStartAt: number | null;
 }
 type BillingSession = Pick<SessionStore, "authed">;
+
+/** The public website can only send buyers to live checkout. */
+export function requireLiveSitePayment(mode: PaymentDetails["mode"], hostname: string): void {
+  if (mode === "test" && (hostname === "meldiq.app" || hostname === "www.meldiq.app")) {
+    throw new ApiError(409, "billing_unavailable", "Live payment is unavailable right now. Please try again later.");
+  }
+}
 
 /** The payment provider and first billing date come from the authenticated server, before agreement. */
 export async function paymentDetails(session: BillingSession): Promise<PaymentDetails> {
@@ -79,6 +87,8 @@ export async function startPayment(offer: Offer, disclosed: PaymentDetails, sess
         o.amountMinor === offer.amountMinor &&
         o.currency === offer.currency &&
         o.interval === offer.interval &&
+        (o.term ?? "monthly") === (offer.term ?? "monthly") &&
+        (o.billingFrequency ?? 1) === (offer.billingFrequency ?? 1) &&
         o.trialDays === offer.trialDays &&
         o.graceDays === offer.graceDays,
     );
@@ -95,11 +105,16 @@ export async function startPayment(offer: Offer, disclosed: PaymentDetails, sess
       "The payment terms changed. Close this window and choose the plan again to review them. No new payment was started.",
     );
   }
-  const started = await session.authed("/v2/billing/checkout", zCheckoutStarted, { method: "POST", body: { planKey: offer.key, returnTo: "site" } });
+  const started = await session.authed("/v2/billing/checkout", zCheckoutStarted, {
+    method: "POST",
+    body: { planKey: offer.key, returnTo: "site", ...(offer.term && offer.term !== "monthly" ? { term: offer.term } : {}) },
+  });
   return { ...started, url: paymentUrl(started.url, fresh), provider: fresh.provider, mode: fresh.mode };
 }
 
 const zPendingPayment = z.object({
+  interval: z.enum(["month", "year"]).optional(),
+  billingFrequency: z.number().int().positive().optional(),
   amountMinor: z.number().int().positive().optional(),
   approvalUrl: z.string().optional(),
   expiresAt: z.number().optional(),
@@ -135,7 +150,13 @@ export async function verifyPayment(session: BillingSession, pending: PendingPay
   let scheduled = false;
   if (pending?.provider === "paypal") {
     const purchase = await session.authed(`/v2/billing/paypal/checkouts/${encodeURIComponent(pending.checkoutId)}`, zPayPalCheckout);
-    if (purchase.id !== pending.checkoutId || purchase.product !== "plus" || purchase.amountMinor !== (pending.amountMinor ?? 399) || purchase.interval !== "month") {
+    if (
+      purchase.id !== pending.checkoutId ||
+      purchase.product !== "plus" ||
+      purchase.amountMinor !== (pending.amountMinor ?? 399) ||
+      purchase.interval !== (pending.interval ?? "month") ||
+      (purchase.billingFrequency ?? 1) !== (pending.billingFrequency ?? 1)
+    ) {
       throw new ApiError(409, "checkout_mismatch", "This payment could not be matched to your Plus subscription. Check billing before trying again.");
     }
     confirmed = purchase.confirmed;

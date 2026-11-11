@@ -12,8 +12,8 @@ import { browserSession } from "../lib/session";
 import { PreviewPlanCard } from "../components/PreviewPlanCard";
 import { CatalogStatus } from "../components/MarketingStatus";
 import { FinalCta } from "../components/MarketingArt";
-import { SITE } from "../lib/site";
-import { formatPrice } from "../lib/money";
+import { SITE, ANNOUNCED_PLANS } from "../lib/site";
+import { formatMoney, formatPrice } from "../lib/money";
 import { BillingTerms } from "../components/BillingTerms";
 
 const FREE_INCLUDES = [
@@ -42,6 +42,9 @@ export default function Pricing() {
   );
   const shown = offers;
   const announced = shown.length === 0;
+  const monthly = shown.find((offer) => !offer.term || offer.term === "monthly");
+  const monthlyPlus = monthly ?? ANNOUNCED_PLANS[0];
+  const mainOffer = monthly ?? shown[0];
   const botsPlus =
     load.state === "ready" && load.catalog.available
       ? load.catalog.plans.find((offer) => offer.key === "bots_plus" && offer.audience === "organization")
@@ -51,7 +54,9 @@ export default function Pricing() {
     setChooseError(null);
     const session = browserSession();
     if (!session.current()) {
-      void router.push(`/login?next=${encodeURIComponent(`/pricing?plan=${offer.key}`)}`);
+      const intent = new URLSearchParams({ plan: offer.key });
+      if (offer.term && offer.term !== "monthly") intent.set("term", offer.term);
+      window.location.assign(`/login?next=${encodeURIComponent(`/pricing?${intent}`)}`);
       return;
     }
     try {
@@ -70,14 +75,15 @@ export default function Pricing() {
   // Back from signing in with a plan in mind: open it.
   useEffect(() => {
     const key = typeof router.query.plan === "string" ? router.query.plan : null;
-    const offer = key ? offers.find((o) => o.key === key && o.audience === "personal") : undefined;
+    const term = typeof router.query.term === "string" ? router.query.term : "monthly";
+    const offer = key ? offers.find((o) => o.key === key && (o.term ?? "monthly") === term) : undefined;
     if (offer && browserSession().current()) {
       void choose(offer);
       void router.replace("/pricing", undefined, { shallow: true });
     }
     // Runs when the catalog arrives with ?plan= in the address.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [offers, router.query.plan]);
+  }, [offers, router.query.plan, router.query.term]);
 
   return (
     <Layout
@@ -106,7 +112,22 @@ export default function Pricing() {
             Your everyday conversations stay free. Plus adds more room for files, longer messages and account extras, while helping support Meldiq’s servers and
             ongoing development.
           </p>
-          <p>Meldiq Plus adds account extras for $4.99/month, including files up to 1 GB each, with one subscription across supported devices.</p>
+          <div className="plus-hero-rate">
+            <div>
+              <strong>{formatMoney(monthlyPlus.amountMinor, monthlyPlus.currency)}</strong> <span>/month</span>
+            </div>
+            <span>Files up to 1 GB each · One subscription across supported devices</span>
+          </div>
+          <div className="ref-actions">
+            <a className="button primary" href="#plans">
+              See Meldiq Plus plans <span aria-hidden="true">→</span>
+            </a>
+            {mojo?.onSale?.gifts ? (
+              <a className="button secondary" href="#gift-heading">
+                How gifting works
+              </a>
+            ) : null}
+          </div>
           <CatalogStatus />
         </div>
       </section>
@@ -134,14 +155,12 @@ export default function Pricing() {
                 ))}
               </ul>
               <div className="plan-foot">
-                <Link href="/signup" className="btn btn-secondary btn-block">
+                <a href="/signup" className="btn btn-secondary btn-block">
                   Create a free account
-                </Link>
+                </a>
               </div>
             </article>
-            {shown.map((o, i) => (
-              <PlanCard key={o.key} offer={o} featured={i === shown.length - 1} onChoose={choose} perks={tierPerks(mojo, o.key)} />
-            ))}
+            {mainOffer ? <PlanCard offer={mainOffer} featured onChoose={choose} perks={tierPerks(mojo, mainOffer.key)} /> : null}
             {announced ? ["plus"].map((key) => <PreviewPlanCard key={key} planKey={key} load={load} mojo={mojo} />) : null}
           </div>
 
@@ -160,7 +179,7 @@ export default function Pricing() {
 
       <section className="section terms-section">
         <div className="wrap">
-          <BillingTerms mojo={mojo} monthlyAvailable={!announced} />
+          <BillingTerms mojo={mojo} offers={shown} onChoose={choose} />
         </div>
       </section>
 
@@ -265,7 +284,7 @@ export default function Pricing() {
               <span className="eyebrow">Free days</span>
               <h2>Try it before you pay anything</h2>
               <p>
-                No card is needed for free days. Your invite link is on <Link href="/account">your account page</Link>.
+                No card is needed for free days. Your invite link is on <a href="/account">your account page</a>.
               </p>
             </div>
             <FreeDaysSteps load={load} />
@@ -278,8 +297,8 @@ export default function Pricing() {
           <div className="card">
             <h3>Meldiq Plus renewal and cancellation</h3>
             <p className="muted">
-              Meldiq Plus renews automatically every month. Cancel any time from your billing page; you keep the plan until the end of the period you paid for.{" "}
-              <Link href="/legal/billing">Details</Link>
+              Meldiq Plus renews automatically at the end of your billing period. Cancel any time from your billing page; you keep the plan until the end of the
+              period you paid for. <Link href="/legal/billing">Details</Link>
             </p>
           </div>
           <div className="card">

@@ -1,6 +1,5 @@
 import { ANNOUNCED_PLANS } from "../lib/site";
 import { formatMoney } from "../lib/money";
-import Link from "next/link";
 import type { MojoCatalog } from "../lib/api";
 import type { CatalogLoad } from "../lib/catalog";
 import { tierPerks, freeDaysBadge } from "./Mojo";
@@ -41,15 +40,15 @@ export function PreviewPlanCard({ planKey, load, mojo }: { planKey: string; load
         {badge ? (
           <>
             <span className="badge accent">{badge}</span>
-            <Link className="btn btn-primary btn-block" href="/signup">
+            <a className="btn btn-primary btn-block" href="/signup">
               Try it free
-            </Link>
+            </a>
             <p className="fine-print">No card needed. Trial ends by itself.</p>
           </>
         ) : (
-          <Link className="btn btn-secondary btn-block" href="/account/billing">
+          <a className="btn btn-secondary btn-block" href="/account/billing">
             Check availability
-          </Link>
+          </a>
         )}
       </div>
     </article>

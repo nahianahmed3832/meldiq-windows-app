@@ -120,7 +120,7 @@ export default function Privacy() {
           title: "This website",
           body: (
             <p>
-              The website uses no advertising or tracking cookies and loads no third-party scripts. When you sign in here, your session is kept in this browser
+              The public website uses optional Google Analytics only if you allow it. We measure public page visits and download clicks. You can change your choice in Analytics preferences. We keep analytics off account and billing pages. When you sign in here, your session is kept in this browser
               tab only and ends when you close it or sign out. PayPal hosts new subscription payment pages under its own privacy policy. Earlier Stripe payment
               pages follow Stripe&apos;s privacy policy.
             </p>

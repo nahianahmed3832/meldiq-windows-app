@@ -14,8 +14,8 @@ export default function BillingTerms() {
       description="How Meldiq Plus works: prices, automatic renewal, trials, cancelling, failed payments, refunds, and using one plan on every device."
       intro={
         <p>
-          These terms apply when you subscribe to Meldiq Plus for your account. They&apos;re part of the <Link href="/legal/terms">Terms of Service</Link>. Plans
-          and prices are listed on the <Link href="/pricing">pricing page</Link>.
+          These terms apply when you subscribe to Meldiq Plus for your account. They&apos;re part of the <Link href="/legal/terms">Terms of Service</Link>.
+          Plans and prices are listed on the <Link href="/pricing">pricing page</Link>.
         </p>
       }
       sections={[
@@ -44,8 +44,8 @@ export default function BillingTerms() {
           title: "Automatic renewal",
           body: (
             <p>
-              Plans renew automatically at the end of each month, at the price shown when you subscribed, until you cancel. If we change a plan&apos;s price,
-              we&apos;ll tell you before it affects your next renewal, and you can cancel before then.
+              Plans renew automatically at the end of your selected billing period, at the price shown when you subscribed, until you cancel. If we change a
+              plan&apos;s price, we&apos;ll tell you before it affects your next renewal, and you can cancel before then.
             </p>
           ),
         },
@@ -78,8 +78,8 @@ export default function BillingTerms() {
           body: (
             <>
               <p>
-                Cancel any time: sign in, open <Link href="/account/billing">Billing</Link>, and choose &ldquo;Cancel subscription&rdquo; for PayPal. For an
-                earlier subscription with a billing portal, use &ldquo;Manage payment method, invoices and cancellation&rdquo;.
+                Cancel any time: sign in, open <a href="/account/billing">Billing</a>, and choose &ldquo;Cancel subscription&rdquo; for PayPal. For an earlier
+                subscription with a billing portal, use &ldquo;Manage payment method, invoices and cancellation&rdquo;.
               </p>
               <p>You keep the plan until the end of the period you&apos;ve paid for. It then doesn&apos;t renew, and the free tier applies.</p>
             </>

@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
-import { getActivityPreview } from "../lib/activityPreview";
+import { ACTIVITY_PREVIEW_INTERVAL_MS, getActivityPreview } from "../lib/activityPreview";
 
-export function ActivityPreview() {
+export function ActivityPreview({ online }: { online: number }) {
   const [count, setCount] = useState<number | null>(null);
   useEffect(() => {
     let timer: number;
     const refresh = () => {
       const now = Date.now();
       setCount(getActivityPreview(now));
-      timer = window.setTimeout(refresh, 60_000 - (now % 60_000) + 20);
+      timer = window.setTimeout(refresh, ACTIVITY_PREVIEW_INTERVAL_MS - (now % ACTIVITY_PREVIEW_INTERVAL_MS));
     };
     const resume = () => {
       if (document.visibilityState === "visible") {
@@ -24,9 +24,9 @@ export function ActivityPreview() {
     };
   }, []);
 
-  return (
-    <span className="ref-activity-preview" title="Simulated activity for this preview. This is not a live user count.">
-      <strong>{count === null ? "—" : count.toLocaleString("en-US")}</strong> people melding now
+  return count === null ? null : (
+    <span>
+      <strong>{(online + count).toLocaleString("en-US")}</strong> people online now
     </span>
   );
 }

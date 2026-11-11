@@ -5,7 +5,7 @@ import { SITE } from "../lib/site";
 export default function Community() {
   return (
     <GuidePage
-      title="Community"
+      title="Find or Create a Community"
       eyebrow="A PLACE TO BELONG"
       heading="Bring your people together."
       description="Find a community around the things you enjoy, or make a space for the people you already know."
@@ -20,8 +20,8 @@ export default function Community() {
           title: "Build a space of your own",
           text: "Create a public or invite-only community. Give each conversation a home with categories, text channels, forums and voice rooms.",
           items: ["Share invitations with your group", "Set up roles and channel permissions", "Give announcements and community rules their own space"],
-          href: "/tutorials",
-          label: "Getting started",
+          href: "/gaming-community-chat",
+          label: "Set up a gaming community",
         },
         {
           title: "Make it welcoming",

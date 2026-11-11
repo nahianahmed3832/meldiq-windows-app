@@ -68,8 +68,8 @@ export default function Faq() {
   };
   return (
     <Layout
-      title="FAQ — Questions, answered"
-      description="Find clear answers about Meldiq communities, privacy, web and Android, Meldiq Plus, Sparks, gifts and your account."
+      title="FAQ on Communities, Downloads & Meldiq Plus"
+      description="Find clear answers about Meldiq communities, privacy, Windows and Android, Meldiq Plus, Sparks, gifts and your account."
     >
       <section className="page-hero wrap">
         <Link className="breadcrumb" href="/">
@@ -110,6 +110,7 @@ export default function Faq() {
           <aside>
             <h2>Need a little help?</h2>
             <img src="/meldling-128.png" width={100} height={100} alt="Meldling is here to help" loading="lazy" />
+            <p>Setting up a group? Read the <Link href="/tutorials">getting started guide</Link> or learn how to <Link href="/voice-video-screen-sharing">share your screen</Link>.</p>
             <p>Start with Support for account, billing and community help.</p>
             <Link href="/support" className="button secondary">
               Find support →
@@ -150,8 +151,8 @@ export default function Faq() {
         </div>
         <div className="faq-bottom">
           <h2>Useful next steps</h2>
-          <Link href="/signup">Create an account ↗</Link>
-          <Link href="/account/billing">Manage billing ↗</Link>
+          <a href="/signup">Create an account ↗</a>
+          <a href="/account/billing">Manage billing ↗</a>
           <Link href="/download">Find your platform →</Link>
           <Link href="/legal/privacy">Privacy Policy →</Link>
           <Link href="/legal/account-deletion">Account deletion &amp; data →</Link>

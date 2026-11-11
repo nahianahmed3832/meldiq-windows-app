@@ -1,86 +1,81 @@
 import Link from "next/link";
 import { Layout } from "../components/Layout";
 import { LandingProductPreview } from "../components/LandingProductPreview";
-import { PlusSpotlight } from "../components/PlusSpotlight";
-import { CallPreview } from "../components/CallPreview";
-import { SITE } from "../lib/site";
+import { AppButtons } from "../components/AppButtons";
+import { OnlineNow } from "../components/OnlineNow";
+
 const questions = [
-  [
-    "Is Meldiq free?",
-    "Yes. Communities, channels, direct messages, private groups, voice and video calls, screen sharing and encrypted file sharing are part of the free experience. Meldiq Plus is optional. Visit Pricing for current availability and details.",
-  ],
-  [
-    "Which platforms are available?",
-    "Meldiq is available in your browser, on Android and as a Windows desktop download. Native apps for iPhone and iPad and macOS are planned. One account works across supported devices.",
-  ],
-  [
-    "Can I create my own community?",
-    "Yes. Create a public or invite-only community, organize it with categories and channels, and use roles and permissions to decide who can see and participate in each space.",
-  ],
-  [
-    "What does Meldiq Plus add?",
-    "Meldiq Plus adds optional account extras for $4.99/month, including files up to 1 GB each. The Pricing page explains availability, benefits and separate Spark community boosting. Every core messaging feature remains free; no paid plan is required to start talking.",
-  ],
-  [
-    "How private are my conversations?",
-    "Files are encrypted before upload. Current messages can include attachment keys that the Meldiq server can read. Call-media encryption is on by default. The server can still see account details, community memberships and routing metadata. Meldiq has not had an independent security audit. Read the Privacy Policy for the full explanation.",
-  ],
+  {
+    question: "Is Meldiq free?",
+    answer:
+      "Yes. Communities, direct messages, private groups, voice and video calls, screen sharing and encrypted file sharing are free. Meldiq Plus is an optional subscription that adds larger uploads and other account extras.",
+    href: "/pricing",
+    label: "See Meldiq Plus",
+  },
+  {
+    question: "Which platforms can I use?",
+    answer:
+      "Use Meldiq in your browser, download it for Windows or get the Android app from Google Play. The same account works across all three. Native apps for iPhone, iPad and macOS are planned.",
+    href: "/download",
+    label: "See available downloads",
+  },
+  {
+    question: "What can bots do?",
+    answer:
+      "Bots can help run a community with welcomes, reminders, moderation and other tools. Community owners can review the available bots and their permissions inside Meldiq.",
+    href: "/bots",
+    label: "Explore Meldiq bots",
+  },
+  {
+    question: "Can I start my own community?",
+    answer:
+      "Yes. Make a public or invite-only community, organize it into text channels, forums and voice rooms, and use roles to manage who can join and participate.",
+    href: "/community",
+    label: "Learn about communities",
+  },
+  {
+    question: "How does Meldiq handle my data?",
+    answer:
+      "Files are encrypted before upload, and call-media encryption is on by default. The server can read some attachment keys and see information such as community memberships and message routing data.",
+    href: "/legal/privacy",
+    label: "Read the Privacy Policy",
+  },
 ];
-function Actions() {
-  return (
-    <div className="ref-actions">
-      <a className="button primary" href={SITE.webAppUrl}>
-        Open Meldiq in your browser <span aria-hidden="true">→</span>
-      </a>
-      <Link className="button secondary" href="/download">
-        Download Meldiq
-      </Link>
-    </div>
-  );
-}
+
 export default function Home() {
   return (
     <Layout
       landing
-      title="Meldiq"
-      description="Your people, your channels, one place to talk. Free community messaging, voice and video on the web, Android and Windows."
+      title="Meldiq | Community Chat, Voice & Screen Sharing"
+      description="Create a gaming community or chat with friends on Meldiq. Get text channels, group messages, voice and video calls, and screen sharing."
     >
       <section className="ref-hero wrap">
         <div className="ref-orbit" aria-hidden="true" />
-        <Link className="hero-note" href="/community">
-          <span className="status-dot" aria-hidden="true" /> A little space for your people <span aria-hidden="true">↗</span>
-        </Link>
         <h1>
-          Your people,
+          Your group chat,
           <br />
-          <em>your channels, one place to talk.</em>
+          <em>
+            with space <span>to hang out.</span>
+          </em>
         </h1>
-        <p>Meldiq brings your friends and communities together to talk, call and share. The core experience is free. Meldiq Plus is optional.</p>
-        <Actions />
+        <p>
+          Meldiq is where friends and communities come together to chat, call and share their screens. The essentials are free, and Meldiq Plus is optional.
+        </p>
+        <AppButtons />
         <p className="ref-trust-note">
-          <span className="ref-availability">
-            <span className="status-dot" aria-hidden="true" />
-            <strong>Free to use</strong>
-            <span>·</span> Web, Android & Windows
-          </span>
+          <OnlineNow />
         </p>
       </section>
-      <section className="ref-main-preview wrap" aria-label="Meldiq community preview">
+      <div className="ref-main-preview wrap">
         <LandingProductPreview />
-        <div className="included-strip" aria-label="Included with free messaging">
-          <span>GOOD COMPANY. ALL IN ONE PLACE.</span>
-          <Link href="/features#communities">Communities & channels</Link>
-          <Link href="/features#messaging">Private conversations</Link>
-          <Link href="/features#calls">Voice, video & screen share</Link>
-        </div>
-      </section>
+      </div>
       <section className="ref-feature-row wrap">
         <div className="ref-feature-copy">
-          <span className="ref-kicker">COMMUNITIES</span>
-          <h2>A place for your people.</h2>
+          <span className="ref-kicker">Discover</span>
+          <h2>Find your people.</h2>
           <p>
-            Discover a public community or start one for your own group. Keep conversations organized with text channels, forums and voice rooms, and make the
-            space your own with roles and invitations.
+            Discover a public community or start a space of your own. Set up text channels, forums and voice rooms for your group, and make them yours with
+            roles and invitations.
           </p>
           <Link className="inline-link" href="/community">
             Explore communities <span aria-hidden="true">↗</span>
@@ -91,71 +86,38 @@ export default function Home() {
       <section className="ref-feature-row ref-feature-reversed wrap">
         <LandingProductPreview view="messages" />
         <div className="ref-feature-copy">
-          <span className="ref-kicker">DIRECT MESSAGES</span>
-          <h2>Keep your conversations close.</h2>
-          <p>
-            Direct messages and private groups alongside your communities. Catch up with a friend, make plans with the group, and share the photos, files and
-            little things that keep you connected.
-          </p>
+          <span className="ref-kicker">Direct messages</span>
+          <h2>Everyone you talk to, in one place.</h2>
+          <p>Keep your friends, group chats and direct messages together. Catch up in private or bring the group into a call with video and screen sharing.</p>
           <Link className="inline-link" href="/features#messaging">
-            See messaging features <span aria-hidden="true">↗</span>
+            Explore messaging <span aria-hidden="true">↗</span>
           </Link>
         </div>
       </section>
-      <section className="ref-feature-row wrap">
-        <div className="ref-feature-copy">
-          <span className="ref-kicker">VOICE, VIDEO & SCREEN SHARING</span>
-          <h2>A conversation worth staying for.</h2>
-          <p>
-            Drop into a voice room, catch up face to face or share what’s on your screen. From quick questions to long evenings, there’s room for the whole
-            group.
-          </p>
-          <Link className="inline-link" href="/features#calls">
-            Find your way into a call <span aria-hidden="true">↗</span>
-          </Link>
-        </div>
-        <CallPreview />
-      </section>
-      <section className="home-explore wrap" aria-label="More ways to make Meldiq yours">
-        <Link href="/bots">
-          <span aria-hidden="true">⌘</span>
-          <div>
-            <h2>A little help from bots.</h2>
-            <p>Tools and add-ons for your community.</p>
-          </div>
-          <span aria-hidden="true">↗</span>
-        </Link>
-        <Link href="/security">
-          <span aria-hidden="true">◇</span>
-          <div>
-            <h2>Know what you’re sharing.</h2>
-            <p>Privacy and security, explained plainly.</p>
-          </div>
-          <span aria-hidden="true">↗</span>
-        </Link>
-      </section>
-      <PlusSpotlight />
       <section className="ref-join wrap">
         <div className="ref-join-inner">
+          <img className="ref-join-logo" src="/meldling-128.png" width={72} height={72} alt="" loading="lazy" />
           <h2>Come say hello.</h2>
-          <p>Open Meldiq, create your account and bring your people together. Core messaging is free; Meldiq Plus is an optional extra.</p>
-          <Actions />
-          <span>Free to use · No card to start · Runs in your browser</span>
+          <p>Make an account, start a conversation and invite your people. Chatting is free, and you can start right in your browser.</p>
+          <AppButtons />
+          <span>Free · No credit card · Runs in your browser</span>
         </div>
       </section>
       <section className="ref-faq wrap" id="faq">
         <h2>Questions.</h2>
-        {questions.map(([q, a], i) => (
-          <details key={q} open={i === 0 ? true : undefined}>
+        {questions.map(({ question, answer, href, label }, index) => (
+          <details key={question} name="home-faq" open={index === 0 ? true : undefined}>
             <summary>
-              {q}
+              {question}
               <span aria-hidden="true">⌄</span>
             </summary>
-            <p>{a}</p>
+            <p>
+              {answer} <Link href={href}>{label}</Link>.
+            </p>
           </details>
         ))}
         <Link className="ref-more-help" href="/faq">
-          More questions and answers →
+          More questions and answers <span aria-hidden="true">→</span>
         </Link>
       </section>
     </Layout>

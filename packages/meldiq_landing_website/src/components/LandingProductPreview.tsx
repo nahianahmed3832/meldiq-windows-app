@@ -4,15 +4,6 @@ export function LandingProductPreview({ view = "community" }: { view?: "communit
   return (
     <figure className={`ref-product ref-product-${view}`}>
       <div className="ref-client" role="img" aria-label={`Illustrative Meldiq ${view} preview with sample content`}>
-        <div className="ref-client-top">
-          <span className="ref-window-dots">
-            <i />
-            <i />
-            <i />
-          </span>
-          <span>Meldiq</span>
-          <span>− &nbsp; □ &nbsp; ×</span>
-        </div>
         <div className="ref-client-body">
           <aside className="ref-server-rail">
             <img src="/meldling-128.png" alt="" width={34} height={34} />
@@ -28,6 +19,7 @@ export function LandingProductPreview({ view = "community" }: { view?: "communit
             {community ? (
               <>
                 <small>COMMUNITY</small>
+                <span className="ref-invite-illustration">＋ &nbsp; Invite people</span>
                 <span className="selected"># &nbsp; general</span>
                 <span># &nbsp; announcements</span>
                 <span># &nbsp; share-your-work</span>
@@ -122,7 +114,7 @@ export function LandingProductPreview({ view = "community" }: { view?: "communit
           </div>
           {community ? (
             <aside className="ref-client-members">
-              <small>MEMBERS</small>
+              <strong>Members</strong>
               <span>
                 <i className="ref-avatar">S</i> Sam
               </span>

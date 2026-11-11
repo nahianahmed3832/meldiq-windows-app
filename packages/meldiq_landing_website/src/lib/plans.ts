@@ -1,5 +1,5 @@
 import type { Grant, Offer } from "./api";
-import { formatBytes, formatDate, formatMoney, formatPrice, type Interval, intervalAdverb } from "./money";
+import { formatBytes, formatDate, formatMoney, billingPeriod, type Interval } from "./money";
 
 /**
  * How plans and entitlements are described to people. Everything comes from the API's catalog (no price, trial or limit
@@ -41,9 +41,10 @@ export function describeLimits(limits: Readonly<Record<string, number>>): string
  * collected (owner's decision, 2026-10-28): the price shown is the price charged.
  */
 export function disclosures(o: Offer, firstSubscription = true, trialEndsAt: number | null = null): string[] {
-  const price = formatPrice(o.amountMinor, o.currency, o.interval);
+  const period = billingPeriod(o.interval, o.billingFrequency);
+  const price = formatMoney(o.amountMinor, o.currency);
   const lines = [
-    `You pay ${price} (${o.currency.toUpperCase()}), billed ${intervalAdverb(o.interval)} until you cancel. The subscription renews automatically.`,
+    `You pay ${price} / ${period} (${o.currency.toUpperCase()}) until you cancel. The subscription renews automatically.`,
     "No tax is added: the price shown is what you pay.",
   ];
   if (trialEndsAt) {
