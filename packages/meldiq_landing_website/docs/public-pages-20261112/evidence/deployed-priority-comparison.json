@@ -1,0 +1,66 @@
+[
+  {
+    "image": "developers-1440-dark.png",
+    "matchesCandidateExactly": true
+  },
+  {
+    "image": "developers-1440-light.png",
+    "matchesCandidateExactly": true
+  },
+  {
+    "image": "developers-375-dark.png",
+    "matchesCandidateExactly": true
+  },
+  {
+    "image": "developers-375-light.png",
+    "matchesCandidateExactly": true
+  },
+  {
+    "image": "download-1440-dark.png",
+    "matchesCandidateExactly": true
+  },
+  {
+    "image": "download-1440-light.png",
+    "matchesCandidateExactly": true
+  },
+  {
+    "image": "download-375-dark.png",
+    "matchesCandidateExactly": true
+  },
+  {
+    "image": "download-375-light.png",
+    "matchesCandidateExactly": true
+  },
+  {
+    "image": "features-1440-dark.png",
+    "matchesCandidateExactly": true
+  },
+  {
+    "image": "features-1440-light.png",
+    "matchesCandidateExactly": true
+  },
+  {
+    "image": "features-375-dark.png",
+    "matchesCandidateExactly": true
+  },
+  {
+    "image": "features-375-light.png",
+    "matchesCandidateExactly": true
+  },
+  {
+    "image": "pricing-1440-dark.png",
+    "matchesCandidateExactly": true
+  },
+  {
+    "image": "pricing-1440-light.png",
+    "matchesCandidateExactly": true
+  },
+  {
+    "image": "pricing-375-dark.png",
+    "matchesCandidateExactly": true
+  },
+  {
+    "image": "pricing-375-light.png",
+    "matchesCandidateExactly": true
+  }
+]

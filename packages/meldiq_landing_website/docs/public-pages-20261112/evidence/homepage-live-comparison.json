@@ -1,0 +1,145 @@
+{
+  "images": [
+    {
+      "file": "home-1440-dark-faq.png",
+      "width": 1440,
+      "beforeHeight": 4319,
+      "afterHeight": 4319,
+      "changedPixels": 0
+    },
+    {
+      "file": "home-1440-dark.png",
+      "width": 1440,
+      "beforeHeight": 4319,
+      "afterHeight": 4319,
+      "changedPixels": 0
+    },
+    {
+      "file": "home-1440-light-faq.png",
+      "width": 1440,
+      "beforeHeight": 4319,
+      "afterHeight": 4319,
+      "changedPixels": 0
+    },
+    {
+      "file": "home-1440-light.png",
+      "width": 1440,
+      "beforeHeight": 4319,
+      "afterHeight": 4319,
+      "changedPixels": 0
+    },
+    {
+      "file": "home-320-dark-faq.png",
+      "width": 320,
+      "beforeHeight": 4934,
+      "afterHeight": 4934,
+      "changedPixels": 0
+    },
+    {
+      "file": "home-320-dark-menu.png",
+      "width": 320,
+      "beforeHeight": 900,
+      "afterHeight": 900,
+      "changedPixels": 0
+    },
+    {
+      "file": "home-320-dark.png",
+      "width": 320,
+      "beforeHeight": 4958,
+      "afterHeight": 4958,
+      "changedPixels": 0
+    },
+    {
+      "file": "home-320-light-faq.png",
+      "width": 320,
+      "beforeHeight": 4934,
+      "afterHeight": 4934,
+      "changedPixels": 0
+    },
+    {
+      "file": "home-320-light-menu.png",
+      "width": 320,
+      "beforeHeight": 900,
+      "afterHeight": 900,
+      "changedPixels": 0
+    },
+    {
+      "file": "home-320-light.png",
+      "width": 320,
+      "beforeHeight": 4958,
+      "afterHeight": 4958,
+      "changedPixels": 0
+    },
+    {
+      "file": "home-375-dark-faq.png",
+      "width": 375,
+      "beforeHeight": 4651,
+      "afterHeight": 4651,
+      "changedPixels": 0
+    },
+    {
+      "file": "home-375-dark-menu.png",
+      "width": 375,
+      "beforeHeight": 900,
+      "afterHeight": 900,
+      "changedPixels": 0
+    },
+    {
+      "file": "home-375-dark.png",
+      "width": 375,
+      "beforeHeight": 4676,
+      "afterHeight": 4676,
+      "changedPixels": 0
+    },
+    {
+      "file": "home-375-light-faq.png",
+      "width": 375,
+      "beforeHeight": 4651,
+      "afterHeight": 4651,
+      "changedPixels": 0
+    },
+    {
+      "file": "home-375-light-menu.png",
+      "width": 375,
+      "beforeHeight": 900,
+      "afterHeight": 900,
+      "changedPixels": 0
+    },
+    {
+      "file": "home-375-light.png",
+      "width": 375,
+      "beforeHeight": 4676,
+      "afterHeight": 4676,
+      "changedPixels": 0
+    },
+    {
+      "file": "home-768-dark-faq.png",
+      "width": 768,
+      "beforeHeight": 4004,
+      "afterHeight": 4004,
+      "changedPixels": 0
+    },
+    {
+      "file": "home-768-dark.png",
+      "width": 768,
+      "beforeHeight": 4004,
+      "afterHeight": 4004,
+      "changedPixels": 0
+    },
+    {
+      "file": "home-768-light-faq.png",
+      "width": 768,
+      "beforeHeight": 4004,
+      "afterHeight": 4004,
+      "changedPixels": 0
+    },
+    {
+      "file": "home-768-light.png",
+      "width": 768,
+      "beforeHeight": 4004,
+      "afterHeight": 4004,
+      "changedPixels": 0
+    }
+  ],
+  "identicalInteractions": true
+}

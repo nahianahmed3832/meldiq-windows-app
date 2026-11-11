@@ -1,0 +1,21 @@
+{
+  "status": "activated",
+  "preparedAt": "2026-11-11T18:32:19.041089+00:00",
+  "releaseId": "site-20261112-public-pages-6a4cbee84f",
+  "sourceCommit": "5c3661aa74a2a55bf0cd68cb0631aaf9814af782",
+  "previous": "releases/site-20261108T131835Z-73277418b2",
+  "previousHomepageSha256": "c4a9cc287c5151f74641092494f2e0b67b42c0af4e79057b7c98db852d5b6be6",
+  "target": "releases/site-20261112-public-pages-6a4cbee84f",
+  "archiveSha256": "14ba6f55c54a787e95f0de99cf573322eb2d3a469019068e61bd5b874b585f5c",
+  "manifestSha256": "c9e8cf940ce1235952a43fda5fe1a23aa35c56617f10dbff3969bff5b782c28c",
+  "nextBuildId": "TwM8anwvzj4naoXPoslGh",
+  "verifiedFiles": 117,
+  "inheritedImmutableFiles": 590,
+  "nginxValidation": "nginx: [warn] could not build optimal variables_hash, you should increase either variables_hash_max_size: 1024 or variables_hash_bucket_size: 64; ignoring variables_hash_bucket_size\nnginx: the configuration file /etc/nginx/nginx.conf syntax is ok\nnginx: configuration file /etc/nginx/nginx.conf test is successful",
+  "rollbackPerformed": false,
+  "activatedAt": "2026-11-11T18:33:45.988687+00:00",
+  "homepageSha256": "8dabd075aa7c41f1bd8f4c6124d494a2fa1ddd9181996df629c755c0dd3a52c0",
+  "protectedStateUnchanged": true,
+  "ssmCommandId": "d7cd9ff9-e480-4852-b4bb-cca476d7c536",
+  "ssmStatus": "Success"
+}

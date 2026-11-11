@@ -1,5 +1,7 @@
 # Testing
 
+Latest public-site verification: [12 November 2026 redesign release](public-pages-20261112/README.md), with 65 unit/contract tests, 222 browser checks and 33 final contrast regressions passing. The report also records live verification and homepage image equality; the dated results below remain historical.
+
 | Suite | Command | Result (2026-10-28) |
 |---|---|---|
 | Unit (lib: API client, session, money, plans, validation, site, device detection, invite links, navigation) | `npm run test:coverage` | 31 passed |

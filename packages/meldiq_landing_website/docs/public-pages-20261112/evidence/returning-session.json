@@ -1,0 +1,84 @@
+{
+  "beforeBuild": "xynF_IcvjTerwr2bmD5m_",
+  "cachedNavigation": {
+    "url": "https://meldiq.app/developers",
+    "heading": "Build bots on Meldiq."
+  },
+  "afterReload": {
+    "build": "TwM8anwvzj4naoXPoslGh",
+    "interior": true,
+    "primaryActions": 1
+  },
+  "errors": [],
+  "badResponses": [],
+  "preservedChunks": [
+    {
+      "url": "https://meldiq.app/_next/static/chunks/polyfills-42372ed130431b0a.js",
+      "status": 200
+    },
+    {
+      "url": "https://meldiq.app/_next/static/chunks/webpack-8497fbbedd21184c.js",
+      "status": 200
+    },
+    {
+      "url": "https://meldiq.app/_next/static/chunks/framework-d9fa8dcfd978761b.js",
+      "status": 200
+    },
+    {
+      "url": "https://meldiq.app/_next/static/chunks/main-f61ecfffddb7894e.js",
+      "status": 200
+    },
+    {
+      "url": "https://meldiq.app/_next/static/chunks/pages/_app-394f9834af2b6dbf.js",
+      "status": 200
+    },
+    {
+      "url": "https://meldiq.app/_next/static/chunks/615-b69bff272bfd71e9.js",
+      "status": 200
+    },
+    {
+      "url": "https://meldiq.app/_next/static/chunks/411-44844866813441f0.js",
+      "status": 200
+    },
+    {
+      "url": "https://meldiq.app/_next/static/chunks/650-fc94852ba8ad0240.js",
+      "status": 200
+    },
+    {
+      "url": "https://meldiq.app/_next/static/chunks/pages/index-42d21eb987c49cff.js",
+      "status": 200
+    },
+    {
+      "url": "https://meldiq.app/_next/static/xynF_IcvjTerwr2bmD5m_/_buildManifest.js",
+      "status": 200
+    },
+    {
+      "url": "https://meldiq.app/_next/static/xynF_IcvjTerwr2bmD5m_/_ssgManifest.js",
+      "status": 200
+    },
+    {
+      "url": "https://meldiq.app/_next/static/chunks/203-173d9508b3be6d1f.js",
+      "status": 200
+    },
+    {
+      "url": "https://meldiq.app/_next/static/chunks/pages/download-52fe2327d6f3d978.js",
+      "status": 200
+    },
+    {
+      "url": "https://meldiq.app/_next/static/chunks/pages/developers-8a1d0cbe8dbb6a0e.js",
+      "status": 200
+    },
+    {
+      "url": "https://meldiq.app/_next/static/chunks/865-bdba4591007fc41f.js",
+      "status": 200
+    },
+    {
+      "url": "https://meldiq.app/_next/static/chunks/128-7f6c336bb9bd0f56.js",
+      "status": 200
+    },
+    {
+      "url": "https://meldiq.app/_next/static/chunks/pages/pricing-da7b1fa41233f606.js",
+      "status": 200
+    }
+  ]
+}

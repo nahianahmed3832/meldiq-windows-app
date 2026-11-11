@@ -1,0 +1,472 @@
+[
+  {
+    "route": "/bots",
+    "width": 375,
+    "status": 200,
+    "destination": "https://meldiq.app/bots",
+    "headings": [
+      "Make room for your bots.",
+      "Start in Meldiq",
+      "Your account allowance",
+      "Meldiq Bots+",
+      "Build thoughtfully",
+      "Make yourself at home.",
+      "Product",
+      "Community",
+      "Legal"
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "route": "/community",
+    "width": 375,
+    "status": 200,
+    "destination": "https://meldiq.app/community",
+    "headings": [
+      "Bring your people together.",
+      "Find your corner",
+      "Build a space of your own",
+      "Make it welcoming",
+      "Support the whole community",
+      "Make yourself at home.",
+      "Product",
+      "Community",
+      "Legal"
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "route": "/gaming-community-chat",
+    "width": 375,
+    "status": 200,
+    "destination": "https://meldiq.app/gaming-community-chat",
+    "headings": [
+      "Give your gaming group a place to meet.",
+      "Create a home for your group",
+      "Keep voice chat open between games",
+      "Set permissions before you send invites",
+      "Try it with a few friends",
+      "Make yourself at home.",
+      "Product",
+      "Community",
+      "Legal"
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "route": "/voice-video-screen-sharing",
+    "width": 375,
+    "status": 200,
+    "destination": "https://meldiq.app/voice-video-screen-sharing",
+    "headings": [
+      "Talk it through and share your screen.",
+      "Pick a voice room or a call",
+      "Share a tab, window or screen",
+      "Troubleshoot audio or a missing screen",
+      "Check what others can see",
+      "Make yourself at home.",
+      "Product",
+      "Community",
+      "Legal"
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "route": "/compare/discord",
+    "width": 375,
+    "status": 200,
+    "destination": "https://meldiq.app/compare/discord",
+    "headings": [
+      "Should your group try Meldiq or stay on Discord?",
+      "Start with the features you use every week",
+      "Check the platforms your group needs",
+      "Inventory bots, permissions and history",
+      "Run one session before deciding",
+      "Make yourself at home.",
+      "Product",
+      "Community",
+      "Legal"
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "route": "/creators",
+    "width": 375,
+    "status": 200,
+    "destination": "https://meldiq.app/creators",
+    "headings": [
+      "Make something about Meldiq.",
+      "From your channel to the Creator Center.",
+      "Creator questions.",
+      "Product",
+      "Community",
+      "Legal"
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "route": "/partners",
+    "width": 375,
+    "status": 200,
+    "destination": "https://meldiq.app/partners",
+    "headings": [
+      "Meldiq Partners.",
+      "Give reviewers a picture of your community.",
+      "Partner questions.",
+      "Product",
+      "Community",
+      "Legal"
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "route": "/roadmap",
+    "width": 375,
+    "status": 200,
+    "destination": "https://meldiq.app/roadmap",
+    "headings": [
+      "More places to connect.",
+      "web",
+      "Android",
+      "Windows",
+      "iPhone, iPad & macOS",
+      "Your feedback helps",
+      "Make yourself at home.",
+      "Product",
+      "Community",
+      "Legal"
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "route": "/brand",
+    "width": 375,
+    "status": 200,
+    "destination": "https://meldiq.app/brand",
+    "headings": [
+      "A familiar face for your space.",
+      "The name",
+      "Meet Meldling",
+      "Keep the context clear",
+      "Make yourself at home.",
+      "Product",
+      "Community",
+      "Legal"
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "route": "/tutorials",
+    "width": 375,
+    "status": 200,
+    "destination": "https://meldiq.app/tutorials",
+    "headings": [
+      "Less setup. More conversation.",
+      "Create your account",
+      "Find your people",
+      "Keep in touch",
+      "Talk it through",
+      "Make your own community",
+      "Secure your account",
+      "Make yourself at home.",
+      "Product",
+      "Community",
+      "Legal"
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "route": "/faq",
+    "width": 375,
+    "status": 200,
+    "destination": "https://meldiq.app/faq",
+    "headings": [
+      "Questions, answered.",
+      "Need a little help?",
+      "General",
+      "Communities",
+      "Privacy",
+      "Platforms",
+      "Subscriptions",
+      "Sparks",
+      "Gifts",
+      "Account",
+      "Useful next steps",
+      "Product",
+      "Community",
+      "Legal"
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "route": "/support",
+    "width": 375,
+    "status": 200,
+    "destination": "https://meldiq.app/support",
+    "headings": [
+      "How can we help?",
+      "Account & sign-in",
+      "Meldiq Plus & billing",
+      "Communities & moderation",
+      "Privacy & your data",
+      "Report abuse",
+      "Account deletion",
+      "Contact support.",
+      "Product",
+      "Community",
+      "Legal"
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "route": "/security",
+    "width": 375,
+    "status": 200,
+    "destination": "https://meldiq.app/security",
+    "headings": [
+      "Privacy, explained plainly.",
+      "Protect your account",
+      "Messages and attachments",
+      "Calls and screen sharing",
+      "What the server sees",
+      "Something doesn’t look right?",
+      "Make yourself at home.",
+      "Product",
+      "Community",
+      "Legal"
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "route": "/es/chat-para-comunidades-gaming",
+    "width": 375,
+    "status": 200,
+    "destination": "https://meldiq.app/es/chat-para-comunidades-gaming",
+    "headings": [
+      "Un lugar para reunir a tu grupo de juego.",
+      "Crea un espacio para tu grupo",
+      "Habla con tus amigos entre partidas",
+      "Revisa los permisos antes de invitar",
+      "Haz una prueba con unos amigos",
+      "Reúne a tu grupo.",
+      "Product",
+      "Community",
+      "Legal"
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "route": "/legal/terms",
+    "width": 375,
+    "status": 200,
+    "destination": "https://meldiq.app/legal/terms",
+    "headings": [
+      "Terms of Service",
+      "Related",
+      "Your account",
+      "Your content",
+      "Acceptable use",
+      "Free tier and Meldiq Plus",
+      "Changes and availability",
+      "Liability",
+      "Ending your use",
+      "Changes and contact",
+      "Product",
+      "Community",
+      "Legal"
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "route": "/legal/privacy",
+    "width": 375,
+    "status": 200,
+    "destination": "https://meldiq.app/legal/privacy",
+    "headings": [
+      "Privacy Policy",
+      "Related",
+      "Messages, files and calls",
+      "What we collect",
+      "Why we use it",
+      "Who processes it for us",
+      "How long we keep it",
+      "Your rights",
+      "This website",
+      "International transfers and changes",
+      "Product",
+      "Community",
+      "Legal"
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "route": "/legal/billing",
+    "width": 375,
+    "status": 200,
+    "destination": "https://meldiq.app/legal/billing",
+    "headings": [
+      "Meldiq Plus: renewal, cancellation & refunds",
+      "Related",
+      "Before you pay",
+      "Payment",
+      "Automatic renewal",
+      "Free trials",
+      "Cancelling",
+      "Failed payments",
+      "Refunds",
+      "One plan, every device",
+      "When a plan ends",
+      "Product",
+      "Community",
+      "Legal"
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "route": "/legal/acceptable-use",
+    "width": 375,
+    "status": 200,
+    "destination": "https://meldiq.app/legal/acceptable-use",
+    "headings": [
+      "Acceptable Use Policy",
+      "Related",
+      "Not allowed",
+      "Community rules and moderation",
+      "Reporting",
+      "What we do",
+      "Product",
+      "Community",
+      "Legal"
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "route": "/legal/account-deletion",
+    "width": 375,
+    "status": 200,
+    "destination": "https://meldiq.app/legal/account-deletion",
+    "headings": [
+      "Account deletion & your data",
+      "Related",
+      "How to delete your account",
+      "What's removed",
+      "What stays, and why",
+      "Other data requests",
+      "Product",
+      "Community",
+      "Legal"
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "route": "/account",
+    "width": 375,
+    "status": 200,
+    "destination": "https://web.meldiq.app/settings/account",
+    "headings": [
+      "Meldiq: Your communities, all in one place.",
+      "Sign in to Meldiq"
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "route": "/account/billing",
+    "width": 375,
+    "status": 200,
+    "destination": "https://web.meldiq.app/settings/billing",
+    "headings": [
+      "Meldiq: Your communities, all in one place.",
+      "Sign in to Meldiq"
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "route": "/login",
+    "width": 375,
+    "status": 200,
+    "destination": "https://web.meldiq.app/",
+    "headings": [
+      "Meldiq: Your communities, all in one place.",
+      "Sign in to Meldiq"
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "route": "/signup",
+    "width": 375,
+    "status": 200,
+    "destination": "https://meldiq.app/signup",
+    "headings": [
+      "Create your account",
+      "Product",
+      "Community",
+      "Legal"
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "route": "/verify-email",
+    "width": 375,
+    "status": 200,
+    "destination": "https://meldiq.app/verify-email",
+    "headings": [
+      "Check your email",
+      "Product",
+      "Community",
+      "Legal"
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "route": "/forgot-password",
+    "width": 375,
+    "status": 200,
+    "destination": "https://meldiq.app/forgot-password",
+    "headings": [
+      "Reset your password",
+      "Product",
+      "Community",
+      "Legal"
+    ],
+    "overflow": false,
+    "errors": []
+  },
+  {
+    "route": "/404",
+    "width": 375,
+    "status": 200,
+    "destination": "https://meldiq.app/404",
+    "headings": [
+      "This page wandered off",
+      "Product",
+      "Community",
+      "Legal"
+    ],
+    "overflow": false,
+    "errors": []
+  }
+]

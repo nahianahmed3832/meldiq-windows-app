@@ -1,0 +1,11 @@
+{
+  "releaseId": "site-20261112-public-pages-6a4cbee84f",
+  "sourceCommit": "5c3661aa74a2a55bf0cd68cb0631aaf9814af782",
+  "current": "releases/site-20261112-public-pages-6a4cbee84f",
+  "nextBuildId": "TwM8anwvzj4naoXPoslGh",
+  "verifiedFiles": 117,
+  "nativeAndServicesUnchanged": true,
+  "homepageSha256": "8dabd075aa7c41f1bd8f4c6124d494a2fa1ddd9181996df629c755c0dd3a52c0",
+  "rollbackPerformed": false,
+  "activatedAt": "2026-11-11T18:33:45.988687+00:00"
+}

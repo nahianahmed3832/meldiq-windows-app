@@ -1,0 +1,487 @@
+{
+  "views": [
+    {
+      "route": "/developers",
+      "width": 375,
+      "theme": "dark",
+      "build": "TwM8anwvzj4naoXPoslGh",
+      "overflow": false,
+      "heading": "Build a little help.For your people.",
+      "interior": true,
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/download",
+      "width": 375,
+      "theme": "dark",
+      "build": "TwM8anwvzj4naoXPoslGh",
+      "overflow": false,
+      "heading": "Meldiq, wherever you are.",
+      "interior": true,
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/features",
+      "width": 375,
+      "theme": "dark",
+      "build": "TwM8anwvzj4naoXPoslGh",
+      "overflow": false,
+      "heading": "Everything you needto talk, together.",
+      "interior": true,
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/pricing",
+      "width": 375,
+      "theme": "dark",
+      "build": "TwM8anwvzj4naoXPoslGh",
+      "overflow": false,
+      "heading": "Free messaging. Optional Meldiq Plus.",
+      "interior": true,
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/developers",
+      "width": 375,
+      "theme": "light",
+      "build": "TwM8anwvzj4naoXPoslGh",
+      "overflow": false,
+      "heading": "Build a little help.For your people.",
+      "interior": true,
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/download",
+      "width": 375,
+      "theme": "light",
+      "build": "TwM8anwvzj4naoXPoslGh",
+      "overflow": false,
+      "heading": "Meldiq, wherever you are.",
+      "interior": true,
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/features",
+      "width": 375,
+      "theme": "light",
+      "build": "TwM8anwvzj4naoXPoslGh",
+      "overflow": false,
+      "heading": "Everything you needto talk, together.",
+      "interior": true,
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/pricing",
+      "width": 375,
+      "theme": "light",
+      "build": "TwM8anwvzj4naoXPoslGh",
+      "overflow": false,
+      "heading": "Free messaging. Optional Meldiq Plus.",
+      "interior": true,
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/developers",
+      "width": 1440,
+      "theme": "dark",
+      "build": "TwM8anwvzj4naoXPoslGh",
+      "overflow": false,
+      "heading": "Build a little help.For your people.",
+      "interior": true,
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/download",
+      "width": 1440,
+      "theme": "dark",
+      "build": "TwM8anwvzj4naoXPoslGh",
+      "overflow": false,
+      "heading": "Meldiq, wherever you are.",
+      "interior": true,
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/features",
+      "width": 1440,
+      "theme": "dark",
+      "build": "TwM8anwvzj4naoXPoslGh",
+      "overflow": false,
+      "heading": "Everything you needto talk, together.",
+      "interior": true,
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/pricing",
+      "width": 1440,
+      "theme": "dark",
+      "build": "TwM8anwvzj4naoXPoslGh",
+      "overflow": false,
+      "heading": "Free messaging. Optional Meldiq Plus.",
+      "interior": true,
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/developers",
+      "width": 1440,
+      "theme": "light",
+      "build": "TwM8anwvzj4naoXPoslGh",
+      "overflow": false,
+      "heading": "Build a little help.For your people.",
+      "interior": true,
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/download",
+      "width": 1440,
+      "theme": "light",
+      "build": "TwM8anwvzj4naoXPoslGh",
+      "overflow": false,
+      "heading": "Meldiq, wherever you are.",
+      "interior": true,
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/features",
+      "width": 1440,
+      "theme": "light",
+      "build": "TwM8anwvzj4naoXPoslGh",
+      "overflow": false,
+      "heading": "Everything you needto talk, together.",
+      "interior": true,
+      "errors": [],
+      "failed": []
+    },
+    {
+      "route": "/pricing",
+      "width": 1440,
+      "theme": "light",
+      "build": "TwM8anwvzj4naoXPoslGh",
+      "overflow": false,
+      "heading": "Free messaging. Optional Meldiq Plus.",
+      "interior": true,
+      "errors": [],
+      "failed": []
+    }
+  ],
+  "routes": [
+    {
+      "route": "/",
+      "status": 200,
+      "build": "TwM8anwvzj4naoXPoslGh",
+      "noindex": false
+    },
+    {
+      "route": "/developers",
+      "status": 200,
+      "build": "TwM8anwvzj4naoXPoslGh",
+      "noindex": false
+    },
+    {
+      "route": "/download",
+      "status": 200,
+      "build": "TwM8anwvzj4naoXPoslGh",
+      "noindex": false
+    },
+    {
+      "route": "/features",
+      "status": 200,
+      "build": "TwM8anwvzj4naoXPoslGh",
+      "noindex": false
+    },
+    {
+      "route": "/pricing",
+      "status": 200,
+      "build": "TwM8anwvzj4naoXPoslGh",
+      "noindex": false
+    },
+    {
+      "route": "/bots",
+      "status": 200,
+      "build": "TwM8anwvzj4naoXPoslGh",
+      "noindex": false
+    },
+    {
+      "route": "/community",
+      "status": 200,
+      "build": "TwM8anwvzj4naoXPoslGh",
+      "noindex": false
+    },
+    {
+      "route": "/gaming-community-chat",
+      "status": 200,
+      "build": "TwM8anwvzj4naoXPoslGh",
+      "noindex": false
+    },
+    {
+      "route": "/voice-video-screen-sharing",
+      "status": 200,
+      "build": "TwM8anwvzj4naoXPoslGh",
+      "noindex": false
+    },
+    {
+      "route": "/compare/discord",
+      "status": 200,
+      "build": "TwM8anwvzj4naoXPoslGh",
+      "noindex": false
+    },
+    {
+      "route": "/creators",
+      "status": 200,
+      "build": "TwM8anwvzj4naoXPoslGh",
+      "noindex": false
+    },
+    {
+      "route": "/partners",
+      "status": 200,
+      "build": "TwM8anwvzj4naoXPoslGh",
+      "noindex": false
+    },
+    {
+      "route": "/roadmap",
+      "status": 200,
+      "build": "TwM8anwvzj4naoXPoslGh",
+      "noindex": false
+    },
+    {
+      "route": "/brand",
+      "status": 200,
+      "build": "TwM8anwvzj4naoXPoslGh",
+      "noindex": false
+    },
+    {
+      "route": "/tutorials",
+      "status": 200,
+      "build": "TwM8anwvzj4naoXPoslGh",
+      "noindex": false
+    },
+    {
+      "route": "/faq",
+      "status": 200,
+      "build": "TwM8anwvzj4naoXPoslGh",
+      "noindex": false
+    },
+    {
+      "route": "/support",
+      "status": 200,
+      "build": "TwM8anwvzj4naoXPoslGh",
+      "noindex": false
+    },
+    {
+      "route": "/security",
+      "status": 200,
+      "build": "TwM8anwvzj4naoXPoslGh",
+      "noindex": false
+    },
+    {
+      "route": "/es/chat-para-comunidades-gaming",
+      "status": 200,
+      "build": "TwM8anwvzj4naoXPoslGh",
+      "noindex": false
+    },
+    {
+      "route": "/legal/terms",
+      "status": 200,
+      "build": "TwM8anwvzj4naoXPoslGh",
+      "noindex": false
+    },
+    {
+      "route": "/legal/privacy",
+      "status": 200,
+      "build": "TwM8anwvzj4naoXPoslGh",
+      "noindex": false
+    },
+    {
+      "route": "/legal/billing",
+      "status": 200,
+      "build": "TwM8anwvzj4naoXPoslGh",
+      "noindex": false
+    },
+    {
+      "route": "/legal/acceptable-use",
+      "status": 200,
+      "build": "TwM8anwvzj4naoXPoslGh",
+      "noindex": false
+    },
+    {
+      "route": "/legal/account-deletion",
+      "status": 200,
+      "build": "TwM8anwvzj4naoXPoslGh",
+      "noindex": false
+    },
+    {
+      "route": "/account",
+      "status": 200,
+      "build": "TwM8anwvzj4naoXPoslGh",
+      "noindex": true
+    },
+    {
+      "route": "/account/billing",
+      "status": 200,
+      "build": "TwM8anwvzj4naoXPoslGh",
+      "noindex": true
+    },
+    {
+      "route": "/login",
+      "status": 200,
+      "build": "TwM8anwvzj4naoXPoslGh",
+      "noindex": true
+    },
+    {
+      "route": "/signup",
+      "status": 200,
+      "build": "TwM8anwvzj4naoXPoslGh",
+      "noindex": true
+    },
+    {
+      "route": "/verify-email",
+      "status": 200,
+      "build": "TwM8anwvzj4naoXPoslGh",
+      "noindex": true
+    },
+    {
+      "route": "/forgot-password",
+      "status": 200,
+      "build": "TwM8anwvzj4naoXPoslGh",
+      "noindex": true
+    },
+    {
+      "route": "/404",
+      "status": 200,
+      "build": "TwM8anwvzj4naoXPoslGh",
+      "noindex": true
+    }
+  ],
+  "interactions": {
+    "menuClosedWithEscape": true,
+    "sdkAnchor": true,
+    "copyStatus": "Run from the extracted SDK directory on your own server.",
+    "downloadFaqOpened": true,
+    "windowsHref": "/downloads/windows/0.3.3/fbfd5d377a17f296/Meldiq-Setup-0.3.3-x64.exe",
+    "windowsHead": 200,
+    "loadedPrice": "$4.99 / month",
+    "currentBenefits": "8,000 characters per message\nFiles up to 1 GB\nScreen sharing at 2K (1440p) 60 fps\n1 Meldiq Spark included\n250 custom emoji and stickers\n10 bots you can make\nMeldiq Plus badge and Meldiq Check",
+    "pricingSignInDestination": "https://web.meldiq.app/settings/mojo"
+  },
+  "billingWrites": [],
+  "unknownRouteStatus": 404,
+  "catalog": {
+    "pricing": {
+      "version": "2026-11-02.plus-terms-v3",
+      "effectiveAt": 1793548800000,
+      "plans": [
+        {
+          "id": "free",
+          "name": "Meldiq Free",
+          "currency": "USD",
+          "amountMinor": 0,
+          "billingInterval": null,
+          "billingFrequency": 0,
+          "productId": "free",
+          "active": true
+        },
+        {
+          "id": "plus",
+          "name": "Meldiq Plus",
+          "currency": "USD",
+          "amountMinor": 499,
+          "billingInterval": "month",
+          "billingFrequency": 1,
+          "productId": "plus",
+          "active": true
+        }
+      ],
+      "plusTerms": [
+        {
+          "key": "monthly",
+          "months": 1,
+          "amountMinor": 499,
+          "interval": "month",
+          "billingFrequency": 1,
+          "currency": "USD",
+          "savingsMinor": 0,
+          "monthlyEquivalentMinor": 499,
+          "savingsPercent": 0
+        },
+        {
+          "key": "quarterly",
+          "months": 3,
+          "amountMinor": 1299,
+          "interval": "month",
+          "billingFrequency": 3,
+          "currency": "USD",
+          "savingsMinor": 198,
+          "monthlyEquivalentMinor": 433,
+          "savingsPercent": 13.23
+        },
+        {
+          "key": "yearly",
+          "months": 12,
+          "amountMinor": 4999,
+          "interval": "year",
+          "billingFrequency": 1,
+          "currency": "USD",
+          "savingsMinor": 989,
+          "monthlyEquivalentMinor": 417,
+          "savingsPercent": 16.52
+        }
+      ],
+      "providerEnvironment": "live",
+      "paypalProductId": "PROD-1YK92193UL249543V",
+      "paypalPlanId": "P-49S40199EV0769032NLVBAQI"
+    },
+    "available": true,
+    "mode": "live",
+    "plans": [
+      {
+        "key": "bots_plus",
+        "name": "Meldiq Bots+",
+        "description": "Premium bots for one community",
+        "audience": "organization",
+        "interval": "month",
+        "billingFrequency": 1,
+        "term": null,
+        "currency": "USD",
+        "amountMinor": 399,
+        "trialDays": 0,
+        "graceDays": 3,
+        "limits": {}
+      },
+      {
+        "key": "plus",
+        "name": "Meldiq Plus",
+        "description": "",
+        "audience": "personal",
+        "interval": "month",
+        "billingFrequency": 1,
+        "term": "monthly",
+        "currency": "USD",
+        "amountMinor": 499,
+        "trialDays": 0,
+        "graceDays": 0,
+        "limits": {}
+      }
+    ],
+    "trial": {
+      "planKey": "plus",
+      "days": 0,
+      "referralDays": 30,
+      "referralYearlyCapDays": 90
+    }
+  },
+  "clipboardVerification": "live-clipboard.json",
+  "authenticationVerification": "live-actions.json"
+}

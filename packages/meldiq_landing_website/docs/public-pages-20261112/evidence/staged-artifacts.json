@@ -1,0 +1,28 @@
+[
+  {
+    "bucket": "meldiq-phase2-frankfurt-test-914016532802-artifacts",
+    "key": "inputs/public-website/20261112/site-20261112-public-pages-6a4cbee84f.tgz",
+    "bytes": 1994671,
+    "response": {
+      "Expiration": "expiry-date=\"Thu, 26 Nov 2026 00:00:00 GMT\", rule-id=\"BoundTestRetention\"",
+      "ETag": "\"a1b670a38bae1a3d403be11fdb97a394\"",
+      "ChecksumCRC64NVME": "uvaBUfd4lAg=",
+      "ChecksumType": "FULL_OBJECT",
+      "ServerSideEncryption": "AES256",
+      "VersionId": "2bHdkDoEWanD4xL4mDkfoLKcx8OjtuHn"
+    }
+  },
+  {
+    "bucket": "meldiq-phase2-frankfurt-test-914016532802-artifacts",
+    "key": "inputs/public-website/20261112/site-20261112-public-pages-6a4cbee84f.manifest.json",
+    "bytes": 20238,
+    "response": {
+      "Expiration": "expiry-date=\"Thu, 26 Nov 2026 00:00:00 GMT\", rule-id=\"BoundTestRetention\"",
+      "ETag": "\"603f17b0f47a812dfd90dac8c40ddfcc\"",
+      "ChecksumCRC64NVME": "pny1+fQ7FCQ=",
+      "ChecksumType": "FULL_OBJECT",
+      "ServerSideEncryption": "AES256",
+      "VersionId": "fmH_VeaQ2X.i47yvveyU7PZ86P6Qnd8Q"
+    }
+  }
+]

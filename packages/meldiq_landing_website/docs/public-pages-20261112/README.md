@@ -1,8 +1,8 @@
 # Secondary public-page redesign — 12 November 2026
 
-The release candidate redesigns the 30 secondary routes of `meldiq.app`. The approved homepage is preserved: **all 20 controlled live-baseline/candidate image comparisons have zero changed pixels**, and captured links, theme changes, FAQ and mobile-menu interactions are identical.
+The production release redesigns the 30 secondary routes of `meldiq.app`. The approved homepage is preserved: **all 20 controlled live-baseline/candidate image comparisons have zero changed pixels**, and captured links, theme changes, FAQ and mobile-menu interactions are identical.
 
-Status: implementation and independent verification complete, pushed as [5c3661a](https://github.com/nahianahmed3832/meldiq-windows-app/commit/5c3661aa74a2a55bf0cd68cb0631aaf9814af782); production activation awaits authenticated AWS access. This is not a deployment receipt. See [release.json](release.json) for the precise source, artifact and delivery state.
+Status: **deployed and live-verified** from [5c3661a](https://github.com/nahianahmed3832/meldiq-windows-app/commit/5c3661aa74a2a55bf0cd68cb0631aaf9814af782), on branch `codex/public-pages-redesign-20261112`. Release `site-20261112-public-pages-6a4cbee84f` activated at **2026-11-11 18:33:45 UTC** (12 November, 02:33 in Shanghai). See [release.json](release.json) for artifact and delivery identifiers. No rollback was needed.
 
 ## Source and scope
 
@@ -15,7 +15,7 @@ Status: implementation and independent verification complete, pushed as [5c3661a
 
 ## Route matrix
 
-“Checked” means the final candidate was visually inspected, its route/metadata tested and its internal destinations checked. All secondary routes have full-page 375px and 1440px captures in both themes. The four priority routes additionally have 320px and 768px captures. This does not imply production activation or a real payment/email submission.
+“Checked” means the final candidate was visually inspected, its route/metadata tested and its internal destinations checked. All secondary routes have full-page 375px and 1440px captures in both themes. The four priority routes additionally have 320px and 768px captures. Post-deployment browser checks also covered all routes, including the three existing app redirects. Payment, email and cancellation submissions use local fixtures only.
 
 | Route | Previous issue and purpose | Treatment | Functional verification |
 |---|---|---|---|
@@ -62,7 +62,7 @@ Each pair shows the previous live design on the left and the verified candidate 
 | Features | [Before/after](screenshots/features-1440-before-after.webp) | [Before/after](screenshots/features-375-before-after.webp) |
 | Plus | [Before/after](screenshots/pricing-1440-before-after.webp) | [Before/after](screenshots/pricing-375-before-after.webp) |
 
-Full-resolution local evidence is preserved under `reports/public-pages-20261112/`: `before`, `after`, `home-live-before`, `home-candidate`, `routes-before`, `routes-after` and `routes-after-light`. It is excluded from Git to avoid committing repetitive generated images and browser traces. Curated images and machine-readable results are committed here.
+Full-resolution local evidence is preserved under `reports/public-pages-20261112/`: `before`, `after`, `home-live-before`, `home-candidate`, `routes-before`, `routes-after`, `routes-after-light`, `live-after`, `live-other-pages` and `home-live-after`. It is excluded from Git to avoid committing repetitive generated images and browser traces. Curated images and machine-readable results are committed here.
 
 Homepage comparisons fix the clock to 12 November, reduce motion consistently, wait for fonts and substitute only the genuinely dynamic presence count with the same 12-user fixture. No structural regions are masked. Captures cover 320, 375, 768 and 1440px, dark/light themes, expanded FAQ and mobile menu. [Pixel results](evidence/homepage-comparison.json) · [interaction records](evidence/home-interactions.json).
 
@@ -97,7 +97,7 @@ Review exposed an inherited dark comparison-table background and low-contrast FA
 
 Evidence: [build](evidence/build.txt), [unit/coverage](evidence/unit.txt), [browser run](evidence/e2e-final.txt), [final contrast regression](evidence/e2e-contrast-final.txt), [priority captures](evidence/priority-views.json), [other dark](evidence/other-routes-dark.json), [other light](evidence/other-routes-light.json), [content/keyboard/contrast](evidence/content-keyboard-contrast.json), [remaining contrast checks](evidence/remaining-contrast.json), [account fixtures](evidence/account-fixtures.json), [asset sizes](evidence/initial-asset-sizes.json).
 
-The initial browser pass had selector ambiguity with Next's route announcer, a clock race in an existing rotation test and the layout defects noted above. Selectors were scoped to main content, the test clock was installed before its pause target, and the all-route crawl was given a bounded 90-second budget. The final full run passed without retries. Payment, email, account and cancellation tests use the existing local fixtures: they do not prove provider settlement, device acceptance or real email delivery. Only English and the existing Spanish route are published; no RTL locale is advertised or added.
+The initial browser pass had selector ambiguity with Next's route announcer, a clock race in an existing rotation test and the layout defects noted above. Selectors were scoped to main content, the test clock was installed before its pause target, and the all-route crawl was given a bounded 90-second budget. The full run passed without retries. After the final legal-callout color adjustment, 33 relevant legal, FAQ and theme checks passed on the final export. Payment, email, account and cancellation tests use the existing local fixtures: they do not prove provider settlement, device acceptance or real email delivery. Only English and the existing Spanish route are published; no RTL locale is advertised or added.
 
 ## Reproduce and release
 
@@ -105,8 +105,31 @@ From this package on Node 22 or later: `npm ci`, `npm run typecheck`, `npm run l
 
 GitHub rulesets are empty and main is not protected at verification. This repository has native-client workflows; a push to this website task branch does not deploy the public site. No native release workflow is run. Website delivery follows the existing manual release mechanism.
 
-The legacy `deploy/deploy.sh` defaults to the former Hostinger host and must not be used against that default. The current deployment inventory points to AWS account `914016532802`, Frankfurt instance `i-05aee65dfc8a5adb9`, CloudFront distribution `E1781B6HAWPYTY`, and the Docker edge `meldiq-prod-edge`. These must be revalidated with authenticated control-plane/SSM access before mutation. The established website release layout is `/opt/meldiq-site/releases/<release>` with `/opt/meldiq-site/current` switched atomically.
+The legacy `deploy/deploy.sh` defaults to the former Hostinger host and must not be used against that default. The authenticated deployment inventory verified AWS account `914016532802`, Frankfurt instance `i-05aee65dfc8a5adb9`, CloudFront distribution `E1781B6HAWPYTY`, and the Docker edge `meldiq-prod-edge`. These were revalidated through the control plane and SSM before deployment. The established website release layout is `/opt/meldiq-site/releases/<release>` with `/opt/meldiq-site/current` switched atomically.
 
-Release procedure: inspect and record the actual current symlink/build and previous artifact; acquire the production and website release locks; enforce an expected-current check; stage the exact validated export, retain previous immutable chunks for returning sessions and preserve the separate native-download tree; validate edge configuration; atomically activate; invalidate only affected CloudFront site paths if needed; verify ordinary/fresh sessions, routes, prices, links, errors and homepage images. Do not change DNS, secrets, other containers or production data. Rollback restores the recorded prior website symlink under the same locks and expected-current guard, then repeats live verification. The concrete rollback target must come from the live read, not historical notes.
+The release followed the existing SSM, private staging-bucket and atomic website-symlink mechanism. The reviewed host root is a symlink to `/opt/meldiq-phase6/staged/source/opt/meldiq-site`; `current` uses a relative target so the same path resolves inside the Docker bind mount. Both production and website locks were acquired, and the predecessor was checked before preparation and activation. All 117 exported files matched the pinned archive/manifest; 590 previous immutable assets were copied without overwriting new files. The prior release was retained. No nginx configuration, DNS, secrets, native release, app/admin file, container identity or start time changed.
 
-At candidate verification the `griipbuddy` AWS session is expired. The separately configured `orbit-admin` identity is denied `ssm:DescribeInstanceInformation`; it was not used to bypass that access boundary. Production source/release identity, rollback target and post-deployment browser checks remain pending that access. No production deployment or rollback is claimed.
+CloudFront's existing default policy is `Managed-CachingDisabled` with all TTLs zero. The new HTML and hashed assets appeared without an invalidation. The site is served by the existing edge container; no restart or nginx reload was needed.
+
+## Production verification and rollback
+
+- Live pages: [Developers](https://meldiq.app/developers), [Download](https://meldiq.app/download), [Features](https://meldiq.app/features), [Meldiq Plus](https://meldiq.app/pricing).
+- Deployed build: `TwM8anwvzj4naoXPoslGh`; SSM activation command `d7cd9ff9-e480-4852-b4bb-cca476d7c536` completed successfully.
+- All 31 HTML routes identify that build. Sixteen priority-page browser views have no runtime errors, failed site responses or page overflow, and **all 16 PNGs exactly match the verified candidate**. Twenty-six remaining browser views pass, including the expected account/login redirects.
+- The post-deployment homepage repeats all 20 baseline states with **zero changed pixels** and identical interaction/CTA records.
+- Live Plus shows USD 4.99 monthly, 1 GB uploads and one included Spark. Its action reaches the existing app's `/settings/mojo` entry and displays the sign-in choices. No billing POST was submitted. Download metadata and the native installer's SHA-256 still match the pinned 0.3.3 release.
+- A browser opened before deployment continued navigating with the previous assets without errors; an ordinary reload selected the new build. All 17 previously loaded JavaScript URLs still respond successfully.
+- The SDK copy action copies the exact displayed code when the isolated browser permits clipboard access. A denied clipboard shows the manual-selection fallback. The initial capture sampled this asynchronous status too early; the focused permission tests verify both completed outcomes.
+- Final origin verification confirms every exported file and unchanged hashes for the native download, web app, admin HTML and nginx configurations, plus unchanged service identities/start times.
+
+Evidence: [activation receipt](evidence/production-activation.json), [origin verification](evidence/origin-final.json), [live browser results](evidence/live-browser.json), [other live routes](evidence/other-routes-live.json), [priority image equality](evidence/deployed-priority-comparison.json), [live homepage comparison](evidence/homepage-live-comparison.json), [returning session](evidence/returning-session.json), [actual sign-in and denied-copy states](evidence/live-actions.json), [allowed clipboard](evidence/live-clipboard.json), [versioned private staging objects](evidence/staged-artifacts.json).
+
+The preserved rollback target is `releases/site-20261108T131835Z-73277418b2`, original Next build `xynF_IcvjTerwr2bmD5m_`, homepage SHA-256 `c4a9cc287c5151f74641092494f2e0b67b42c0af4e79057b7c98db852d5b6be6`. The dated [controller](../../deploy/aws-public-pages-20261112/release.py) supports guarded rollback through the same locks and refuses a newer concurrent website release. From this package, an authorized operator can run:
+
+```bash
+python3 deploy/aws-public-pages-20261112/run-ssm.py rollback
+```
+
+The [SSM runner](../../deploy/aws-public-pages-20261112/run-ssm.py) uses the existing `griipbuddy` CLI profile and verifies the account/instance before submitting the controller. It records the command and result under `reports/public-pages-20261112/deployment/`. Rollback was prepared, not exercised against live visitors, because this release passed verification.
+
+AWS access was renewed with the owner's explicit approval before deployment. No access blocker remains. The genuinely limited checks are the nine unconfigured optional GA4 tests, two existing Discord references returning 403 to automated HEAD, and real payment/device/email acceptance outside this website task. No production purchase, refund, account mutation, or native release was performed.
