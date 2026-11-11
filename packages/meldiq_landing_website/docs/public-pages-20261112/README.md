@@ -2,7 +2,7 @@
 
 The release candidate redesigns the 30 secondary routes of `meldiq.app`. The approved homepage is preserved: **all 20 controlled live-baseline/candidate image comparisons have zero changed pixels**, and captured links, theme changes, FAQ and mobile-menu interactions are identical.
 
-Status: implementation and independent verification complete; production activation awaits authenticated AWS access. This is not a deployment receipt. See [release.json](release.json) for the precise source, artifact and delivery state.
+Status: implementation and independent verification complete, pushed as [5c3661a](https://github.com/nahianahmed3832/meldiq-windows-app/commit/5c3661aa74a2a55bf0cd68cb0631aaf9814af782); production activation awaits authenticated AWS access. This is not a deployment receipt. See [release.json](release.json) for the precise source, artifact and delivery state.
 
 ## Source and scope
 

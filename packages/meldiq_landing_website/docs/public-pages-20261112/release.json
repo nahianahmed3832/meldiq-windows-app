@@ -11,8 +11,8 @@
   "branch": "codex/public-pages-redesign-20261112",
   "websiteMirrorBase": "4f1e16cec8d5db19af7525e7aab1e4a351db6726",
   "preservedSourceCommit": "a51599686769a8fb60d0b2bb20ecf858e04f4b98",
-  "taskCommit": null,
-  "githubPushVerified": false,
+  "taskCommit": "5c3661aa74a2a55bf0cd68cb0631aaf9814af782",
+  "githubPushVerified": true,
   "deployment": {
     "performed": false,
     "deploymentId": null,
@@ -36,5 +36,6 @@
     "browserSkipped": 9,
     "browserSkippedReason": "Optional GA4 stream not configured",
     "finalContrastBrowserPassed": 33
-  }
+  },
+  "githubAutomaticDeployment": false
 }
