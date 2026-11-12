@@ -248,10 +248,11 @@ test.describe("redesigned public pages", () => {
       .evaluateAll((nodes) => [...new Set(nodes.map((a) => a.getAttribute("href")!.split("#")[0]!))]);
     for (const href of links) expect((await request.get(href)).status(), href).toBe(200);
   });
-  test("legal drafts remain clearly marked", async ({ page }) => {
+  test("published terms show the operator and eligibility without draft placeholders", async ({ page }) => {
     await page.goto("/legal/terms");
-    await expect(page.getByRole("note")).toContainText("Draft for review");
-    await expect(page.locator(".placeholder").first()).toContainText("To be confirmed");
+    await expect(page.locator("article")).toContainText("2026-002057599");
+    await expect(page.locator("article")).toContainText("13 years old");
+    await expect(page.locator(".placeholder")).toHaveCount(0);
   });
   test("unknown route returns the existing 404", async ({ page }) => {
     const response = await page.goto("/no-such-page");
@@ -295,7 +296,7 @@ test.describe("existing checkout integration", () => {
 });
 
 test.describe("legal and business details from the admin console", () => {
-  test("the legal and support pages show what operators filled in, and placeholders for the rest", async ({ page }) => {
+  test("the legal and support pages use admin details and the published revision date", async ({ page }) => {
     await page.route("**/v2/site/details", async (route) => {
       const res = await route.fetch();
       const body = await res.json();
@@ -314,10 +315,10 @@ test.describe("legal and business details from the admin console", () => {
     await expect(page.getByText("First rule.")).toBeVisible();
     await expect(page.getByText("Second rule.")).toBeVisible();
     await expect(page.getByText(/grace period of 7 days/)).toBeVisible();
-    await expect(page.getByText("Last updated 2026-10-29.")).toBeVisible();
+    await expect(page.getByText("Last updated 2026-11-12.")).toBeVisible();
     await page.goto("/legal/terms");
     await expect(page.getByText(/1 Example Street, Wilmington, DE 19801, USA \(organised in Delaware, USA\)/)).toBeVisible();
-    await expect(page.locator(".placeholder").first()).toBeVisible(); // governing law isn't decided
+    await expect(page.locator(".placeholder")).toHaveCount(0);
     await page.goto("/support");
     await expect(page.getByText("support@meldiq.test").first()).toBeVisible();
   });

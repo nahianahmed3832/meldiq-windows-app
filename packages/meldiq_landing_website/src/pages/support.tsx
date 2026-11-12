@@ -275,11 +275,10 @@ export default function Page() {
             <em>{"support."}</em>
           </h2>
           <SupportContact />
-          <p className={"fine-print"}>
-            {
-              "For now, use the help topics above, the existing account tools, or in-app reporting for community issues. Never share passwords, recovery codes or card numbers."
-            }
+          <p>
+            <a href="/legal/forms">Request forms</a> · <a href="/legal/content-removal#intimate-images">Urgent intimate image removal</a>
           </p>
+          <p className={"fine-print"}>{"Never share passwords, recovery codes or card numbers."}</p>
           <a className={"button secondary"} href={"/faq"}>
             {"Browse questions & answers"}
             <svg

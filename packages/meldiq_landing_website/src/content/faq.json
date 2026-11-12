@@ -41,8 +41,8 @@
   ],
   [
     "Privacy",
-    "How does end-to-end encryption work?",
-    "Meldiq stores messages to deliver conversation history. Files are encrypted before upload. Current messages can include attachment keys that the Meldiq server can read. Call-media encryption has its own indicator."
+    "How does Meldiq encrypt messages and files?",
+    "Meldiq can read messages stored for conversation history. Files are encrypted before upload. Current messages can include attachment keys that the Meldiq server can read. Call-media encryption has its own indicator."
   ],
   [
     "Privacy",
@@ -52,7 +52,7 @@
   [
     "Privacy",
     "Are files and calls encrypted?",
-    "Files are encrypted before upload. Current attachment keys can be read by the Meldiq server. Call audio, video and screen sharing are end-to-end encrypted when call encryption is on, which is the default. Check the encryption indicator in the app for your call."
+    "Files are encrypted before upload. Current attachment keys can be read by the Meldiq server. Call audio, video and screen sharing use media encryption when enabled. The indicator shows when it is active. It does not establish who can obtain the call keys."
   ],
   [
     "Privacy",

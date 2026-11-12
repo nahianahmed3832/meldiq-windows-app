@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useOperator } from "../../lib/details";
-import { Detail, LegalPage } from "../../components/LegalPage";
+import { LegalPage } from "../../components/LegalPage";
 
 /** As implemented: meldiq_android docs/ACCOUNT_DELETION.md and the billing guard (API 0.52.0). */
 export default function AccountDeletion() {
@@ -9,7 +9,7 @@ export default function AccountDeletion() {
     <LegalPage
       title="Account deletion & your data"
       description="How to delete your Meldiq account, what deleting removes, what stays and why, and how to make other data requests."
-      intro={<p>You can delete your Meldiq account yourself at any time. Here is what happens.</p>}
+      intro={<p>You can start deletion in Meldiq settings or send a request by email.</p>}
       sections={[
         {
           id: "how",
@@ -18,6 +18,11 @@ export default function AccountDeletion() {
             <>
               <p>
                 In the Meldiq app, open Settings › Account › Delete account. You&apos;ll be asked for your password and to type your email address to confirm.
+              </p>
+              <p>
+                You can also email <a href={`mailto:${op.privacyEmail}?subject=Meldiq%20account%20deletion`}>{op.privacyEmail}</a> with your account identifier
+                and a safe reply address. You can request deletion without signing in. Use the <Link href="/legal/forms#deletion">optional deletion form</Link>{" "}
+                if helpful. We may verify your identity. Keep passwords and recovery keys out of email.
               </p>
               <ul>
                 <li>
@@ -38,7 +43,7 @@ export default function AccountDeletion() {
               <li>Your profile: names, username (others can then use it), photo and details.</li>
               <li>Your memberships in communities, groups and channels, as if you left them.</li>
               <li>Your devices, their notification addresses, and messages still waiting to be delivered.</li>
-              <li>Your encrypted message history on our servers.</li>
+              <li>Personal records covered by the deletion workflow. Shared conversation history follows the rules below.</li>
             </ul>
           ),
         },
@@ -48,15 +53,21 @@ export default function AccountDeletion() {
           body: (
             <ul>
               <li>
-                An anonymous placeholder, so a conversation with you stays one conversation for the other person, who sees &ldquo;Deleted account&rdquo;. It
-                holds no name, email or profile.
+                A “Deleted account” reference can remain so shared conversations still work for other participants. The reference may remain personal data if it
+                can be linked to you.
               </li>
-              <li>Messages other people already received are on their devices, as with any messaging app.</li>
               <li>
-                Billing records (plan, dates, amounts and payment-provider references, never card numbers) for as long as tax and accounting law requires:{" "}
-                <Detail value={op.billingRecordRetention} />. The payment provider keeps its own records under its privacy policy.
+                Other people may keep copies of messages or files they received. Shared conversation and community records and their files may also remain under
+                the rules for those records.
               </li>
-              <li>Security and audit logs, without message content, for up to a year.</li>
+              <li>
+                Billing records, such as plan, dates, amounts and payment references, are kept as needed for tax, accounting and disputes. Your payment provider
+                keeps its own records under its privacy policy.
+              </li>
+              <li>
+                Call records and audit logs may remain under the retention settings in the <Link href="/legal/privacy#retention">Privacy Policy</Link>. Backups
+                and records subject to a legal hold can remain after the main account is deleted.
+              </li>
             </ul>
           ),
         },
@@ -65,8 +76,9 @@ export default function AccountDeletion() {
           title: "Other data requests",
           body: (
             <p>
-              To access, correct or export your data, or for any privacy question, contact <Detail value={op.privacyEmail} />. See the{" "}
-              <Link href="/legal/privacy#rights">Privacy Policy</Link> for your rights.
+              To access, correct or export your data, or for any privacy question, email <a href={`mailto:${op.privacyEmail}`}>{op.privacyEmail}</a>. Tell us if
+              you cannot sign in, cancel a renewal or transfer sole ownership. We will explain available steps and any verification or retention exceptions. See
+              the <Link href="/legal/privacy#rights">Privacy Policy</Link> for your rights.
             </p>
           ),
         },

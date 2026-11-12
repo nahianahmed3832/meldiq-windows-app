@@ -10,9 +10,9 @@ export default function Terms() {
       description="The terms for using Meldiq: your account, your content, acceptable use, Meldiq Plus, availability, and how these terms change."
       intro={
         <p>
-          These terms are an agreement between you and <Detail value={op.legalName} /> (&ldquo;Meldiq&rdquo;, &ldquo;we&rdquo;), registered at{" "}
-          <Detail value={op.address} />, for using Meldiq&apos;s apps, website and services (&ldquo;Meldiq&rdquo;). By creating an account or using Meldiq you
-          agree to them.
+          These terms are an agreement between you and <Detail value={op.legalName} /> (&ldquo;Meldiq&rdquo;, &ldquo;we&rdquo;), with a principal office and
+          mailing address at <Detail value={op.address} /> ({op.registration}), for using Meldiq&apos;s apps, website and services (&ldquo;Meldiq&rdquo;). By
+          creating an account or using Meldiq you agree to them.
         </p>
       }
       sections={[
@@ -22,12 +22,14 @@ export default function Terms() {
           body: (
             <>
               <p>
-                You need an account to use Meldiq. You must be at least <Detail value={op.minimumAge} /> and give a working email address. One account works on
-                every Meldiq app and on this website.
+                You need an account to use Meldiq. You must be at least <Detail value={op.minimumAge} /> and meet any higher local age limit. Obtain verified
+                parent or guardian permission before use when required. See <Link href="/legal/young-people">Privacy for young people and parents</Link>. Give a
+                working email address.
               </p>
               <p>
-                You&apos;re responsible for keeping your password, passkeys, recovery codes and recovery key safe. Your messages are encrypted with keys on your
-                devices: if you lose every device and your recovery key, we can&apos;t recover your encrypted history for you.
+                You&apos;re responsible for keeping your password, passkeys, recovery codes and recovery key safe. Some older encrypted history or data held
+                only on your device may be lost if you lose its keys. See <Link href="/security">Security and encryption</Link> for how the current service
+                handles messages, files and calls.
               </p>
             </>
           ),
@@ -79,8 +81,8 @@ export default function Terms() {
           title: "Liability",
           body: (
             <p>
-              Nothing in these terms limits liability that can&apos;t be limited by law, or your rights as a consumer. Beyond that, our liability is limited as
-              set out by <Detail value={op.governingLaw} />.
+              Nothing in these terms limits liability that can&apos;t be limited by law, or your rights as a consumer. Applicable law determines liability and
+              the courts that can hear a dispute. You keep any mandatory protections that apply where you live.
             </p>
           ),
         },
@@ -99,12 +101,9 @@ export default function Terms() {
           title: "Changes and contact",
           body: (
             <>
+              <p>If we change these terms in a way that matters, we&apos;ll tell you before the change applies.</p>
               <p>
-                If we change these terms in a way that matters, we&apos;ll tell you before the change applies. These terms are governed by{" "}
-                <Detail value={op.governingLaw} />.
-              </p>
-              <p>
-                Questions: <Detail value={op.supportEmail} />.
+                Questions? Email <a href={`mailto:${op.supportEmail}`}>{op.supportEmail}</a>.
               </p>
             </>
           ),

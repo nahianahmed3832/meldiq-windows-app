@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useOperator } from "../../lib/details";
-import { Detail, LegalPage } from "../../components/LegalPage";
+import { LegalPage } from "../../components/LegalPage";
 
 export default function AcceptableUse() {
   const op = useOperator();
@@ -49,7 +49,8 @@ export default function AcceptableUse() {
           body: (
             <p>
               Report a message or person from the app. Reports go to the community&apos;s moderators. Include the details you want moderators to review. For
-              anything else, contact <Detail value={op.supportEmail} />.
+              anything else, email <a href={`mailto:${op.supportEmail}`}>{op.supportEmail}</a> or use the{" "}
+              <Link href="/legal/content-removal">content removal and appeal page</Link>.
             </p>
           ),
         },

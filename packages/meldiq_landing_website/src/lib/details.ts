@@ -79,7 +79,7 @@ export function operatorFrom(d: SiteDetails | null): Operator {
     legalBases: or(d.policies.legalBases, FALLBACK.legalBases),
     billingRecordRetention: or(d.policies.billingRecordRetention, FALLBACK.billingRecordRetention),
     transferSafeguards: or(d.policies.transferSafeguards, FALLBACK.transferSafeguards),
-    legalUpdated: d.legalUpdatedOn,
+    legalUpdated: d.legalUpdatedOn > LEGAL_UPDATED ? d.legalUpdatedOn : LEGAL_UPDATED,
   };
 }
 

@@ -24,18 +24,18 @@ export const ANNOUNCED_PLANS = [{ key: "plus", name: "Meldiq Plus", amountMinor:
 /** The operator's details for the legal pages. Unconfirmed ones stay visible placeholders. */
 export const OPERATOR = {
   legalName: "GRIIPBUDDY LLC",
-  address: PENDING("GRIIPBUDDY LLC's registered address (USA)"),
-  registration: PENDING("company registration number"),
-  supportEmail: PENDING("support email address"),
-  privacyEmail: PENDING("privacy contact email address"),
+  address: "1021 E Lincolnway 10704, Cheyenne, WY 82001, United States",
+  registration: "Wyoming filing 2026-002057599",
+  supportEmail: "contact@griipbuddy.com",
+  privacyEmail: "contact@griipbuddy.com",
   governingLaw: PENDING("governing law and courts"),
-  refundWindow: PENDING("the specific refund rules within the 14-day window"),
-  minimumAge: PENDING("minimum age for an account"),
+  refundWindow: "We review requests based on the purchase terms, the issue reported and applicable consumer law.",
+  minimumAge: "13 years old",
   dpo: PENDING("data protection contact or representative, where required"),
 } as const;
 
 /** When the legal drafts were last changed (shown on each page). */
-export const LEGAL_UPDATED = "2026-10-28";
+export const LEGAL_UPDATED = "2026-11-12";
 
 export function isPending(value: string): boolean {
   return value.startsWith("[To be confirmed:");

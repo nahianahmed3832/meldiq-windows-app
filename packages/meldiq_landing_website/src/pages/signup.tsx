@@ -41,7 +41,7 @@ export default function SignUp() {
     setError(null);
     if (Object.keys(found).length > 0) return;
     if (!agreed) {
-      setError("Agree to the Terms of Service and the Privacy Policy to create an account.");
+      setError("Agree to the Terms of Service and confirm you meet the age and permission requirements to create an account.");
       return;
     }
     setBusy(true);
@@ -89,7 +89,8 @@ export default function SignUp() {
             <label className="check">
               <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} />
               <span>
-                I agree to the <Link href="/legal/terms">Terms of Service</Link> and have read the <Link href="/legal/privacy">Privacy Policy</Link>.
+                I agree to the <Link href="/legal/terms">Terms of Service</Link> and confirm I meet the{" "}
+                <Link href="/legal/young-people">age and parental permission requirements</Link>. Read the <Link href="/legal/privacy">Privacy Policy</Link>.
               </span>
             </label>
             <FormError message={error} />

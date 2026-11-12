@@ -15,13 +15,13 @@ export default function Security() {
         },
         {
           title: "Messages and attachments",
-          text: "Files are encrypted before upload. Current messages can include attachment keys that the Meldiq server can read, so attachment encryption does not prevent server access to those files. Only authorized conversation members can access them through the app.",
+          text: "Connections are encrypted in transit. The service can read stored message content and the attachment keys included in current messages. Files are encrypted before upload, and the app checks conversation permissions before serving them.",
           href: "/legal/privacy",
           label: "Read the Privacy Policy",
         },
         {
           title: "Calls and screen sharing",
-          text: "Call-media encryption is enabled by default. Check the encryption indicator in your call. Share only the window or screen you intend to show and stop sharing when you’re finished.",
+          text: "Call-media encryption is on by default in supported configurations. The indicator shows when call media is encrypted. It does not establish who can obtain the call keys. Share only the window or screen you intend to show and stop sharing when you’re finished.",
           href: "/features#calls",
           label: "Calling features",
         },
@@ -33,9 +33,9 @@ export default function Security() {
         },
         {
           title: "Something doesn’t look right?",
-          text: "Use in-app reporting for unwanted messages and abuse. For account or security concerns, use the support page to check the currently published contact information. Never share passwords, recovery codes or payment credentials in a report.",
-          href: "/support",
-          label: "Get help",
+          text: "Use in-app reporting for unwanted messages and abuse. For a security issue, email contact@griipbuddy.com and include the affected feature and version. Never share passwords, recovery codes or payment credentials in a report.",
+          href: "/legal/forms#security",
+          label: "Security report form",
         },
       ]}
     />

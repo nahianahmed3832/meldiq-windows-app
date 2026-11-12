@@ -157,8 +157,9 @@ describe("validation", () => {
 describe("site details", () => {
   it("marks every unconfirmed business detail as a placeholder, and finds them", () => {
     expect(OPERATOR.legalName).toBe("GRIIPBUDDY LLC");
-    const { legalName: _confirmed, ...rest } = OPERATOR;
-    expect(Object.values(rest).every(isPending)).toBe(true);
+    expect(OPERATOR.privacyEmail).toBe("contact@griipbuddy.com");
+    expect(OPERATOR.minimumAge).toBe("13 years old");
+    expect(isPending(OPERATOR.governingLaw)).toBe(true);
     expect(isPending("support@example.test")).toBe(false);
     expect(pendingDetails(`a ${PENDING("x")} b ${PENDING("y")} ${PENDING("x")}`)).toEqual(["[To be confirmed: x]", "[To be confirmed: y]"]);
   });
@@ -238,9 +239,9 @@ describe("site details from the console", () => {
       refundWindow: "1 day",
       refundRules: ["One.", "Two."],
       gracePeriod: "0 days",
-      legalUpdated: "2026-10-29",
+      legalUpdated: "2026-11-12",
     });
     expect(op.governingLaw).toMatch(/^\[To be confirmed:/);
-    expect(op.privacyEmail).toMatch(/^\[To be confirmed:/);
+    expect(op.privacyEmail).toBe("contact@griipbuddy.com");
   });
 });

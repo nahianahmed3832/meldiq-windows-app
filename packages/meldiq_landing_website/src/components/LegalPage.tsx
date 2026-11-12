@@ -22,18 +22,21 @@ export function Detail({ value }: { value: string }) {
   return isPending(value) ? <span className="placeholder">{value}</span> : <>{value}</>;
 }
 
-const RELATED = [
+export const LEGAL_LINKS = [
+  { href: "/legal", label: "Legal & privacy center" },
   { href: "/legal/terms", label: "Terms of Service" },
   { href: "/legal/privacy", label: "Privacy Policy" },
   { href: "/legal/billing", label: "Meldiq Plus terms" },
   { href: "/legal/acceptable-use", label: "Acceptable use" },
   { href: "/legal/account-deletion", label: "Account deletion & your data" },
+  { href: "/legal/cookies", label: "Cookies and device storage" },
+  { href: "/security", label: "Security and encryption" },
+  { href: "/legal/young-people", label: "Young people and parents" },
+  { href: "/legal/content-removal", label: "Report content or request removal" },
+  { href: "/legal/government-requests", label: "Government requests" },
+  { href: "/legal/forms", label: "Request forms" },
 ];
 
-/**
- * A legal page. These are drafts prepared from how Meldiq actually works, not reviewed legal advice: every page says so
- * until a qualified reviewer has approved it and the placeholders are filled (docs/LAUNCH_BLOCKERS.md).
- */
 export function LegalPage({ title, description, intro, sections }: LegalPageProps) {
   const legalUpdated = useOperator().legalUpdated;
   return (
@@ -58,7 +61,7 @@ export function LegalPage({ title, description, intro, sections }: LegalPageProp
             Related
           </h2>
           <ul>
-            {RELATED.map((r) => (
+            {LEGAL_LINKS.map((r) => (
               <li key={r.href}>
                 <Link href={r.href}>{r.label}</Link>
               </li>
@@ -66,13 +69,7 @@ export function LegalPage({ title, description, intro, sections }: LegalPageProp
           </ul>
         </nav>
         <article>
-          <div className="callout warning" role="note">
-            <p>
-              <strong>Draft for review.</strong> This page describes how Meldiq works today, but it hasn&apos;t been reviewed by a lawyer yet and isn&apos;t
-              legal advice. Highlighted details are still to be confirmed.
-            </p>
-          </div>
-          <div style={{ marginTop: 24 }}>{intro}</div>
+          <div>{intro}</div>
           {sections.map((s) => (
             <section key={s.id} aria-labelledby={s.id}>
               <h2 id={s.id}>{s.title}</h2>

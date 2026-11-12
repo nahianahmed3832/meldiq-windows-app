@@ -2,6 +2,7 @@ import Link from "next/link";
 import { useOperator } from "../../lib/details";
 import { Detail, LegalPage } from "../../components/LegalPage";
 import { CurrentFreeDays } from "../../components/Mojo";
+import { isPending } from "../../lib/site";
 import { useCatalog } from "../../lib/catalog";
 
 /** The subscription terms as the system applies them (meldiq_android docs/BILLING.md › Lifecycle and Entitlements). */
@@ -14,8 +15,8 @@ export default function BillingTerms() {
       description="How Meldiq Plus works: prices, automatic renewal, trials, cancelling, failed payments, refunds, and using one plan on every device."
       intro={
         <p>
-          These terms apply when you subscribe to Meldiq Plus for your account. They&apos;re part of the <Link href="/legal/terms">Terms of Service</Link>.
-          Plans and prices are listed on the <Link href="/pricing">pricing page</Link>.
+          These terms cover Meldiq Plus, community add-ons and one-time purchases, including Sparks and gifts when offered. They&apos;re part of the{" "}
+          <Link href="/legal/terms">Terms of Service</Link>. Plans and prices are listed on the <Link href="/pricing">pricing page</Link>.
         </p>
       }
       sections={[
@@ -25,7 +26,7 @@ export default function BillingTerms() {
           body: (
             <p>
               Before checkout we show the plan, its price and currency, how often it&apos;s billed, that it renews automatically, any free trial, and what
-              happens if a payment fails. No tax is added: the price shown is what you pay. You must agree to these terms to continue.
+              happens if a payment fails. Check the total, including applicable taxes or fees, before you agree. One-time purchases do not renew.
             </p>
           ),
         },
@@ -90,9 +91,11 @@ export default function BillingTerms() {
           title: "Failed payments",
           body: (
             <p>
-              If a renewal payment fails, the payment provider may retry it, and you keep the plan for a grace period of <Detail value={op.gracePeriod} /> (each
-              plan also states it before you pay). After it, the plan pauses until a payment succeeds, then it starts again. If payment can&apos;t be collected,
-              the subscription ends.
+              If a renewal payment fails, the provider may retry it.{" "}
+              {isPending(op.gracePeriod)
+                ? "Any grace period depends on the plan shown at checkout."
+                : `The configured default is a grace period of ${op.gracePeriod}. Check the terms for your plan.`}{" "}
+              Benefits may pause until payment succeeds. If payment cannot be collected, the subscription ends.
             </p>
           ),
         },
@@ -103,14 +106,21 @@ export default function BillingTerms() {
             <>
               <p>
                 You can ask for a refund within <Detail value={op.refundWindow} /> of a payment. This never takes away rights you have under consumer law where
-                you live, such as a right to withdraw from a purchase. To ask for a refund, contact <Detail value={op.supportEmail} />.
+                you live, such as a right to withdraw from a purchase. To ask for a refund, email <a href={`mailto:${op.supportEmail}`}>{op.supportEmail}</a>{" "}
+                with your purchase reference.
               </p>
               {op.refundRules.map((rule) => (
                 <p key={rule}>
                   <Detail value={rule} />
                 </p>
               ))}
-              <p>A refund or chargeback is recorded with your subscription; access then follows the subscription&apos;s status.</p>
+              <p>A refund or chargeback is recorded with your subscription. Access then follows the subscription&apos;s status.</p>
+              <p>
+                Where a statutory right of withdrawal applies, email a clear statement that you are withdrawing from the contract. Include your name, purchase
+                reference and a reply address. EU and UK consumers generally have 14 days for eligible distance purchases, subject to applicable exceptions. You
+                can use the <Link href="/legal/forms#billing">optional withdrawal form</Link>. Withdrawal from a contract and cancellation of renewal are
+                separate actions.
+              </p>
             </>
           ),
         },
@@ -129,8 +139,8 @@ export default function BillingTerms() {
           title: "When a plan ends",
           body: (
             <p>
-              Nothing you&apos;ve made is deleted. Your messages, files and members stay. Only adding more beyond the free tier&apos;s limits is refused until a
-              plan applies again.
+              Your account returns to the applicable free limits. Ordinary storage, retention and safety rules still apply. Included Spark assignments depend on
+              the associated plan. Check checkout for any term or expiry that applies to a separate purchase or gift.
             </p>
           ),
         },

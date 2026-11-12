@@ -62,6 +62,8 @@ export const FOOTER: FooterColumn[] = [
   {
     title: "Legal",
     links: [
+      { href: "/legal", label: "Legal & privacy center" },
+      { href: "/legal/content-removal#intimate-images", label: "Report intimate images" },
       { href: "/legal/terms", label: "Terms of Service" },
       { href: "/legal/privacy", label: "Privacy Policy" },
       { href: "/legal/billing", label: "Meldiq Plus terms" },
