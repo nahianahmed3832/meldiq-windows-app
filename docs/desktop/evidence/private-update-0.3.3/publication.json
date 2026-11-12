@@ -1,0 +1,8 @@
+{
+  "version": "0.3.3",
+  "download": "https://meldiq.app/downloads/windows/0.3.3/fbfd5d377a17f296/Meldiq-Setup-0.3.3-x64.exe",
+  "sha256": "fbfd5d377a17f2961322292f104fdce14083ce8a7677170a098b007e5a4f5243",
+  "bytes": 124335875,
+  "feed": "https://meldiq.app/desktop-updates/windows/stable/release.json",
+  "verification": "Published baseline hash and byte size from the signed stable Windows feed and qualified artifact manifest"
+}

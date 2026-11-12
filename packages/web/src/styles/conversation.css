@@ -399,6 +399,52 @@
   gap: 8px;
   margin-top: 6px;
 }
+.attachments[hidden] {
+  display: none;
+}
+.chat-attachment,
+.attachment-preview-content {
+  min-width: 0;
+  max-width: 100%;
+}
+.attachment-preview {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+}
+.attachment-download-control {
+  display: grid;
+  justify-items: center;
+  flex: none;
+  max-width: 110px;
+  overflow-wrap: anywhere;
+}
+.icon-btn.attachment-download {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  color: var(--accent-text);
+  background: var(--accent-soft);
+}
+.icon-btn.attachment-download:hover {
+  background: var(--surface-sunken);
+}
+.attachment-choice {
+  cursor: pointer;
+  min-height: 44px;
+}
+.attachment-choice input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent);
+}
+.attachment-choice:has(input:checked) {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+.attachment-choice .ellipsis {
+  display: block;
+}
 .att-image {
   display: block;
   border-radius: var(--r-lg);
@@ -1850,8 +1896,20 @@
   grid-auto-columns: 1fr;
   gap: 3px;
 }
+.album-entry {
+  position: relative;
+  min-width: 0;
+}
+.album-entry .attachment-download-control {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  border-radius: var(--r-md);
+  background: var(--surface-raised);
+}
 .album-tile {
   position: relative;
+  width: 100%;
   display: grid;
   place-items: center;
   aspect-ratio: 1;
@@ -2006,6 +2064,13 @@
   border-radius: var(--r-md);
   background: var(--surface-sunken);
   font-size: 13px;
+}
+.chat-download-bar {
+  flex: none;
+  margin: 0 12px 8px;
+}
+.chat-download-bar button {
+  min-height: 44px;
 }
 .gallery-cell,
 .gallery-file {
@@ -3053,8 +3118,10 @@ button.media-card {
   color: var(--text-muted);
 }
 .file-download-name {
-  display: grid;
-  gap: 3px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
   min-width: 0;
   padding: 0;
   border: 0;
@@ -3062,6 +3129,9 @@ button.media-card {
   color: inherit;
   text-align: left;
   cursor: pointer;
+}
+.file-download-name strong {
+  display: block;
 }
 .file-download-name progress {
   width: 100%;

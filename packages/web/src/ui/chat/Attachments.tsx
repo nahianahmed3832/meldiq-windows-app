@@ -1,5 +1,5 @@
-import { Download, X, FileText, Film, Image as ImageIcon, Mic, Pause, Play, TriangleAlert } from "lucide-react";
-import { useContext, useEffect, useId, useMemo, useRef, useState } from "react";
+import { X, Film, Image as ImageIcon, Pause, Play, TriangleAlert } from "lucide-react";
+import { type ReactNode, useContext, useEffect, useId, useMemo, useRef, useState } from "react";
 import { useEngine, useOrbit } from "../../application/orbit";
 import { usePrefs } from "../../application/prefs";
 import { useVoicePlayback, voicePlayback } from "../../application/voicePlayback";
@@ -9,8 +9,11 @@ import type { AttachmentRef } from "../../protocol/payload";
 import { type DownloadProgress, isInlineImage, safeMime, saveAttachment } from "../../sync/attachments";
 import { clock, isVoice, shownDuration } from "../../sync/voice";
 import { attachmentName, riskyAttachment } from "../../sync/attachmentPolicy";
+import { saveKey } from "../../sync/bulkSave";
 import { bytes } from "../format";
+import { Icon } from "../icons/Icon";
 import { albumOverflow, albumRows } from "./album";
+import { ChatFileSelection } from "./ChatFileSelection";
 import { useNearScreen } from "./useNearScreen";
 import { useBlobUrl } from "./blobUrl";
 import { isVideo, isViewable, MediaViewer, OpenViewerContext, type ViewerInfo, ViewerInfoContext } from "./MediaViewer";
@@ -23,6 +26,8 @@ export type { ViewerInfo };
  */
 export function Attachments({ refs, viewer, message }: { refs: AttachmentRef[]; viewer?: ViewerInfo; message?: StoredMessage }) {
   const engine = useEngine();
+  const bulk = useContext(ChatFileSelection);
+  const selecting = !!(message && bulk?.selecting);
   const [viewing, setViewing] = useState<string | null>(null);
   // Only subscribe to conversation history while open. Keep the selected attachment stable as new messages arrive.
   const messages = useOrbit((s) => (viewing && message ? s.messages[message.conversationId]?.items : undefined));
@@ -57,20 +62,31 @@ export function Attachments({ refs, viewer, message }: { refs: AttachmentRef[]; 
   return (
     <ViewerInfoContext.Provider value={info}>
       <OpenViewerContext.Provider value={open}>
-        <div className="attachments">
+        <div className="attachments" hidden={selecting}>
           {album.length > 0 && <AlbumGrid items={album} />}
-          {rest.map((r) =>
-            isVoice(r) ? (
-              <VoiceAttachment key={r.id} r={r} />
-            ) : isInlineImage(r) ? (
-              <ImageAttachment key={r.id} r={r} />
-            ) : isPlayable(r) ? (
-              <MediaAttachment key={r.id} r={r} />
-            ) : (
-              <FileAttachment key={r.id} r={r} />
-            ),
-          )}
+          {rest.map((r) => (
+            <div className="chat-attachment" key={r.id} data-attachment-id={r.id}>
+              {isVoice(r) ? <VoiceAttachment r={r} /> : isInlineImage(r) ? <ImageAttachment r={r} withDownload /> : isPlayable(r) ? <MediaAttachment r={r} withDownload /> : <FileAttachment r={r} />}
+            </div>
+          ))}
         </div>
+        {selecting && message && bulk && (
+          <div className="attachments attachment-choices" role="group" aria-label="Select attachments">
+            {refs.map((ref) => {
+              const key = saveKey(message.id, ref.id);
+              const name = attachmentName(ref.name);
+              return (
+                <label className="att-file attachment-choice" data-attachment-id={ref.id} key={key}>
+                  <input type="checkbox" aria-label={`Select ${name}`} checked={bulk.selected.has(key)} onChange={() => bulk.toggle(key)} />
+                  <span className="grow">
+                    <strong className="ellipsis">{name}</strong>
+                    <small>{bytes(ref.size)}</small>
+                  </span>
+                </label>
+              );
+            })}
+          </div>
+        )}
         {viewing !== null && at >= 0 && <MediaViewer items={media} at={at} onMove={(i) => setViewing(media[i].id)} onClose={() => setViewing(null)} />}
       </OpenViewerContext.Provider>
     </ViewerInfoContext.Provider>
@@ -78,7 +94,10 @@ export function Attachments({ refs, viewer, message }: { refs: AttachmentRef[]; 
 }
 
 /** Opens [r] in the message's viewer, or in a viewer of its own where it's shown outside a message (galleries). */
-function useViewer(r: AttachmentRef): { open: () => void; own: React.ReactNode } {
+function useViewer(r: AttachmentRef): {
+  open: () => void;
+  own: React.ReactNode;
+} {
   const shared = useContext(OpenViewerContext);
   const [alone, setAlone] = useState(false);
   return {
@@ -112,41 +131,43 @@ function VoiceAttachment({ r }: { r: AttachmentRef }) {
   const pos = mine ? playback.positionMs : voicePlayback.positionOf(key);
   const seconds = Math.round(total / 1000);
   return (
-    <div className={`voice-msg${playing ? " playing" : ""}`} role="group" aria-label={`Voice message, ${seconds} seconds`} data-voice-state={mine ? playback.status : "idle"}>
-      <button
-        className="voice-play"
-        aria-label={playing || busy ? "Pause voice message" : `Play voice message, ${seconds} seconds`}
-        aria-pressed={playing}
-        onClick={() => {
-          if (!url) setWanted(true);
-          voicePlayback.toggle(key, url);
-        }}
-      >
-        {busy ? <span className="spinner" aria-hidden="true" /> : playing ? <Pause size={16} /> : <Play size={16} />}
-      </button>
-      <input
-        type="range"
-        className="voice-seek"
-        min={0}
-        max={Math.max(1, total)}
-        value={Math.min(pos, Math.max(1, total))}
-        aria-label="Position"
-        aria-valuetext={`${Math.round(pos / 1000)} seconds of ${seconds} seconds`}
-        disabled={!url}
-        onChange={(e) => voicePlayback.seek(key, Number(e.target.value))}
-      />
-      <span className="voice-len">{playing || pos > 0 ? `${clock(pos)} / ${clock(total)}` : clock(total)}</span>
-      {mine && playback.status !== "idle" && (
-        <button className="voice-rate" onClick={() => voicePlayback.cycleRate()} aria-label={`Playback speed ${playback.rate} times. Change speed`}>
-          {playback.rate}×
+    <PreviewDownload r={r}>
+      <div className={`voice-msg${playing ? " playing" : ""}`} role="group" aria-label={`Voice message, ${seconds} seconds`} data-voice-state={mine ? playback.status : "idle"}>
+        <button
+          className="voice-play"
+          aria-label={playing || busy ? "Pause voice message" : `Play voice message, ${seconds} seconds`}
+          aria-pressed={playing}
+          onClick={() => {
+            if (!url) setWanted(true);
+            voicePlayback.toggle(key, url);
+          }}
+        >
+          {busy ? <span className="spinner" aria-hidden="true" /> : playing ? <Pause size={16} /> : <Play size={16} />}
         </button>
-      )}
-      {mine && playback.failed && (
-        <span className="voice-failed" role="alert">
-          {playback.failed}
-        </span>
-      )}
-    </div>
+        <input
+          type="range"
+          className="voice-seek"
+          min={0}
+          max={Math.max(1, total)}
+          value={Math.min(pos, Math.max(1, total))}
+          aria-label="Position"
+          aria-valuetext={`${Math.round(pos / 1000)} seconds of ${seconds} seconds`}
+          disabled={!url}
+          onChange={(e) => voicePlayback.seek(key, Number(e.target.value))}
+        />
+        <span className="voice-len">{playing || pos > 0 ? `${clock(pos)} / ${clock(total)}` : clock(total)}</span>
+        {mine && playback.status !== "idle" && (
+          <button className="voice-rate" onClick={() => voicePlayback.cycleRate()} aria-label={`Playback speed ${playback.rate} times. Change speed`}>
+            {playback.rate}×
+          </button>
+        )}
+        {mine && playback.failed && (
+          <span className="voice-failed" role="alert">
+            {playback.failed}
+          </span>
+        )}
+      </div>
+    </PreviewDownload>
   );
 }
 
@@ -154,7 +175,7 @@ function VoiceAttachment({ r }: { r: AttachmentRef }) {
  * A video: a tile with a play button that opens the viewer, where it decrypts and plays with Meldiq's controls; audio
  * files: a card until opened, then a player in place (decrypted in memory, never a page).
  */
-export function MediaAttachment({ r }: { r: AttachmentRef }) {
+export function MediaAttachment({ r, withDownload = false }: { r: AttachmentRef; withDownload?: boolean }) {
   const viewer = useViewer(r);
   const [open, setOpen] = useState(false);
   const { url, error, loading } = useBlobUrl(r, open);
@@ -164,7 +185,7 @@ export function MediaAttachment({ r }: { r: AttachmentRef }) {
   if (error) return <FileAttachment r={r} error={error} />;
   if (isVideo(r))
     return (
-      <>
+      <PreviewDownload r={r} show={withDownload}>
         <button
           ref={tile}
           className="att-video-tile"
@@ -188,27 +209,33 @@ export function MediaAttachment({ r }: { r: AttachmentRef }) {
         </button>
         {open && url && <video className="att-inline-video" src={url} controls playsInline autoPlay preload="metadata" aria-label={`Inline video ${r.name}`} />}
         {viewer.own}
-      </>
+      </PreviewDownload>
     );
   if (!open || loading || !url) {
     return (
-      <button className="att-file" onClick={() => setOpen(true)} aria-label={`Play ${r.name}, ${bytes(r.size)}`} disabled={open}>
-        <span className="file-icon">
-          <Play size={18} />
-        </span>
-        <span className="grow" style={{ minWidth: 0 }}>
-          <span className="ellipsis" style={{ display: "block", fontWeight: 600 }}>
-            {r.name}
+      <PreviewDownload r={r} show={withDownload}>
+        <button className="att-file" onClick={() => setOpen(true)} aria-label={`Play ${r.name}, ${bytes(r.size)}`} disabled={open}>
+          <span className="file-icon">
+            <Play size={18} />
           </span>
-          <small>{open ? "Loading…" : `${bytes(r.size)} · play here`}</small>
-        </span>
-      </button>
+          <span className="grow" style={{ minWidth: 0 }}>
+            <span className="ellipsis" style={{ display: "block", fontWeight: 600 }}>
+              {r.name}
+            </span>
+            <small>{open ? "Loading…" : `${bytes(r.size)} · play here`}</small>
+          </span>
+        </button>
+      </PreviewDownload>
     );
   }
-  return <audio className="att-audio" src={url} controls autoPlay aria-label={r.name} />;
+  return (
+    <PreviewDownload r={r} show={withDownload}>
+      <audio className="att-audio" src={url} controls autoPlay aria-label={r.name} />
+    </PreviewDownload>
+  );
 }
 
-export function ImageAttachment({ r }: { r: AttachmentRef }) {
+export function ImageAttachment({ r, withDownload = false }: { r: AttachmentRef; withDownload?: boolean }) {
   // Download photos automatically off (android Settings › Chats): each photo waits for a click.
   const { autoLoadPhotos } = usePrefs();
   const [asked, setAsked] = useState(false);
@@ -221,33 +248,38 @@ export function ImageAttachment({ r }: { r: AttachmentRef }) {
   if (error || decodeFailed) return <FileAttachment r={r} error={error ?? "This browser cannot preview this image. Download the original."} />;
   if (!automatic && !asked)
     return (
-      <button className="att-file" onClick={() => setAsked(true)} aria-label={`Load photo ${r.name}, ${bytes(r.size)}`}>
-        <span className="file-icon">
-          <ImageIcon size={18} />
-        </span>
-        <span className="grow" style={{ minWidth: 0 }}>
-          <span className="ellipsis" style={{ display: "block", fontWeight: 600 }}>
-            Photo
+      <PreviewDownload r={r} show={withDownload}>
+        <button className="att-file" onClick={() => setAsked(true)} aria-label={`Load photo ${r.name}, ${bytes(r.size)}`}>
+          <span className="file-icon">
+            <ImageIcon size={18} />
           </span>
-          <small>{bytes(r.size)} · click to load</small>
-        </span>
-      </button>
+          <span className="grow" style={{ minWidth: 0 }}>
+            <span className="ellipsis" style={{ display: "block", fontWeight: 600 }}>
+              Photo
+            </span>
+            <small>{bytes(r.size)} · click to load</small>
+          </span>
+        </button>
+      </PreviewDownload>
     );
-  if (loading || !url) return <div ref={spot} className="att-image att-pending skeleton" aria-label={`Loading ${r.name}`} />;
   return (
-    <>
-      <button
-        className="att-image"
-        onClick={(e) => {
-          e.currentTarget.focus();
-          viewer.open();
-        }}
-        aria-label={`Open image ${r.name}`}
-      >
-        <img src={url} alt={r.name} loading="lazy" onError={() => setDecodeFailed(true)} />
-      </button>
+    <PreviewDownload r={r} show={withDownload}>
+      {loading || !url ? (
+        <div ref={spot} className="att-image att-pending skeleton" aria-label={`Loading ${r.name}`} />
+      ) : (
+        <button
+          className="att-image"
+          onClick={(e) => {
+            e.currentTarget.focus();
+            viewer.open();
+          }}
+          aria-label={`Open image ${r.name}`}
+        >
+          <img src={url} alt={r.name} loading="lazy" onError={() => setDecodeFailed(true)} />
+        </button>
+      )}
       {viewer.own}
-    </>
+    </PreviewDownload>
   );
 }
 
@@ -261,7 +293,10 @@ function AlbumGrid({ items }: { items: AttachmentRef[] }) {
       {albumRows(items.length).map((row, i) => (
         <div key={i} className="album-row">
           {row.map((at) => (
-            <AlbumTile key={items[at].id} r={items[at]} more={at === 3 ? more : 0} onOpen={() => (shared ? shared(items[at]) : setOpen(at))} />
+            <div className="album-entry" key={items[at].id} data-attachment-id={items[at].id}>
+              <AlbumTile r={items[at]} more={at === 3 ? more : 0} onOpen={() => (shared ? shared(items[at]) : setOpen(at))} />
+              <PreviewDownloadButton r={items[at]} />
+            </div>
           ))}
         </div>
       ))}
@@ -298,7 +333,7 @@ function AlbumTile({ r, more, onOpen }: { r: AttachmentRef; more: number; onOpen
   );
 }
 
-export function FileAttachment({ r, error: initialError }: { r: AttachmentRef; error?: string }) {
+function useAttachmentDownload(r: AttachmentRef, initialError?: string) {
   const engine = useEngine();
   const [busy, setBusy] = useState(false);
   const [progress, setProgress] = useState<DownloadProgress | null>(null);
@@ -313,7 +348,10 @@ export function FileAttachment({ r, error: initialError }: { r: AttachmentRef; e
     setError(null);
     setProgress(null);
     try {
-      await saveAttachment(engine, r, { signal: control.signal, onProgress: setProgress });
+      await saveAttachment(engine, r, {
+        signal: control.signal,
+        onProgress: setProgress,
+      });
     } catch (e) {
       if (control.signal.aborted || (e instanceof DOMException && e.name === "AbortError")) return;
       setError(e instanceof Error ? e.message : "Couldn't download this file. Try again.");
@@ -322,26 +360,68 @@ export function FileAttachment({ r, error: initialError }: { r: AttachmentRef; e
       setBusy(false);
     }
   };
+  return {
+    busy,
+    progress,
+    error,
+    download,
+    cancel: () => abort.current?.abort(),
+    percent: progress?.total ? Math.min(100, Math.floor((100 * progress.done) / progress.total)) : 0,
+  };
+}
+
+function PreviewDownload({ r, show = true, children }: { r: AttachmentRef; show?: boolean; children: ReactNode }) {
+  if (!show) return <>{children}</>;
+  return (
+    <div className="attachment-preview">
+      <div className="attachment-preview-content">{children}</div>
+      <PreviewDownloadButton r={r} />
+    </div>
+  );
+}
+
+function PreviewDownloadButton({ r }: { r: AttachmentRef }) {
+  const { busy, error, percent, download, cancel } = useAttachmentDownload(r);
+  const name = attachmentName(r.name);
+  const label = busy ? `Cancel downloading ${name}, ${percent}%` : `Download ${name}, ${bytes(r.size)}`;
+  return (
+    <div className="attachment-download-control">
+      <button className="icon-btn attachment-download" type="button" onClick={busy ? cancel : () => void download()} aria-label={label} title={label}>
+        {busy ? <X size={18} aria-hidden="true" /> : <Icon name="files.download" size={18} />}
+      </button>
+      {busy && <small aria-hidden="true">{percent}%</small>}
+      {error && (
+        <small role="alert" className="danger-text">
+          {error}
+        </small>
+      )}
+    </div>
+  );
+}
+
+export function FileAttachment({ r, error: initialError }: { r: AttachmentRef; error?: string }) {
+  const { busy, progress, error, download, cancel, percent } = useAttachmentDownload(r, initialError);
   const name = attachmentName(r.name);
   const extension = name.includes(".") ? name.split(".").pop()!.toUpperCase() : "FILE";
-  const pct = progress?.total ? Math.min(100, Math.floor((100 * progress.done) / progress.total)) : 0;
   return (
     <div className="att-file">
-      <span className="file-icon">{error ? <TriangleAlert size={18} /> : r.voice ? <Mic size={18} /> : <FileText size={18} />}</span>
       <button className="file-download-name grow" onClick={() => void download()} disabled={busy} aria-label={`Download ${name}, ${bytes(r.size)}`}>
-        <strong className="ellipsis">{r.voice ? "Voice message" : name}</strong>
-        <small role={error ? "alert" : undefined}>
-          {error ?? (busy ? (progress ? `${progress.phase === "decrypting" ? "Verifying" : "Downloading"} · ${pct}%` : "Starting download…") : `${extension} · ${bytes(r.size)}`)}
-        </small>
-        {busy && <progress max={100} value={pct} aria-label={`Download ${name}: ${pct}%`} />}
-        {riskyAttachment(name) && <small>Open only if you trust the sender.</small>}
+        <span className="file-icon">
+          <Icon name="files.download" size={18} />
+        </span>
+        <span className="grow">
+          <strong className="ellipsis">{r.voice ? "Voice message" : name}</strong>
+          <small role={error ? "alert" : undefined}>
+            {error ?? (busy ? (progress ? `${progress.phase === "decrypting" ? "Verifying" : "Downloading"} · ${percent}%` : "Starting download…") : `${extension} · ${bytes(r.size)}`)}
+          </small>
+          {busy && <progress max={100} value={percent} aria-label={`Download ${name}: ${percent}%`} />}
+          {riskyAttachment(name) && <small>Open only if you trust the sender.</small>}
+        </span>
       </button>
-      {busy ? (
-        <button className="icon-btn" onClick={() => abort.current?.abort()} aria-label={`Cancel downloading ${name}`}>
-          <X size={16} />
+      {busy && (
+        <button className="icon-btn attachment-download" onClick={cancel} aria-label={`Cancel downloading ${name}`}>
+          <X size={18} />
         </button>
-      ) : (
-        <Download size={16} className="faint" aria-hidden="true" />
       )}
     </div>
   );

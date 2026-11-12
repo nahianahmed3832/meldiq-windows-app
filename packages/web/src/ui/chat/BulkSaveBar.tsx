@@ -1,12 +1,14 @@
-import { Download, RotateCcw, Square, X } from "lucide-react";
-import { useRef, useState } from "react";
+import { RotateCcw, Square } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { useEngine } from "../../application/orbit";
 import { MAX_BYTES, MAX_ITEMS, planSave, type SaveItem, saveKey, type SaveStatus, saveSummary } from "../../sync/bulkSave";
 import { canPickFolder, type DirHandle, pickFolder, runBulkSave } from "../../sync/bulkSaver";
 import { bytes } from "../format";
-import type { GalleryItem } from "./gallery";
+import { Icon } from "../icons/Icon";
 
-export const itemKey = (i: GalleryItem): string => saveKey(i.messageId, i.ref.id);
+type FileChoice = Pick<SaveItem, "messageId" | "ref">;
+
+export const itemKey = (i: FileChoice): string => saveKey(i.messageId, i.ref.id);
 
 interface Run {
   items: SaveItem[];
@@ -29,42 +31,84 @@ export function useBulkSave() {
     setSelecting(false);
     setSelected(new Set());
   };
-  return { selecting, start: () => setSelecting(true), stop, selected, toggle, selectAll: (keys: string[]) => setSelected(new Set(keys)) };
+  const include = (keys: string[]) => {
+    setSelecting(true);
+    setSelected((cur) => new Set([...cur, ...keys]));
+  };
+  return {
+    include,
+    selecting,
+    start: () => setSelecting(true),
+    stop,
+    selected,
+    toggle,
+    selectAll: (keys: string[]) => setSelected(new Set(keys)),
+  };
 }
 
-/** The bar above the gallery while selecting: count, Select all, Save, and the batch's progress with Stop and Retry. */
-export function BulkSaveBar({ all, bulk }: { all: GalleryItem[]; bulk: ReturnType<typeof useBulkSave> }) {
+/** Download the selected files and show progress, cancellation and retry. */
+export function BulkSaveBar({ all, bulk, chat = false }: { all: FileChoice[]; bulk: ReturnType<typeof useBulkSave>; chat?: boolean }) {
   const engine = useEngine();
   const [run, setRun] = useState<Run | null>(null);
   const [problem, setProblem] = useState<string | null>(null);
-  const stopped = useRef(false);
+  const active = useRef<AbortController | null>(null);
+  const choosing = useRef(false);
+  const mounted = useRef(false);
+  useEffect(() => {
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
+      active.current?.abort();
+    };
+  }, []);
+  const selected = all.filter((i) => bulk.selected.has(itemKey(i)));
   const summary = run ? saveSummary(run.status) : null;
 
   const start = async (items: SaveItem[], dir: DirHandle | null) => {
-    stopped.current = false;
+    if (!mounted.current || active.current) return;
+    const control = new AbortController();
+    active.current = control;
     const status = Object.fromEntries(items.map((i) => [i.key, "waiting" as SaveStatus]));
     setRun({ items, dir, status, errors: {} });
-    await runBulkSave(
-      engine,
-      items,
-      dir,
-      (key, s, error) => setRun((r) => (r ? { ...r, status: { ...r.status, [key]: s }, errors: error ? { ...r.errors, [key]: error } : r.errors } : r)),
-      () => stopped.current,
-    );
+    try {
+      await runBulkSave(
+        engine,
+        items,
+        dir,
+        (key, s, error) =>
+          setRun((r) =>
+            r
+              ? {
+                  ...r,
+                  status: { ...r.status, [key]: s },
+                  errors: error ? { ...r.errors, [key]: error } : r.errors,
+                }
+              : r,
+          ),
+        () => control.signal.aborted,
+        control.signal,
+      );
+    } finally {
+      active.current = null;
+    }
   };
 
   const save = async () => {
+    if (choosing.current || active.current) return;
     setProblem(null);
-    const plan = planSave(all.filter((i) => bulk.selected.has(itemKey(i))));
+    const plan = planSave(selected);
     if (plan.kind === "empty") return setProblem("Select the files to save first.");
     if (plan.kind === "tooMany") return setProblem(`That's ${plan.count} files. Save at most ${MAX_ITEMS} at a time, in parts.`);
     if (plan.kind === "tooLarge") return setProblem(`That's ${bytes(plan.bytes)}. Save at most ${bytes(MAX_BYTES)} at a time, in parts.`);
     let dir: DirHandle | null = null;
     if (canPickFolder()) {
+      choosing.current = true;
       try {
         dir = await pickFolder();
       } catch {
         return setProblem("That folder can't be written to. Choose another.");
+      } finally {
+        choosing.current = false;
       }
       if (!dir) return; // the picker was closed
     }
@@ -88,7 +132,7 @@ export function BulkSaveBar({ all, bulk }: { all: GalleryItem[]; bulk: ReturnTyp
           {!summary.running && firstError && <small className="faint"> · {firstError}</small>}
         </span>
         {summary.running ? (
-          <button className="btn btn-secondary btn-sm" onClick={() => (stopped.current = true)}>
+          <button className="btn btn-secondary btn-sm" onClick={() => active.current?.abort()}>
             <Square size={13} /> Stop
           </button>
         ) : (
@@ -116,17 +160,19 @@ export function BulkSaveBar({ all, bulk }: { all: GalleryItem[]; bulk: ReturnTyp
   return (
     <div className="bulk-bar">
       <span className="grow">
-        {bulk.selected.size === 1 ? "1 file selected" : `${bulk.selected.size} files selected`}
+        {selected.length === 1 ? "1 file selected" : `${selected.length} files selected`}
         {problem && <small className="danger-text"> · {problem}</small>}
       </span>
-      <button className="btn btn-ghost btn-sm" onClick={() => bulk.selectAll(all.map(itemKey))}>
-        Select all
+      {!chat && (
+        <button className="btn btn-ghost btn-sm" onClick={() => bulk.selectAll(all.map(itemKey))}>
+          Select all
+        </button>
+      )}
+      <button className="btn btn-primary btn-sm" onClick={() => void save()} disabled={selected.length === 0}>
+        <Icon name="files.download" size={16} /> {canPickFolder() && !chat ? "Save to a folder…" : "Download"}
       </button>
-      <button className="btn btn-primary btn-sm" onClick={() => void save()} disabled={bulk.selected.size === 0}>
-        <Download size={14} /> {canPickFolder() ? "Save to a folder…" : "Download"}
-      </button>
-      <button className="icon-btn" onClick={bulk.stop} aria-label="Stop selecting">
-        <X size={16} />
+      <button className="btn btn-ghost btn-sm" onClick={bulk.stop} aria-label={chat ? undefined : "Stop selecting"}>
+        Cancel
       </button>
     </div>
   );

@@ -21,9 +21,12 @@ export const canPickFolder = (): boolean => typeof (window as unknown as { showD
 
 /** Asks for a folder; null when the person closed the picker. */
 export async function pickFolder(): Promise<DirHandle | null> {
-  const picker = (window as unknown as { showDirectoryPicker: (o: { mode: "readwrite" }) => Promise<DirHandle> }).showDirectoryPicker;
   try {
-    return await picker({ mode: "readwrite" });
+    return await (
+      window as unknown as {
+        showDirectoryPicker: (o: { mode: "readwrite" }) => Promise<DirHandle>;
+      }
+    ).showDirectoryPicker({ mode: "readwrite" });
   } catch (e) {
     if (e instanceof DOMException && e.name === "AbortError") return null;
     throw e;
@@ -44,12 +47,16 @@ async function freeName(dir: DirHandle, name: string): Promise<string> {
   throw new Error("Too many files with this name in that folder.");
 }
 
-async function writeInto(engine: Engine, dir: DirHandle, item: SaveItem): Promise<void> {
-  const file = await dir.getFileHandle(await freeName(dir, item.fileName), { create: true });
+async function writeInto(engine: Engine, dir: DirHandle, item: SaveItem, signal?: AbortSignal): Promise<void> {
+  const file = await dir.getFileHandle(await freeName(dir, item.fileName), {
+    create: true,
+  });
   const out = await file.createWritable();
   try {
-    if (item.ref.chunk !== undefined) await streamAttachment(engine, item.ref, (plain) => out.write(new Uint8Array(plain)));
-    else await out.write(await openAttachment(engine, item.ref));
+    signal?.throwIfAborted();
+    if (item.ref.chunk !== undefined) await streamAttachment(engine, item.ref, (plain) => out.write(new Uint8Array(plain)), signal);
+    else await out.write(await openAttachment(engine, item.ref, undefined, signal));
+    signal?.throwIfAborted();
     await out.close();
   } catch (e) {
     await out.abort().catch(() => undefined);
@@ -57,8 +64,10 @@ async function writeInto(engine: Engine, dir: DirHandle, item: SaveItem): Promis
   }
 }
 
-async function download(engine: Engine, item: SaveItem): Promise<void> {
-  const url = URL.createObjectURL(await openAttachment(engine, item.ref));
+async function download(engine: Engine, item: SaveItem, signal?: AbortSignal): Promise<void> {
+  const blob = await openAttachment(engine, item.ref, undefined, signal);
+  signal?.throwIfAborted();
+  const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
   a.download = item.fileName;
@@ -70,8 +79,7 @@ async function download(engine: Engine, item: SaveItem): Promise<void> {
 }
 
 /**
- * Saves [items] into [dir] (or as downloads when null), reporting each file's status; [stopped] ends the batch before
- * the next file, leaving the rest "cancelled" for Retry.
+ * Saves each item and reports its status. Cancellation leaves unfinished items available for retry.
  */
 export async function runBulkSave(
   engine: Engine,
@@ -79,6 +87,7 @@ export async function runBulkSave(
   dir: DirHandle | null,
   report: (key: string, status: SaveStatus, error?: string) => void,
   stopped: () => boolean,
+  signal?: AbortSignal,
 ): Promise<void> {
   for (const item of items) {
     if (stopped()) {
@@ -87,10 +96,11 @@ export async function runBulkSave(
     }
     report(item.key, "saving");
     try {
-      await (dir ? writeInto(engine, dir, item) : download(engine, item));
+      await (dir ? writeInto(engine, dir, item, signal) : download(engine, item, signal));
       report(item.key, "saved");
     } catch (e) {
-      report(item.key, "failed", e instanceof Error ? e.message : "Couldn't save this file.");
+      if (signal?.aborted) report(item.key, "cancelled");
+      else report(item.key, "failed", e instanceof Error ? e.message : "Couldn't save this file.");
     }
   }
 }

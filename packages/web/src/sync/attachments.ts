@@ -441,12 +441,14 @@ async function* readAll(body: ReadableStream<Uint8Array>): AsyncGenerator<Uint8A
  * decrypted file is handed to the browser's download.
  */
 export async function saveAttachment(engine: Engine, ref: AttachmentRef, opts: { signal?: AbortSignal; onProgress?: (p: DownloadProgress) => void } = {}): Promise<void> {
-  const picker = (window as unknown as { showSaveFilePicker?: (o: { suggestedName: string }) => Promise<FileSystemFileHandle> }).showSaveFilePicker;
-  if (ref.chunk !== undefined && ref.size > CACHE_LIMIT && picker) {
-    const handle = await picker({ suggestedName: attachmentName(ref.name) });
+  const host = window as Window & { showSaveFilePicker?: (o: { suggestedName: string }) => Promise<FileSystemFileHandle> };
+  if (ref.chunk !== undefined && ref.size > CACHE_LIMIT && typeof host.showSaveFilePicker === "function") {
+    const handle = await host.showSaveFilePicker({ suggestedName: attachmentName(ref.name) });
+    opts.signal?.throwIfAborted();
     const out = await handle.createWritable();
     try {
       await streamAttachment(engine, ref, (plain) => out.write(new Uint8Array(plain)), opts.signal, opts.onProgress);
+      opts.signal?.throwIfAborted();
       await out.close();
     } catch (e) {
       await out.abort().catch(() => undefined);

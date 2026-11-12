@@ -73,7 +73,7 @@ export async function copyImage(url: string): Promise<boolean> {
 }
 
 /** The menu entries for [t], shown first in the menu; [notice] reports what happened. */
-export function contextEntries(t: ContextTarget | null, notice: (text: string) => void): MenuEntry[] {
+export function contextEntries(t: ContextTarget | null, notice: (text: string) => void, downloadOriginal?: () => void): MenuEntry[] {
   if (!t) return [];
   if (t.kind === "selection") return [{ label: "Copy", icon: <Copy size={16} />, onSelect: () => void navigator.clipboard?.writeText(t.text).then(() => notice("Copied.")) }, "separator"];
   if (t.kind === "link")
@@ -85,7 +85,7 @@ export function contextEntries(t: ContextTarget | null, notice: (text: string) =
   const what = t.media === "image" ? "photo" : t.media;
   return [
     ...(t.media === "image" ? [{ label: "Open photo", icon: <ExternalLink size={16} />, onSelect: () => t.element.click() }] : []),
-    { label: `Download ${what}`, icon: <Download size={16} />, onSelect: () => downloadUrl(t.url, t.name) },
+    { label: `Download ${what}`, icon: <Download size={16} />, onSelect: downloadOriginal ?? (() => downloadUrl(t.url, t.name)) },
     ...(t.media === "image"
       ? [
           {

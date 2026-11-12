@@ -5,6 +5,8 @@ import type { StoredMessage } from "../../model/types";
 import { Avatar } from "../components/Avatar";
 import { dayLabel, sameDay } from "../format";
 import { MessageItem } from "./MessageItem";
+import { BulkSaveBar, useBulkSave } from "./BulkSaveBar";
+import { ChatFileSelection } from "./ChatFileSelection";
 import { TypingIndicator } from "./TypingIndicator";
 import { JUMP_EVENT } from "./jump";
 import { useT } from "../../i18n";
@@ -80,6 +82,8 @@ export function MessageList(props: MessageListProps) {
   const [, tick] = useState(0);
 
   const visible = useMemo(() => (threadRoot ? items.filter((m) => m.id === threadRoot || m.threadRootId === threadRoot) : items.filter((m) => !m.threadRootId)), [items, threadRoot]);
+  const files = useBulkSave();
+  const downloadable = useMemo(() => visible.flatMap((m) => (m.kind === "text" && !m.deleted ? m.attachments.map((ref) => ({ messageId: m.id, ref })) : [])), [visible]);
   const threadCounts = useMemo(() => {
     const counts = new Map<string, number>();
     for (const m of items) if (m.threadRootId && !m.deleted) counts.set(m.threadRootId, (counts.get(m.threadRootId) ?? 0) + 1);
@@ -164,7 +168,7 @@ export function MessageList(props: MessageListProps) {
     .filter(([u, until]) => until > Date.now() && u !== me.userId)
     .map(([u]) => users[u]?.displayName ?? "Someone");
 
-  return (
+  const content = (
     <div style={{ position: "relative", flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }}>
       <div ref={scroller} className="messages scroll" onScroll={onScroll} role="log" aria-busy={props.historyReady === false} aria-live="polite" aria-relevant="additions" aria-label="Messages">
         {props.hasMore ? (
@@ -260,6 +264,16 @@ export function MessageList(props: MessageListProps) {
         </button>
       )}
     </div>
+  );
+  return (
+    <ChatFileSelection.Provider value={files}>
+      {content}
+      {files.selecting && (
+        <div className="chat-download-bar">
+          <BulkSaveBar all={downloadable} bulk={files} chat />
+        </div>
+      )}
+    </ChatFileSelection.Provider>
   );
 }
 

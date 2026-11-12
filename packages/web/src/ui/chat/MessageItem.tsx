@@ -30,7 +30,7 @@ import {
   Video,
   IdCard,
 } from "lucide-react";
-import { memo, useRef, useState } from "react";
+import { memo, useContext, useRef, useState } from "react";
 import { CustomEmojiImage, useExpressions } from "../community/CustomEmoji";
 import { reactionName } from "../../sync/expressions";
 import { useEngine, useOrbit } from "../../application/orbit";
@@ -53,6 +53,10 @@ import { useT } from "../../i18n";
 import { LookAvatar, LookName } from "../people/NameStyle";
 import { isWebUrl } from "../../protocol/payload";
 import { Attachments } from "./Attachments";
+import { ChatFileSelection } from "./ChatFileSelection";
+import { saveAttachment } from "../../sync/attachments";
+import { saveKey } from "../../sync/bulkSave";
+import { attachmentName } from "../../sync/attachmentPolicy";
 import { isEmojiOnly, RichText } from "./RichText";
 import { SafeLink } from "./SafeLink";
 import { AnimojiView } from "./AnimojiView";
@@ -105,6 +109,7 @@ export interface MessageItemProps {
 
 export const MessageItem = memo(function MessageItem(p: MessageItemProps) {
   const engine = useEngine();
+  const fileSelection = useContext(ChatFileSelection);
   const canReact = p.canReact ?? p.canPost;
   const canAddReaction = canReact && (p.newReactions ?? true);
   const canPin = p.moderate ?? p.canPost;
@@ -281,10 +286,14 @@ export const MessageItem = memo(function MessageItem(p: MessageItemProps) {
   const reactions = Object.entries(m.reactions);
   // What the menu was opened on (a photo, a link, selected text): its own items come first (chat/contextTarget.tsx).
   const [target, setTarget] = useState<ContextTarget | null>(null);
+  const [attachmentId, setAttachmentId] = useState<string | undefined>();
+  const attachment = m.attachments.find((ref) => ref.id === attachmentId);
+  const trackAttachment = (target: EventTarget | null) => setAttachmentId(target instanceof Element ? target.closest<HTMLElement>("[data-attachment-id]")?.dataset.attachmentId : undefined);
   const pressedOn = useRef<EventTarget | null>(null);
   const press = useLongPress(
     (el) => {
       setPressed(true);
+      trackAttachment(pressedOn.current);
       setTarget(contextTarget(pressedOn.current));
       more.open(el);
     },
@@ -343,6 +352,7 @@ export const MessageItem = memo(function MessageItem(p: MessageItemProps) {
         e.preventDefault();
         if (m.kind === "call") return;
         setPressed(true);
+        trackAttachment(e.target);
         setTarget(contextTarget(e.target));
         more.openAt(e.currentTarget, e);
       }}
@@ -350,6 +360,8 @@ export const MessageItem = memo(function MessageItem(p: MessageItemProps) {
         if (editing || !(e.key === "ContextMenu" || (e.key === "F10" && e.shiftKey)) || keepsNativeMenu(e.target)) return;
         e.preventDefault();
         setPressed(true);
+        trackAttachment(e.target);
+        setTarget(contextTarget(e.target));
         more.openAt(e.currentTarget, null);
       }}
       style={gestures.offset ? { transform: `translateX(${gestures.offset}px)` } : undefined}
@@ -466,9 +478,18 @@ export const MessageItem = memo(function MessageItem(p: MessageItemProps) {
             more.close();
             setPressed(false);
             setTarget(null);
+            setAttachmentId(undefined);
           }}
           entries={[
-            ...contextEntries(target, (text) => engine.notice("info", text)),
+            ...contextEntries(
+              target,
+              (text) => engine.notice("info", text),
+              attachment
+                ? () => void saveAttachment(engine, attachment).catch((e) => {
+                    if (!(e instanceof DOMException && e.name === "AbortError")) engine.notice("error", "Couldn't download this file. Try again.");
+                  })
+                : undefined,
+            ),
             ...quickRow,
             ...(reactions.length > 0 ? [{ label: t("react_dialog_title"), icon: <SmilePlus size={16} />, onSelect: () => setShowReactions(true) }] : []),
             ...(mine && p.canPost ? [{ label: t("msg_edit"), icon: <Pencil size={16} />, onSelect: () => setEditing(true) }] : []),
@@ -532,6 +553,27 @@ export const MessageItem = memo(function MessageItem(p: MessageItemProps) {
             ...(!mine && live && reportable && conv ? ["separator" as const, { label: t("msg_report"), icon: <Flag size={16} />, danger: true, onSelect: () => setReporting(true) }] : []),
             ...((mine && p.canPost) || (!mine && live && p.moderate === true && !!inCommunity)
               ? ["separator" as const, { label: t("msg_delete_all"), icon: <Trash2 size={16} />, danger: true, onSelect: () => setConfirmDelete(true) }]
+              : []),
+            ...(live && fileSelection && m.attachments.length > 0
+              ? [
+                  "separator" as const,
+                  ...(attachment
+                    ? [
+                        {
+                          label: `Select ${attachmentName(attachment.name)}`,
+                          onSelect: () => fileSelection.include([saveKey(m.id, attachment.id)]),
+                        },
+                      ]
+                    : []),
+                  ...(m.attachments.length !== 1 || !attachment
+                    ? [
+                        {
+                          label: m.attachments.length === 1 ? "Select file" : `Select All ${m.attachments.length} Items`,
+                          onSelect: () => fileSelection.include(m.attachments.map((ref) => saveKey(m.id, ref.id))),
+                        },
+                      ]
+                    : []),
+                ]
               : []),
           ]}
         />

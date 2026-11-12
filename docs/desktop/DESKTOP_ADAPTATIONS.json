@@ -20,7 +20,7 @@
   "src/ui/components/LanguagePicker.tsx": "Adds native/name/code search while preserving accessible native selection and immediate persistence.",
   "test/i18n.test.ts": "Tests expanded locale resolution, explicit missing-key reporting, placeholders and English fallback.",
   "tsconfig.app.json": "Allows bundled JSON localization resources.",
-  "src/ui/chat/MessageItem.tsx": "Message text uses its own bidi direction regardless of interface language; content is untouched.",
+  "src/ui/chat/MessageItem.tsx": "Message text uses its own bidi direction regardless of interface language; content is untouched. Offer selection for the clicked attachment or the whole attachment group.",
   "src/ui/mojo/MojoBadge.tsx": "Replaces retired commercial names with a neutral legacy-membership label without changing entitlements.",
   "src/ui/mojo/MojoGifts.tsx": "Removes retired commercial plan label from legacy gifts; server retains ownership of gift rules.",
   "src/ui/mojo/MojoPlans.tsx": "Free/Plus remain the offered plans; retained legacy fields no longer display retired product branding.",
@@ -48,5 +48,12 @@
   "src/sync/points.ts": "Desktop follows the shared API for automatic account levels and weekly activity from accessible conversations.",
   "src/ui/leaderboards/LeaderboardsPage.tsx": "Desktop follows the shared API for automatic account levels and weekly activity from accessible conversations.",
   "src/ui/points/PointsPage.tsx": "Desktop follows the shared API for automatic account levels and weekly activity from accessible conversations.",
-  "test/settings-parity.test.ts": "Desktop follows the shared API for automatic account levels and weekly activity from accessible conversations."
+  "test/settings-parity.test.ts": "Desktop follows the shared API for automatic account levels and weekly activity from accessible conversations.",
+  "src/styles/conversation.css": "Style inline attachment downloads and the batch selection controls in the chat.",
+  "src/sync/attachments.ts": "Keep the native save picker bound to the renderer and check cancellation before writing.",
+  "src/sync/bulkSaver.ts": "Cancel the active save and keep the unfinished files available for retry.",
+  "src/ui/chat/Attachments.tsx": "Show direct download controls, transfer progress and per-file selection in chat.",
+  "src/ui/chat/BulkSaveBar.tsx": "Reuse the gallery batch save in chat, including cancellation and retry.",
+  "src/ui/chat/MessageList.tsx": "Scope file selection to the visible conversation timeline and show its batch toolbar.",
+  "src/ui/chat/contextTarget.tsx": "Use the verified original attachment for contextual downloads in place of the preview URL."
 }
